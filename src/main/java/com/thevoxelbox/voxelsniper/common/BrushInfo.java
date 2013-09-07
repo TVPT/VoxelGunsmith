@@ -15,7 +15,7 @@ public class BrushInfo implements Serializable {
 	private String name;
 
 	/**
-	 * The Catagory that the brush is under
+	 * The Category that the brush is under
 	 */
 	private String category;
 
