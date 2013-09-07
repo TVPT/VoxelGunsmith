@@ -17,16 +17,16 @@ public class BrushInfo implements Serializable {
 	/**
 	 * The Catagory that the brush is under
 	 */
-	private String catagory;
+	private String category;
 
 	/**
 	 * The BrushCode for the brush
 	 */
 	private String brushCode;
 
-	public BrushInfo(String name, String catagory, String brushCode) {
+	public BrushInfo(String name, String category, String brushCode) {
 		this.name = name;
-		this.catagory = catagory;
+		this.category = category;
 		this.brushCode = brushCode;
 	}
 
@@ -44,8 +44,8 @@ public class BrushInfo implements Serializable {
 	 * 
 	 * @return the Category that contains the brush
 	 */
-	public String getCatagory() {
-		return catagory;
+	public String getCategory() {
+		return category;
 	}
 
 	/**
