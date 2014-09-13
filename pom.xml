@@ -2,12 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.thevoxelbox</groupId>
-    <artifactId>VoxelSniperCommon</artifactId>
+    <groupId>com.voxelplugineering</groupId>
+    <artifactId>VoxelGunsmith</artifactId>
     <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>VoxelSniperCommon</name>
+    <name>VoxelGunsmith</name>
     <description>Common API for VoxelSniper implementations.</description>
     <url>http://voxelmodpack.com/</url>
 
@@ -54,6 +54,32 @@
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.10.b1</version>
+                <executions>
+                    <execution>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <quiet>true</quiet>
+                    <encoding>UTF-8</encoding>
+                    <strictCheck>true</strictCheck>
+                    <header>${basedir}/LICENSE</header>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                    </mapping>
+                    <includes>
+                        <include>src/main/java/com/thevoxelbox/voxelsniper/**</include>
+                    </includes>
                 </configuration>
             </plugin>
 
