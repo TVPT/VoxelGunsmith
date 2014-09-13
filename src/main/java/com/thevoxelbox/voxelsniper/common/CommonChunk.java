@@ -1,6 +1,7 @@
 package com.thevoxelbox.voxelsniper.common;
 
-public abstract class CommonChunk {
+public abstract class CommonChunk
+{
 
     public abstract CommonWorld getCommonWorld();
 

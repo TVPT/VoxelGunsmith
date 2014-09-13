@@ -9,21 +9,25 @@ import java.util.ArrayList;
  *
  * @author thatapplefreak
  */
-public class VoxelSniperPacket1LoginPayload implements Serializable {
+public class VoxelSniperPacket1LoginPayload implements Serializable
+{
 
     private final int userPermissionsLevel;
     private final ArrayList<BrushInfo> availableBrushes;
 
-    public VoxelSniperPacket1LoginPayload(int userPermissionsLevel, ArrayList<BrushInfo> availableBrushes) {
+    public VoxelSniperPacket1LoginPayload(int userPermissionsLevel, ArrayList<BrushInfo> availableBrushes)
+    {
         this.userPermissionsLevel = userPermissionsLevel;
         this.availableBrushes = availableBrushes;
     }
 
-    public int getPermissionsLevel() {
+    public int getPermissionsLevel()
+    {
         return userPermissionsLevel;
     }
 
-    public ArrayList<BrushInfo> getAvailableBrushes() {
+    public ArrayList<BrushInfo> getAvailableBrushes()
+    {
         return availableBrushes;
     }
 

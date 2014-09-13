@@ -1,6 +1,7 @@
 package com.thevoxelbox.voxelsniper.api;
 
-public interface ISniper {
+public interface ISniper
+{
 
     public String getCurrentToolId();
 

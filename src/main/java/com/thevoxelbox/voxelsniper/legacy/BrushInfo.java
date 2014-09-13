@@ -7,7 +7,8 @@ import java.io.Serializable;
  *
  * @author thatapplefreak
  */
-public class BrushInfo implements Serializable {
+public class BrushInfo implements Serializable
+{
 
     /**
      * Name of the brush
@@ -24,7 +25,8 @@ public class BrushInfo implements Serializable {
      */
     private String brushCode;
 
-    public BrushInfo(String name, String category, String brushCode) {
+    public BrushInfo(String name, String category, String brushCode)
+    {
         this.name = name;
         this.category = category;
         this.brushCode = brushCode;
@@ -35,7 +37,8 @@ public class BrushInfo implements Serializable {
      *
      * @return the name
      */
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
@@ -44,7 +47,8 @@ public class BrushInfo implements Serializable {
      *
      * @return the Category that contains the brush
      */
-    public String getCategory() {
+    public String getCategory()
+    {
         return category;
     }
 
@@ -53,7 +57,8 @@ public class BrushInfo implements Serializable {
      *
      * @return the brushCode
      */
-    public String getBrushCode() {
+    public String getBrushCode()
+    {
         return brushCode;
     }
 

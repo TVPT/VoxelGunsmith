@@ -1,6 +1,7 @@
 package com.thevoxelbox.voxelsniper.api;
 
-public interface IManager {
+public interface IManager
+{
 
     public void init();
 

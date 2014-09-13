@@ -3,7 +3,8 @@ package com.thevoxelbox.voxelsniper.legacy;
 /**
  *
  */
-public class VoxelSniperCommon {
+public class VoxelSniperCommon
+{
     /**
      * Channel shortcode for Server to Client Login Packages.
      */

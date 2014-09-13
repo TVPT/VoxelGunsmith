@@ -1,6 +1,7 @@
 package com.thevoxelbox.voxelsniper.common;
 
-public enum CommonAction {
+public enum CommonAction
+{
     LEFT_CLICK_AIR,
     LEFT_CLICK_BLOCK,
     MIDDLE_CLICK_AIR,
