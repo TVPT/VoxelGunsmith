@@ -23,13 +23,13 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
-public abstract class CommonBlock
+public class CommonBlock
 {
 
     private final CommonLocation location;
-    private final CommonMaterial material;
+    private CommonMaterial<?> material;
 
-    protected CommonBlock(CommonLocation location, CommonMaterial material)
+    public CommonBlock(CommonLocation location, CommonMaterial<?> material)
     {
         this.location = location;
         this.material = material;
@@ -40,11 +40,15 @@ public abstract class CommonBlock
         return this.location;
     }
 
-    public final CommonMaterial getMaterial()
+    public final CommonMaterial<?> getMaterial()
     {
         return this.material;
     }
 
-    public abstract void setMaterial(CommonMaterial material);
+    public void setMaterial(CommonMaterial<?> material)
+    {
+        this.material = material;
+        this.location.getWorld().setBlockAt(location, material);
+    }
 
 }

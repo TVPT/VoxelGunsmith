@@ -21,31 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.common;
+package com.voxelplugineering.voxelsniper.common.factory;
 
-public abstract class CommonWorld
+import com.voxelplugineering.voxelsniper.common.CommonWorld;
+
+
+public abstract class CommonWorldFactory
 {
-
-    public abstract CommonChunk getChunkAt(int x, int y, int z);
-
-    //This method exists to better support the minecraft philosophy of chunk arrangement, without restricting the implementation from using y-axis chunks.
-    public CommonChunk getChunkAt(int x, int z)
-    {
-        return getChunkAt(x, 0, z);
-    }
-
-    public CommonBlock getBlockAt(CommonLocation location)
-    {
-        return getBlockAt(location.getX(), location.getY(), location.getZ());
-    }
-
-    public abstract CommonBlock getBlockAt(int x, int y, int z);
+    private static CommonWorldFactory WORLD_FACTORY = null;
     
-    public void setBlockAt(CommonLocation location, CommonMaterial<?> material)
+    public static void setFactory(CommonWorldFactory factory)
     {
-        setBlockAt(location.getX(), location.getY(), location.getZ(), material);
+        WORLD_FACTORY = factory;
     }
     
-    public abstract void setBlockAt(int x, int y, int z, CommonMaterial<?> material);
+    public static CommonWorld getWorld(String name)
+    {
+        if(WORLD_FACTORY == null) return null;
+        return WORLD_FACTORY.getWorldRaw(name);
+    }
     
+    protected abstract CommonWorld getWorldRaw(String name);
 }

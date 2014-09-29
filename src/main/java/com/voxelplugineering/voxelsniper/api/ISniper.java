@@ -32,4 +32,6 @@ public interface ISniper
 
     public Object getPlayer();
 
+    public void sendMessage(String msg);
+    
 }
