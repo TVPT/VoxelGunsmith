@@ -139,8 +139,8 @@
                             </artifactSet>
                             <relocations>
                                 <relocation>
-                                    <pattern>com.google.common</pattern>
-                                    <shadedPattern>com.voxelplugineering.libs.com.google.common</shadedPattern>
+                                    <pattern>com.google</pattern>
+                                    <shadedPattern>com.voxelplugineering.libs.com.google</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
