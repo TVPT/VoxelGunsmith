@@ -88,7 +88,7 @@
                         <java>SLASHSTAR_STYLE</java>
                     </mapping>
                     <includes>
-                        <include>src/main/java/com/thevoxelbox/voxelsniper/**</include>
+                        <include>src/main/java/com/voxelplugineering/voxelsniper/**</include>
                     </includes>
                 </configuration>
             </plugin>

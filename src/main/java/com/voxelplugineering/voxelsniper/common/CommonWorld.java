@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 The Voxel Plugin Team
+ * Copyright (c) 2014 The Voxel Plugineering Team
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,8 @@ package com.voxelplugineering.voxelsniper.common;
 
 public abstract class CommonWorld
 {
+
+    public abstract String getName();
 
     public abstract CommonChunk getChunkAt(int x, int y, int z);
 
