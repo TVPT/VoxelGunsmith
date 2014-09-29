@@ -34,118 +34,118 @@ import com.voxelplugineering.voxelsniper.api.INode;
 public abstract class Node implements INode, Serializable
 {
     private static final long serialVersionUID = -979649184372246054L;
-    
+
     protected Map<String, NodeInput> inputs = new HashMap<String, NodeInput>();
     protected Map<String, NodeOutput<?>> outputs = new HashMap<String, NodeOutput<?>>();
-    
+
     protected boolean dirty = true;
 
     @Override
     public boolean mapInput(String input, INode holder, String holderOutput)
     {
-        inputs.get(input).set(holder, holderOutput);
+        this.inputs.get(input).set(holder, holderOutput);
         return true;
     }
 
     @Override
     public boolean isValidInput(String input, Class<?> type)
     {
-        return inputs.keySet().contains(input) && inputs.get(input).getType().test(type);
+        return this.inputs.keySet().contains(input) && this.inputs.get(input).getType().test(type);
     }
 
     @Override
     public boolean isInputSet(String input)
     {
-        return inputs.keySet().contains(input) && inputs.get(input).getValue() != null;
+        return this.inputs.keySet().contains(input) && this.inputs.get(input).getValue() != null;
     }
-    
+
     @Override
     public void validateInputs() throws MissingResourceException
     {
-        for(String required: inputs.keySet())
+        for (String required : this.inputs.keySet())
         {
-            NodeInput input = inputs.get(required);
-            if(input.isRequired() && input.getValue() == null)
+            NodeInput input = this.inputs.get(required);
+            if (input.isRequired() && input.getValue() == null)
             {
                 throw new MissingResourceException("Node was found to be missing required resource " + input.getName(), input.getType().name(), required);
             }
         }
-        for(String inputName: inputs.keySet())
+        for (String inputName : this.inputs.keySet())
         {
-            NodeInput input = inputs.get(inputName);
-            if(input.getValue() != null)
+            NodeInput input = this.inputs.get(inputName);
+            if (input.getValue() != null)
             {
                 input.getHolder().validateInputs();
             }
-        }        
+        }
     }
 
     @Override
     public void walk(Set<INode> nodes)
     {
         nodes.add(this);
-        for(String inputName: inputs.keySet())
+        for (String inputName : this.inputs.keySet())
         {
-            NodeInput input = inputs.get(inputName);
-            if(input.getHolder() != null)
+            NodeInput input = this.inputs.get(inputName);
+            if (input.getHolder() != null)
             {
                 input.getHolder().walk(nodes);
             }
         }
     }
-    
+
     @Override
     public Object getInput(String name)
     {
-        if(!this.inputs.keySet().contains(name)) return null;
+        if (!this.inputs.keySet().contains(name)) return null;
         return this.inputs.get(name).getValue();
     }
 
     @Override
     public Object getOutput(String name)
     {
-        if(!this.outputs.keySet().contains(name)) return null;
-        if(dirty) calculate();
+        if (!this.outputs.keySet().contains(name)) return null;
+        if (this.dirty) calculate();
         return this.outputs.get(name).getValue();
     }
-    
+
     @Override
     public void calculate()
     {
-        dirty = false;
+        this.dirty = false;
     }
-    
+
     public String toString(int t)
     {
-        String s = t == 0? "" : "\t";
+        String s = t == 0 ? "" : "\t";
         s += "Node type: " + this.getClass().getName() + "\n";
-        for(int i = 0; i < t; i++) s+= "\t";
+        for (int i = 0; i < t; i++) s += "\t";
         s += "Inputs (" + this.inputs.size() + ")\n";
-        for(int i = 0; i < t; i++) s+= "\t";
+        for (int i = 0; i < t; i++) s += "\t";
         s += "[\n";
-        for(int i = 0; i < t; i++) s+= "\t";
-        for(String n: this.inputs.keySet())
+        for (int i = 0; i < t; i++) s += "\t";
+        for (String n : this.inputs.keySet())
         {
             s += "\t";
-            NodeInput i = inputs.get(n);
+            NodeInput i = this.inputs.get(n);
             s += "Name: " + i.getName() + " ; Type: " + i.getType().name() + "\n";
-            for(int o = 0; o < t; o++) s+= "\t";
-            s += i.getHolder().toString(t+1);
+            for (int o = 0; o < t; o++) s += "\t";
+            s += i.getHolder().toString(t + 1);
             s += "\n";
-            for(int o = 0; o < t; o++) s+= "\t";
+            for (int o = 0; o < t; o++) s += "\t";
         }
         s += "]\n";
-        for(int i = 0; i < t; i++) s+= "\t";
+        for (int i = 0; i < t; i++) s += "\t";
         s += "Outputs (" + this.outputs.size() + ")\n";
-        for(int i = 0; i < t; i++) s+= "\t";
+        for (int i = 0; i < t; i++) s += "\t";
         s += "[\n";
-        for(int i = 0; i < t; i++) s+= "\t";
-        for(String n: this.outputs.keySet())
+        for (int i = 0; i < t; i++) s += "\t";
+        for (String n : this.outputs.keySet())
         {
             s += "\t";
-            NodeOutput<?> i = outputs.get(n);
+            NodeOutput<?> i = this.outputs.get(n);
             s += i.getName() + " : " + i.getType().getName() + " : " + i.getValue() + "\n";
-            for(int o = 0; o < t; o++) s+= "\t";
+            for (int o = 0; o < t; o++) s += "\t";
         }
         s += "]\n";
         return s;

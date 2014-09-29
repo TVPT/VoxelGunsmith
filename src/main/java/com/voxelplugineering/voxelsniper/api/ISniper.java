@@ -26,12 +26,10 @@ package com.voxelplugineering.voxelsniper.api;
 public interface ISniper
 {
 
-    public String getCurrentToolId();
+    String getCurrentToolId();
 
-    public String getToolId(Object object);
+    String getToolId(Object object);
 
-    public Object getPlayer();
+    void sendMessage(String msg);
 
-    public void sendMessage(String msg);
-    
 }

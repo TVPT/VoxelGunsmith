@@ -40,12 +40,12 @@ public abstract class CommonWorld
     }
 
     public abstract CommonBlock getBlockAt(int x, int y, int z);
-    
+
     public void setBlockAt(CommonLocation location, CommonMaterial<?> material)
     {
         setBlockAt(location.getX(), location.getY(), location.getZ(), material);
     }
-    
+
     public abstract void setBlockAt(int x, int y, int z, CommonMaterial<?> material);
-    
+
 }

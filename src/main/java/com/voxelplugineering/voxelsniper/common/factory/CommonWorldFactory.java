@@ -29,17 +29,17 @@ import com.voxelplugineering.voxelsniper.common.CommonWorld;
 public abstract class CommonWorldFactory
 {
     private static CommonWorldFactory WORLD_FACTORY = null;
-    
+
     public static void setFactory(CommonWorldFactory factory)
     {
         WORLD_FACTORY = factory;
     }
-    
+
     public static CommonWorld getWorld(String name)
     {
-        if(WORLD_FACTORY == null) return null;
+        if (WORLD_FACTORY == null) return null;
         return WORLD_FACTORY.getWorldRaw(name);
     }
-    
+
     protected abstract CommonWorld getWorldRaw(String name);
 }

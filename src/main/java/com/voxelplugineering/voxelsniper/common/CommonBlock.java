@@ -48,7 +48,7 @@ public class CommonBlock
     public void setMaterial(CommonMaterial<?> material)
     {
         this.material = material;
-        this.location.getWorld().setBlockAt(location, material);
+        this.location.getWorld().setBlockAt(this.location, material);
     }
 
 }

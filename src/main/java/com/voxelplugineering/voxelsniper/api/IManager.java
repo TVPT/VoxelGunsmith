@@ -26,9 +26,9 @@ package com.voxelplugineering.voxelsniper.api;
 public interface IManager
 {
 
-    public void init();
+    void init();
 
-    public void stop();
+    void stop();
 
-    public void restart();
+    void restart();
 }

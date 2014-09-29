@@ -4,7 +4,7 @@ import com.voxelplugineering.voxelsniper.common.command.Command;
 
 public interface ICommandRegistrar
 {
-    
-    public void registerCommand(Command cmd);
-    
+
+    void registerCommand(Command cmd);
+
 }

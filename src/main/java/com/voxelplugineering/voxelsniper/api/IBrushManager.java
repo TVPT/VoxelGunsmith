@@ -26,6 +26,6 @@ package com.voxelplugineering.voxelsniper.api;
 public interface IBrushManager extends IManager
 {
 
-    public void registerBrush(String identifier, Class<? extends IBrush> clazz);
+    void registerBrush(String identifier, Class<? extends IBrush> clazz);
 
 }

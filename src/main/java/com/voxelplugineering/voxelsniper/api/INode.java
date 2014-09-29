@@ -29,22 +29,22 @@ import java.util.Set;
 public interface INode
 {
 
-    public boolean mapInput(String input, INode holder, String holderOutput);
+    boolean mapInput(String input, INode holder, String holderOutput);
 
-    public boolean isValidInput(String input, Class<?> type);
+    boolean isValidInput(String input, Class<?> type);
 
-    public boolean isInputSet(String input);
+    boolean isInputSet(String input);
 
-    public void validateInputs() throws MissingResourceException;
-    
-    public void walk(Set<INode> nodes);
+    void validateInputs() throws MissingResourceException;
 
-    public Object getOutput(String value);
-    
-    public Object getInput(String value);
+    void walk(Set<INode> nodes);
 
-    public void calculate();
-    
-    public String toString(int t);
-    
+    Object getOutput(String value);
+
+    Object getInput(String value);
+
+    void calculate();
+
+    String toString(int t);
+
 }

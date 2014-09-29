@@ -25,8 +25,10 @@ package com.voxelplugineering.voxelsniper.api;
 
 public interface IVoxelSniper
 {
-    public ISniperManager getSniperManager();
+    ISniperManager<?> getSniperManager();
 
-    public IBrushManager getBrushManager();
+    IBrushManager getBrushManager();
+
+    boolean isEnabled();
 
 }

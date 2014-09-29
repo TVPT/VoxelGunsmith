@@ -32,13 +32,13 @@ public class RootOperatorNode extends OperatorNode
 {
     private static final long serialVersionUID = -2737361616845032268L;
     boolean floating = false;
-    
+
     public RootOperatorNode(boolean f)
     {
         this.floating = f;
-        inputs.put("a", new NodeInput(InputType.NUMBER, false, 0));
-        inputs.put("b", new NodeInput(InputType.NUMBER, false, 1));
-        outputs.put("equ", new NodeOutput<Number>("equ", Number.class));
+        this.inputs.put("a", new NodeInput(InputType.NUMBER, false, 0));
+        this.inputs.put("b", new NodeInput(InputType.NUMBER, false, 1));
+        this.outputs.put("equ", new NodeOutput<Number>("equ", Number.class));
     }
 
     @SuppressWarnings("unchecked")
@@ -47,32 +47,29 @@ public class RootOperatorNode extends OperatorNode
     {
         Number _a = (Number) getInput("a");
         Number _b = (Number) getInput("b");
-        if(floating)
+        if (this.floating)
         {
             double a = _a.doubleValue();
             double b = _b.doubleValue();
-            if(b > 0)
+            if (b > 0)
             {
-                ((NodeOutput<Number>) outputs.get("equ")).setValue(Math.pow(a, 1/b));
-            }
-            else
+                ((NodeOutput<Number>) this.outputs.get("equ")).setValue(Math.pow(a, 1 / b));
+            } else
             {
-                ((NodeOutput<Number>) outputs.get("equ")).setValue(0);
+                ((NodeOutput<Number>) this.outputs.get("equ")).setValue(0);
             }
-        }
-        else
+        } else
         {
             long a = _a.longValue();
             long b = _b.longValue();
-            if(b > 0)
+            if (b > 0)
             {
-                ((NodeOutput<Number>) outputs.get("equ")).setValue(Math.pow(a, 1/b));
-            }
-            else
+                ((NodeOutput<Number>) this.outputs.get("equ")).setValue(Math.pow(a, 1 / b));
+            } else
             {
-                ((NodeOutput<Number>) outputs.get("equ")).setValue(0);
+                ((NodeOutput<Number>) this.outputs.get("equ")).setValue(0);
             }
         }
-        dirty = false;
+        this.dirty = false;
     }
 }

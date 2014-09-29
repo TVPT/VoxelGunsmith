@@ -31,15 +31,15 @@ import com.voxelplugineering.voxelsniper.common.node.OperatorNode;
 public class AdditionOperatorNode extends OperatorNode
 {
     private static final long serialVersionUID = -215579729769836259L;
-    
+
     boolean floating = false;
-    
+
     public AdditionOperatorNode(boolean f)
     {
         this.floating = f;
-        inputs.put("a", new NodeInput(InputType.NUMBER, false, 0));
-        inputs.put("b", new NodeInput(InputType.NUMBER, false, 0));
-        outputs.put("equ", new NodeOutput<Number>("equ", Number.class));
+        this.inputs.put("a", new NodeInput(InputType.NUMBER, false, 0));
+        this.inputs.put("b", new NodeInput(InputType.NUMBER, false, 0));
+        this.outputs.put("equ", new NodeOutput<Number>("equ", Number.class));
     }
 
     @SuppressWarnings("unchecked")
@@ -48,18 +48,17 @@ public class AdditionOperatorNode extends OperatorNode
     {
         Number _a = (Number) getInput("a");
         Number _b = (Number) getInput("b");
-        if(floating)
+        if (this.floating)
         {
             double a = _a.doubleValue();
             double b = _b.doubleValue();
-            ((NodeOutput<Number>) outputs.get("equ")).setValue(a+b);
-        }
-        else
+            ((NodeOutput<Number>) this.outputs.get("equ")).setValue(a + b);
+        } else
         {
             long a = _a.longValue();
             long b = _b.longValue();
-            ((NodeOutput<Number>) outputs.get("equ")).setValue(a+b);
+            ((NodeOutput<Number>) this.outputs.get("equ")).setValue(a + b);
         }
-        dirty = false;
+        this.dirty = false;
     }
 }

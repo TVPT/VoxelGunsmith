@@ -32,7 +32,7 @@ public class CommonVector implements Serializable, Cloneable
 
     public CommonVector(double x, double y, double z)
     {
-        this.vec = new double[] { x, y, z };
+        this.vec = new double[]{x, y, z};
     }
 
     public double getX()

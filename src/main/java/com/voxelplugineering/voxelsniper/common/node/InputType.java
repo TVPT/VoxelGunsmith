@@ -27,19 +27,19 @@ public enum InputType
 {
     NUMBER(Number.class),
     STRING(String.class);
-    
+
 
     private Class<?> cls;
-    
+
     InputType(Class<?> c)
     {
         this.cls = c;
     }
-    
+
     public boolean test(Class<?> n)
     {
-        if(this.cls == null) return true;
-        if(cls.isAssignableFrom(n)) return true;
+        if (this.cls == null) return true;
+        if (this.cls.isAssignableFrom(n)) return true;
         return false;
     }
 }

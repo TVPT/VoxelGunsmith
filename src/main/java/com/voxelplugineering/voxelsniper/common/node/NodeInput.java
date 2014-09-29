@@ -31,15 +31,15 @@ public class NodeInput implements Serializable
 {
     private static final long serialVersionUID = -3149768229377635513L;
 
-    private INode     valueHolder  = null;
+    private INode valueHolder = null;
 
-    private String    value;
+    private String value;
 
-    private boolean   required     = true;
+    private boolean required = true;
 
     private InputType type;
 
-    private Object    defaultValue = null;
+    private Object defaultValue = null;
 
     public NodeInput(InputType type)
     {

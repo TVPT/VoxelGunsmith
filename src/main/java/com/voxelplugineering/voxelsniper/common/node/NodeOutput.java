@@ -30,35 +30,35 @@ public class NodeOutput<T> implements Serializable
     private static final long serialVersionUID = -4554573189786338461L;
 
     private T value = null;
-    
+
     private Class<T> type;
-    
+
     private String name;
-    
+
     public NodeOutput(String name, Class<T> type)
     {
         this.name = name;
         this.type = type;
     }
-    
+
     public T getValue()
     {
         return this.value;
     }
-    
+
     public String getName()
     {
         return this.name;
     }
-    
+
     public Class<T> getType()
     {
         return this.type;
     }
-    
+
     public void setValue(T value)
     {
         this.value = value;
     }
-    
+
 }

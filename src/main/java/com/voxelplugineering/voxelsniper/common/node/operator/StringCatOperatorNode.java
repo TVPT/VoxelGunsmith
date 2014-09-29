@@ -34,9 +34,9 @@ public class StringCatOperatorNode extends OperatorNode
 
     public StringCatOperatorNode()
     {
-        inputs.put("a", new NodeInput(InputType.STRING, false, ""));
-        inputs.put("b", new NodeInput(InputType.STRING, false, ""));
-        outputs.put("cat", new NodeOutput<String>("cat", String.class));
+        this.inputs.put("a", new NodeInput(InputType.STRING, false, ""));
+        this.inputs.put("b", new NodeInput(InputType.STRING, false, ""));
+        this.outputs.put("cat", new NodeOutput<String>("cat", String.class));
     }
 
     @SuppressWarnings("unchecked")
@@ -45,7 +45,7 @@ public class StringCatOperatorNode extends OperatorNode
     {
         String a = getInput("a").toString();
         String b = getInput("b").toString();
-        ((NodeOutput<String>) outputs.get("cat")).setValue(a+b);
-        dirty = false;
+        ((NodeOutput<String>) this.outputs.get("cat")).setValue(a + b);
+        this.dirty = false;
     }
 }

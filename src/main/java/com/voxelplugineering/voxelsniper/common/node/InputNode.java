@@ -27,18 +27,18 @@ public class InputNode<T> extends Node
 {
     private static final long serialVersionUID = -1563189602513292697L;
 
-    private boolean           isVariable       = true;
+    private boolean isVariable = true;
 
-    private String            desription       = "";
+    private String desription = "";
 
-    private Class<T>          type;
+    private Class<T> type;
 
     @SuppressWarnings("unchecked")
     public InputNode(T value, Class<T> type)
     {
         this.type = type;
-        outputs.put("value", new NodeOutput<T>("value", type));
-        ((NodeOutput<T>) outputs.get("value")).setValue(value);
+        this.outputs.put("value", new NodeOutput<T>("value", type));
+        ((NodeOutput<T>) this.outputs.get("value")).setValue(value);
     }
 
     @SuppressWarnings("unchecked")
@@ -46,13 +46,13 @@ public class InputNode<T> extends Node
     {
         this.desription = description;
         this.type = type;
-        outputs.put("value", new NodeOutput<T>("value", type));
-        ((NodeOutput<T>) outputs.get("value")).setValue(value);
+        this.outputs.put("value", new NodeOutput<T>("value", type));
+        ((NodeOutput<T>) this.outputs.get("value")).setValue(value);
     }
 
     public boolean isVariable()
     {
-        return isVariable;
+        return this.isVariable;
     }
 
     public void setVariable(boolean isVariable)
@@ -63,17 +63,17 @@ public class InputNode<T> extends Node
     public void setValue(Object value)
     {
         if (!this.isVariable || !value.getClass().equals(this.type)) return;
-        ((NodeOutput<T>) outputs.get("value")).setValue((T) value);
-        dirty = true;
+        ((NodeOutput<T>) this.outputs.get("value")).setValue((T) value);
+        this.dirty = true;
     }
 
     public Class<T> getType()
     {
-        return type;
+        return this.type;
     }
 
     public String getDesription()
     {
-        return desription;
+        return this.desription;
     }
 }

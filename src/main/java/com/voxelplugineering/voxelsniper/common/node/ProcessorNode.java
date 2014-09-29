@@ -29,5 +29,5 @@ public abstract class ProcessorNode extends Node
     private static final long serialVersionUID = 3975793278250754612L;
 
     public abstract void process();
-    
+
 }

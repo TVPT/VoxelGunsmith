@@ -34,8 +34,8 @@ public class SineOperatorNode extends OperatorNode
 
     public SineOperatorNode()
     {
-        inputs.put("a", new NodeInput(InputType.NUMBER, false, 0));
-        outputs.put("equ", new NodeOutput<Number>("equ", Number.class));
+        this.inputs.put("a", new NodeInput(InputType.NUMBER, false, 0));
+        this.outputs.put("equ", new NodeOutput<Number>("equ", Number.class));
     }
 
     @SuppressWarnings("unchecked")
@@ -44,7 +44,7 @@ public class SineOperatorNode extends OperatorNode
     {
         Number _a = (Number) getInput("a");
         double a = _a.doubleValue();
-        ((NodeOutput<Number>) outputs.get("equ")).setValue(Math.sin(a));
-        dirty = false;
+        ((NodeOutput<Number>) this.outputs.get("equ")).setValue(Math.sin(a));
+        this.dirty = false;
     }
 }
