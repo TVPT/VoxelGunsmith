@@ -30,7 +30,8 @@ public abstract class CommonWorld
 
     public abstract CommonChunk getChunkAt(int x, int y, int z);
 
-    //This method exists to better support the minecraft philosophy of chunk arrangement, without restricting the implementation from using y-axis chunks.
+    //This method exists to better support the minecraft philosophy of chunk arrangement,
+    // without restricting the implementation from using y-axis chunks.
     public CommonChunk getChunkAt(int x, int z)
     {
         return getChunkAt(x, 0, z);

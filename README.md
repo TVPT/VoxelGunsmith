@@ -1,16 +1,15 @@
-VoxelGunsmith
-=============
+VoxelGunsmith [![Build Status](https://travis-ci.org/TVPT/VoxelGunsmith.svg?branch=master)](https://travis-ci.org/TVPT/VoxelGunsmith)
+===============
 
 The premiere long-distance brush editor API for VoxelSniper.
 
 Compilation
 -----------
 
-We use maven to handle our dependencies.
+We use Gradle for dependencies and building.
 
-- Install [Maven 3][Maven]
 - Check out this repository.
-- Run ```mvn clean package```
+- Run ```./gradlew```
 
 The master branch is automatically build on our jenkins server ([VoxelSniper Jenkins Job][JenkinsJob]).
 

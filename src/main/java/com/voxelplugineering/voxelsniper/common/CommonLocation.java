@@ -26,7 +26,9 @@ package com.voxelplugineering.voxelsniper.common;
 public final class CommonLocation implements Cloneable
 {
     private final CommonWorld world;
-    private final int x, y, z;
+    private final int x;
+    private final int y;
+    private final int z;
 
     public CommonLocation(CommonWorld world, int x, int y, int z)
     {

@@ -6,6 +6,14 @@ build/
 .manifest
 buildLocal.xml
 
+#Gradle
+.gradle/
+artifacts/
+gradle-app.setting
+
+#Maven
+dependency-reduced-pom.xml
+
 #Files to ignore
 # -Eclipse-
 .settings

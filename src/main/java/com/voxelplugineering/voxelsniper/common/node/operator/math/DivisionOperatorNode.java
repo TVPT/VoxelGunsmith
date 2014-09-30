@@ -46,12 +46,12 @@ public class DivisionOperatorNode extends OperatorNode
     @Override
     public void calculate()
     {
-        Number _a = (Number) getInput("a");
-        Number _b = (Number) getInput("b");
+        Number tempA = (Number) getInput("a");
+        Number tempB = (Number) getInput("b");
         if (this.floating)
         {
-            double a = _a.doubleValue();
-            double b = _b.doubleValue();
+            double a = tempA.doubleValue();
+            double b = tempB.doubleValue();
             if (b != 0)
             {
                 ((NodeOutput<Number>) this.outputs.get("equ")).setValue(a / b);
@@ -61,8 +61,8 @@ public class DivisionOperatorNode extends OperatorNode
             }
         } else
         {
-            long a = _a.longValue();
-            long b = _b.longValue();
+            long a = tempA.longValue();
+            long b = tempB.longValue();
             if (b != 0)
             {
                 ((NodeOutput<Number>) this.outputs.get("equ")).setValue(a / b);
