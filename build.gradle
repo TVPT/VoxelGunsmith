@@ -38,11 +38,16 @@ targetCompatibility = 1.6
 // Project dependencies
 repositories {
     mavenCentral()
+    maven {
+    	url "http://repo.budgiehouse.com:8081/nexus/content/repositories/VBpublic/"
+    }
 }
 
 dependencies {
     compile 'com.google.guava:guava:18.0'
     testCompile 'junit:junit:4.11'
+    compile 'org.ow2.asm:asm:5.0.3'
+    compile 'com.thevoxelbox:VisualScripting:0.1.1-SNAPSHOT'
 }
 
 // Generates javadoc.jar
