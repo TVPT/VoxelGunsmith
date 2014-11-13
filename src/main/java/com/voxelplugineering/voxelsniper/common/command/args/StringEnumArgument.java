@@ -27,14 +27,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.voxelplugineering.voxelsniper.api.ISniper;
-import com.voxelplugineering.voxelsniper.common.command.CommandArguement;
+import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.voxelplugineering.voxelsniper.util.Utilities.findMatches;
 
 
-public class StringEnumArgument extends CommandArguement
+public class StringEnumArgument extends CommandArgument
 {
 
     private final String def;
@@ -43,9 +43,9 @@ public class StringEnumArgument extends CommandArguement
 
     private String choice = null;
 
-    public StringEnumArgument(boolean required, String def, String... choices)
+    public StringEnumArgument(String name, boolean required, String def, String... choices)
     {
-        super(required);
+        super(name, required);
         checkNotNull(def, "Cannot have a null default");
         checkNotNull(choices, "Cannot have null choices");
         this.def = def;

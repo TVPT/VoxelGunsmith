@@ -26,22 +26,15 @@ package com.voxelplugineering.voxelsniper.common.command.args;
 import java.util.List;
 
 import com.voxelplugineering.voxelsniper.api.ISniper;
-import com.voxelplugineering.voxelsniper.common.command.CommandArguement;
+import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
 
-public class DoubleArgument extends CommandArguement
+public class DoubleArgument extends CommandArgument
 {
     private double value;
-    private String desc = "num";
 
-    public DoubleArgument(boolean required)
+    public DoubleArgument(String name, boolean required)
     {
-        super(required);
-    }
-
-    public DoubleArgument setDesc(String description)
-    {
-        this.desc = description;
-        return this;
+        super(name, required);
     }
 
     public double getValue()
@@ -59,10 +52,10 @@ public class DoubleArgument extends CommandArguement
     {
         if (optional)
         {
-            return '[' + this.desc + ']';
+            return '[' + this.getName() + ']';
         } else
         {
-            return '<' + this.desc + '>';
+            return '<' + this.getName() + '>';
         }
     }
 

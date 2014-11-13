@@ -21,38 +21,61 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.common;
+package com.voxelplugineering.voxelsniper.common.command;
 
-import java.lang.ref.WeakReference;
+import java.util.List;
 
-import com.voxelplugineering.voxelsniper.api.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.IBrushManager;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 
-public abstract class CommonPlayer<T> implements ISniper
+public abstract class CommandArgument
 {
-    WeakReference<T> playerReference;
-    IBrushManager personalBrushManager;
 
-    protected CommonPlayer(T player)
+    private final boolean required;
+    private final String name;
+    protected boolean isPresent;
+
+    protected CommandArgument(String name)
     {
-        this.playerReference = new WeakReference<T>(player);
-        //TODO: have player inherit brushes from group rather than the global brush manager always.
-        this.personalBrushManager = new CommonBrushManager(Gunsmith.getGlobalBrushManager());
+        this(name, false);
     }
+
+    protected CommandArgument(String name, boolean required)
+    {
+        this.required = required;
+        this.name = name;
+    }
+
+    public boolean isOptional()
+    {
+        return !this.required;
+    }
+
+    public boolean isPresent()
+    {
+        return this.isPresent;
+    }
+    
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public abstract String getUsageString(boolean optional);
+
+    public abstract int matches(ISniper user, String[] allArgs, int startPosition);
+
+    public abstract void parse(ISniper user, String[] allArgs, int startPosition);
 
     /**
-     * Warning, this may return null.
+     * This method is called instead of parse() when an optional CommandArgument
+     * is skipped (i.e. not matched).
      *
-     * @return The player reference if not null
+     * @param user The user executing this method
      */
-    public final T getPlayerReference()
-    {
-        return this.playerReference.get();
-    }
+    public abstract void skippedOptional(ISniper user);
 
-    public IBrushManager getPersonalBrushManager()
-    {
-        return this.personalBrushManager;
-    }
+    public abstract void clean();
+
+    public abstract List<String> tabComplete(ISniper user, String[] allArgs, int startPosition);
+
 }

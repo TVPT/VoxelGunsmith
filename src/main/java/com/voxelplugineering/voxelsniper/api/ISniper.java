@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
+import com.voxelplugineering.voxelsniper.common.CommonLocation;
+
 public interface ISniper
 {
 
@@ -33,5 +35,9 @@ public interface ISniper
     String getToolId(Object object);
 
     void sendMessage(String msg);
+    
+    IBrushManager getPersonalBrushManager();
+
+    CommonLocation getLocation();
 
 }

@@ -28,21 +28,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.voxelplugineering.voxelsniper.api.ISniper;
-import com.voxelplugineering.voxelsniper.common.command.CommandArguement;
+import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.voxelplugineering.voxelsniper.util.Utilities.findMatches;
 
-public class JavaEnumArgument<T extends Enum<T>> extends CommandArguement
+public class JavaEnumArgument<T extends Enum<T>> extends CommandArgument
 {
     private final T defaultValue;
     private final Class<T> clazz;
     private final List<String> names;
     private T choice = null;
 
-    public JavaEnumArgument(boolean required, Class<T> clazz, T defaultValue) throws Exception
+    public JavaEnumArgument(String name, boolean required, Class<T> clazz, T defaultValue) throws Exception
     {
-        super(required);
+        super(name, required);
         checkNotNull(clazz, "Cannot add a null Java Enum Class argument!");
         this.defaultValue = defaultValue;
 

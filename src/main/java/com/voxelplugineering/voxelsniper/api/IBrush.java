@@ -23,7 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
-public interface IBrush
-{
+import com.thevoxelbox.vsl.api.IRunnableGraph;
 
+public interface IBrush extends IRunnableGraph
+{
+    //adding to this requires first allowing modifying the compiler for NodeGraphs
 }

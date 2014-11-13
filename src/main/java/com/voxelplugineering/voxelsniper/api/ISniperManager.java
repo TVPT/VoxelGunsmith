@@ -25,8 +25,11 @@ package com.voxelplugineering.voxelsniper.api;
 
 public interface ISniperManager<T> extends IManager
 {
+
     ISniper getSniper(T player);
 
     Class<T> getPlayerClass();
+
+    ISniper getConsoleSniperProxy();
 
 }

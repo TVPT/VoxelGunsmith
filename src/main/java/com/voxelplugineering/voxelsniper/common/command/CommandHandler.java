@@ -35,22 +35,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class CommandHandler
 {
 
-    public static CommandHandler COMMAND_HANDLER = null;
-
-    private CommandHandler()
+    public CommandHandler()
     {
 
-    }
-
-    public static void create()
-    {
-        if (COMMAND_HANDLER != null) return;
-        COMMAND_HANDLER = new CommandHandler();
     }
 
     private Map<String, Command> commands = new HashMap<String, Command>();
 
-    private ICommandRegistrar registrar;
+    private ICommandRegistrar    registrar;
 
     public void setRegistrar(ICommandRegistrar r)
     {
@@ -71,9 +63,17 @@ public class CommandHandler
     {
         checkNotNull(player, "Cannot have a null sniper!");
         checkNotNull(command, "Cannot use a null command!");
-        if (!this.commands.containsKey(command)) return;
+        if (!this.commands.containsKey(command))
+        {
+            return;
+        }
         Command handler = this.commands.get(command);
         boolean success = handler.execute(player, args);
+
+        if (!success)
+        {
+            player.sendMessage(handler.getHelpMsg());
+        }
     }
 
     public void onCommand(ISniper player, String fullCommand)

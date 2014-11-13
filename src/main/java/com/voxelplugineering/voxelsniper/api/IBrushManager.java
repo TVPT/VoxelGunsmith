@@ -23,9 +23,21 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
+import com.thevoxelbox.vsl.classloader.ASMClassLoader;
+
 public interface IBrushManager extends IManager
 {
 
-    void registerBrush(String identifier, Class<? extends IBrush> clazz);
+    void loadBrush(String identifier, Class<? extends IBrush> clazz);
+
+    void loadBrush(String identifier);
+
+    void addLoader(IBrushLoader loader);
+
+    IBrush getNewBrushInstance(String identifier);
+
+    void setParent(IBrushManager parent);
+
+    ASMClassLoader getClassLoader();
 
 }

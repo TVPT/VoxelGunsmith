@@ -28,7 +28,7 @@ import java.io.Serializable;
 public class CommonVector implements Serializable, Cloneable
 {
     private static final long serialVersionUID = 2185038435585259289L;
-    double[] vec;
+    private final double[] vec;
 
     public CommonVector(double x, double y, double z)
     {

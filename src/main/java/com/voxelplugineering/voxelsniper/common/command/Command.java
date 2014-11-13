@@ -23,44 +23,52 @@
  */
 package com.voxelplugineering.voxelsniper.common.command;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.voxelplugineering.voxelsniper.api.ISniper;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.ObjectArrays.concat;
 
 public abstract class Command
 {
 
     String[] aliases;
-    private CommandArguement[] arguements;
+    private Map<String, CommandArgument> arguments;
     private final String name;
+    private String helpMsg = "No help is provided for this command.";
+    private boolean playerOnly = false;
 
     protected Command(final String name)
+    {
+        this(name, "No help is provided for this command.");
+    }
+
+    protected Command(final String name, final String help)
     {
         checkNotNull(name, "Cannot have a null name!");
         checkArgument(!name.isEmpty(), "Cannot have an empty name!");
         this.name = name;
+        this.helpMsg = help;
     }
 
-    protected void addArgument(CommandArguement arguement)
+    protected void addArgument(CommandArgument argument)
     {
-        checkNotNull(arguement, "Cannot add a null argument!");
-        if (this.arguements == null)
+        checkNotNull(argument, "Cannot add a null argument!");
+        if (this.arguments == null)
         {
-            this.arguements = new CommandArguement[]{arguement};
-            return;
+            this.arguments = new HashMap<String, CommandArgument>();
         }
-        concat(this.arguements, arguement);
+        this.arguments.put(argument.getName(), argument);
     }
 
-    public abstract boolean execute(ISniper sniper, Map<String, CommandArguement> args);
+    public abstract boolean execute(ISniper sniper, Map<String, CommandArgument> args);
 
     public boolean execute(ISniper sniper, String[] args)
     {
-        return execute(sniper, extractArguements(args));
+        return execute(sniper, extractArguements(sniper, args));
     }
 
     public String[] getAllAliases()
@@ -73,9 +81,35 @@ public abstract class Command
         this.aliases = aliases;
     }
 
-    private Map<String, CommandArguement> extractArguements(String[] args)
+    private Map<String, CommandArgument> extractArguements(ISniper sniper, String[] args)
     {
-        return null;
+        int i = 0;
+        for (String c : this.arguments.keySet())
+        {
+            CommandArgument ca = this.arguments.get(c);
+            ca.parse(sniper, args, i++);
+        }
+        return Collections.unmodifiableMap(this.arguments);
+    }
+
+    public String getHelpMsg()
+    {
+        return this.helpMsg;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }
+    
+    public boolean isPlayerOnly()
+    {
+        return this.playerOnly;
+    }
+    
+    public void setPlayerOnly(boolean playerOnly)
+    {
+        this.playerOnly = playerOnly;
     }
 
 }

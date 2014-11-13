@@ -37,7 +37,10 @@ public abstract class CommonWorldFactory
 
     public static CommonWorld getWorld(String name)
     {
-        if (WORLD_FACTORY == null) return null;
+        if (WORLD_FACTORY == null)
+        {
+            return null;
+        }
         return WORLD_FACTORY.getWorldRaw(name);
     }
 
