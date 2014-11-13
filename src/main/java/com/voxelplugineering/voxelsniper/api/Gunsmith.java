@@ -26,8 +26,11 @@ package com.voxelplugineering.voxelsniper.api;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.eventbus.EventBus;
+import com.voxelplugineering.voxelsniper.common.CommonMaterialFactory;
 import com.voxelplugineering.voxelsniper.common.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.common.event.CommonEventHandler;
+import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
+import com.voxelplugineering.voxelsniper.config.Configuration;
 
 public final class Gunsmith
 {
@@ -40,6 +43,9 @@ public final class Gunsmith
     private static CommonEventHandler defaultEventHandler = null;
     private static EventBus eventBus = null;
     private static ISniperManager<?> sniperManager = null;
+    private static IMaterialFactory<?> materialFactory = null;
+    private static IWorldFactory worldFactory = null;
+    private static IConfiguration configuration = null;
 
     private static boolean isPluginEnabled = false;
 
@@ -85,6 +91,20 @@ public final class Gunsmith
         Gunsmith.sniperManager = manager;
     }
 
+    public static void setMaterialFactory(IMaterialFactory<?> factory)
+    {
+        checkNotNull(factory, "Cannot set a null MaterialFactory!");
+        check();
+        Gunsmith.materialFactory = factory;
+    }
+
+    public static void setWorldFactory(IWorldFactory factory)
+    {
+        checkNotNull(factory, "Cannot set a null WorldFactory!");
+        check();
+        Gunsmith.worldFactory = factory;
+    }
+
     public static IVoxelSniper getVoxelSniper()
     {
         return plugin;
@@ -108,7 +128,7 @@ public final class Gunsmith
     /**
      * DO NOT STORE A NON-WEAK REFERENCE TO THIS!!!
      * 
-     * @return
+     * @return the global event bus
      */
     public static EventBus getEventBus()
     {
@@ -125,9 +145,24 @@ public final class Gunsmith
         return sniperManager;
     }
 
-    public CommonEventHandler getDefaultEventHandler()
+    public static CommonEventHandler getDefaultEventHandler()
     {
         return defaultEventHandler;
+    }
+    
+    public static IMaterialFactory<?> getMaterialFactory()
+    {
+        return materialFactory;
+    }
+    
+    public static IWorldFactory getWorldFactory()
+    {
+        return worldFactory;
+    }
+    
+    public static IConfiguration getConfiguration()
+    {
+        return configuration;
     }
 
     public static void beginInit()
@@ -138,12 +173,16 @@ public final class Gunsmith
         eventBus.register(defaultEventHandler);
         //default event handler is registered here so that if a plugin wishes it can unregister the
         //event handler and register its own in its place
+        
+        configuration = new Configuration();
+        configuration.registerContainer(new BaseConfiguration());
+        //configuration is also setup here so that any values can be overwritten from the specific impl
     }
 
     public static void finish()
     {
         check();
-        if (plugin == null || globalBrushManager == null || defaultBrushLoader == null || permissionProxy == null)
+        if (plugin == null || globalBrushManager == null || defaultBrushLoader == null || permissionProxy == null || materialFactory == null || worldFactory == null)
         {
             isPluginEnabled = false;
             throw new IllegalStateException("VoxelSniper was not properly setup while loading");
@@ -177,12 +216,15 @@ public final class Gunsmith
         eventBus = null;
         commandHandler = null;
         permissionProxy = null;
+        materialFactory = null;
+        worldFactory = null;
         if (sniperManager != null)
         {
             sniperManager.stop();
         }
         sniperManager = null;
     }
+
 }
 
 /*
