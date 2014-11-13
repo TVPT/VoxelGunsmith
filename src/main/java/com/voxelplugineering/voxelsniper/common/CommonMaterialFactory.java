@@ -23,29 +23,66 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
-import com.voxelplugineering.voxelsniper.api.ICommonMaterialFactory;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
 
-public class CommonMaterialFactory<T> implements ICommonMaterialFactory
+import java.util.HashMap;
+import java.util.Map;
+
+import com.voxelplugineering.voxelsniper.api.IMaterialFactory;
+
+public class CommonMaterialFactory<T> implements IMaterialFactory<T>
 {
 
+    private Map<String, CommonMaterial<T>> registry;
+    private CommonMaterial<T> air = null;
+    
     @Override
     public void init()
     {
-        // TODO Auto-generated method stub
-        
+        this.registry = new HashMap<String, CommonMaterial<T>>();
+        this.air = null;
     }
 
     @Override
     public void stop()
     {
-        // TODO Auto-generated method stub
         
     }
 
     @Override
     public void restart()
     {
-        // TODO Auto-generated method stub
+        stop();
+        init();
+    }
+
+    @Override
+    public CommonMaterial<T> getMaterial(String name)
+    {
+        checkArgument(name.length() != 0, "Name of material cannot be empty");
+        
+        return this.registry.get(name);
+    }
+
+    @Override
+    public CommonMaterial<T> getAirMaterial()
+    {
+        return air;
+    }
+
+    @Override
+    public void registerMaterial(String name, CommonMaterial<T> material)
+    {
+        checkNotNull(material, "Material being registered cannot be null");
+        checkArgument(name.length() != 0, "Name of material cannot be empty");
+        
+        this.registry.put(name, material);
+        
+        if(name.equalsIgnoreCase("air") || name.equalsIgnoreCase("empty"))
+        {
+            this.air = material;
+        }
         
     }
     

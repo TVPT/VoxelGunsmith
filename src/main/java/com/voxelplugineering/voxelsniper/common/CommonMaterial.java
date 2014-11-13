@@ -34,7 +34,7 @@ public abstract class CommonMaterial<T>
 
     private final T value;
 
-    protected CommonMaterial(T value)
+    public CommonMaterial(T value)
     {
         this.value = value;
     }
@@ -46,6 +46,15 @@ public abstract class CommonMaterial<T>
 
     @Override
     public abstract String toString();
-
-    public abstract CommonMaterial<T> getDefault();
+    
+    public abstract boolean isBlock();
+    
+    public abstract boolean hasGravity();
+    
+    public abstract boolean isSolid();
+    
+    public abstract boolean isTransparent();
+    
+    public abstract boolean isFlammable();
+    
 }
