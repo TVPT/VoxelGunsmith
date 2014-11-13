@@ -32,11 +32,11 @@ import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.NodeGraph;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.IBrushLoader;
-import com.voxelplugineering.voxelsniper.api.ISniper;
 
 public class CommonBrushLoader implements IBrushLoader
 {
 
+    @SuppressWarnings("unchecked")
     public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, byte[] serialized)
     {
         ByteArrayInputStream stream = new ByteArrayInputStream(serialized);

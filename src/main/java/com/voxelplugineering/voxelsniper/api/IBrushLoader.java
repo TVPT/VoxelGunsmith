@@ -36,11 +36,11 @@ public interface IBrushLoader
      * The format for the serialization is as follows:
      * 4-bytes format version
      * 4-bytes brush version
-     * {@link NodeGraph} serialized by java's {@link ObjectOutputStream}
+     * {@link com.thevoxelbox.vsl.node.NodeGraph} serialized by java's {@link ObjectOutputStream}
      * 
      * @param classLoader the class loader to use to load the compiled class.
      * @param serialized the serialized version of the brush.
-     * @return
+     * @return the compiled class
      */
     Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, byte[] serialized);
 
