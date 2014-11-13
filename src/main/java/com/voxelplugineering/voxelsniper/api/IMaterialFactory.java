@@ -21,28 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.common.factory;
+package com.voxelplugineering.voxelsniper.api;
 
-import com.voxelplugineering.voxelsniper.common.CommonWorld;
+import com.voxelplugineering.voxelsniper.common.CommonMaterial;
 
-
-public abstract class CommonWorldFactory
+public interface IMaterialFactory<T> extends IManager
 {
-    private static CommonWorldFactory WORLD_FACTORY = null;
-
-    public static void setFactory(CommonWorldFactory factory)
-    {
-        WORLD_FACTORY = factory;
-    }
-
-    public static CommonWorld getWorld(String name)
-    {
-        if (WORLD_FACTORY == null)
-        {
-            return null;
-        }
-        return WORLD_FACTORY.getWorldRaw(name);
-    }
-
-    protected abstract CommonWorld getWorldRaw(String name);
+    
+    CommonMaterial<T> getMaterial(String name);
+    
+    void registerMaterial(String name, CommonMaterial<T> material);
+    
+    CommonMaterial<T> getAirMaterial();
+    
 }
