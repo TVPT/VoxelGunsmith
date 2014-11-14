@@ -25,9 +25,15 @@ package com.voxelplugineering.voxelsniper.common.event;
 
 import com.voxelplugineering.voxelsniper.api.ISniper;
 
+/**
+ * The event for the creation of a new user in a multi-user environment.
+ */
 public class SniperCreateEvent
 {
 
+    /**
+     * The new sniper.
+     */
     private ISniper sniper;
 
     public SniperCreateEvent(ISniper s)
@@ -35,6 +41,11 @@ public class SniperCreateEvent
         this.sniper = s;
     }
 
+    /**
+     * Returns the new sniper.
+     * 
+     * @return the sniper
+     */
     public ISniper getSniper()
     {
         return this.sniper;

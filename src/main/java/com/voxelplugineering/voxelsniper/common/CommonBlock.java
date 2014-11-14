@@ -23,10 +23,19 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
+/**
+ * A combination location and material representation of a single voxel. The location is immutable.
+ */
 public class CommonBlock
 {
 
+    /**
+     * The location of this voxel.
+     */
     private final CommonLocation location;
+    /**
+     * The material of the voxel.
+     */
     private CommonMaterial<?> material;
 
     public CommonBlock(CommonLocation location, CommonMaterial<?> material)
@@ -35,20 +44,42 @@ public class CommonBlock
         this.material = material;
     }
 
+    /**
+     * Returns the location of this voxel.
+     * 
+     * @return the location
+     */
     public final CommonLocation getLocation()
     {
         return this.location;
     }
 
-    public final CommonMaterial<?> getMaterial()
+    /**
+     * Returns the material currently at the location of this voxel. Unless overridden by the specific implementation this material may be out of date
+     * to the underlying world.
+     * 
+     * @return the material
+     */
+    public CommonMaterial<?> getMaterial()
     {
         return this.material;
     }
 
+    /**
+     * Sets the material of the voxel at this location.
+     * 
+     * @param material
+     *            the new material
+     */
     public void setMaterial(CommonMaterial<?> material)
     {
         this.material = material;
         this.location.getWorld().setBlockAt(this.location, material);
+    }
+
+    protected void localSetMaterial(CommonMaterial<?> mat)
+    {
+        this.material = mat;
     }
 
 }

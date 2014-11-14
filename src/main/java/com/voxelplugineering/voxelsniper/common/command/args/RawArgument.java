@@ -31,12 +31,12 @@ import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
 public class RawArgument extends CommandArgument
 {
     private String[] args;
-    
+
     public RawArgument(final String name)
     {
         super(name);
     }
-    
+
     public String[] getValue()
     {
         return this.args;
@@ -63,7 +63,7 @@ public class RawArgument extends CommandArgument
     @Override
     public void skippedOptional(ISniper user)
     {
-        
+
     }
 
     @Override

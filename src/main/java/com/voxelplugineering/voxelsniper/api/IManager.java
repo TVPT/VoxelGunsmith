@@ -23,12 +23,25 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
+/**
+ * A manager is any handler which has state information and which may be started and stopped.
+ */
 public interface IManager
 {
 
+    /**
+     * Initializes the manager.
+     */
     void init();
 
+    /**
+     * Stops the manager.
+     */
     void stop();
 
+    /**
+     * Restarts the manager.
+     */
     void restart();
+
 }

@@ -29,7 +29,8 @@ public class NodeTest
 {
 
     @Test
-    public void testAddingOperatorNode() {
+    public void testAddingOperatorNode()
+    {
 
     }
 }

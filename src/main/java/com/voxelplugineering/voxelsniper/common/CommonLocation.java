@@ -23,14 +23,21 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
+/**
+ * Representation of a location within a world.
+ */
 public final class CommonLocation implements Cloneable
 {
+    /**
+     * The world that the location is within.
+     */
     private final CommonWorld world;
-    private final int x;
-    private final int y;
-    private final int z;
 
-    public CommonLocation(CommonWorld world, int x, int y, int z)
+    private final double x;
+    private final double y;
+    private final double z;
+
+    public CommonLocation(CommonWorld world, double x, double y, double z)
     {
         this.world = world;
         this.x = x;
@@ -38,31 +45,95 @@ public final class CommonLocation implements Cloneable
         this.z = z;
     }
 
+    /**
+     * Returns the world for the location.
+     * 
+     * @return the world
+     */
     public CommonWorld getWorld()
     {
         return this.world;
     }
 
-    public int getX()
+    /**
+     * The x-axis position within the world.
+     * 
+     * @return the X position.
+     */
+    public double getX()
     {
         return this.x;
     }
 
-    public int getY()
+    /**
+     * The y-axis position within the world.
+     * 
+     * @return the Y position.
+     */
+    public double getY()
     {
         return this.y;
     }
 
-    public int getZ()
+    /**
+     * The z-axis position within the world.
+     * 
+     * @return the Z position.
+     */
+    public double getZ()
     {
         return this.z;
     }
 
-    public CommonLocation add(int x, int y, int z)
+    /**
+     * Returns the x-axis position of this location rounded down to the nearest integer increment.
+     * 
+     * @return the integer position
+     */
+    public int getFlooredX()
+    {
+        return (int) Math.floor(this.x);
+    }
+
+    /**
+     * Returns the y-axis position of this location rounded down to the nearest integer increment.
+     * 
+     * @return the integer position
+     */
+    public int getFlooredY()
+    {
+        return (int) Math.floor(this.y);
+    }
+
+    /**
+     * Returns the z-axis position of this location rounded down to the nearest integer increment.
+     * 
+     * @return the integer position
+     */
+    public int getFlooredZ()
+    {
+        return (int) Math.floor(this.z);
+    }
+
+    /**
+     * Returns a new {@link CommonLocation} which represents this position offset by the given amounts.
+     * 
+     * @param x
+     *            the X offset
+     * @param y
+     *            the Y offset
+     * @param z
+     *            the Z offset
+     * @return the new {@link CommonLocation}
+     */
+    public CommonLocation add(double x, double y, double z)
     {
         return new CommonLocation(this.world, this.x + x, this.y + y, this.z + z);
     }
 
+    /**
+     * Returns a new {@link CommonLocation} representing the same location.
+     */
     @Override
     public CommonLocation clone()
     {

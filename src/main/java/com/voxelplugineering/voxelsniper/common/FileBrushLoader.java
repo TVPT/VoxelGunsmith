@@ -30,6 +30,9 @@ import java.io.FileInputStream;
 import com.thevoxelbox.vsl.classloader.ASMClassLoader;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 
+/**
+ * A brush loader to load brushes from the filesystem.
+ */
 public class FileBrushLoader extends CommonBrushLoader
 {
 
@@ -38,10 +41,14 @@ public class FileBrushLoader extends CommonBrushLoader
     /*
      * Brush File Format Outline (Version 1)
      * 
-     * 4 bytes - File format version number 4-bytes - Brush version number
+     * 4 bytes - File format version number
+     * 4-bytes - Brush version number
      * remaining - serialized IRunnableGraph
      */
 
+    /**
+     * The default directory to search for a brush.
+     */
     private File defaultDirectory;
 
     public FileBrushLoader(File defaultDir)
@@ -54,6 +61,15 @@ public class FileBrushLoader extends CommonBrushLoader
         return this.defaultDirectory;
     }
 
+    /**
+     * Loads the brush stored in the given file. The brush is loaded with the given ClassLoader.
+     * 
+     * @param classLoader
+     *            the classloader to load the brush with
+     * @param data
+     *            the file to load the brush from
+     * @return the brush
+     */
     public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, File data)
     {
         try
@@ -87,12 +103,27 @@ public class FileBrushLoader extends CommonBrushLoader
         }
     }
 
-    public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, String ident, File directory)
+    /**
+     * Loads the brush identified by the given name from the given directory. The brush is loaded in with the given ClassLoader. Assumes the file
+     * extension is not included. First attempts to load a .brush file with the given name. If that file is not found but a .vsl script with the same
+     * name exists the .vsl script is first converted to a .brush file.
+     * <p>
+     * TODO: add a boolean to ignore file extension and load as if it was a .brush file.
+     * 
+     * @param classLoader
+     *            the class loader to load the brush with
+     * @param name
+     *            the name of the brush to load
+     * @param directory
+     *            the directory to load the brush from
+     * @return the brush
+     */
+    public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, String name, File directory)
     {
-        File data = new File(directory, ident + ".brush");
+        File data = new File(directory, name + ".brush");
         if (!data.exists())
         {
-            File ser = new File(directory, ident + ".ser");
+            File ser = new File(directory, name + ".ser");
             if (ser.exists())
             {
                 boolean success = FileBrushLoader.convertVSLGraph(ser);
@@ -113,11 +144,25 @@ public class FileBrushLoader extends CommonBrushLoader
 
     }
 
+    /**
+     * Converts the given .vsl script to a .brush file.
+     * 
+     * @param serFile
+     *            the .vsl script to convert
+     * @return a success flag
+     */
     public static boolean convertVSLGraph(File serFile)
     {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * For future file format changes to support converting old file formats to the most recent file format.
+     * 
+     * @param old
+     *            the old file
+     * @return a success flag
+     */
     public static boolean convertToVersion(File old)
     {
         return false;

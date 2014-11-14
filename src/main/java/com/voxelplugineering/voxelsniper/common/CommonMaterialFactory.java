@@ -31,12 +31,24 @@ import java.util.Map;
 
 import com.voxelplugineering.voxelsniper.api.IMaterialFactory;
 
+/**
+ * A standard factory for creating static copies of {@link CommonMaterial} proxying materials in the underlying implementation.
+ * 
+ * @param <T>
+ *            the underlying material type
+ */
 public class CommonMaterialFactory<T> implements IMaterialFactory<T>
 {
 
+    /**
+     * The {@link CommonMaterial} instances.
+     */
     private Map<String, CommonMaterial<T>> registry;
+    /**
+     * A special case {@link CommonMaterial} representing air or empty space.
+     */
     private CommonMaterial<T> air = null;
-    
+
     @Override
     public void init()
     {
@@ -47,7 +59,7 @@ public class CommonMaterialFactory<T> implements IMaterialFactory<T>
     @Override
     public void stop()
     {
-        
+
     }
 
     @Override
@@ -61,7 +73,7 @@ public class CommonMaterialFactory<T> implements IMaterialFactory<T>
     public CommonMaterial<T> getMaterial(String name)
     {
         checkArgument(name.length() != 0, "Name of material cannot be empty");
-        
+
         return this.registry.get(name);
     }
 
@@ -76,14 +88,14 @@ public class CommonMaterialFactory<T> implements IMaterialFactory<T>
     {
         checkNotNull(material, "Material being registered cannot be null");
         checkArgument(name.length() != 0, "Name of material cannot be empty");
-        
+
         this.registry.put(name, material);
-        
-        if(name.equalsIgnoreCase("air") || name.equalsIgnoreCase("empty"))
+
+        if (name.equalsIgnoreCase("air") || name.equalsIgnoreCase("empty"))
         {
             this.air = material;
         }
-        
+
     }
-    
+
 }

@@ -28,6 +28,9 @@ import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
 import com.voxelplugineering.voxelsniper.common.CommonVector;
 
+/**
+ * An event handler for the default behavior for events.
+ */
 public class CommonEventHandler
 {
 

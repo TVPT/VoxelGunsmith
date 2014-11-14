@@ -29,9 +29,21 @@ import com.voxelplugineering.voxelsniper.api.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrushManager;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 
+/**
+ * A standard player class wrapping a user class from the underlying implementation.
+ * 
+ * @param <T>
+ *            the user class from the underlying implementation
+ */
 public abstract class CommonPlayer<T> implements ISniper
 {
+    /**
+     * A weak reference to the underlying player object.
+     */
     WeakReference<T> playerReference;
+    /**
+     * This users specific brush manager.
+     */
     IBrushManager personalBrushManager;
 
     protected CommonPlayer(T player)
@@ -42,9 +54,9 @@ public abstract class CommonPlayer<T> implements ISniper
     }
 
     /**
-     * Warning, this may return null.
+     * Returns the underlying player object.
      *
-     * @return The player reference if not null
+     * @return The player reference or null
      */
     public final T getPlayerReference()
     {

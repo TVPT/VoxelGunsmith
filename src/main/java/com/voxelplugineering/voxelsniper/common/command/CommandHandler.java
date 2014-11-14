@@ -32,6 +32,12 @@ import com.voxelplugineering.voxelsniper.api.ISniper;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * A handler for commands which handles registration of command handlers and commands. Also delegates commands to the handlers and registers commands
+ * with the underlying registrar.
+ * <p>
+ * TODO: correctly identify and handle commands with overlapping aliases.
+ */
 public class CommandHandler
 {
 
@@ -40,15 +46,32 @@ public class CommandHandler
 
     }
 
+    /**
+     * A Map of commands with their primary alias as the key.
+     */
     private Map<String, Command> commands = new HashMap<String, Command>();
+    /**
+     * The registrar of the underlying system for registering commands.
+     */
+    private ICommandRegistrar registrar;
 
-    private ICommandRegistrar    registrar;
-
-    public void setRegistrar(ICommandRegistrar r)
+    /**
+     * Sets the registrar for this handler.
+     * 
+     * @param registrar
+     *            the new registrar
+     */
+    public void setRegistrar(ICommandRegistrar registrar)
     {
-        this.registrar = r;
+        this.registrar = registrar;
     }
 
+    /**
+     * Registers a new command with this system. Will overwrite any aliases already registered.
+     * 
+     * @param cmd
+     *            the new command
+     */
     public void registerCommand(Command cmd)
     {
         checkNotNull(cmd, "Cannot register a null command!");
@@ -59,6 +82,16 @@ public class CommandHandler
         }
     }
 
+    /**
+     * Attempts to execute the given command.
+     * 
+     * @param player
+     *            the command sender
+     * @param command
+     *            the command
+     * @param args
+     *            the command's arguments
+     */
     public void onCommand(ISniper player, String command, String[] args)
     {
         checkNotNull(player, "Cannot have a null sniper!");
@@ -76,6 +109,14 @@ public class CommandHandler
         }
     }
 
+    /**
+     * Attempts to execute the given command.
+     * 
+     * @param player
+     *            the command sender
+     * @param fullCommand
+     *            the full command
+     */
     public void onCommand(ISniper player, String fullCommand)
     {
         checkNotNull(player, "Cannot have a null sniper!");

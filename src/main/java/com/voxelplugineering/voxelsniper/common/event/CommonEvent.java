@@ -23,6 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.common.event;
 
+/**
+ * The base event class.
+ */
 public class CommonEvent
 {
 

@@ -35,13 +35,28 @@ import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.IBrushLoader;
 import com.voxelplugineering.voxelsniper.api.IBrushManager;
 
+/**
+ * A standard brush manager.
+ */
 public class CommonBrushManager implements IBrushManager
 {
 
-    IBrushManager parent = null;
-    ASMClassLoader classLoader = null;
-    Map<String, Class<? extends IBrush>> brushes = new HashMap<String, Class<? extends IBrush>>();
-    List<IBrushLoader> loaders = new ArrayList<IBrushLoader>();
+    /**
+     * The parent brush manager, referenced by the brush getter if it cannot be found within this brush manager.
+     */
+    private IBrushManager parent = null;
+    /**
+     * The classloader to be used by loaders associated with this manager.
+     */
+    private ASMClassLoader classLoader = null;
+    /**
+     * A map of brushes loaded in this manager.
+     */
+    private Map<String, Class<? extends IBrush>> brushes = new HashMap<String, Class<? extends IBrush>>();
+    /**
+     * An ordered list of loaders used to load brushes by name.
+     */
+    private List<IBrushLoader> loaders = new ArrayList<IBrushLoader>();
 
     public CommonBrushManager()
     {

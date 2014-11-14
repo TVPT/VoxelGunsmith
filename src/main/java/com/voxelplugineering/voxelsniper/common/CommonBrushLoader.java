@@ -33,10 +33,12 @@ import com.thevoxelbox.vsl.node.NodeGraph;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.IBrushLoader;
 
-public class CommonBrushLoader implements IBrushLoader
+/**
+ * An abstract standard brush loader.
+ */
+public abstract class CommonBrushLoader implements IBrushLoader
 {
 
-    @SuppressWarnings("unchecked")
     public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, byte[] serialized)
     {
         ByteArrayInputStream stream = new ByteArrayInputStream(serialized);
@@ -44,6 +46,7 @@ public class CommonBrushLoader implements IBrushLoader
         {
             ObjectInputStream ois = new ObjectInputStream(stream);
             NodeGraph brush = (NodeGraph) ois.readObject();
+            @SuppressWarnings("unchecked")
             Class<? extends IBrush> compiled = (Class<? extends IBrush>) brush.compile(classLoader);
             return compiled;
         } catch (IOException e)
@@ -63,11 +66,6 @@ public class CommonBrushLoader implements IBrushLoader
             e.printStackTrace();
             return null;
         }
-    }
-
-    public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, String identifier)
-    {
-        throw new UnsupportedOperationException("Brush loading by identifier only is not supported by the base BrushLoader");
     }
 
 }

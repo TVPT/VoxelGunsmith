@@ -27,11 +27,22 @@ import java.util.List;
 
 import com.voxelplugineering.voxelsniper.api.ISniper;
 
+/**
+ * A command argument handling validation of arguments passed to commands.
+ */
 public abstract class CommandArgument
 {
-
+    /**
+     * Whether this argument is required.
+     */
     private final boolean required;
+    /**
+     * The name of this argument. Used to reference this in the command executor.
+     */
     private final String name;
+    /**
+     * Whether the argument was present in the last parse.
+     */
     protected boolean isPresent;
 
     protected CommandArgument(String name)
@@ -45,37 +56,94 @@ public abstract class CommandArgument
         this.name = name;
     }
 
+    /**
+     * Returns if this argument is optional.
+     * 
+     * @return is optional
+     */
     public boolean isOptional()
     {
         return !this.required;
     }
 
+    /**
+     * Whether this argument was present.
+     * 
+     * @return is present
+     */
     public boolean isPresent()
     {
         return this.isPresent;
     }
-    
+
+    /**
+     * The name of this argument.
+     * 
+     * @return the name
+     */
     public String getName()
     {
         return this.name;
     }
 
+    /**
+     * Returns the sub-part of the usage string representing this argument.
+     * 
+     * @param optional
+     *            whether this argument is optional
+     * @return the part of the usage string
+     */
     public abstract String getUsageString(boolean optional);
 
+    /**
+     * Attempts to match the argument in the argument array at the startPosition to this arguments parameters.
+     * 
+     * @param user
+     *            the command sender
+     * @param allArgs
+     *            the argument array
+     * @param startPosition
+     *            the current position of the argument validation
+     * @return the match result
+     */
     public abstract int matches(ISniper user, String[] allArgs, int startPosition);
 
+    /**
+     * Parses the args array at the startPosition for this argument and stores it. Sets the flag if the argument is present.
+     * 
+     * @param user
+     *            the command sender
+     * @param allArgs
+     *            the args array
+     * @param startPosition
+     *            the current position of the argument validation
+     */
     public abstract void parse(ISniper user, String[] allArgs, int startPosition);
 
     /**
-     * This method is called instead of parse() when an optional CommandArgument
-     * is skipped (i.e. not matched).
+     * This method is called instead of parse() when an optional CommandArgument is skipped (i.e. not matched).
      *
-     * @param user The user executing this method
+     * @param user
+     *            The user executing this method
      */
     public abstract void skippedOptional(ISniper user);
 
+    /**
+     * Resets the state of the CommandArgument ready for another execution cycle.
+     */
     public abstract void clean();
 
+    /**
+     * Returns a {@link List} of possible values based on the current value of this argument.
+     * 
+     * @param user
+     *            the command sender
+     * @param allArgs
+     *            the args array
+     * @param startPosition
+     *            the current position of the argument validation
+     * @return a list of possible values
+     */
     public abstract List<String> tabComplete(ISniper user, String[] allArgs, int startPosition);
 
 }

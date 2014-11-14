@@ -23,12 +23,24 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
+/**
+ * The specific implementation core class, provides direct access to the specific implementation's version of Gunsmith's interfaces.
+ */
 public interface IVoxelSniper
 {
-    ISniperManager<?> getSniperManager();
 
+    /**
+     * Returns the specific implementation's sniper manager.
+     * 
+     * @return the sniper manager
+     */
+    ISniperFactory<?> getSniperManager();
+
+    /**
+     * Returns the specific implementation's brush manager.
+     * 
+     * @return the brush manager
+     */
     IBrushManager getBrushManager();
-
-    boolean isEnabled();
 
 }

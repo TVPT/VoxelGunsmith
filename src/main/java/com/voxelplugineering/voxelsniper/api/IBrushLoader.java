@@ -27,23 +27,33 @@ import java.io.ObjectOutputStream;
 
 import com.thevoxelbox.vsl.classloader.ASMClassLoader;
 
+/**
+ * Handles the loading of compiled or non-compiled {@link IBrush}s from various sources.
+ */
 public interface IBrushLoader
 {
 
     /**
-     * Loads a brush specified by the given byte array. The Class is loaded by the given class loader.
+     * Loads a brush specified by the given byte array. The Class is loaded by the given class loader. The format for the serialization is as follows:
+     * 4-bytes format version 4-bytes brush version {@link com.thevoxelbox.vsl.node.NodeGraph} serialized by java's {@link ObjectOutputStream}
      * 
-     * The format for the serialization is as follows:
-     * 4-bytes format version
-     * 4-bytes brush version
-     * {@link com.thevoxelbox.vsl.node.NodeGraph} serialized by java's {@link ObjectOutputStream}
-     * 
-     * @param classLoader the class loader to use to load the compiled class.
-     * @param serialized the serialized version of the brush.
+     * @param classLoader
+     *            the class loader to use to load the compiled class
+     * @param serialized
+     *            the serialized version of the brush
      * @return the compiled class
      */
     Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, byte[] serialized);
 
+    /**
+     * Loads the specified brush from the default source for this brush loader. The class is loaded by the given class loader.
+     * 
+     * @param classLoader
+     *            the classloader to use to load the compiled class
+     * @param identifier
+     *            the identifier of the brush to search the default source for
+     * @return the compiled class
+     */
     Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, String identifier);
 
 }

@@ -32,6 +32,9 @@ package com.voxelplugineering.voxelsniper.common;
 public abstract class CommonMaterial<T>
 {
 
+    /**
+     * The underlying material class.
+     */
     private final T value;
 
     public CommonMaterial(T value)
@@ -39,22 +42,52 @@ public abstract class CommonMaterial<T>
         this.value = value;
     }
 
+    /**
+     * Returns the underlying material object.
+     * 
+     * @return the material
+     */
     public final T getValue()
     {
         return this.value;
     }
 
+    /**
+     * Returns the name of the material.
+     * 
+     * @return the name
+     */
     @Override
     public abstract String toString();
-    
+
+    /**
+     * Returns whether the material is representing a voxel which mat be placed within the world.
+     * 
+     * @return is a placeable block
+     */
     public abstract boolean isBlock();
-    
+
+    /**
+     * Returns whether the material is affected by gravity within the world.
+     * 
+     * @return is affected by gravity
+     */
     public abstract boolean hasGravity();
-    
+
+    /**
+     * Returns if the material is solid (eg. whether a user could pass through the material unhindered).
+     * 
+     * @return is a solid block
+     */
     public abstract boolean isSolid();
-    
+
+    /**
+     * Returns if the material supports transparency.
+     * 
+     * @return does support transparency
+     */
     public abstract boolean isTransparent();
-    
-    public abstract boolean isFlammable();
-    
+
+    public abstract boolean isFlammable(); //Do we even need this, only really has use within minecraft
+
 }

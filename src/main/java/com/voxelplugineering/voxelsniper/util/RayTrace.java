@@ -33,26 +33,77 @@ import com.voxelplugineering.voxelsniper.common.CommonLocation;
 import com.voxelplugineering.voxelsniper.common.CommonMaterial;
 import com.voxelplugineering.voxelsniper.common.CommonWorld;
 
+/**
+ * A utility for performing a ray trace within a world.
+ */
 public class RayTrace
 {
-    
+
+    /**
+     * The starting point from which the ray is cast.
+     */
     private CommonLocation origin;
+    /**
+     * The world within the trace is being performed.
+     */
     private CommonWorld world;
-    
+
+    /**
+     * A set of materials which are treated as non-solid to the ray (eg. the ray passes through them without stopping)
+     */
     private Set<CommonMaterial<?>> traversalBlocks = new HashSet<CommonMaterial<?>>();
-    
+
+    /**
+     * The block targeted by the last trace.
+     */
     private CommonBlock targetBlock = null;
+    /**
+     * The last block targeted before the end of the trace.
+     */
     private CommonBlock lastBlock = null;
-    
-    private double length, range, hLength;
-    private int minWorldY, maxWorldY;
-    private double yaw, pitch;
-    private double currentX, currentY, currentZ;
-    private int targetX, targetY, targetZ;
-    private int lastX, lastY, lastZ;
-    private double rotX, rotY, rotXSin, rotXCos, rotYSin, rotYCos;
+
+    /*
+     * Values used internally for the calculation of the ray trace.
+     * 
+     * length:        the length of the ray
+     * range:         the maximum length of the ray before stopping
+     * hLength:       the vertical length of the ray
+     * minWorldY:     the minimum y value of the world
+     * maxWorldY:     the maximum y value of the world
+     * yaw:           the yaw of the direction of the ray
+     * pitch:         the pitch of the direction of the ray
+     * currentX|Y|Z:  the current position of the ray, relative to the origin
+     * targetX|Y|Z:   the position of the target block
+     * lastX|Y|Z:     the position of the last block
+     * rotX|Y:        the yaw and pitch of the ray shifted to the same context as the world, as well as the sine and cosine of each
+     * step:          the increment amount of the step of the ray trace
+     * 
+     */
+
+    private double length;
+    private double range;
+    private double verticalLength;
+    private int minWorldY;
+    private int maxWorldY;
+    private double yaw;
+    private double pitch;
+    private double currentX;
+    private double currentY;
+    private double currentZ;
+    private int targetX;
+    private int targetY;
+    private int targetZ;
+    private int lastX;
+    private int lastY;
+    private int lastZ;
+    private double rotX;
+    private double rotY;
+    private double rotXSin;
+    private double rotXCos;
+    private double rotYSin;
+    private double rotYCos;
     private double step;
-    
+
     public RayTrace(CommonLocation origin, double yaw, double pitch)
     {
         this.origin = origin;
@@ -65,69 +116,119 @@ public class RayTrace
         this.traversalBlocks.add(Gunsmith.getMaterialFactory().getAirMaterial());
         this.world = this.origin.getWorld();
     }
-    
+
+    /**
+     * Returns the origin of the ray trace.
+     * 
+     * @return the origin
+     */
     public CommonLocation getOrigin()
     {
         return this.origin;
     }
-    
+
+    /**
+     * The yaw of the direction of the ray in degrees.
+     * 
+     * @return the yaw
+     */
     public double getYaw()
     {
         return this.yaw;
     }
-    
+
+    /**
+     * The pitch of the direction of the ray, in degrees.
+     * 
+     * @return the pitch
+     */
     public double getPitch()
     {
         return this.pitch;
     }
-    
+
+    /**
+     * the maximum range of the ray.
+     * 
+     * @return the range
+     */
     public double getRange()
     {
         return this.range;
     }
-    
-    public void setRange(double r)
+
+    /**
+     * Sets the maximum range of the ray.
+     * 
+     * @param range
+     *            the new range
+     */
+    public void setRange(double range)
     {
-        this.range = r;
+        this.range = range;
     }
-    
+
+    /**
+     * Sets the blocks that may be traversed by the ray.
+     * 
+     * @param blocks
+     *            the traversal blocks
+     */
     public void setTraversalBlocks(CommonMaterial<?>... blocks)
     {
         this.traversalBlocks.clear();
-        for(CommonMaterial<?> b: blocks)
+        for (CommonMaterial<?> b : blocks)
         {
             this.traversalBlocks.add(b);
         }
     }
-    
+
+    /**
+     * Returns the blocks that will be traversed by this ray as if non-solid.
+     * 
+     * @return the blocks that may be traversed
+     */
     public Set<CommonMaterial<?>> getTraversalBlocks()
     {
         return Collections.unmodifiableSet(this.traversalBlocks);
     }
-    
+
+    /**
+     * Returns the target block of this ray.
+     * 
+     * @return the target block
+     */
     public CommonBlock getTargetBlock()
     {
-        if(this.length > this.range || targetBlock.getLocation().getY() < this.minWorldY || targetBlock.getLocation().getY() > this.maxWorldY)
+        if (this.length > this.range || targetBlock.getLocation().getY() < this.minWorldY || targetBlock.getLocation().getY() > this.maxWorldY)
         {
             return getLastBlock();
         }
         return this.targetBlock;
     }
-    
+
+    /**
+     * Returns the last block targeted before the current target block.
+     * 
+     * @return the last block
+     */
     public CommonBlock getLastBlock()
     {
-        if(this.length > this.range || lastBlock.getLocation().getY() < this.minWorldY || lastBlock.getLocation().getY() > this.maxWorldY)
+        if (this.length > this.range || lastBlock.getLocation().getY() < this.minWorldY || lastBlock.getLocation().getY() > this.maxWorldY)
         {
             return null;
         }
         return this.lastBlock;
     }
-    
+
+    /**
+     * Initializes the ray for a new trace.
+     */
     private void init()
     {
         this.length = 0;
         this.currentX = this.origin.getX();
-        this.currentY = this.origin.getY()+((Double) Gunsmith.getConfiguration().get("PLAYER_EYE_HEIGHT"));
+        this.currentY = this.origin.getY() + ((Double) Gunsmith.getConfiguration().get("PLAYER_EYE_HEIGHT"));
         this.currentZ = this.origin.getZ();
         this.targetX = (int) Math.floor(this.currentX);
         this.targetY = (int) Math.floor(this.currentY);
@@ -136,6 +237,8 @@ public class RayTrace
         this.lastY = (int) Math.floor(this.currentY);
         this.lastZ = (int) Math.floor(this.currentZ);
 
+        // I think this is to do with the axis orientation of minecraft, not sure how to handle this in a context separated from the implementation.
+        // Possibly something attached to the world to detail the different orientations of the axis and which directions they represent.
         this.rotX = (this.yaw + 90) % 360;
         this.rotY = this.pitch * -1;
         this.rotYCos = Math.cos(Math.toRadians(this.rotY));
@@ -143,57 +246,64 @@ public class RayTrace
         this.rotXCos = Math.cos(Math.toRadians(this.rotX));
         this.rotXSin = Math.sin(Math.toRadians(this.rotX));
     }
-    
+
+    /**
+     * Perform a new ray trace.
+     */
     public void trace()
     {
         init();
         checkOutOfWorld();
-        if(this.length <= this.range)
+        if (this.length <= this.range)
         {
             step();
         }
     }
-    
+
+    /**
+     * Perform a single step of the trace.
+     */
     private void step()
     {
         this.lastX = this.targetX;
         this.lastY = this.targetY;
         this.lastZ = this.targetZ;
-        
+
         do
         {
             this.length += this.step;
 
-            this.hLength = (this.length * this.rotYCos);
+            this.verticalLength = (this.length * this.rotYCos);
             this.currentX = (this.length * this.rotYSin);
-            this.currentY = (this.hLength * this.rotXCos);
-            this.currentZ = (this.hLength * this.rotXSin);
+            this.currentY = (this.verticalLength * this.rotXCos);
+            this.currentZ = (this.verticalLength * this.rotXSin);
 
             this.targetX = (int) Math.floor(this.currentX + this.origin.getX());
             this.targetY = (int) Math.floor(this.currentY + this.origin.getY());
             this.targetZ = (int) Math.floor(this.currentZ + this.origin.getZ());
 
-        }
-        while ((this.length <= this.range) && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
-        
-        if(!this.traversalBlocks.contains(world.getBlockAt(this.targetX, this.targetY, this.targetZ).getMaterial()))
+        } while ((this.length <= this.range) && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
+
+        if (!this.traversalBlocks.contains(world.getBlockAt(this.targetX, this.targetY, this.targetZ).getMaterial()))
         {
             return;
         }
-        
+
         if (this.length > this.range || this.targetY > this.maxWorldY || this.targetY < this.minWorldY)
         {
             this.targetX = this.lastX;
             this.targetY = this.lastY;
             this.targetZ = this.lastZ;
             return;
-        }
-        else
+        } else
         {
             step();
         }
     }
-    
+
+    /**
+     * Step forward until the ray is within the bounds of the world.
+     */
     private void checkOutOfWorld()
     {
         if (this.targetY > this.maxWorldY)
@@ -208,20 +318,19 @@ public class RayTrace
                 {
                     this.length += this.step;
 
-                    this.hLength = (this.length * this.rotYCos);
+                    this.verticalLength = (this.length * this.rotYCos);
                     this.currentX = (this.length * this.rotYSin);
-                    this.currentY = (this.hLength * this.rotXCos);
-                    this.currentZ = (this.hLength * this.rotXSin);
+                    this.currentY = (this.verticalLength * this.rotXCos);
+                    this.currentZ = (this.verticalLength * this.rotXSin);
 
                     this.targetX = (int) Math.floor(this.currentX + this.origin.getX());
                     this.targetY = (int) Math.floor(this.currentY + this.origin.getY());
                     this.targetZ = (int) Math.floor(this.currentZ + this.origin.getZ());
 
-                }
-                while ((this.length <= this.range) && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
+                } while ((this.length <= this.range)
+                        && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
             }
-        }
-        else if (this.targetY < 0)
+        } else if (this.targetY < 0)
         {
             while (this.targetY < 0 && this.length <= this.range)
             {
@@ -233,17 +342,17 @@ public class RayTrace
                 {
                     this.length += this.step;
 
-                    this.hLength = (this.length * this.rotYCos);
+                    this.verticalLength = (this.length * this.rotYCos);
                     this.currentX = (this.length * this.rotYSin);
-                    this.currentY = (this.hLength * this.rotXCos);
-                    this.currentZ = (this.hLength * this.rotXSin);
+                    this.currentY = (this.verticalLength * this.rotXCos);
+                    this.currentZ = (this.verticalLength * this.rotXSin);
 
                     this.targetX = (int) Math.floor(this.currentX + this.origin.getX());
                     this.targetY = (int) Math.floor(this.currentY + this.origin.getY());
                     this.targetZ = (int) Math.floor(this.currentZ + this.origin.getZ());
 
-                }
-                while ((this.length <= this.range) && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
+                } while ((this.length <= this.range)
+                        && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
             }
         }
     }

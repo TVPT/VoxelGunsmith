@@ -26,6 +26,9 @@ package com.voxelplugineering.voxelsniper.common.event;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.CommonVector;
 
+/**
+ * The event for a sniper action.
+ */
 public class SnipeEvent extends CommonEvent
 {
     private ISniper sniper;
@@ -37,11 +40,21 @@ public class SnipeEvent extends CommonEvent
         this.direction = dir;
     }
 
+    /**
+     * Returns the player who sent this snipe.
+     * 
+     * @return the player
+     */
     public ISniper getSniper()
     {
         return this.sniper;
     }
 
+    /**
+     * The direction in which the player was looking.
+     * 
+     * @return the direction
+     */
     public CommonVector getDirection()
     {
         return this.direction;

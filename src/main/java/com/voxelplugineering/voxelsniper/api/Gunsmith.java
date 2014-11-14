@@ -26,27 +26,68 @@ package com.voxelplugineering.voxelsniper.api;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.eventbus.EventBus;
-import com.voxelplugineering.voxelsniper.common.CommonMaterialFactory;
 import com.voxelplugineering.voxelsniper.common.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.common.event.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
 import com.voxelplugineering.voxelsniper.config.Configuration;
 
+/**
+ * The Core of VoxelGunsmith, provides access to handlers and validates initialization is done completely and correctly.
+ */
 public final class Gunsmith
 {
 
+    /**
+     * The core of the specific implementation.
+     */
     private static IVoxelSniper plugin = null;
+    /**
+     * A proxy for the specific implementations permissions system.
+     */
     private static IPermissionProxy permissionProxy = null;
+    /**
+     * The global brush manager, manages the loading and registration of brushes which are available to all users of a multi-user environment. In a
+     * single-user environment this would be the core brush manager for the user.
+     */
     private static IBrushManager globalBrushManager = null;
+    /**
+     * The default brush loader. The default source from which brushes are loaded, typically this is the brush loader used by the global brush
+     * manager.
+     */
     private static IBrushLoader defaultBrushLoader = null;
+    /**
+     * The command handler, manages the registration of both commands and handlers, and distributes invocations of the commands to its registered
+     * handlers. Also handles automatic command argument validation.
+     */
     private static CommandHandler commandHandler = null;
+    /**
+     * The handler for the default behavior for events.
+     */
     private static CommonEventHandler defaultEventHandler = null;
+    /**
+     * The internal event bus for events within Gunsmith.
+     */
     private static EventBus eventBus = null;
-    private static ISniperManager<?> sniperManager = null;
+    /**
+     * The user handler for multi-user environments. Handles the creation of Gunsmith user instances ({@link ISniper}).
+     */
+    private static ISniperFactory<?> sniperManager = null;
+    /**
+     * The factory for creating Gunsmith proxies of the materials available in the specific implementation.
+     */
     private static IMaterialFactory<?> materialFactory = null;
+    /**
+     * The factory for creating Gunsmith proxies of worlds (a world being an individual scene).
+     */
     private static IWorldFactory worldFactory = null;
+    /**
+     * The global configuration container for Gunsmith.
+     */
     private static IConfiguration configuration = null;
 
+    /**
+     * The initialization state of Gunsmith.
+     */
     private static boolean isPluginEnabled = false;
 
     public static void setPlugin(IVoxelSniper sniper)
@@ -84,7 +125,7 @@ public final class Gunsmith
         Gunsmith.commandHandler = command;
     }
 
-    public static void setSniperManager(ISniperManager<?> manager)
+    public static void setSniperManager(ISniperFactory<?> manager)
     {
         checkNotNull(manager, "Cannot set a null SniperManager!");
         check();
@@ -125,11 +166,6 @@ public final class Gunsmith
         return globalBrushManager;
     }
 
-    /**
-     * DO NOT STORE A NON-WEAK REFERENCE TO THIS!!!
-     * 
-     * @return the global event bus
-     */
     public static EventBus getEventBus()
     {
         return eventBus;
@@ -140,7 +176,7 @@ public final class Gunsmith
         return commandHandler;
     }
 
-    public static ISniperManager<?> getSniperManager()
+    public static ISniperFactory<?> getSniperManager()
     {
         return sniperManager;
     }
@@ -149,22 +185,26 @@ public final class Gunsmith
     {
         return defaultEventHandler;
     }
-    
+
     public static IMaterialFactory<?> getMaterialFactory()
     {
         return materialFactory;
     }
-    
+
     public static IWorldFactory getWorldFactory()
     {
         return worldFactory;
     }
-    
+
     public static IConfiguration getConfiguration()
     {
         return configuration;
     }
 
+    /**
+     * Should be called at the start of the initialization process. Sets up default states before the specific implementation registeres its
+     * overrides.
+     */
     public static void beginInit()
     {
         check();
@@ -173,16 +213,20 @@ public final class Gunsmith
         eventBus.register(defaultEventHandler);
         //default event handler is registered here so that if a plugin wishes it can unregister the
         //event handler and register its own in its place
-        
+
         configuration = new Configuration();
         configuration.registerContainer(new BaseConfiguration());
         //configuration is also setup here so that any values can be overwritten from the specific impl
     }
 
+    /**
+     * Finalize the initialization process. Contains validations to ensure that the initialization was completed correctly and completely.
+     */
     public static void finish()
     {
         check();
-        if (plugin == null || globalBrushManager == null || defaultBrushLoader == null || permissionProxy == null || materialFactory == null || worldFactory == null)
+        if (plugin == null || globalBrushManager == null || defaultBrushLoader == null || permissionProxy == null || materialFactory == null
+                || worldFactory == null)
         {
             isPluginEnabled = false;
             throw new IllegalStateException("VoxelSniper was not properly setup while loading");
@@ -190,6 +234,9 @@ public final class Gunsmith
         isPluginEnabled = true;
     }
 
+    /**
+     * Checks that Gunsmith is still in the initialization phase.
+     */
     private static void check()
     {
         if (isPluginEnabled)
@@ -198,6 +245,9 @@ public final class Gunsmith
         }
     }
 
+    /**
+     * Stops gunsmith and dereferences all handlers and managers.
+     */
     public static void stop()
     {
         if (!isPluginEnabled)

@@ -25,19 +25,43 @@ package com.voxelplugineering.voxelsniper.api;
 
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
 
+/**
+ * Representation of a user within Gunsmith. Holds all state information relevant to the user.
+ */
 public interface ISniper
 {
 
+    /**
+     * Returns the name of the user.
+     * 
+     * @return the user's name
+     */
     String getName();
 
     String getCurrentToolId();
 
     String getToolId(Object object);
 
+    /**
+     * Sends a message to the user.
+     * 
+     * @param msg
+     *            the message to send
+     */
     void sendMessage(String msg);
-    
+
+    /**
+     * Returns the brush manager specific to this user.
+     * 
+     * @return the sniper's brush manager
+     */
     IBrushManager getPersonalBrushManager();
 
+    /**
+     * Returns the location of the user.
+     * 
+     * @return the location
+     */
     CommonLocation getLocation();
 
 }

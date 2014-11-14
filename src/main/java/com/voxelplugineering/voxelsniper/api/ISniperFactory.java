@@ -21,32 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes;
-
-import org.objectweb.asm.MethodVisitor;
-
-import com.thevoxelbox.vsl.IOType;
-import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.ExecutableNode;
+package com.voxelplugineering.voxelsniper.api;
 
 /**
- * A visual scripting node to set the voxel at a location to the material.
+ * A factory for creating instances of {@link ISniper} from the specific implementation's user class.
+ * 
+ * @param <T>
+ *            the underlying Player class
  */
-public class MaterialSetNode extends ExecutableNode
+public interface ISniperFactory<T> extends IManager
 {
 
-    public MaterialSetNode()
-    {
-        super("MaterialSet", "world");
-        addInput("Material", IOType.WILD, true, null);
-        addInput("Location", IOType.WILD, true, null);
-    }
+    /**
+     * Returns the {@link ISniper} wrapping the given specific implementation's user.
+     * 
+     * @param user
+     *            the user object from the specific implementation
+     * @return the {@link ISniper} for the user
+     */
+    ISniper getSniper(T user);
 
-    @Override
-    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
-    {
-        //world.getBlock(location).setMaterial(material);
-        return 0;
-    }
+    /**
+     * The user class of the specific implementation.
+     * 
+     * @return the user class
+     */
+    Class<T> getPlayerClass();
+
+    /**
+     * Returns a special case {@link ISniper} for the console of the dedicated server. Has no brush context but can recieve messages.
+     * 
+     * @return An {@link ISniper} representing the console
+     */
+    ISniper getConsoleSniperProxy();
 
 }

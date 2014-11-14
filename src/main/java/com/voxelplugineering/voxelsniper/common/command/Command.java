@@ -32,13 +32,31 @@ import java.util.Map;
 
 import com.voxelplugineering.voxelsniper.api.ISniper;
 
+/**
+ * A abstract representation of a command.
+ */
 public abstract class Command
 {
 
+    /**
+     * Aliases for this command.
+     */
     String[] aliases;
+    /**
+     * A map of arguments for this command.
+     */
     private Map<String, CommandArgument> arguments;
+    /**
+     * The name of this command, the primary command alias.
+     */
     private final String name;
+    /**
+     * A help message for this command.
+     */
     private String helpMsg = "No help is provided for this command.";
+    /**
+     * If this command is player only or usable by the console as well.
+     */
     private boolean playerOnly = false;
 
     protected Command(final String name)
@@ -54,6 +72,12 @@ public abstract class Command
         this.helpMsg = help;
     }
 
+    /**
+     * Adds a argument for this command.
+     * 
+     * @param argument
+     *            the new argument
+     */
     protected void addArgument(CommandArgument argument)
     {
         checkNotNull(argument, "Cannot add a null argument!");
@@ -64,23 +88,61 @@ public abstract class Command
         this.arguments.put(argument.getName(), argument);
     }
 
+    /**
+     * Executes this command with the given sniper as the source for the command.
+     * 
+     * @param sniper
+     *            the command source
+     * @param args
+     *            the arguments for the command
+     * @return a success flag
+     */
     public abstract boolean execute(ISniper sniper, Map<String, CommandArgument> args);
 
+    /**
+     * Extracts and validates the arguments for the command and passes it to the specific executor.
+     * 
+     * @param sniper
+     *            the command source
+     * @param args
+     *            the raw command arguments
+     * @return a success flag
+     */
     public boolean execute(ISniper sniper, String[] args)
     {
         return execute(sniper, extractArguements(sniper, args));
     }
 
+    /**
+     * Returns the aliases for this command (not including the primary alias).
+     * 
+     * @return the aliases
+     */
     public String[] getAllAliases()
     {
         return this.aliases;
     }
 
+    /**
+     * Sets the aliases for this command.
+     * 
+     * @param aliases
+     *            the new aliases
+     */
     protected void setAliases(String... aliases)
     {
         this.aliases = aliases;
     }
 
+    /**
+     * Extracts and validates the command arguments from the given raw arguments. The returned {@link Map} is unmodifiable.
+     * 
+     * @param sniper
+     *            the command source
+     * @param args
+     *            the raw arguments
+     * @return the extracted arguments
+     */
     private Map<String, CommandArgument> extractArguements(ISniper sniper, String[] args)
     {
         int i = 0;
@@ -92,22 +154,43 @@ public abstract class Command
         return Collections.unmodifiableMap(this.arguments);
     }
 
+    /**
+     * Returns the help message.
+     * 
+     * @return the help message
+     */
     public String getHelpMsg()
     {
         return this.helpMsg;
     }
 
+    /**
+     * Returns the name or primary alias of the command.
+     * 
+     * @return the name
+     */
     public String getName()
     {
         return this.name;
     }
-    
+
+    /**
+     * Returns whether the command is player only.
+     * 
+     * @return is player only
+     */
     public boolean isPlayerOnly()
     {
         return this.playerOnly;
     }
-    
-    public void setPlayerOnly(boolean playerOnly)
+
+    /**
+     * Sets whether the command is player only.
+     * 
+     * @param playerOnly
+     *            is player only
+     */
+    protected void setPlayerOnly(boolean playerOnly)
     {
         this.playerOnly = playerOnly;
     }
