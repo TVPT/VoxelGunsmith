@@ -34,11 +34,20 @@ import com.voxelplugineering.voxelsniper.common.CommonVector;
 public class CommonEventHandler
 {
 
+    /**
+     * Constructs a new CommonEventHandler
+     */
     public CommonEventHandler()
     {
 
     }
 
+    /**
+     * Processes the given {@link com.voxelplugineering.voxelsniper.common.event.SnipeEvent} and performs all
+     * necessary checks of the event.
+     *
+     * @param event the snipe event to perform
+     */
     @Subscribe
     public void onSnipe(SnipeEvent event)
     {

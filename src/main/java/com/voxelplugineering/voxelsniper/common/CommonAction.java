@@ -28,5 +28,29 @@ package com.voxelplugineering.voxelsniper.common;
  */
 public enum CommonAction
 {
-    LEFT_CLICK_AIR, LEFT_CLICK_BLOCK, MIDDLE_CLICK_AIR, MIDDLE_CLICK_BLOCK, RIGHT_CLICK_AIR, RIGHT_CLICK_BLOCK;
+    /**
+     * When the user has left-clicked air, usually pointing in a direction and not within range of targeting a block.
+     */
+    LEFT_CLICK_AIR,
+    /**
+     * When the user has left-clicked a block being pointed at.
+     */
+    LEFT_CLICK_BLOCK,
+    /**
+     * When the user has middle-clicked air, usually pointing in a direction and not within range of targeting a block.
+     */
+    MIDDLE_CLICK_AIR,
+    /**
+     * When the user has middle-clicked a block being pointed at.
+     */
+    MIDDLE_CLICK_BLOCK,
+    /**
+     * When the user has right-clicked air, usually pointing in a direction and not within range of targeting a block.
+     */
+    RIGHT_CLICK_AIR,
+    /**
+     * When the user has right-clicked a block being pointed at.
+     */
+    RIGHT_CLICK_BLOCK,
+    ;
 }

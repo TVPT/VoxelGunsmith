@@ -23,6 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.config;
 
+/**
+ * Default base configuration values
+ */
 public class BaseConfiguration
 {
     static double PLAYER_EYE_HEIGHT = 0.7;

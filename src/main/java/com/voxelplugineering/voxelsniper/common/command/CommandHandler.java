@@ -41,6 +41,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class CommandHandler
 {
 
+    /**
+     * Constructs a command handler
+     */
     public CommandHandler()
     {
 

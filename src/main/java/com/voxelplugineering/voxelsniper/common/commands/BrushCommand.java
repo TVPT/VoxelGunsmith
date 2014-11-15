@@ -30,9 +30,15 @@ import com.voxelplugineering.voxelsniper.common.command.Command;
 import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
 import com.voxelplugineering.voxelsniper.common.command.args.RawArgument;
 
+/**
+ * Standard brush command to select a brush and provide the necessary arguments to said brush.
+ */
 public class BrushCommand extends Command
 {
 
+    /**
+     * Constructs a new BrushCommand
+     */
     public BrushCommand()
     {
         super("brush", "Sets your current brush");
@@ -43,7 +49,7 @@ public class BrushCommand extends Command
     @Override
     public boolean execute(ISniper sniper, Map<String, CommandArgument> args)
     {
-        String[] s = ((RawArgument) args.get("raw")).getValue();
+        String[] s = ((RawArgument) args.get("raw")).getChoice();
         if (s.length >= 1)
         {
             String brush = s[0];

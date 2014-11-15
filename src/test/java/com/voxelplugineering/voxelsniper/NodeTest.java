@@ -25,9 +25,16 @@ package com.voxelplugineering.voxelsniper;
 
 import org.junit.Test;
 
+/**
+ * Standard node test class.
+ * TODO Actually write some tests!
+ */
 public class NodeTest
 {
 
+    /**
+     * The first test that isn't written....
+     */
     @Test
     public void testAddingOperatorNode()
     {

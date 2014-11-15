@@ -39,6 +39,16 @@ import com.voxelplugineering.voxelsniper.api.IBrushLoader;
 public abstract class CommonBrushLoader implements IBrushLoader
 {
 
+    /**
+     * Deserializes a NodeGraph from the given byte array and loads the NodeGraph into an appropriate implementation of
+     * the brush.
+     *
+     * @param classLoader
+     *            the class loader to use to load the compiled class
+     * @param serialized
+     *            the serialized version of the brush
+     * @return the class for the brush
+     */
     public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, byte[] serialized)
     {
         ByteArrayInputStream stream = new ByteArrayInputStream(serialized);

@@ -90,6 +90,11 @@ public final class Gunsmith
      */
     private static boolean isPluginEnabled = false;
 
+    /**
+     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.IVoxelSniper} to be used.
+     *
+     * @param sniper Implementation of IVoxelSniper to be used
+     */
     public static void setPlugin(IVoxelSniper sniper)
     {
         checkNotNull(sniper, "Cannot set a null plugin!");
@@ -97,6 +102,11 @@ public final class Gunsmith
         Gunsmith.plugin = sniper;
     }
 
+    /**
+     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.IPermissionProxy} to be used.
+     *
+     * @param permissionProxy Implementation of IPermissionProxy to be used
+     */
     public static void setPermissionProxy(IPermissionProxy permissionProxy)
     {
         checkNotNull(permissionProxy, "Cannot set a null Permission Proxy!");
@@ -104,6 +114,11 @@ public final class Gunsmith
         Gunsmith.permissionProxy = permissionProxy;
     }
 
+    /**
+     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.IBrushManager} to be used.
+     *
+     * @param brushManager Implementation of IBrushManager to be used
+     */
     public static void setGlobalBrushManager(IBrushManager brushManager)
     {
         checkNotNull(brushManager, "Cannot set a null BrushManager!");
@@ -111,6 +126,11 @@ public final class Gunsmith
         Gunsmith.globalBrushManager = brushManager;
     }
 
+    /**
+     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.IBrushLoader} to be used.
+     *
+     * @param brushLoader Implementation of IBrushLoader to be used
+     */
     public static void setDefaultBrushLoader(IBrushLoader brushLoader)
     {
         checkNotNull(brushLoader, "Cannot set a null BrushLoader!");
@@ -118,6 +138,11 @@ public final class Gunsmith
         Gunsmith.defaultBrushLoader = brushLoader;
     }
 
+    /**
+     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.common.command.CommandHandler} to be used.
+     *
+     * @param command Implementation of CommandHandler to be used
+     */
     public static void setCommandHandler(CommandHandler command)
     {
         checkNotNull(command, "Cannot set a null CommandHandler!");
@@ -125,6 +150,11 @@ public final class Gunsmith
         Gunsmith.commandHandler = command;
     }
 
+    /**
+     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.ISniperFactory} to be used.
+     *
+     * @param manager Implementation of ISniperFactory to be used
+     */
     public static void setSniperManager(ISniperFactory<?> manager)
     {
         checkNotNull(manager, "Cannot set a null SniperManager!");
@@ -132,6 +162,11 @@ public final class Gunsmith
         Gunsmith.sniperManager = manager;
     }
 
+    /**
+     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.IMaterialFactory} to be used.
+     *
+     * @param factory Implementation of IMaterialFactory to be used
+     */
     public static void setMaterialFactory(IMaterialFactory<?> factory)
     {
         checkNotNull(factory, "Cannot set a null MaterialFactory!");
@@ -139,6 +174,11 @@ public final class Gunsmith
         Gunsmith.materialFactory = factory;
     }
 
+    /**
+     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.IWorldFactory} to be used.
+     *
+     * @param factory Implementation of IWorldFactory to be used
+     */
     public static void setWorldFactory(IWorldFactory factory)
     {
         checkNotNull(factory, "Cannot set a null WorldFactory!");
@@ -146,56 +186,111 @@ public final class Gunsmith
         Gunsmith.worldFactory = factory;
     }
 
+    /**
+     * Gets the instance of the implementation of IVoxelSniper.
+     *
+     * @return The instance of the implementation of IVoxelSniper
+     */
     public static IVoxelSniper getVoxelSniper()
     {
         return plugin;
     }
 
+    /**
+     * Gets the instance of the implementation of IPermissionProxy.
+     *
+     * @return The instance of the implementation of IPermissionProxy
+     */
     public static IPermissionProxy getPermissionProxy()
     {
         return permissionProxy;
     }
 
+    /**
+     * Gets the instance of the implementation of IBrushLoader.
+     *
+     * @return The instance of the implementation of IBrushLoader
+     */
     public static IBrushLoader getDefaultBrushLoader()
     {
         return defaultBrushLoader;
     }
 
+    /**
+     * Gets the instance of the implementation of IBrushLoader.
+     *
+     * @return The instance of the implementation of IBrushLoader
+     */
     public static IBrushManager getGlobalBrushManager()
     {
         return globalBrushManager;
     }
 
+    /**
+     * Gets the instance of the implementation of EventBus.
+     *
+     * @return The instance of the implementation of EventBus
+     */
     public static EventBus getEventBus()
     {
         return eventBus;
     }
 
+    /**
+     * Gets the instance of the implementation of CommandHandler.
+     *
+     * @return The instance of the implementation of CommandHandler
+     */
     public static CommandHandler getCommandHandler()
     {
         return commandHandler;
     }
 
+    /**
+     * Gets the instance of the implementation of ISniperFactory.
+     *
+     * @return The instance of the implementation of ISniperFactory
+     */
     public static ISniperFactory<?> getSniperManager()
     {
         return sniperManager;
     }
 
+    /**
+     * Gets the instance of the implementation of CommonEventHandler.
+     *
+     * @return The instance of the implementation of CommonEventHandler
+     */
     public static CommonEventHandler getDefaultEventHandler()
     {
         return defaultEventHandler;
     }
 
+    /**
+     * Gets the instance of the implementation of IMaterialFactory.
+     *
+     * @return The instance of the implementation of IMaterialFactory
+     */
     public static IMaterialFactory<?> getMaterialFactory()
     {
         return materialFactory;
     }
 
+    /**
+     * Gets the instance of the implementation of IWorldFactory.
+     *
+     * @return The instance of the implementation of IWorldFactory
+     */
     public static IWorldFactory getWorldFactory()
     {
         return worldFactory;
     }
 
+    /**
+     * Gets the instance of the implementation of IConfiguration.
+     *
+     * @return The instance of the implementation of IConfiguration
+     */
     public static IConfiguration getConfiguration()
     {
         return configuration;

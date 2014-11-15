@@ -58,11 +58,14 @@ public class CommonBrushManager implements IBrushManager
      */
     private List<IBrushLoader> loaders = new ArrayList<IBrushLoader>();
 
+    /**
+     * Creates a new CommonBrushManager.
+     */
     public CommonBrushManager()
     {
         if (Gunsmith.getDefaultBrushLoader() != null)
         {
-            loaders.add(Gunsmith.getDefaultBrushLoader());
+            this.loaders.add(Gunsmith.getDefaultBrushLoader());
         } else
         {
             System.out.println("WARNING: Created Brush Manager before default BrushLoader was set.");
@@ -70,46 +73,69 @@ public class CommonBrushManager implements IBrushManager
         this.classLoader = new ASMClassLoader();
     }
 
+    /**
+     * Creates a new CommonBrushManager with the subscribed parent
+     *
+     * @param parent the parent
+     */
     public CommonBrushManager(IBrushManager parent)
     {
         this();
         setParent(parent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void init()
     {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void stop()
     {
-        brushes.clear();
+        this.brushes.clear();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void restart()
     {
         stop();
         init();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void addLoader(IBrushLoader loader)
     {
         this.loaders.add(0, loader);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void loadBrush(String identifier, Class<? extends IBrush> clazz)
     {
         //TODO: Check version if already loaded
         this.brushes.put(identifier, clazz);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void loadBrush(String identifier)
     {
         Class<? extends IBrush> cls = null;
         for (Iterator<IBrushLoader> iter = this.loaders.iterator(); iter.hasNext() && cls == null;)
         {
             IBrushLoader loader = iter.next();
-            cls = loader.loadBrush(classLoader, identifier);
+            cls = loader.loadBrush(this.classLoader, identifier);
         }
         if (cls != null)
         {
@@ -117,6 +143,9 @@ public class CommonBrushManager implements IBrushManager
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public IBrush getNewBrushInstance(String identifier)
     {
         Class<? extends IBrush> br = this.brushes.get(identifier);
@@ -141,6 +170,9 @@ public class CommonBrushManager implements IBrushManager
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setParent(IBrushManager parent)
     {
         this.parent = parent;

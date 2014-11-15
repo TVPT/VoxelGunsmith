@@ -36,6 +36,13 @@ public class CommonVector implements Serializable, Cloneable
      */
     private final double[] vec;
 
+    /**
+     * Constructs a new vector with the direction.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param z the z coordinate
+     */
     public CommonVector(double x, double y, double z)
     {
         this.vec = new double[] { x, y, z };
@@ -48,7 +55,7 @@ public class CommonVector implements Serializable, Cloneable
      */
     public double getX()
     {
-        return vec[0];
+        return this.vec[0];
     }
 
     /**
@@ -58,7 +65,7 @@ public class CommonVector implements Serializable, Cloneable
      */
     public double getY()
     {
-        return vec[1];
+        return this.vec[1];
     }
 
     /**
@@ -68,7 +75,7 @@ public class CommonVector implements Serializable, Cloneable
      */
     public double getZ()
     {
-        return vec[2];
+        return this.vec[2];
     }
 
     /**

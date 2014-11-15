@@ -37,6 +37,11 @@ public abstract class CommonMaterial<T>
      */
     private final T value;
 
+    /**
+     * Constructs a new CommonMaterial for the given value.
+     *
+     * @param value the material object to wrap
+     */
     public CommonMaterial(T value)
     {
         this.value = value;
@@ -87,7 +92,5 @@ public abstract class CommonMaterial<T>
      * @return does support transparency
      */
     public abstract boolean isTransparent();
-
-    public abstract boolean isFlammable(); //Do we even need this, only really has use within minecraft
 
 }

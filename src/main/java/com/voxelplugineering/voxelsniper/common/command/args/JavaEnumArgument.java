@@ -30,20 +30,37 @@ import java.util.List;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.voxelplugineering.voxelsniper.util.Utilities.findMatches;
 
-public class JavaEnumArgument<T extends Enum<T>> extends CommandArgument
+/**
+ * A command argument that is validated by a Java Enum.
+ *
+ * @param <T> the type of enum to use
+ */
+public class JavaEnumArgument<T extends Enum<T>> extends CommandArgument<T>
 {
     private final T defaultValue;
     private final Class<T> clazz;
     private final List<String> names;
     private T choice = null;
 
+    /**
+     * Constructs a normalized argument that parses for a specific Java Enum.
+     *
+     * @param name the name of this argument
+     * @param clazz the class of the enum
+     * @param defaultValue the default value to return
+     * @param required whether this argument is required for validation
+     *
+     * @throws Exception if the enum
+     */
     public JavaEnumArgument(String name, boolean required, Class<T> clazz, T defaultValue) throws Exception
     {
         super(name, required);
         checkNotNull(clazz, "Cannot add a null Java Enum Class argument!");
+        checkArgument(defaultValue != null, "Cannot have a null default value!");
         this.defaultValue = defaultValue;
 
         this.clazz = clazz;
@@ -64,14 +81,21 @@ public class JavaEnumArgument<T extends Enum<T>> extends CommandArgument
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public T getChoice()
     {
-        return this.choice;
+        return this.choice != null ? this.choice : this.defaultValue;
     }
 
-    public void setChoice(T c)
+    /**
+     * {@inheritDoc}
+     */
+    public boolean setChoice(T c)
     {
         this.choice = c;
+        return true;
     }
 
     @Override

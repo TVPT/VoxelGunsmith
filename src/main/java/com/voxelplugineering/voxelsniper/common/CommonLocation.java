@@ -37,6 +37,14 @@ public final class CommonLocation implements Cloneable
     private final double y;
     private final double z;
 
+    /**
+     * Creates a new CommonLocation for use in the API.
+     *
+     * @param world the world
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param z the z coordinate
+     */
     public CommonLocation(CommonWorld world, double x, double y, double z)
     {
         this.world = world;
@@ -133,6 +141,8 @@ public final class CommonLocation implements Cloneable
 
     /**
      * Returns a new {@link CommonLocation} representing the same location.
+     *
+     * @return a newly created CommonLocation
      */
     @Override
     public CommonLocation clone()

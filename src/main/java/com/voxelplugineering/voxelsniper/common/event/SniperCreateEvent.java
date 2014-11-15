@@ -34,8 +34,13 @@ public class SniperCreateEvent
     /**
      * The new sniper.
      */
-    private ISniper sniper;
+    private final ISniper sniper;
 
+    /**
+     * Creates a new SniperCreateEvent
+     *
+     * @param s the sniper newly created
+     */
     public SniperCreateEvent(ISniper s)
     {
         this.sniper = s;

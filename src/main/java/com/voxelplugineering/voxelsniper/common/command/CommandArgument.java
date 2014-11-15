@@ -29,8 +29,10 @@ import com.voxelplugineering.voxelsniper.api.ISniper;
 
 /**
  * A command argument handling validation of arguments passed to commands.
+ *
+ * @param <T> the generic implied type for getting and setting choice
  */
-public abstract class CommandArgument
+public abstract class CommandArgument<T>
 {
     /**
      * Whether this argument is required.
@@ -45,11 +47,22 @@ public abstract class CommandArgument
      */
     protected boolean isPresent;
 
+    /**
+     * Creates a new CommandArgument with the given name.
+     *
+     * @param name the name of this argument
+     */
     protected CommandArgument(String name)
     {
         this(name, false);
     }
 
+    /**
+     * Creates a new CommandArgument with the given name and requirement.
+     *
+     * @param name the name of this argument
+     * @param required whether this argument is required for command validation
+     */
     protected CommandArgument(String name, boolean required)
     {
         this.required = required;
@@ -85,6 +98,22 @@ public abstract class CommandArgument
     {
         return this.name;
     }
+
+    /**
+     * Gets the current choice for the ISniper executing the command containing this argument. The choice should
+     * already be validated after parsing.
+     *
+     * @return the parsed choice
+     */
+    public abstract T getChoice();
+
+    /**
+     * Sets the current choice for the ISniper executing the command containing this argument. The choice will be
+     * re-validated.
+     * @param choice the choice
+     * @return true if validated and successful
+     */
+    public abstract boolean setChoice(T choice);
 
     /**
      * Returns the sub-part of the usage string representing this argument.

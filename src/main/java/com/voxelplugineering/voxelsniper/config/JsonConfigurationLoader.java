@@ -41,7 +41,9 @@ import com.voxelplugineering.voxelsniper.api.IConfiguration;
  */
 public class JsonConfigurationLoader
 {
-
+    /**
+     * Constructs a new JsonConfigurationLoader.
+     */
     public JsonConfigurationLoader()
     {
 
@@ -59,8 +61,9 @@ public class JsonConfigurationLoader
      *            the name of the container
      * @throws IOException
      *             if there is an issue with loading values from the file
+     * @throws IllegalAccessException if there was an issue loading the values from the fields
      */
-    public void load(File jsonFile, IConfiguration configuration, String containerName) throws IOException, IllegalArgumentException,
+    public void load(File jsonFile, IConfiguration configuration, String containerName) throws IOException,
             IllegalAccessException
     {
         Class<?> container = configuration.getContainer(containerName);
@@ -91,6 +94,8 @@ public class JsonConfigurationLoader
      *            the name of the container to save the values from
      * @throws IOException
      *             if there is a problem saving to the file
+     * @throws InstantiationException if there was a problem creating the writer to save the file
+     * @throws IllegalAccessException if there was a problem getting the data from the container
      */
     public void save(File output, IConfiguration configuration, String containerName) throws IOException, InstantiationException,
             IllegalAccessException
@@ -119,6 +124,8 @@ public class JsonConfigurationLoader
      *            the configuration object to save the values from
      * @throws IOException
      *             if there is an issue saving the files.
+     * @throws InstantiationException if there was a problem creating the writer to save the file
+     * @throws IllegalAccessException if there was a problem getting the data from the container
      */
     public void saveAllContainers(File outputFolder, IConfiguration configuration) throws IOException, InstantiationException, IllegalAccessException
     {

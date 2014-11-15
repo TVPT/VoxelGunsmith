@@ -111,10 +111,35 @@ public interface IPermissionProxy
      */
     void addWorldPermission(final ISniper sniper, final String worldName, final String permission);
 
+    /**
+     * Adds the given permission to the user that will be removed if the following happens: <ul><li>The user logs
+     * out</li><li>The server is reloaded</li></ul>. The permission is not granted permanently to the user.
+     *
+     * @param sniper the user to add the transient permission to
+     * @param permission the permission to add
+     */
     void addTransientGlobalPermission(final ISniper sniper, final String permission);
 
+    /**
+     * Adds the given permission to the user that will be removed if the following happens: <ul><li>The user logs
+     * out</li><li>The server is reloaded</li></ul>. The permission is not granted permanently to the user.
+     *
+     * @param sniper the user to add the transient permission to
+     * @param world
+     *            the world to use as context
+     * @param permission the permission to add
+     */
     void addTransientWorldPermission(final ISniper sniper, final CommonWorld world, final String permission);
 
+    /**
+     * Adds the given permission to the user that will be removed if the following happens: <ul><li>The user logs
+     * out</li><li>The server is reloaded</li></ul>. The permission is not granted permanently to the user.
+     *
+     * @param sniper the user to add the transient permission to
+     * @param worldName
+     *            the world to use as context
+     * @param permission the permission to add
+     */
     void addTransientWorldPermission(final ISniper sniper, final String worldName, final String permission);
 
     /**
@@ -151,10 +176,36 @@ public interface IPermissionProxy
      */
     void removeWorldPermission(final ISniper sniper, final String worldName, final String permission);
 
+    /**
+     * Removes the given permission from the user with a context that the permission was granted as a transient
+     * permission. Transient permissions are not permanent and may be lost if the following happens:
+     * <ul><li>The server is reloaded</li><li>The user logs out</li></ul>.
+     *
+     * @param sniper the user to remove the transient permission from
+     * @param permission the permission to remove
+     */
     void removeTransientGlobalPermission(final ISniper sniper, final String permission);
 
+    /**
+     * Removes the given permission from the user with a context that the permission was granted as a transient
+     * permission. Transient permissions are not permanent and may be lost if the following happens:
+     * <ul><li>The server is reloaded</li><li>The user logs out</li></ul>.
+     *
+     * @param sniper the user to remove the transient permission from
+     * @param world the world to use as context
+     * @param permission the permission to remove
+     */
     void removeTransientWorldPermission(final ISniper sniper, final CommonWorld world, final String permission);
 
+    /**
+     * Removes the given permission from the user with a context that the permission was granted as a transient
+     * permission. Transient permissions are not permanent and may be lost if the following happens:
+     * <ul><li>The server is reloaded</li><li>The user logs out</li></ul>.
+     *
+     * @param sniper the user to remove the transient permission from
+     * @param worldName the world to use as context
+     * @param permission the permission to remove
+     */
     void removeTransientWorldPermission(final ISniper sniper, final String worldName, final String permission);
 
 }

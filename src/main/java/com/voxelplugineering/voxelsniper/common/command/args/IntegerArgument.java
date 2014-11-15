@@ -28,23 +28,57 @@ import java.util.List;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
 
-public class IntegerArgument extends CommandArgument
+/**
+ * A CommandArgument that requires an integer value.
+ */
+public class IntegerArgument extends CommandArgument<Integer>
 {
     private int value;
+    private int defaultValue;
 
+    /**
+     * Constructs a normalized argument that parses for a double value.
+     *
+     * @param name the name of this argument
+     * @param required whether this argument is required for validation
+     */
     public IntegerArgument(String name, boolean required)
     {
+        this(name, required, 0);
+    }
+
+    /**
+     * Constructs a normalized argument that parses for a double value.
+     *
+     * @param name the name of this argument
+     * @param required whether this argument is required for validation
+     * @param defaultValue the default value to return for this argument
+     */
+    public IntegerArgument(String name, boolean required, int defaultValue)
+    {
         super(name, required);
+        this.defaultValue = defaultValue;
     }
 
-    public int getValue()
+    /**
+     * {@inheritDoc}
+     */
+    public Integer getChoice()
     {
-        return this.value;
+        return this.value != -Integer.MAX_VALUE ? this.value : this.defaultValue;
     }
 
-    public void setValue(int val)
+    /**
+     * {@inheritDoc}
+     */
+    public boolean setChoice(Integer val)
     {
-        this.value = val;
+        if (val == null) {
+            this.value = 0;
+        } else {
+            this.value = val;
+        }
+        return true;
     }
 
     @Override

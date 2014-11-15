@@ -31,9 +31,15 @@ import com.voxelplugineering.voxelsniper.common.CommonVector;
  */
 public class SnipeEvent extends CommonEvent
 {
-    private ISniper sniper;
-    private CommonVector direction;
+    private final ISniper sniper;
+    private final CommonVector direction;
 
+    /**
+     * Constructs a new SnipeEvent for processing
+     *
+     * @param s the sniper involved
+     * @param dir the direction of the snipe
+     */
     public SnipeEvent(ISniper s, CommonVector dir)
     {
         this.sniper = s;

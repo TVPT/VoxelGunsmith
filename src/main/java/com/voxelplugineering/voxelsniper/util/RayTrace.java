@@ -104,6 +104,13 @@ public class RayTrace
     private double rotYCos;
     private double step;
 
+    /**
+     * Creates a new raytrace to reference with the given location yaw and pitch.
+     *
+     * @param origin the origin location
+     * @param yaw the yaw
+     * @param pitch the pitch
+     */
     public RayTrace(CommonLocation origin, double yaw, double pitch)
     {
         this.origin = origin;
@@ -177,10 +184,7 @@ public class RayTrace
     public void setTraversalBlocks(CommonMaterial<?>... blocks)
     {
         this.traversalBlocks.clear();
-        for (CommonMaterial<?> b : blocks)
-        {
-            this.traversalBlocks.add(b);
-        }
+        Collections.addAll(this.traversalBlocks, blocks);
     }
 
     /**
@@ -200,7 +204,8 @@ public class RayTrace
      */
     public CommonBlock getTargetBlock()
     {
-        if (this.length > this.range || targetBlock.getLocation().getY() < this.minWorldY || targetBlock.getLocation().getY() > this.maxWorldY)
+        if (this.length > this.range || this.targetBlock.getLocation().getY() < this.minWorldY || this.targetBlock
+                .getLocation().getY() > this.maxWorldY)
         {
             return getLastBlock();
         }
@@ -214,7 +219,8 @@ public class RayTrace
      */
     public CommonBlock getLastBlock()
     {
-        if (this.length > this.range || lastBlock.getLocation().getY() < this.minWorldY || lastBlock.getLocation().getY() > this.maxWorldY)
+        if (this.length > this.range || this.lastBlock.getLocation().getY() < this.minWorldY || this.lastBlock
+                .getLocation().getY() > this.maxWorldY)
         {
             return null;
         }
@@ -237,8 +243,10 @@ public class RayTrace
         this.lastY = (int) Math.floor(this.currentY);
         this.lastZ = (int) Math.floor(this.currentZ);
 
-        // I think this is to do with the axis orientation of minecraft, not sure how to handle this in a context separated from the implementation.
-        // Possibly something attached to the world to detail the different orientations of the axis and which directions they represent.
+        // I think this is to do with the axis orientation of minecraft,
+        // not sure how to handle this in a context separated from the implementation.
+        // Possibly something attached to the world to detail the different orientations
+        // of the axis and which directions they represent.
         this.rotX = (this.yaw + 90) % 360;
         this.rotY = this.pitch * -1;
         this.rotYCos = Math.cos(Math.toRadians(this.rotY));
@@ -282,9 +290,12 @@ public class RayTrace
             this.targetY = (int) Math.floor(this.currentY + this.origin.getY());
             this.targetZ = (int) Math.floor(this.currentZ + this.origin.getZ());
 
-        } while ((this.length <= this.range) && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
+        } while ((this.length <= this.range) && ((this.targetX == this.lastX)
+                && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
 
-        if (!this.traversalBlocks.contains(world.getBlockAt(this.targetX, this.targetY, this.targetZ).getMaterial()))
+        if (!this.traversalBlocks.contains(this.world.getBlockAt(this.targetX, this.targetY, this.targetZ).getMaterial(
+
+        )))
         {
             return;
         }
@@ -294,7 +305,6 @@ public class RayTrace
             this.targetX = this.lastX;
             this.targetY = this.lastY;
             this.targetZ = this.lastZ;
-            return;
         } else
         {
             step();

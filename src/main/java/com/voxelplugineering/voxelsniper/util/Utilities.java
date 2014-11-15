@@ -29,6 +29,9 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Common utilities class for Gunsmith
+ */
 public class Utilities
 {
     /**
@@ -48,11 +51,7 @@ public class Utilities
     public static boolean startsWithIgnoreCase(final String string, final String prefix) throws IllegalArgumentException, NullPointerException
     {
         checkNotNull(string, "Cannot check a null string for a match");
-        if (string.length() < prefix.length())
-        {
-            return false;
-        }
-        return string.regionMatches(true, 0, prefix, 0, prefix.length());
+        return string.length() >= prefix.length() && string.regionMatches(true, 0, prefix, 0, prefix.length());
     }
 
     /**
@@ -64,6 +63,7 @@ public class Utilities
      *            An iterable collection of strings to filter.
      * @param collection
      *            The collection to add matches to
+     * @param <T> the collection to use
      * @return the collection provided that would have the elements copied into
      * @throws UnsupportedOperationException
      *             if the collection is immutable and originals contains a string which starts with the specified search string.
@@ -91,6 +91,13 @@ public class Utilities
         return collection;
     }
 
+    /**
+     * Finds all matching strings in the given list of candidates.
+     *
+     * @param partial the partial to look for
+     * @param candidates the candidates to parse
+     * @return a new list of partial matches
+     */
     public static List<String> findMatches(String partial, List<String> candidates)
     {
         if (partial == null || partial.isEmpty())

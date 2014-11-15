@@ -35,6 +35,9 @@ import com.thevoxelbox.vsl.node.ExecutableNode;
 public class MaterialSetNode extends ExecutableNode
 {
 
+    /**
+     * Constructs a new MaterialSetNode
+     */
     public MaterialSetNode()
     {
         super("MaterialSet", "world");

@@ -80,7 +80,7 @@ public class CommonMaterialFactory<T> implements IMaterialFactory<T>
     @Override
     public CommonMaterial<T> getAirMaterial()
     {
-        return air;
+        return this.air;
     }
 
     @Override
@@ -91,7 +91,7 @@ public class CommonMaterialFactory<T> implements IMaterialFactory<T>
 
         this.registry.put(name, material);
 
-        if (name.equalsIgnoreCase("air") || name.equalsIgnoreCase("empty"))
+        if ("air".equalsIgnoreCase(name) || "empty".equalsIgnoreCase(name))
         {
             this.air = material;
         }

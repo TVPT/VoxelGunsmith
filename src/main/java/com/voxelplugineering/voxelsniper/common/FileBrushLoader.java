@@ -51,11 +51,21 @@ public class FileBrushLoader extends CommonBrushLoader
      */
     private File defaultDirectory;
 
+    /**
+     * Constructs a new FileBrushLoader with the default directory
+     *
+     * @param defaultDir the directory to load brushes
+     */
     public FileBrushLoader(File defaultDir)
     {
         this.defaultDirectory = defaultDir;
     }
 
+    /**
+     * Gets the default directory in the file system
+     *
+     * @return the default file directory
+     */
     public File getDefaultDirectory()
     {
         return this.defaultDirectory;

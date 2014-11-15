@@ -46,6 +46,10 @@ public abstract class CommonPlayer<T> implements ISniper
      */
     IBrushManager personalBrushManager;
 
+    /**
+     * Creates a new CommonPlayer with a weak reference to the player.
+     * @param player the player object
+     */
     protected CommonPlayer(T player)
     {
         this.playerReference = new WeakReference<T>(player);
@@ -63,6 +67,11 @@ public abstract class CommonPlayer<T> implements ISniper
         return this.playerReference.get();
     }
 
+    /**
+     * Gets the personalized brush manager instance for this player.
+     *
+     * @return the personalized brush manager
+     */
     public IBrushManager getPersonalBrushManager()
     {
         return this.personalBrushManager;

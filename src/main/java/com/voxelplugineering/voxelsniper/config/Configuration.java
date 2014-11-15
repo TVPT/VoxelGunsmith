@@ -46,6 +46,9 @@ public class Configuration implements IConfiguration
      */
     private Map<String, Class<?>> containers;
 
+    /**
+     * Constructs a new Configuration
+     */
     public Configuration()
     {
         this.config = new HashMap<String, Object>();
@@ -83,10 +86,10 @@ public class Configuration implements IConfiguration
                 set(n, v);
             } catch (IllegalArgumentException e)
             {
-                continue;
+                e.printStackTrace();
             } catch (IllegalAccessException e)
             {
-                continue;
+                e.printStackTrace();
             }
         }
     }

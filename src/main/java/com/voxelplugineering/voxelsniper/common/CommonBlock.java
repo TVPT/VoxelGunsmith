@@ -38,6 +38,12 @@ public class CommonBlock
      */
     private CommonMaterial<?> material;
 
+    /**
+     * Creates a new CommonBlock with the given location and material
+     *
+     * @param location the location
+     * @param material the material
+     */
     public CommonBlock(CommonLocation location, CommonMaterial<?> material)
     {
         this.location = location;
@@ -77,6 +83,11 @@ public class CommonBlock
         this.location.getWorld().setBlockAt(this.location, material);
     }
 
+    /**
+     * Utility method for setting the material of the voxel without propagating the world changes.
+     *
+     * @param mat the new material
+     */
     protected void localSetMaterial(CommonMaterial<?> mat)
     {
         this.material = mat;

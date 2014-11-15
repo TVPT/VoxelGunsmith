@@ -38,10 +38,6 @@ public interface ISniper
      */
     String getName();
 
-    String getCurrentToolId();
-
-    String getToolId(Object object);
-
     /**
      * Sends a message to the user.
      * 

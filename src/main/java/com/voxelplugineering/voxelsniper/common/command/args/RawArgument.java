@@ -28,18 +28,35 @@ import java.util.List;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
 
-public class RawArgument extends CommandArgument
+/**
+ * A command argument that ignores all validation and only relies on a pure raw String array.
+ */
+public class RawArgument extends CommandArgument<String[]>
 {
     private String[] args;
 
+    /**
+     * Constructs a new Raw argument
+     *
+     * @param name the name of this argument
+     */
     public RawArgument(final String name)
     {
         super(name);
     }
 
-    public String[] getValue()
+    /**
+     * {@inheritDoc}
+     */
+    public String[] getChoice()
     {
         return this.args;
+    }
+
+    @Override
+    public boolean setChoice(String[] choice)
+    {
+        return false;
     }
 
     @Override
@@ -57,7 +74,7 @@ public class RawArgument extends CommandArgument
     @Override
     public void parse(ISniper user, String[] allArgs, int startPosition)
     {
-        args = allArgs;
+        this.args = allArgs;
     }
 
     @Override
@@ -69,7 +86,7 @@ public class RawArgument extends CommandArgument
     @Override
     public void clean()
     {
-        args = null;
+        this.args = null;
     }
 
     @Override

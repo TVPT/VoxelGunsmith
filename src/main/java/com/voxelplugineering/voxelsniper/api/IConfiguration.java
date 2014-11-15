@@ -64,7 +64,7 @@ public interface IConfiguration
     /**
      * Returns the Class of a previously registered container. Returns null if no container matching the given name has been registered previously.
      * 
-     * @param containerName
+     * @param containerName the name of the container
      * @return the container class
      */
     Class<?> getContainer(String containerName);

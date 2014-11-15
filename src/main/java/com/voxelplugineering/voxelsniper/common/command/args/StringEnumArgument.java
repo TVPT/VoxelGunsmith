@@ -33,7 +33,10 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.voxelplugineering.voxelsniper.util.Utilities.findMatches;
 
-public class StringEnumArgument extends CommandArgument
+/**
+ * A command argument that is validated by a set of provided Strings.
+ **/
+public class StringEnumArgument extends CommandArgument<String>
 {
 
     private final String def;
@@ -42,6 +45,14 @@ public class StringEnumArgument extends CommandArgument
 
     private String choice = null;
 
+    /**
+     * Constructs a normalized argument that parses for a set of string based choices.
+     *
+     * @param name the name of this argument
+     * @param required whether this argument is required for validation
+     * @param def the default value
+     * @param choices the choices of which can be chosen from
+     */
     public StringEnumArgument(String name, boolean required, String def, String... choices)
     {
         super(name, required);
@@ -64,11 +75,17 @@ public class StringEnumArgument extends CommandArgument
         this.usage = sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getChoice()
     {
         return this.choice;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean setChoice(String s)
     {
         if (Arrays.asList(this.choices).contains(s))

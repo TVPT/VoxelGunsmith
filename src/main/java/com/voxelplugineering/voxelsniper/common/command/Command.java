@@ -59,11 +59,22 @@ public abstract class Command
      */
     private boolean playerOnly = false;
 
+    /**
+     * Constructs a new command with the given name
+     *
+     * @param name the name of this command
+     */
     protected Command(final String name)
     {
         this(name, "No help is provided for this command.");
     }
 
+    /**
+     * Constructs a new command with the given name and help.
+     *
+     * @param name the name of this command
+     * @param help the help string for this command
+     */
     protected Command(final String name, final String help)
     {
         checkNotNull(name, "Cannot have a null name!");
