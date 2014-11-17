@@ -25,15 +25,17 @@ package com.voxelplugineering.voxelsniper.common;
 
 import java.lang.ref.WeakReference;
 
+import com.thevoxelbox.vsl.VariableScope;
+import com.thevoxelbox.vsl.api.IVariableScope;
 import com.voxelplugineering.voxelsniper.api.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.IBrushManager;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 
 /**
  * A standard player class wrapping a user class from the underlying implementation.
  * 
- * @param <T>
- *            the user class from the underlying implementation
+ * @param <T> the user class from the underlying implementation
  */
 public abstract class CommonPlayer<T> implements ISniper
 {
@@ -45,9 +47,18 @@ public abstract class CommonPlayer<T> implements ISniper
      * This users specific brush manager.
      */
     IBrushManager personalBrushManager;
+    /**
+     * The currently selected brush.
+     */
+    IBrush currentBrush;
+    /**
+     * The brush settings specific to this player.
+     */
+    IVariableScope brushVariables;
 
     /**
      * Creates a new CommonPlayer with a weak reference to the player.
+     * 
      * @param player the player object
      */
     protected CommonPlayer(T player)
@@ -55,6 +66,9 @@ public abstract class CommonPlayer<T> implements ISniper
         this.playerReference = new WeakReference<T>(player);
         //TODO: have player inherit brushes from group rather than the global brush manager always.
         this.personalBrushManager = new CommonBrushManager(Gunsmith.getGlobalBrushManager());
+        this.brushVariables = new VariableScope();
+        this.currentBrush = this.personalBrushManager.getNewBrushInstance(Gunsmith.getConfiguration().get("DEFAULT_BRUSH").toString());
+        sendMessage("Brush set to " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH").toString());
     }
 
     /**
@@ -68,12 +82,34 @@ public abstract class CommonPlayer<T> implements ISniper
     }
 
     /**
-     * Gets the personalized brush manager instance for this player.
-     *
-     * @return the personalized brush manager
+     * {@inheritDoc}
      */
     public IBrushManager getPersonalBrushManager()
     {
         return this.personalBrushManager;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setCurrentBrush(IBrush brush)
+    {
+        this.currentBrush = brush;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public IBrush getCurrentBrush()
+    {
+        return this.currentBrush;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public IVariableScope getBrushSettings()
+    {
+        return this.brushVariables;
     }
 }

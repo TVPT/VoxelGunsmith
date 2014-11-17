@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
+import com.thevoxelbox.vsl.api.IVariableScope;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
 
 /**
@@ -41,8 +42,7 @@ public interface ISniper
     /**
      * Sends a message to the user.
      * 
-     * @param msg
-     *            the message to send
+     * @param msg the message to send
      */
     void sendMessage(String msg);
 
@@ -59,5 +59,26 @@ public interface ISniper
      * @return the location
      */
     CommonLocation getLocation();
+
+    /**
+     * Sets the current brush of this sniper.
+     * 
+     * @param brush the new brush
+     */
+    void setCurrentBrush(IBrush brush);
+
+    /**
+     * Returns the currently selected brush of this sniper.
+     * 
+     * @return the brush
+     */
+    IBrush getCurrentBrush();
+
+    /**
+     * Returns this sniper's current brush settings.
+     * 
+     * @return the brush settings
+     */
+    IVariableScope getBrushSettings();
 
 }

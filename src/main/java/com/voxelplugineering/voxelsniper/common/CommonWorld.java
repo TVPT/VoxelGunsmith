@@ -39,12 +39,9 @@ public abstract class CommonWorld
     /**
      * Gets the chunk at the given coordinates.
      * 
-     * @param x
-     *            the chunk's x-axis position
-     * @param y
-     *            the chunk's y-axis position
-     * @param z
-     *            the chunk's z-axis position
+     * @param x the chunk's x-axis position
+     * @param y the chunk's y-axis position
+     * @param z the chunk's z-axis position
      * @return the chunk
      */
     public abstract CommonChunk getChunkAt(int x, int y, int z);
@@ -53,10 +50,8 @@ public abstract class CommonWorld
      * Returns the chunk at the given x, z coordinates. Assumes no y-axis arrangement of chunks (uses 0 for the y-axis). This method exists to better
      * support the minecraft philosophy of chunk arrangement, without restricting the implementation from using y-axis chunks.
      * 
-     * @param x
-     *            the chunk's x-axis position
-     * @param z
-     *            the chunk's z-axis position
+     * @param x the chunk's x-axis position
+     * @param z the chunk's z-axis position
      * @return the chunk
      */
     public CommonChunk getChunkAt(int x, int z)
@@ -67,8 +62,7 @@ public abstract class CommonWorld
     /**
      * Returns the chunk at the given location
      * 
-     * @param location
-     *            the location
+     * @param location the location
      * @return the block
      */
     public CommonBlock getBlockAt(CommonLocation location)
@@ -79,12 +73,9 @@ public abstract class CommonWorld
     /**
      * Returns the block at the given coordinates.
      * 
-     * @param x
-     *            the x position
-     * @param y
-     *            the y position
-     * @param z
-     *            the z position
+     * @param x the x position
+     * @param y the y position
+     * @param z the z position
      * @return the block
      */
     public abstract CommonBlock getBlockAt(int x, int y, int z);
@@ -92,10 +83,8 @@ public abstract class CommonWorld
     /**
      * Sets the block at the given location to the given material.
      * 
-     * @param location
-     *            the location
-     * @param material
-     *            the new material
+     * @param location the location
+     * @param material the new material
      */
     public void setBlockAt(CommonLocation location, CommonMaterial<?> material)
     {
@@ -105,14 +94,10 @@ public abstract class CommonWorld
     /**
      * Sets the voxel at the given coordinates to the given material.
      * 
-     * @param x
-     *            the x position
-     * @param y
-     *            the y position
-     * @param z
-     *            the z position
-     * @param material
-     *            the new material
+     * @param x the x position
+     * @param y the y position
+     * @param z the z position
+     * @param material the new material
      */
     public abstract void setBlockAt(int x, int y, int z, CommonMaterial<?> material);
 

@@ -45,7 +45,7 @@ public abstract class Command
     /**
      * A map of arguments for this command.
      */
-    private Map<String, CommandArgument> arguments;
+    private Map<String, CommandArgument<?>> arguments;
     /**
      * The name of this command, the primary command alias.
      */
@@ -86,15 +86,14 @@ public abstract class Command
     /**
      * Adds a argument for this command.
      * 
-     * @param argument
-     *            the new argument
+     * @param argument the new argument
      */
-    protected void addArgument(CommandArgument argument)
+    protected void addArgument(CommandArgument<?> argument)
     {
         checkNotNull(argument, "Cannot add a null argument!");
         if (this.arguments == null)
         {
-            this.arguments = new HashMap<String, CommandArgument>();
+            this.arguments = new HashMap<String, CommandArgument<?>>();
         }
         this.arguments.put(argument.getName(), argument);
     }
@@ -102,21 +101,17 @@ public abstract class Command
     /**
      * Executes this command with the given sniper as the source for the command.
      * 
-     * @param sniper
-     *            the command source
-     * @param args
-     *            the arguments for the command
+     * @param sniper the command source
+     * @param args the arguments for the command
      * @return a success flag
      */
-    public abstract boolean execute(ISniper sniper, Map<String, CommandArgument> args);
+    public abstract boolean execute(ISniper sniper, Map<String, CommandArgument<?>> args);
 
     /**
      * Extracts and validates the arguments for the command and passes it to the specific executor.
      * 
-     * @param sniper
-     *            the command source
-     * @param args
-     *            the raw command arguments
+     * @param sniper the command source
+     * @param args the raw command arguments
      * @return a success flag
      */
     public boolean execute(ISniper sniper, String[] args)
@@ -137,8 +132,7 @@ public abstract class Command
     /**
      * Sets the aliases for this command.
      * 
-     * @param aliases
-     *            the new aliases
+     * @param aliases the new aliases
      */
     protected void setAliases(String... aliases)
     {
@@ -148,18 +142,16 @@ public abstract class Command
     /**
      * Extracts and validates the command arguments from the given raw arguments. The returned {@link Map} is unmodifiable.
      * 
-     * @param sniper
-     *            the command source
-     * @param args
-     *            the raw arguments
+     * @param sniper the command source
+     * @param args the raw arguments
      * @return the extracted arguments
      */
-    private Map<String, CommandArgument> extractArguements(ISniper sniper, String[] args)
+    private Map<String, CommandArgument<?>> extractArguements(ISniper sniper, String[] args)
     {
         int i = 0;
         for (String c : this.arguments.keySet())
         {
-            CommandArgument ca = this.arguments.get(c);
+            CommandArgument<?> ca = this.arguments.get(c);
             ca.parse(sniper, args, i++);
         }
         return Collections.unmodifiableMap(this.arguments);
@@ -198,8 +190,7 @@ public abstract class Command
     /**
      * Sets whether the command is player only.
      * 
-     * @param playerOnly
-     *            is player only
+     * @param playerOnly is player only
      */
     protected void setPlayerOnly(boolean playerOnly)
     {

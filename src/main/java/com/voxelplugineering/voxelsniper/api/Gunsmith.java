@@ -197,6 +197,16 @@ public final class Gunsmith
     }
 
     /**
+     * Returns the initialization state of Gunsmith.
+     * 
+     * @return the initialization state
+     */
+    public static boolean isEnabled()
+    {
+        return isPluginEnabled;
+    }
+
+    /**
      * Gets the instance of the implementation of IPermissionProxy.
      *
      * @return The instance of the implementation of IPermissionProxy
@@ -303,6 +313,7 @@ public final class Gunsmith
     public static void beginInit()
     {
         check();
+        System.out.println("Starting Gunsmith initialization.");
         eventBus = new EventBus();
         defaultEventHandler = new CommonEventHandler();
         eventBus.register(defaultEventHandler);
@@ -310,7 +321,7 @@ public final class Gunsmith
         //event handler and register its own in its place
 
         configuration = new Configuration();
-        configuration.registerContainer(new BaseConfiguration());
+        configuration.registerContainer(BaseConfiguration.class);
         //configuration is also setup here so that any values can be overwritten from the specific impl
     }
 
@@ -321,11 +332,12 @@ public final class Gunsmith
     {
         check();
         if (plugin == null || globalBrushManager == null || defaultBrushLoader == null || permissionProxy == null || materialFactory == null
-                || worldFactory == null)
+                || worldFactory == null || sniperManager == null)
         {
             isPluginEnabled = false;
             throw new IllegalStateException("VoxelSniper was not properly setup while loading");
         }
+        System.out.println("Gunsmith initialization finalized.");
         isPluginEnabled = true;
     }
 
@@ -361,6 +373,10 @@ public final class Gunsmith
         eventBus = null;
         commandHandler = null;
         permissionProxy = null;
+        if (materialFactory != null)
+        {
+            materialFactory.stop();
+        }
         materialFactory = null;
         worldFactory = null;
         if (sniperManager != null)

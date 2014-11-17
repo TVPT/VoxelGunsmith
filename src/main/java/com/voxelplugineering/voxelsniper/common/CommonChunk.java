@@ -39,12 +39,9 @@ public abstract class CommonChunk
     /**
      * Returns the {@link CommonBlock} at the given position relative to the origin of this voxel chunk.
      * 
-     * @param x
-     *            x-axis offset from origin
-     * @param y
-     *            y-axis offset from origin
-     * @param z
-     *            z-axis offset from origin
+     * @param x x-axis offset from origin
+     * @param y y-axis offset from origin
+     * @param z z-axis offset from origin
      * @return the {@link CommonBlock} at the relative position
      */
     public abstract CommonBlock getRelativeBlockAt(int x, int y, int z);

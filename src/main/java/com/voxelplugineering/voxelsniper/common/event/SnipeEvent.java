@@ -24,7 +24,6 @@
 package com.voxelplugineering.voxelsniper.common.event;
 
 import com.voxelplugineering.voxelsniper.api.ISniper;
-import com.voxelplugineering.voxelsniper.common.CommonVector;
 
 /**
  * The event for a sniper action.
@@ -32,18 +31,21 @@ import com.voxelplugineering.voxelsniper.common.CommonVector;
 public class SnipeEvent extends CommonEvent
 {
     private final ISniper sniper;
-    private final CommonVector direction;
+    private final double yaw;
+    private final double pitch;
 
     /**
      * Constructs a new SnipeEvent for processing
      *
      * @param s the sniper involved
-     * @param dir the direction of the snipe
+     * @param y the yaw
+     * @param p the pitch
      */
-    public SnipeEvent(ISniper s, CommonVector dir)
+    public SnipeEvent(ISniper s, double y, double p)
     {
         this.sniper = s;
-        this.direction = dir;
+        this.yaw = y;
+        this.pitch = p;
     }
 
     /**
@@ -57,12 +59,22 @@ public class SnipeEvent extends CommonEvent
     }
 
     /**
-     * The direction in which the player was looking.
+     * The yaw of the direction in which the player was looking.
      * 
-     * @return the direction
+     * @return the yaw
      */
-    public CommonVector getDirection()
+    public double getYaw()
     {
-        return this.direction;
+        return this.yaw;
+    }
+
+    /**
+     * The pitch of the direction in which the player was looking.
+     * 
+     * @return the pitch
+     */
+    public double getPitch()
+    {
+        return this.pitch;
     }
 }

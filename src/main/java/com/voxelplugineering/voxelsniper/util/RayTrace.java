@@ -167,8 +167,7 @@ public class RayTrace
     /**
      * Sets the maximum range of the ray.
      * 
-     * @param range
-     *            the new range
+     * @param range the new range
      */
     public void setRange(double range)
     {
@@ -178,8 +177,7 @@ public class RayTrace
     /**
      * Sets the blocks that may be traversed by the ray.
      * 
-     * @param blocks
-     *            the traversal blocks
+     * @param blocks the traversal blocks
      */
     public void setTraversalBlocks(CommonMaterial<?>... blocks)
     {
@@ -204,8 +202,8 @@ public class RayTrace
      */
     public CommonBlock getTargetBlock()
     {
-        if (this.length > this.range || this.targetBlock.getLocation().getY() < this.minWorldY || this.targetBlock
-                .getLocation().getY() > this.maxWorldY)
+        if (this.length > this.range || this.targetBlock.getLocation().getY() < this.minWorldY
+                || this.targetBlock.getLocation().getY() > this.maxWorldY)
         {
             return getLastBlock();
         }
@@ -219,12 +217,21 @@ public class RayTrace
      */
     public CommonBlock getLastBlock()
     {
-        if (this.length > this.range || this.lastBlock.getLocation().getY() < this.minWorldY || this.lastBlock
-                .getLocation().getY() > this.maxWorldY)
+        if (this.length > this.range || this.lastBlock.getLocation().getY() < this.minWorldY || this.lastBlock.getLocation().getY() > this.maxWorldY)
         {
             return null;
         }
         return this.lastBlock;
+    }
+
+    /**
+     * Returns the length of the last ray (the distance from the origin to the target block).
+     * 
+     * @return the length
+     */
+    public double getLength()
+    {
+        return this.length;
     }
 
     /**
@@ -233,8 +240,9 @@ public class RayTrace
     private void init()
     {
         this.length = 0;
+        this.origin = this.origin.add(0, ((Double) Gunsmith.getConfiguration().get("PLAYER_EYE_HEIGHT")), 0);
         this.currentX = this.origin.getX();
-        this.currentY = this.origin.getY() + ((Double) Gunsmith.getConfiguration().get("PLAYER_EYE_HEIGHT"));
+        this.currentY = this.origin.getY();
         this.currentZ = this.origin.getZ();
         this.targetX = (int) Math.floor(this.currentX);
         this.targetY = (int) Math.floor(this.currentY);
@@ -247,12 +255,25 @@ public class RayTrace
         // not sure how to handle this in a context separated from the implementation.
         // Possibly something attached to the world to detail the different orientations
         // of the axis and which directions they represent.
+        //
+        // Currently:
+        // 0 degrees of yaw is the direction of the positive x axis going clockwise towards the positive z axis first.
         this.rotX = (this.yaw + 90) % 360;
         this.rotY = this.pitch * -1;
         this.rotYCos = Math.cos(Math.toRadians(this.rotY));
         this.rotYSin = Math.sin(Math.toRadians(this.rotY));
         this.rotXCos = Math.cos(Math.toRadians(this.rotX));
         this.rotXSin = Math.sin(Math.toRadians(this.rotX));
+        /*System.out.println("RayTrace init:");
+        System.out.println(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", 
+                length, range, currentX, currentY, currentZ, 
+                targetX, targetY, targetZ, lastX, lastY, lastZ, rotX, rotY, rotXSin, rotXCos, rotYSin, rotYCos));
+        System.out.print("Traversal Blocks: ");
+        for(CommonMaterial<?> t: this.traversalBlocks)
+        {
+            System.out.print(t.toString() + " ");
+        }
+        System.out.println();*/
     }
 
     /**
@@ -266,6 +287,8 @@ public class RayTrace
         {
             step();
         }
+        this.targetBlock = this.world.getBlockAt(this.targetX, this.targetY, this.targetZ);
+        this.lastBlock = this.world.getBlockAt(this.lastX, this.lastY, this.lastZ);
     }
 
     /**
@@ -273,6 +296,7 @@ public class RayTrace
      */
     private void step()
     {
+
         this.lastX = this.targetX;
         this.lastY = this.targetY;
         this.lastZ = this.targetZ;
@@ -281,27 +305,30 @@ public class RayTrace
         {
             this.length += this.step;
 
-            this.verticalLength = (this.length * this.rotYCos);
-            this.currentX = (this.length * this.rotYSin);
-            this.currentY = (this.verticalLength * this.rotXCos);
-            this.currentZ = (this.verticalLength * this.rotXSin);
+            this.currentX = (this.length * this.rotYCos) * this.rotXCos;
+            this.currentY = (this.length * this.rotYSin);
+            this.currentZ = (this.length * this.rotYCos) * this.rotXSin;
 
             this.targetX = (int) Math.floor(this.currentX + this.origin.getX());
             this.targetY = (int) Math.floor(this.currentY + this.origin.getY());
             this.targetZ = (int) Math.floor(this.currentZ + this.origin.getZ());
 
-        } while ((this.length <= this.range) && ((this.targetX == this.lastX)
-                && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
+        } while ((this.length <= this.range) && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
 
-        if (!this.traversalBlocks.contains(this.world.getBlockAt(this.targetX, this.targetY, this.targetZ).getMaterial(
-
-        )))
+        /*System.out.println("RayTrace step:");
+        System.out.println(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", length, 
+                range, currentX, currentY, currentZ, 
+                targetX, targetY, targetZ, lastX, lastY, lastZ, rotX, rotY, rotXSin, rotXCos, rotYSin, rotYCos));*/
+        if (!this.traversalBlocks.contains(this.world.getBlockAt(this.targetX, this.targetY, this.targetZ).getMaterial()))
         {
+            //System.out.println("Reached non-traversal block, ending trace. Block reached: " + this.world.getBlockAt(this.targetX, this.targetY, 
+                    //this.targetZ).getMaterial().toString());
             return;
         }
 
         if (this.length > this.range || this.targetY > this.maxWorldY || this.targetY < this.minWorldY)
         {
+            //System.out.println("Trace passed out of bounds. Setting target to last");
             this.targetX = this.lastX;
             this.targetY = this.lastY;
             this.targetZ = this.lastZ;
@@ -328,10 +355,9 @@ public class RayTrace
                 {
                     this.length += this.step;
 
-                    this.verticalLength = (this.length * this.rotYCos);
-                    this.currentX = (this.length * this.rotYSin);
-                    this.currentY = (this.verticalLength * this.rotXCos);
-                    this.currentZ = (this.verticalLength * this.rotXSin);
+                    this.currentX = (this.length * this.rotYCos) * this.rotXCos;
+                    this.currentY = (this.length * this.rotYSin);
+                    this.currentZ = (this.length * this.rotYCos) * this.rotXSin;
 
                     this.targetX = (int) Math.floor(this.currentX + this.origin.getX());
                     this.targetY = (int) Math.floor(this.currentY + this.origin.getY());
@@ -352,10 +378,9 @@ public class RayTrace
                 {
                     this.length += this.step;
 
-                    this.verticalLength = (this.length * this.rotYCos);
-                    this.currentX = (this.length * this.rotYSin);
-                    this.currentY = (this.verticalLength * this.rotXCos);
-                    this.currentZ = (this.verticalLength * this.rotXSin);
+                    this.currentX = (this.length * this.rotYCos) * this.rotXCos;
+                    this.currentY = (this.length * this.rotYSin);
+                    this.currentZ = (this.length * this.rotYCos) * this.rotXSin;
 
                     this.targetX = (int) Math.floor(this.currentX + this.origin.getX());
                     this.targetY = (int) Math.floor(this.currentY + this.origin.getY());
@@ -365,5 +390,9 @@ public class RayTrace
                         && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
             }
         }
+        /*System.out.println("RayTrace OutOfWorld:");
+        System.out.println(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", 
+                length, range, currentX, currentY, currentZ, 
+                targetX, targetY, targetZ, lastX, lastY, lastZ, rotX, rotY, rotXSin, rotXCos, rotYSin, rotYCos));*/
     }
 }

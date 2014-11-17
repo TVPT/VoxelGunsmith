@@ -68,22 +68,23 @@ public class Configuration implements IConfiguration
     }
 
     @Override
-    public void registerContainer(Object container)
+    public void registerContainer(Class<?> container)
     {
-        String name = container.getClass().getName();
+        String name = container.getName();
         if (this.containers.containsKey(name))
         {
             throw new IllegalArgumentException("Cannot register an already registered container");
         }
-        this.containers.put(name, container.getClass());
+        this.containers.put(name, container);
         //Load default values from the container
-        for (Field f : container.getClass().getFields())
+        for (Field f : container.getDeclaredFields())
         {
             String n = f.getName();
             try
             {
                 Object v = f.get(container);
                 set(n, v);
+                System.out.println("Set configuration value " + n + " to " + v.toString());
             } catch (IllegalArgumentException e)
             {
                 e.printStackTrace();

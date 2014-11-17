@@ -100,16 +100,15 @@ public abstract class CommandArgument<T>
     }
 
     /**
-     * Gets the current choice for the ISniper executing the command containing this argument. The choice should
-     * already be validated after parsing.
+     * Gets the current choice for the ISniper executing the command containing this argument. The choice should already be validated after parsing.
      *
      * @return the parsed choice
      */
     public abstract T getChoice();
 
     /**
-     * Sets the current choice for the ISniper executing the command containing this argument. The choice will be
-     * re-validated.
+     * Sets the current choice for the ISniper executing the command containing this argument. The choice will be re-validated.
+     * 
      * @param choice the choice
      * @return true if validated and successful
      */
@@ -118,8 +117,7 @@ public abstract class CommandArgument<T>
     /**
      * Returns the sub-part of the usage string representing this argument.
      * 
-     * @param optional
-     *            whether this argument is optional
+     * @param optional whether this argument is optional
      * @return the part of the usage string
      */
     public abstract String getUsageString(boolean optional);
@@ -127,12 +125,9 @@ public abstract class CommandArgument<T>
     /**
      * Attempts to match the argument in the argument array at the startPosition to this arguments parameters.
      * 
-     * @param user
-     *            the command sender
-     * @param allArgs
-     *            the argument array
-     * @param startPosition
-     *            the current position of the argument validation
+     * @param user the command sender
+     * @param allArgs the argument array
+     * @param startPosition the current position of the argument validation
      * @return the match result
      */
     public abstract int matches(ISniper user, String[] allArgs, int startPosition);
@@ -140,20 +135,16 @@ public abstract class CommandArgument<T>
     /**
      * Parses the args array at the startPosition for this argument and stores it. Sets the flag if the argument is present.
      * 
-     * @param user
-     *            the command sender
-     * @param allArgs
-     *            the args array
-     * @param startPosition
-     *            the current position of the argument validation
+     * @param user the command sender
+     * @param allArgs the args array
+     * @param startPosition the current position of the argument validation
      */
     public abstract void parse(ISniper user, String[] allArgs, int startPosition);
 
     /**
      * This method is called instead of parse() when an optional CommandArgument is skipped (i.e. not matched).
      *
-     * @param user
-     *            The user executing this method
+     * @param user The user executing this method
      */
     public abstract void skippedOptional(ISniper user);
 
@@ -165,12 +156,9 @@ public abstract class CommandArgument<T>
     /**
      * Returns a {@link List} of possible values based on the current value of this argument.
      * 
-     * @param user
-     *            the command sender
-     * @param allArgs
-     *            the args array
-     * @param startPosition
-     *            the current position of the argument validation
+     * @param user the command sender
+     * @param allArgs the args array
+     * @param startPosition the current position of the argument validation
      * @return a list of possible values
      */
     public abstract List<String> tabComplete(ISniper user, String[] allArgs, int startPosition);

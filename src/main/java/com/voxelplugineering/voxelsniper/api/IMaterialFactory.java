@@ -28,8 +28,7 @@ import com.voxelplugineering.voxelsniper.common.CommonMaterial;
 /**
  * A factory for {@link CommonMaterial}s wrapping a Material from the underlying implementation.
  * 
- * @param <T>
- *            The material class of the specific implementation
+ * @param <T> The material class of the specific implementation
  */
 public interface IMaterialFactory<T> extends IManager
 {
@@ -37,8 +36,7 @@ public interface IMaterialFactory<T> extends IManager
     /**
      * Get the material with the given name.
      * 
-     * @param name
-     *            the name of the material
+     * @param name the name of the material
      * @return the associated {@link CommonMaterial}
      */
     CommonMaterial<T> getMaterial(String name);
@@ -46,10 +44,8 @@ public interface IMaterialFactory<T> extends IManager
     /**
      * Registers a material from the specific implementation with this factory.
      * 
-     * @param name
-     *            the name of the material
-     * @param material
-     *            the material object from the underlying implementation.
+     * @param name the name of the material
+     * @param material the material object from the underlying implementation.
      */
     void registerMaterial(String name, CommonMaterial<T> material);
 

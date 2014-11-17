@@ -28,41 +28,50 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.IOType;
 import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.ExecutableNode;
+import com.thevoxelbox.vsl.node.Node;
 
 /**
- * A visual scripting node to set the voxel at a location to the material.
+ * Node to get location and material from block
  */
-public class MaterialSetNode extends ExecutableNode
+public class BlockBreakNode extends Node
 {
 
     /**
-     * Constructs a new MaterialSetNode
+     * Creates a new node.
      */
-    public MaterialSetNode()
+    public BlockBreakNode()
     {
-        super("MaterialSet", "world");
-        addInput("material", IOType.WILD, true, null);
-        addInput("targetBlock", IOType.WILD, true, null);
+        super("BlockLocation", "block");
+        addInput("block", IOType.WILD, true, null);
+        addOutput("location", IOType.WILD, this);
+        addOutput("material", IOType.WILD, this);
     }
 
     @Override
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {
         /*
-         *     ALOAD location
-         *     ALOAD material
-         *INVOKEVIRTUAL com/voxelplugineering/voxelsniper/common/CommonBlock.setMaterial (Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;)V
+         * ALOAD block
+         * INVOKEVIRTUAL CommonBlock.getLocation () : CommonLocation
+         * ASTORE location
+         * ALOAD block
+         * INVOKEVIRTUAL CommonBlock.getMaterial () : CommonMaterial
+         * ASTORE material
          */
-        int targetBlock = getInput("targetBlock").getSource().get();
-        int newMaterial = getInput("material").getSource().get();
-        mv.visitVarInsn(Opcodes.ALOAD, targetBlock);
+        int block = getInput("block").getSource().get();
+        mv.visitVarInsn(Opcodes.ALOAD, block);
         mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonBlock");
-        mv.visitVarInsn(Opcodes.ALOAD, newMaterial);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonMaterial");
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonBlock", "setMaterial",
-                "(Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;)V", false);
-        return localsIndex;
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonBlock", "getLocation",
+                "()Lcom/voxelplugineering/voxelsniper/common/CommonLocation;", false);
+        mv.visitVarInsn(Opcodes.ASTORE, localsIndex);
+        setOutput("location", localsIndex);
+        mv.visitVarInsn(Opcodes.ALOAD, block);
+        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonBlock");
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonBlock", "getMaterial",
+                "()Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;", false);
+        mv.visitVarInsn(Opcodes.ASTORE, localsIndex + 1);
+        setOutput("material", localsIndex + 1);
+        return localsIndex + 2;
     }
 
 }

@@ -40,13 +40,10 @@ public abstract class CommonBrushLoader implements IBrushLoader
 {
 
     /**
-     * Deserializes a NodeGraph from the given byte array and loads the NodeGraph into an appropriate implementation of
-     * the brush.
+     * Deserializes a NodeGraph from the given byte array and loads the NodeGraph into an appropriate implementation of the brush.
      *
-     * @param classLoader
-     *            the class loader to use to load the compiled class
-     * @param serialized
-     *            the serialized version of the brush
+     * @param classLoader the class loader to use to load the compiled class
+     * @param serialized the serialized version of the brush
      * @return the class for the brush
      */
     public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, byte[] serialized)
@@ -57,7 +54,7 @@ public abstract class CommonBrushLoader implements IBrushLoader
             ObjectInputStream ois = new ObjectInputStream(stream);
             NodeGraph brush = (NodeGraph) ois.readObject();
             @SuppressWarnings("unchecked")
-            Class<? extends IBrush> compiled = (Class<? extends IBrush>) brush.compile(classLoader);
+            Class<? extends IBrush> compiled = (Class<? extends IBrush>) classLoader.getCompiler().compile(classLoader, brush);
             return compiled;
         } catch (IOException e)
         {

@@ -43,4 +43,11 @@ public interface IVoxelSniper
      */
     IBrushManager getBrushManager();
 
+    /**
+     * Returns the ClassLoader used to load Gunsmith and its libraries.
+     * 
+     * @return the classloader
+     */
+    ClassLoader getGunsmithClassLoader();
+
 }

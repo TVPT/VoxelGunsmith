@@ -81,8 +81,7 @@ public class CommonVector implements Serializable, Cloneable
     /**
      * Returns a new vector representing this vector added to the given vector.
      * 
-     * @param v
-     *            the vector to add onto this vector
+     * @param v the vector to add onto this vector
      * @return the new vector
      */
     public CommonVector add(CommonVector v)
@@ -93,8 +92,7 @@ public class CommonVector implements Serializable, Cloneable
     /**
      * Returns a new vector representing this vector scaled by the given scalar quantity.
      * 
-     * @param scalar
-     *            the amount to scale this vector
+     * @param scalar the amount to scale this vector
      * @return the new vector
      */
     public CommonVector multipy(double scalar)
@@ -105,8 +103,7 @@ public class CommonVector implements Serializable, Cloneable
     /**
      * Returns a new vector representing this vector projected onto the given vector.
      * 
-     * @param b
-     *            the vector to project this vector onto
+     * @param b the vector to project this vector onto
      * @return the new vector
      */
     public CommonVector project(CommonVector b)
@@ -119,8 +116,7 @@ public class CommonVector implements Serializable, Cloneable
     /**
      * Returns the dot product of this vector with the given vector.
      * 
-     * @param v
-     *            the other vector
+     * @param v the other vector
      * @return the dot product
      */
     public double dot(CommonVector v)
@@ -131,8 +127,7 @@ public class CommonVector implements Serializable, Cloneable
     /**
      * Returns a new vector representing the cross product of this vector with the given vector.
      * 
-     * @param v
-     *            the other vector
+     * @param v the other vector
      * @return the cross product result
      */
     public CommonVector cross(CommonVector v)
@@ -173,6 +168,8 @@ public class CommonVector implements Serializable, Cloneable
 
     /**
      * Returns an exact copy of this vector.
+     * 
+     * @return the clone
      */
     public CommonVector clone()
     {

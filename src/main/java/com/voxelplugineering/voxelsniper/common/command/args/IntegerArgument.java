@@ -73,9 +73,11 @@ public class IntegerArgument extends CommandArgument<Integer>
      */
     public boolean setChoice(Integer val)
     {
-        if (val == null) {
+        if (val == null)
+        {
             this.value = 0;
-        } else {
+        } else
+        {
             this.value = val;
         }
         return true;

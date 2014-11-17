@@ -34,8 +34,7 @@ import com.voxelplugineering.voxelsniper.api.IMaterialFactory;
 /**
  * A standard factory for creating static copies of {@link CommonMaterial} proxying materials in the underlying implementation.
  * 
- * @param <T>
- *            the underlying material type
+ * @param <T> the underlying material type
  */
 public class CommonMaterialFactory<T> implements IMaterialFactory<T>
 {
@@ -74,7 +73,7 @@ public class CommonMaterialFactory<T> implements IMaterialFactory<T>
     {
         checkArgument(name.length() != 0, "Name of material cannot be empty");
 
-        return this.registry.get(name);
+        return this.registry.get(name.toUpperCase());
     }
 
     @Override
@@ -88,10 +87,10 @@ public class CommonMaterialFactory<T> implements IMaterialFactory<T>
     {
         checkNotNull(material, "Material being registered cannot be null");
         checkArgument(name.length() != 0, "Name of material cannot be empty");
-
+        name = name.toUpperCase();
         this.registry.put(name, material);
 
-        if ("air".equalsIgnoreCase(name) || "empty".equalsIgnoreCase(name))
+        if ("AIR".equalsIgnoreCase(name) || "EMPTY".equalsIgnoreCase(name))
         {
             this.air = material;
         }

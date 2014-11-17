@@ -34,8 +34,7 @@ public interface ICommandRegistrar
     /**
      * Registers the command with the underlying API.
      * 
-     * @param command
-     *            the command to be registered
+     * @param command the command to be registered
      */
     void registerCommand(Command command);
 

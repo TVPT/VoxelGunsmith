@@ -74,10 +74,8 @@ public class FileBrushLoader extends CommonBrushLoader
     /**
      * Loads the brush stored in the given file. The brush is loaded with the given ClassLoader.
      * 
-     * @param classLoader
-     *            the classloader to load the brush with
-     * @param data
-     *            the file to load the brush from
+     * @param classLoader the classloader to load the brush with
+     * @param data the file to load the brush from
      * @return the brush
      */
     public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, File data)
@@ -101,7 +99,7 @@ public class FileBrushLoader extends CommonBrushLoader
                 din = new DataInputStream(new FileInputStream(data));
                 fileVersion = din.readInt();
             }
-            int brushVersion = din.readInt();
+            //int brushVersion = din.readInt();
             //IBrush brush = Gunsmith.getBrushManager();
             //TODO
             din.close();
@@ -120,12 +118,9 @@ public class FileBrushLoader extends CommonBrushLoader
      * <p>
      * TODO: add a boolean to ignore file extension and load as if it was a .brush file.
      * 
-     * @param classLoader
-     *            the class loader to load the brush with
-     * @param name
-     *            the name of the brush to load
-     * @param directory
-     *            the directory to load the brush from
+     * @param classLoader the class loader to load the brush with
+     * @param name the name of the brush to load
+     * @param directory the directory to load the brush from
      * @return the brush
      */
     public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, String name, File directory)
@@ -157,8 +152,7 @@ public class FileBrushLoader extends CommonBrushLoader
     /**
      * Converts the given .vsl script to a .brush file.
      * 
-     * @param serFile
-     *            the .vsl script to convert
+     * @param serFile the .vsl script to convert
      * @return a success flag
      */
     public static boolean convertVSLGraph(File serFile)
@@ -169,8 +163,7 @@ public class FileBrushLoader extends CommonBrushLoader
     /**
      * For future file format changes to support converting old file formats to the most recent file format.
      * 
-     * @param old
-     *            the old file
+     * @param old the old file
      * @return a success flag
      */
     public static boolean convertToVersion(File old)

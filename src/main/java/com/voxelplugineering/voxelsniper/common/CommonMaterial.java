@@ -26,8 +26,7 @@ package com.voxelplugineering.voxelsniper.common;
 /**
  * Represents a Material type
  *
- * @param <T>
- *            The type of material being wrapped
+ * @param <T> The type of material being wrapped
  */
 public abstract class CommonMaterial<T>
 {

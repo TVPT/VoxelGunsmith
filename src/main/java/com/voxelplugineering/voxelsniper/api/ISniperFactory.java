@@ -26,8 +26,7 @@ package com.voxelplugineering.voxelsniper.api;
 /**
  * A factory for creating instances of {@link ISniper} from the specific implementation's user class.
  * 
- * @param <T>
- *            the underlying Player class
+ * @param <T> the underlying Player class
  */
 public interface ISniperFactory<T> extends IManager
 {
@@ -35,8 +34,7 @@ public interface ISniperFactory<T> extends IManager
     /**
      * Returns the {@link ISniper} wrapping the given specific implementation's user.
      * 
-     * @param user
-     *            the user object from the specific implementation
+     * @param user the user object from the specific implementation
      * @return the {@link ISniper} for the user
      */
     ISniper getSniper(T user);

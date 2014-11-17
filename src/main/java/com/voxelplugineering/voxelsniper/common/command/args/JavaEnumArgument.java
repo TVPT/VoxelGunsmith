@@ -53,7 +53,6 @@ public class JavaEnumArgument<T extends Enum<T>> extends CommandArgument<T>
      * @param clazz the class of the enum
      * @param defaultValue the default value to return
      * @param required whether this argument is required for validation
-     *
      * @throws Exception if the enum
      */
     public JavaEnumArgument(String name, boolean required, Class<T> clazz, T defaultValue) throws Exception

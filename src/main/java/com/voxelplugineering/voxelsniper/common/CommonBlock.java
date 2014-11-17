@@ -74,11 +74,11 @@ public class CommonBlock
     /**
      * Sets the material of the voxel at this location.
      * 
-     * @param material
-     *            the new material
+     * @param material the new material
      */
     public void setMaterial(CommonMaterial<?> material)
     {
+        //System.out.println("InBlock " + this.location.toString());
         this.material = material;
         this.location.getWorld().setBlockAt(this.location, material);
     }

@@ -73,7 +73,8 @@ public class DoubleArgument extends CommandArgument<Double>
      */
     public boolean setChoice(Double val)
     {
-        if (val == null) {
+        if (val == null)
+        {
             this.value = 0;
         } else
         {

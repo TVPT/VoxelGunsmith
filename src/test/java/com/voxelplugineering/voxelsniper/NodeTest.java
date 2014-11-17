@@ -26,8 +26,7 @@ package com.voxelplugineering.voxelsniper;
 import org.junit.Test;
 
 /**
- * Standard node test class.
- * TODO Actually write some tests!
+ * Standard node test class. TODO Actually write some tests!
  */
 public class NodeTest
 {

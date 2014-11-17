@@ -24,14 +24,16 @@
 package com.voxelplugineering.voxelsniper.config;
 
 /**
- * Default base configuration values
+ * Default base configuration values. All fields should be declared as static and final.
  */
 public class BaseConfiguration
 {
-    static double PLAYER_EYE_HEIGHT = 0.7;
-    static int MINIMUM_WORLD_DEPTH = 0;
-    static int MAXIMUM_WORLD_HEIGHT = 255;
-    static double RAY_TRACE_STEP = 0.2;
-    static int RAY_TRACE_RANGE = 250;
+
+    static final double PLAYER_EYE_HEIGHT = 1.62;
+    static final int MINIMUM_WORLD_DEPTH = 0;
+    static final int MAXIMUM_WORLD_HEIGHT = 255;
+    static final double RAY_TRACE_STEP = 0.2;
+    static final double RAY_TRACE_RANGE = 250;
+    static final String DEFAULT_BRUSH = "snipe";
 
 }

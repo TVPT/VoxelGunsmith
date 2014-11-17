@@ -25,8 +25,9 @@ package com.voxelplugineering.voxelsniper.common.commands;
 
 import java.util.Map;
 
-import com.voxelplugineering.voxelsniper.api.IBrush;
+import com.voxelplugineering.voxelsniper.api.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.ISniper;
+import com.voxelplugineering.voxelsniper.common.CommonMaterial;
 import com.voxelplugineering.voxelsniper.common.command.Command;
 import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
 import com.voxelplugineering.voxelsniper.common.command.args.RawArgument;
@@ -34,16 +35,16 @@ import com.voxelplugineering.voxelsniper.common.command.args.RawArgument;
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.
  */
-public class BrushCommand extends Command
+public class MaterialCommand extends Command
 {
 
     /**
      * Constructs a new BrushCommand
      */
-    public BrushCommand()
+    public MaterialCommand()
     {
-        super("brush", "Sets your current brush");
-        setAliases("b", "brush");
+        super("mat", "Sets your current brush material");
+        setAliases("v");
         addArgument(new RawArgument("raw"));
     }
 
@@ -53,10 +54,15 @@ public class BrushCommand extends Command
         String[] s = ((RawArgument) args.get("raw")).getChoice();
         if (s.length >= 1)
         {
-            String brushName = s[0];
-            IBrush brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName);
-            sniper.setCurrentBrush(brush);
-            sniper.sendMessage("Your brush has been set to " + brushName);
+            String materialName = s[0];
+            CommonMaterial<?> material = Gunsmith.getMaterialFactory().getMaterial(materialName);
+            if (material == null)
+            {
+                sniper.sendMessage("Could not find that material.");
+                return false;
+            }
+            sniper.sendMessage("Set material to " + material.toString());
+            sniper.getBrushSettings().set("setMaterial", material);
             return true;
         }
         return false;

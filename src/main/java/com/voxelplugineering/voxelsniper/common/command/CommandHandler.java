@@ -61,8 +61,7 @@ public class CommandHandler
     /**
      * Sets the registrar for this handler.
      * 
-     * @param registrar
-     *            the new registrar
+     * @param registrar the new registrar
      */
     public void setRegistrar(ICommandRegistrar registrar)
     {
@@ -72,8 +71,7 @@ public class CommandHandler
     /**
      * Registers a new command with this system. Will overwrite any aliases already registered.
      * 
-     * @param cmd
-     *            the new command
+     * @param cmd the new command
      */
     public void registerCommand(Command cmd)
     {
@@ -88,12 +86,9 @@ public class CommandHandler
     /**
      * Attempts to execute the given command.
      * 
-     * @param player
-     *            the command sender
-     * @param command
-     *            the command
-     * @param args
-     *            the command's arguments
+     * @param player the command sender
+     * @param command the command
+     * @param args the command's arguments
      */
     public void onCommand(ISniper player, String command, String[] args)
     {
@@ -115,10 +110,8 @@ public class CommandHandler
     /**
      * Attempts to execute the given command.
      * 
-     * @param player
-     *            the command sender
-     * @param fullCommand
-     *            the full command
+     * @param player the command sender
+     * @param fullCommand the full command
      */
     public void onCommand(ISniper player, String fullCommand)
     {

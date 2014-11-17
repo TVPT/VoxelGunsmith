@@ -24,9 +24,11 @@
 package com.voxelplugineering.voxelsniper.common.event;
 
 import com.google.common.eventbus.Subscribe;
+import com.thevoxelbox.vsl.VariableScope;
+import com.thevoxelbox.vsl.api.IVariableScope;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
-import com.voxelplugineering.voxelsniper.common.CommonVector;
+import com.voxelplugineering.voxelsniper.util.RayTrace;
 
 /**
  * An event handler for the default behavior for events.
@@ -43,8 +45,7 @@ public class CommonEventHandler
     }
 
     /**
-     * Processes the given {@link com.voxelplugineering.voxelsniper.common.event.SnipeEvent} and performs all
-     * necessary checks of the event.
+     * Processes the given {@link com.voxelplugineering.voxelsniper.common.event.SnipeEvent} and performs all necessary checks of the event.
      *
      * @param event the snipe event to perform
      */
@@ -52,7 +53,20 @@ public class CommonEventHandler
     public void onSnipe(SnipeEvent event)
     {
         ISniper sniper = event.getSniper();
-        CommonVector direction = event.getDirection();
         CommonLocation location = sniper.getLocation();
+        double yaw = event.getYaw();
+        double pitch = event.getPitch();
+        RayTrace ray = new RayTrace(location, yaw, pitch);
+        ray.trace();
+
+        IVariableScope brushVariables = new VariableScope(sniper.getBrushSettings());
+        brushVariables.set("origin", location);
+        brushVariables.set("yaw", yaw);
+        brushVariables.set("pitch", pitch);
+        brushVariables.set("targetBlock", ray.getTargetBlock());
+        brushVariables.set("lastBlock", ray.getLastBlock());
+        brushVariables.set("length", ray.getLength());
+        System.out.println("Snipe at " + ray.getTargetBlock().getLocation().toString());
+        sniper.getCurrentBrush().run(brushVariables);
     }
 }

@@ -34,8 +34,7 @@ public interface IWorldFactory
     /**
      * Returns the {@link CommonWorld} representing the specific implementation's world with the given name.
      * 
-     * @param name
-     *            the name of the world
+     * @param name the name of the world
      * @return the {@link CommonWorld}
      */
     CommonWorld getWorld(String name);

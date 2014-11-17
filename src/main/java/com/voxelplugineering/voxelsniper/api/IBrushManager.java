@@ -38,18 +38,15 @@ public interface IBrushManager extends IManager
      * Loads the given brush into this manager. If the brush had been previously loaded then a check is done of the brush version and the copy with
      * the higher version is kept loaded.
      * 
-     * @param identifier
-     *            the brush name
-     * @param clazz
-     *            the brush class
+     * @param identifier the brush name
+     * @param clazz the brush class
      */
     void loadBrush(String identifier, Class<? extends IBrush> clazz);
 
     /**
      * Walks through registered loaders in order and attempts to load the brush with the given name.
      * 
-     * @param identifier
-     *            the brush name
+     * @param identifier the brush name
      */
     void loadBrush(String identifier);
 
@@ -57,8 +54,7 @@ public interface IBrushManager extends IManager
      * Adds a loader to the list of loaders used by this manager for loading brushes by name. The loader is added top the end of the existing list of
      * loaders.
      * 
-     * @param loader
-     *            the new loader
+     * @param loader the new loader
      */
     void addLoader(IBrushLoader loader);
 
@@ -66,8 +62,7 @@ public interface IBrushManager extends IManager
      * Returns a new instance of the brush with the given name if it has been previously loaded into this manager. If the brush is not found in this
      * manager the request is passed up to the parent brush manager.
      * 
-     * @param identifier
-     *            the brush name to be loaded
+     * @param identifier the brush name to be loaded
      * @return an instance of the brush
      */
     IBrush getNewBrushInstance(String identifier);
@@ -76,8 +71,7 @@ public interface IBrushManager extends IManager
      * Sets the parent brush loader, when a request for a brush instance is made and it is not found within this manager the request is passed up to
      * the parent manager.
      * 
-     * @param parent
-     *            the parent brush loader
+     * @param parent the parent brush loader
      */
     void setParent(IBrushManager parent);
 

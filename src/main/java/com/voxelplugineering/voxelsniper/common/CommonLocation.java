@@ -126,12 +126,9 @@ public final class CommonLocation implements Cloneable
     /**
      * Returns a new {@link CommonLocation} which represents this position offset by the given amounts.
      * 
-     * @param x
-     *            the X offset
-     * @param y
-     *            the Y offset
-     * @param z
-     *            the Z offset
+     * @param x the X offset
+     * @param y the Y offset
+     * @param z the Z offset
      * @return the new {@link CommonLocation}
      */
     public CommonLocation add(double x, double y, double z)
@@ -148,5 +145,17 @@ public final class CommonLocation implements Cloneable
     public CommonLocation clone()
     {
         return new CommonLocation(this.world, this.x, this.y, this.z);
+    }
+
+    /**
+     * Returns a String representation of this location. The format is as follows:
+     * <p>
+     * CommonLocation ({this.world.getName()}: {this.x}, {this.y}, {this.z})
+     * 
+     * @return the string representation
+     */
+    public String toString()
+    {
+        return "CommonLocation (" + this.world.getName() + ": " + this.x + ", " + this.y + ", " + this.z + ")";
     }
 }
