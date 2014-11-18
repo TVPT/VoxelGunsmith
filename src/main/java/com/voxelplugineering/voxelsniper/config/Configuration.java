@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.voxelplugineering.voxelsniper.api.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IConfiguration;
 
 /**
@@ -84,7 +85,7 @@ public class Configuration implements IConfiguration
             {
                 Object v = f.get(container);
                 set(n, v);
-                System.out.println("Set configuration value " + n + " to " + v.toString());
+                Gunsmith.getLogger().info("Set configuration value " + n + " to " + v.toString());
             } catch (IllegalArgumentException e)
             {
                 e.printStackTrace();

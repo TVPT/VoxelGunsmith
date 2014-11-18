@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
+import com.voxelplugineering.voxelsniper.api.Gunsmith;
+
 /**
  * A combination location and material representation of a single voxel. The location is immutable.
  */
@@ -78,7 +80,7 @@ public class CommonBlock
      */
     public void setMaterial(CommonMaterial<?> material)
     {
-        //System.out.println("InBlock " + this.location.toString());
+        //Gunsmith.getLogger().debug("InBlock " + this.location.toString());
         this.material = material;
         this.location.getWorld().setBlockAt(this.location, material);
     }

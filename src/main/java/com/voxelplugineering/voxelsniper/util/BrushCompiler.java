@@ -45,7 +45,6 @@ public class BrushCompiler implements IGraphCompiler, Opcodes
      * 
      * @param cl the classloader to define the class with
      * @param graph the {@link com.thevoxelbox.vsl.api.INodeGraph} to compile
-     * 
      * @return The new class
      * @throws NullPointerException if the graph's starting node is null
      * @throws GraphCompilationException if there is an error within the graph

@@ -26,6 +26,7 @@ package com.voxelplugineering.voxelsniper.common.event;
 import com.google.common.eventbus.Subscribe;
 import com.thevoxelbox.vsl.VariableScope;
 import com.thevoxelbox.vsl.api.IVariableScope;
+import com.voxelplugineering.voxelsniper.api.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
 import com.voxelplugineering.voxelsniper.util.RayTrace;
@@ -66,7 +67,7 @@ public class CommonEventHandler
         brushVariables.set("targetBlock", ray.getTargetBlock());
         brushVariables.set("lastBlock", ray.getLastBlock());
         brushVariables.set("length", ray.getLength());
-        System.out.println("Snipe at " + ray.getTargetBlock().getLocation().toString());
+        Gunsmith.getLogger().debug("Snipe at " + ray.getTargetBlock().getLocation().toString());
         sniper.getCurrentBrush().run(brushVariables);
     }
 }

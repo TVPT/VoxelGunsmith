@@ -61,7 +61,7 @@ public class TemporaryBrushBuilder
             Gunsmith.getGlobalBrushManager().loadBrush("snipe", compiled);
         } catch (Exception e)
         {
-            System.out.println("Failed to create Sniper brush");
+            Gunsmith.getLogger().error(e, "Failed to create Sniper brush");
         }
     }
 

@@ -30,6 +30,7 @@ import com.voxelplugineering.voxelsniper.common.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.common.event.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
 import com.voxelplugineering.voxelsniper.config.Configuration;
+import com.voxelplugineering.voxelsniper.logging.CommonLoggingDistributor;
 
 /**
  * The Core of VoxelGunsmith, provides access to handlers and validates initialization is done completely and correctly.
@@ -84,6 +85,10 @@ public final class Gunsmith
      * The global configuration container for Gunsmith.
      */
     private static IConfiguration configuration = null;
+    /**
+     * The global log distributor for Gunsmith.
+     */
+    private static ILoggingDistributor logDistributor = null;
 
     /**
      * The initialization state of Gunsmith.
@@ -307,6 +312,26 @@ public final class Gunsmith
     }
 
     /**
+     * Returns the global logger for Gunsmith.
+     * 
+     * @return the logger
+     */
+    public static ILogger getLogger()
+    {
+        return logDistributor;
+    }
+
+    /**
+     * Returns the logging distribution manager for Gunsmith.
+     * 
+     * @return
+     */
+    public static ILoggingDistributor getLoggingDistributor()
+    {
+        return logDistributor;
+    }
+
+    /**
      * Should be called at the start of the initialization process. Sets up default states before the specific implementation registeres its
      * overrides.
      */
@@ -323,6 +348,9 @@ public final class Gunsmith
         configuration = new Configuration();
         configuration.registerContainer(BaseConfiguration.class);
         //configuration is also setup here so that any values can be overwritten from the specific impl
+
+        logDistributor = new CommonLoggingDistributor();
+        //TODO register standard gunsmith loggers here
     }
 
     /**
@@ -332,12 +360,12 @@ public final class Gunsmith
     {
         check();
         if (plugin == null || globalBrushManager == null || defaultBrushLoader == null || permissionProxy == null || materialFactory == null
-                || worldFactory == null || sniperManager == null)
+                || worldFactory == null || sniperManager == null || logDistributor == null)
         {
             isPluginEnabled = false;
             throw new IllegalStateException("VoxelSniper was not properly setup while loading");
         }
-        System.out.println("Gunsmith initialization finalized.");
+        getLogger().info("Gunsmith initialization finalized.");
         isPluginEnabled = true;
     }
 
@@ -384,18 +412,10 @@ public final class Gunsmith
             sniperManager.stop();
         }
         sniperManager = null;
+        if (logDistributor != null)
+        {
+            logDistributor.stop();
+        }
+        logDistributor = null;
     }
-
 }
-
-/*
- * TODO:
- * ------------------------------------------
- * -Logging with Log4j preferably
- * -Configuration handled properly
- * -comment everything please!!!! (especially the interfaces and Common utility classes)
- * -allow naming loaders and selecting specific loaders when loading brushes eg. global:ball or name:other_persons_brush
- * 
- * 
- * 
- */

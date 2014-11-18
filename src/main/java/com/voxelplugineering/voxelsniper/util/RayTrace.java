@@ -67,7 +67,6 @@ public class RayTrace
      * 
      * length:        the length of the ray
      * range:         the maximum length of the ray before stopping
-     * hLength:       the vertical length of the ray
      * minWorldY:     the minimum y value of the world
      * maxWorldY:     the maximum y value of the world
      * yaw:           the yaw of the direction of the ray
@@ -82,7 +81,6 @@ public class RayTrace
 
     private double length;
     private double range;
-    private double verticalLength;
     private int minWorldY;
     private int maxWorldY;
     private double yaw;
@@ -264,16 +262,15 @@ public class RayTrace
         this.rotYSin = Math.sin(Math.toRadians(this.rotY));
         this.rotXCos = Math.cos(Math.toRadians(this.rotX));
         this.rotXSin = Math.sin(Math.toRadians(this.rotX));
-        /*System.out.println("RayTrace init:");
-        System.out.println(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", 
+        /*Gunsmith.getLogger().debug("RayTrace init:");
+        Gunsmith.getLogger().debug(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", 
                 length, range, currentX, currentY, currentZ, 
                 targetX, targetY, targetZ, lastX, lastY, lastZ, rotX, rotY, rotXSin, rotXCos, rotYSin, rotYCos));
-        System.out.print("Traversal Blocks: ");
+        Gunsmith.getLogger().debug("Traversal Blocks: ");
         for(CommonMaterial<?> t: this.traversalBlocks)
         {
-            System.out.print(t.toString() + " ");
-        }
-        System.out.println();*/
+            Gunsmith.getLogger().debug(t.toString() + " ");
+        }*/
     }
 
     /**
@@ -315,20 +312,20 @@ public class RayTrace
 
         } while ((this.length <= this.range) && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
 
-        /*System.out.println("RayTrace step:");
-        System.out.println(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", length, 
+        /*Gunsmith.getLogger().debug("RayTrace step:");
+        Gunsmith.getLogger().debug(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", length, 
                 range, currentX, currentY, currentZ, 
                 targetX, targetY, targetZ, lastX, lastY, lastZ, rotX, rotY, rotXSin, rotXCos, rotYSin, rotYCos));*/
         if (!this.traversalBlocks.contains(this.world.getBlockAt(this.targetX, this.targetY, this.targetZ).getMaterial()))
         {
-            //System.out.println("Reached non-traversal block, ending trace. Block reached: " + this.world.getBlockAt(this.targetX, this.targetY, 
-                    //this.targetZ).getMaterial().toString());
+            //Gunsmith.getLogger().debug("Reached non-traversal block, ending trace. Block reached: " + this.world.getBlockAt(this.targetX, this.targetY, 
+            //this.targetZ).getMaterial().toString());
             return;
         }
 
         if (this.length > this.range || this.targetY > this.maxWorldY || this.targetY < this.minWorldY)
         {
-            //System.out.println("Trace passed out of bounds. Setting target to last");
+            //Gunsmith.getLogger().debug("Trace passed out of bounds. Setting target to last");
             this.targetX = this.lastX;
             this.targetY = this.lastY;
             this.targetZ = this.lastZ;
@@ -390,8 +387,8 @@ public class RayTrace
                         && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
             }
         }
-        /*System.out.println("RayTrace OutOfWorld:");
-        System.out.println(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", 
+        /*Gunsmith.getLogger().debug("RayTrace OutOfWorld:");
+        Gunsmith.getLogger().debug(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", 
                 length, range, currentX, currentY, currentZ, 
                 targetX, targetY, targetZ, lastX, lastY, lastZ, rotX, rotY, rotXSin, rotXCos, rotYSin, rotYCos));*/
     }

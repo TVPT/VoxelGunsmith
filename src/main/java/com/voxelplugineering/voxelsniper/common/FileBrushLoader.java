@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import com.thevoxelbox.vsl.classloader.ASMClassLoader;
+import com.voxelplugineering.voxelsniper.api.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 
 /**
@@ -106,7 +107,7 @@ public class FileBrushLoader extends CommonBrushLoader
             return null;
         } catch (Exception e)
         {
-            System.out.println("Error loading brush " + e.getMessage());
+            Gunsmith.getLogger().error(e, "Error loading brush " + e.getMessage());
             return null;
         }
     }
@@ -134,7 +135,7 @@ public class FileBrushLoader extends CommonBrushLoader
                 boolean success = FileBrushLoader.convertVSLGraph(ser);
                 if (!success)
                 {
-                    System.out.println("Failed to convert " + ser.getAbsolutePath());
+                    Gunsmith.getLogger().warning("Failed to convert " + ser.getAbsolutePath());
                     return null;
                 }
             }
