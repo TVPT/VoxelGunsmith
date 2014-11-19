@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper.api;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.voxelplugineering.voxelsniper.common.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.common.event.CommonEventHandler;
@@ -338,8 +339,14 @@ public final class Gunsmith
     public static void beginInit()
     {
         check();
-        System.out.println("Starting Gunsmith initialization.");
-        eventBus = new EventBus();
+        logDistributor = new CommonLoggingDistributor();
+        logDistributor.init();
+        //TODO register standard gunsmith loggers here
+        
+        getLogger().info("Starting Gunsmith initialization process.");
+        
+        eventBus = new AsyncEventBus(java.util.concurrent.Executors.newCachedThreadPool());
+        
         defaultEventHandler = new CommonEventHandler();
         eventBus.register(defaultEventHandler);
         //default event handler is registered here so that if a plugin wishes it can unregister the
@@ -348,9 +355,6 @@ public final class Gunsmith
         configuration = new Configuration();
         configuration.registerContainer(BaseConfiguration.class);
         //configuration is also setup here so that any values can be overwritten from the specific impl
-
-        logDistributor = new CommonLoggingDistributor();
-        //TODO register standard gunsmith loggers here
     }
 
     /**

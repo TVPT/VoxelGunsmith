@@ -48,7 +48,7 @@ public interface ILogger
      * 
      * @param msg the warning
      */
-    void warning(String msg);
+    void warn(String msg);
 
     /**
      * Logs an error to the output.

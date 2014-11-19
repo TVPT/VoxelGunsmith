@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
-import com.voxelplugineering.voxelsniper.api.Gunsmith;
 
 /**
  * A combination location and material representation of a single voxel. The location is immutable.

@@ -95,6 +95,10 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void info(String msg)
     {
+        if(this.loggers.isEmpty())
+        {
+            System.out.println(msg);
+        }
         for (String n : this.loggers.keySet())
         {
             ILogger l = this.loggers.get(n);
@@ -106,12 +110,16 @@ public class CommonLoggingDistributor implements ILoggingDistributor
      * {@inheritDoc}
      */
     @Override
-    public void warning(String msg)
+    public void warn(String msg)
     {
+        if(this.loggers.isEmpty())
+        {
+            System.out.println("[WARNING] " + msg);
+        }
         for (String n : this.loggers.keySet())
         {
             ILogger l = this.loggers.get(n);
-            l.warning(msg);
+            l.warn(msg);
         }
     }
 
@@ -121,6 +129,10 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void error(String msg)
     {
+        if(this.loggers.isEmpty())
+        {
+            System.out.println("[ERROR] " + msg);
+        }
         for (String n : this.loggers.keySet())
         {
             ILogger l = this.loggers.get(n);
@@ -134,6 +146,10 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void error(Exception e)
     {
+        if(this.loggers.isEmpty())
+        {
+            e.printStackTrace();
+        }
         for (String n : this.loggers.keySet())
         {
             ILogger l = this.loggers.get(n);
@@ -147,6 +163,11 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void error(Exception e, String msg)
     {
+        if(this.loggers.isEmpty())
+        {
+            System.out.println("[ERROR] " + msg);
+            e.printStackTrace();
+        }
         for (String n : this.loggers.keySet())
         {
             ILogger l = this.loggers.get(n);

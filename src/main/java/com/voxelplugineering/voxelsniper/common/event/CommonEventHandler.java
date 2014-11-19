@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.common.event;
 
+import com.google.common.eventbus.AllowConcurrentEvents;
+import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 import com.thevoxelbox.vsl.VariableScope;
 import com.thevoxelbox.vsl.api.IVariableScope;
@@ -46,11 +48,13 @@ public class CommonEventHandler
     }
 
     /**
-     * Processes the given {@link com.voxelplugineering.voxelsniper.common.event.SnipeEvent} and performs all necessary checks of the event.
+     * Processes the given {@link com.voxelplugineering.voxelsniper.common.event.SnipeEvent} and performs all necessary checks of the event. This
+     * event handler is supports asyncronous callback.
      *
      * @param event the snipe event to perform
      */
     @Subscribe
+    @AllowConcurrentEvents
     public void onSnipe(SnipeEvent event)
     {
         ISniper sniper = event.getSniper();
@@ -69,5 +73,18 @@ public class CommonEventHandler
         brushVariables.set("length", ray.getLength());
         Gunsmith.getLogger().debug("Snipe at " + ray.getTargetBlock().getLocation().toString());
         sniper.getCurrentBrush().run(brushVariables);
+    }
+
+    /**
+     * Reports on unhandled (aka. dead) events on the event bus.
+     * 
+     * @param deadEvent the dead event
+     */
+    @Subscribe
+    @AllowConcurrentEvents
+    public void handleDeadEvent(DeadEvent deadEvent)
+    {
+        Object event = deadEvent.getEvent();
+        Gunsmith.getLogger().warn("An unhandled " + event.getClass().getName() + " event was posted to the event bus!");
     }
 }

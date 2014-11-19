@@ -135,7 +135,7 @@ public class FileBrushLoader extends CommonBrushLoader
                 boolean success = FileBrushLoader.convertVSLGraph(ser);
                 if (!success)
                 {
-                    Gunsmith.getLogger().warning("Failed to convert " + ser.getAbsolutePath());
+                    Gunsmith.getLogger().warn("Failed to convert " + ser.getAbsolutePath());
                     return null;
                 }
             }
