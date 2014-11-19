@@ -43,9 +43,10 @@ public class MaterialCommand extends Command
      */
     public MaterialCommand()
     {
-        super("mat", "Sets your current brush material");
+        super("material", "Sets your current brush material");
         setAliases("v");
         addArgument(new RawArgument("raw"));
+        setPermissions("voxelsniper.command.material");
     }
 
     @Override

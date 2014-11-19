@@ -45,6 +45,7 @@ public class BrushCommand extends Command
         super("brush", "Sets your current brush");
         setAliases("b", "brush");
         addArgument(new RawArgument("raw"));
+        setPermissions("voxelsniper.command.brush");
     }
 
     @Override

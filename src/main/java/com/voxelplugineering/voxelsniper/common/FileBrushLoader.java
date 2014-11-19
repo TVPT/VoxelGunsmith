@@ -126,7 +126,7 @@ public class FileBrushLoader extends CommonBrushLoader
      */
     public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, String name, File directory)
     {
-        File data = new File(directory, name + ".brush");
+        File data = new File(directory, name + ".br");
         if (!data.exists())
         {
             File ser = new File(directory, name + ".ser");

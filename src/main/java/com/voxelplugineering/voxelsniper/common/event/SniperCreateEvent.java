@@ -28,7 +28,7 @@ import com.voxelplugineering.voxelsniper.api.ISniper;
 /**
  * The event for the creation of a new user in a multi-user environment.
  */
-public class SniperCreateEvent
+public class SniperCreateEvent extends CommonEvent
 {
 
     /**

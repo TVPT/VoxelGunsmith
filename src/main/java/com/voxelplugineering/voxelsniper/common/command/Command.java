@@ -58,6 +58,10 @@ public abstract class Command
      * If this command is player only or usable by the console as well.
      */
     private boolean playerOnly = false;
+    /**
+     * An array of permissions nodes, a sniper must have at least one of these in order to execute this command.
+     */
+    private String[] permissions = null;
 
     /**
      * Constructs a new command with the given name
@@ -195,6 +199,26 @@ public abstract class Command
     protected void setPlayerOnly(boolean playerOnly)
     {
         this.playerOnly = playerOnly;
+    }
+
+    /**
+     * Sets the valid permissions for this command.
+     * 
+     * @param perms the permissions
+     */
+    public void setPermissions(String... perms)
+    {
+        this.permissions = perms;
+    }
+
+    /**
+     * Returns the permission nodes for this command. A sniper is required to have at least one of these in order to execute the command.
+     * 
+     * @return the permissions
+     */
+    public String[] getPermissions()
+    {
+        return this.permissions;
     }
 
 }

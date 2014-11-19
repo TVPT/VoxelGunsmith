@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.voxelplugineering.voxelsniper.api.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.ICommandRegistrar;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 
@@ -99,11 +100,27 @@ public class CommandHandler
             return;
         }
         Command handler = this.commands.get(command);
-        boolean success = handler.execute(player, args);
-
-        if (!success)
+        boolean allowed = false;
+        for(String s: handler.getPermissions())
         {
-            player.sendMessage(handler.getHelpMsg());
+            if(Gunsmith.getPermissionProxy().hasPermission(player, s))
+            {
+                allowed = true;
+                break;
+            }
+        }
+        if(allowed)
+        {
+            boolean success = handler.execute(player, args);
+
+            if (!success)
+            {
+                player.sendMessage(handler.getHelpMsg());
+            }
+        }
+        else
+        {
+            player.sendMessage(Gunsmith.getConfiguration().get("PERMISSIONS_REQUIRED_MESSAGE").toString());
         }
     }
 
