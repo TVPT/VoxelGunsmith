@@ -54,7 +54,7 @@ public abstract class CommonBrushLoader implements IBrushLoader
             ObjectInputStream ois = new ObjectInputStream(stream);
             NodeGraph brush = (NodeGraph) ois.readObject();
             @SuppressWarnings("unchecked")
-            Class<? extends IBrush> compiled = (Class<? extends IBrush>) classLoader.getCompiler().compile(classLoader, brush);
+            Class<? extends IBrush> compiled = (Class<? extends IBrush>) classLoader.getCompiler(IBrush.class).compile(classLoader, brush);
             return compiled;
         } catch (IOException e)
         {

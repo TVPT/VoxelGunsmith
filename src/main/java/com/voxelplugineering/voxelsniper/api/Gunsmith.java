@@ -27,11 +27,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
+import com.thevoxelbox.vsl.api.IGraphCompilerFactory;
+import com.thevoxelbox.vsl.classloader.GraphCompilerFactory;
 import com.voxelplugineering.voxelsniper.common.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.common.event.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
 import com.voxelplugineering.voxelsniper.config.Configuration;
 import com.voxelplugineering.voxelsniper.logging.CommonLoggingDistributor;
+import com.voxelplugineering.voxelsniper.util.BrushCompiler;
 
 /**
  * The Core of VoxelGunsmith, provides access to handlers and validates initialization is done completely and correctly.
@@ -90,6 +93,10 @@ public final class Gunsmith
      * The global log distributor for Gunsmith.
      */
     private static ILoggingDistributor logDistributor = null;
+    /**
+     * The VSL compiler factory for the Brush Managers to reference.
+     */
+    private static GraphCompilerFactory compilerFactory = null;
 
     /**
      * The initialization state of Gunsmith.
@@ -325,7 +332,7 @@ public final class Gunsmith
     /**
      * Returns the logging distribution manager for Gunsmith.
      * 
-     * @return
+     * @return the logging distributor
      */
     public static ILoggingDistributor getLoggingDistributor()
     {
@@ -333,8 +340,17 @@ public final class Gunsmith
     }
 
     /**
-     * Should be called at the start of the initialization process. Sets up default states before the specific implementation registeres its
-     * overrides.
+     * Returns the compiler factory for compiling VSL scripts.
+     * 
+     * @return the factory
+     */
+    public static IGraphCompilerFactory getCompilerFactory()
+    {
+        return compilerFactory;
+    }
+
+    /**
+     * Should be called at the start of the initialization process. Sets up default states before the specific implementation registers its overrides.
      */
     public static void beginInit()
     {
@@ -342,11 +358,11 @@ public final class Gunsmith
         logDistributor = new CommonLoggingDistributor();
         logDistributor.init();
         //TODO register standard gunsmith loggers here
-        
+
         getLogger().info("Starting Gunsmith initialization process.");
-        
+
         eventBus = new AsyncEventBus(java.util.concurrent.Executors.newCachedThreadPool());
-        
+
         defaultEventHandler = new CommonEventHandler();
         eventBus.register(defaultEventHandler);
         //default event handler is registered here so that if a plugin wishes it can unregister the
@@ -355,6 +371,9 @@ public final class Gunsmith
         configuration = new Configuration();
         configuration.registerContainer(BaseConfiguration.class);
         //configuration is also setup here so that any values can be overwritten from the specific impl
+
+        compilerFactory = new GraphCompilerFactory();
+        compilerFactory.registerCompiler(IBrush.class, new BrushCompiler()); //the compiler for all brushes
     }
 
     /**

@@ -26,9 +26,11 @@ package com.voxelplugineering.voxelsniper.nodes;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import com.thevoxelbox.vsl.IOType;
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
+import com.voxelplugineering.voxelsniper.common.CommonBlock;
+import com.voxelplugineering.voxelsniper.common.CommonLocation;
+import com.voxelplugineering.voxelsniper.common.CommonMaterial;
 
 /**
  * Node to get location and material from block
@@ -42,11 +44,14 @@ public class BlockBreakNode extends Node
     public BlockBreakNode()
     {
         super("BlockLocation", "block");
-        addInput("block", IOType.WILD, true, null);
-        addOutput("location", IOType.WILD, this);
-        addOutput("material", IOType.WILD, this);
+        addInput("block", CommonBlock.class, true, null);
+        addOutput("location", CommonLocation.class, this);
+        addOutput("material", CommonMaterial.class, this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {

@@ -49,7 +49,7 @@ public interface IVoxelSniper
      * @return the classloader
      */
     ClassLoader getGunsmithClassLoader();
-    
+
     /**
      * Returns the main thread of VoxelSniper.
      * 

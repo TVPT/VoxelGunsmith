@@ -35,6 +35,7 @@ public class BaseConfiguration
     static final double RAY_TRACE_STEP = 0.2;
     static final double RAY_TRACE_RANGE = 250;
     static final String DEFAULT_BRUSH = "snipe";
+    static final double DEFAULT_BRUSH_SIZE = 3;
     static final String PERMISSIONS_REQUIRED_MESSAGE = "You require more permissions in order to perform this action.";
 
 }

@@ -27,24 +27,23 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.ExecutableNode;
-import com.voxelplugineering.voxelsniper.common.CommonBlock;
-import com.voxelplugineering.voxelsniper.common.CommonMaterial;
+import com.thevoxelbox.vsl.node.Node;
+import com.voxelplugineering.voxelsniper.shape.Shape;
 
 /**
- * A visual scripting node to set the voxel at a location to the material.
+ * Creates a square shape with a side length of radius*2+1.
  */
-public class MaterialSetNode extends ExecutableNode
+public class VoxelShapeNode extends Node
 {
 
     /**
-     * Constructs a new MaterialSetNode
+     * Creates a new node.
      */
-    public MaterialSetNode()
+    public VoxelShapeNode()
     {
-        super("MaterialSet", "world");
-        addInput("material", CommonMaterial.class, true, null);
-        addInput("targetBlock", CommonBlock.class, true, null);
+        super("Voxel Shape", "shape");
+        addInput("radius", Double.class, true, null);
+        addOutput("shape", Shape.class, this);
     }
 
     /**
@@ -54,19 +53,23 @@ public class MaterialSetNode extends ExecutableNode
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {
         /*
-         *     ALOAD location
-         *     ALOAD material
-         *INVOKEVIRTUAL com/voxelplugineering/voxelsniper/common/CommonBlock.setMaterial (Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;)V
+         * ALOAD radius
+         * CHECKCAST java/lang/Double
+         * INVOKEVIRTUAL Double.doubleValue () : double
+         * D2I
+         * INVOKESTATIC ShapeFactory.createVoxel (int) : Shape
+         * ASTORE shape
          */
-        int targetBlock = getInput("targetBlock").getSource().get();
-        int newMaterial = getInput("material").getSource().get();
-        mv.visitVarInsn(Opcodes.ALOAD, targetBlock);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonBlock");
-        mv.visitVarInsn(Opcodes.ALOAD, newMaterial);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonMaterial");
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonBlock", "setMaterial",
-                "(Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;)V", false);
-        return localsIndex;
-    }
 
+        int radius = getInput("radius").getSource().get();
+        mv.visitVarInsn(Opcodes.ALOAD, radius);
+        mv.visitTypeInsn(Opcodes.CHECKCAST, "java/lang/Double");
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D", false);
+        mv.visitInsn(Opcodes.D2I);
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/voxelplugineering/voxelsniper/shape/ShapeFactory", "createVoxel",
+                "(I)Lcom/voxelplugineering/voxelsniper/shape/Shape;", false);
+        mv.visitVarInsn(Opcodes.ASTORE, localsIndex);
+        setOutput("shape", localsIndex);
+        return localsIndex + 1;
+    }
 }

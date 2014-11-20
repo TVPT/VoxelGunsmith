@@ -23,13 +23,16 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
-import com.thevoxelbox.vsl.api.IRunnableGraph;
+import com.thevoxelbox.vsl.api.IChainedRunnableGraph;
+import com.voxelplugineering.voxelsniper.util.BrushCompiler;
 
 /**
  * The Gunsmith version of {@link com.thevoxelbox.vsl.api.IRunnableGraph}. This contains the actual logic for the brush compiled from the visual
  * scripting language graphs.
+ * <p>
+ * Changes to this interface MUST be replicated in {@link BrushCompiler}!!!
  */
-public interface IBrush extends IRunnableGraph
+public interface IBrush extends IChainedRunnableGraph
 {
-    //adding to this requires first allowing modifying the compiler for NodeGraphs
+
 }

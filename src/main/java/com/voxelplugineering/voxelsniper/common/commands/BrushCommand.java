@@ -52,12 +52,43 @@ public class BrushCommand extends Command
     public boolean execute(ISniper sniper, Map<String, CommandArgument<?>> args)
     {
         String[] s = ((RawArgument) args.get("raw")).getChoice();
+        if (s.length == 1)
+        {
+            try
+            {
+                double brushSize = Double.parseDouble(s[0]);
+                sniper.getBrushSettings().set("brushSize", brushSize);
+                sniper.sendMessage("Your brush size was changed to " + brushSize);
+                return true;
+            } catch (NumberFormatException ignored)
+            {
+                assert true; //lol checkstyle warnings ;)
+            }
+        }
         if (s.length >= 1)
         {
-            String brushName = s[0];
-            IBrush brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName);
-            sniper.setCurrentBrush(brush);
-            sniper.sendMessage("Your brush has been set to " + brushName);
+            IBrush start = null;
+            IBrush last = null;
+            for (String brushName : s)
+            {
+                IBrush brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName);
+                if (brush == null)
+                {
+                    sniper.sendMessage("Could not find a brush part named " + brushName);
+                    return false;
+                }
+                if (start == null)
+                {
+                    start = brush;
+                    last = brush;
+                } else
+                {
+                    last.chain(brush);
+                    last = brush;
+                }
+            }
+            sniper.setCurrentBrush(start);
+            sniper.sendMessage("Your brush has been set.");
             return true;
         }
         return false;

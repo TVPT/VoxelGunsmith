@@ -67,8 +67,7 @@ public abstract class CommonPlayer<T> implements ISniper
         //TODO: have player inherit brushes from group rather than the global brush manager always.
         this.personalBrushManager = new CommonBrushManager(Gunsmith.getGlobalBrushManager());
         this.brushVariables = new VariableScope();
-        this.currentBrush = this.personalBrushManager.getNewBrushInstance(Gunsmith.getConfiguration().get("DEFAULT_BRUSH").toString());
-        sendMessage("Brush set to " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH").toString());
+        resetSettings();
     }
 
     /**
@@ -111,5 +110,16 @@ public abstract class CommonPlayer<T> implements ISniper
     public IVariableScope getBrushSettings()
     {
         return this.brushVariables;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resetSettings()
+    {
+        this.currentBrush = this.personalBrushManager.getNewBrushInstance(Gunsmith.getConfiguration().get("DEFAULT_BRUSH").toString());
+        sendMessage("Brush set to " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH").toString());
+        this.brushVariables.set("brushSize", Gunsmith.getConfiguration().get("DEFAULT_BRUSH_SIZE"));
+        sendMessage("Your brush size was changed to " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH_SIZE").toString());
     }
 }

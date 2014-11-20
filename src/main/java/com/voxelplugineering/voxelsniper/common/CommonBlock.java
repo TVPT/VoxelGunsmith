@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
-
 /**
  * A combination location and material representation of a single voxel. The location is immutable.
  */

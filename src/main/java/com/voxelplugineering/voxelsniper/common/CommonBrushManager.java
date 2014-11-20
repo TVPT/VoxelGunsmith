@@ -34,7 +34,6 @@ import com.voxelplugineering.voxelsniper.api.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.IBrushLoader;
 import com.voxelplugineering.voxelsniper.api.IBrushManager;
-import com.voxelplugineering.voxelsniper.util.BrushCompiler;
 
 /**
  * A standard brush manager.
@@ -71,7 +70,7 @@ public class CommonBrushManager implements IBrushManager
         {
             Gunsmith.getLogger().warn("Created Brush Manager before default BrushLoader was set.");
         }
-        this.classLoader = new ASMClassLoader(Gunsmith.getVoxelSniper().getGunsmithClassLoader(), new BrushCompiler());
+        this.classLoader = new ASMClassLoader(Gunsmith.getVoxelSniper().getGunsmithClassLoader(), Gunsmith.getCompilerFactory());
     }
 
     /**

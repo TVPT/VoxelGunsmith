@@ -313,13 +313,13 @@ public class RayTrace
         } while ((this.length <= this.range) && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
 
         /*Gunsmith.getLogger().debug("RayTrace step:");
-        Gunsmith.getLogger().debug(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", length, 
-                range, currentX, currentY, currentZ, 
+        Gunsmith.getLogger().debug(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", 
+                length, range, currentX, currentY, currentZ, 
                 targetX, targetY, targetZ, lastX, lastY, lastZ, rotX, rotY, rotXSin, rotXCos, rotYSin, rotYCos));*/
         if (!this.traversalBlocks.contains(this.world.getBlockAt(this.targetX, this.targetY, this.targetZ).getMaterial()))
         {
-            //Gunsmith.getLogger().debug("Reached non-traversal block, ending trace. Block reached: " + this.world.getBlockAt(this.targetX, this.targetY, 
-            //this.targetZ).getMaterial().toString());
+            //Gunsmith.getLogger().debug("Reached non-traversal block, ending trace. Block reached: " + this.world.getBlockAt(this.targetX, 
+            //this.targetY, this.targetZ).getMaterial().toString());
             return;
         }
 

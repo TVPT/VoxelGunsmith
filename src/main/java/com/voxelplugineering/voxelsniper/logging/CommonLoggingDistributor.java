@@ -95,7 +95,7 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void info(String msg)
     {
-        if(this.loggers.isEmpty())
+        if (this.loggers.isEmpty())
         {
             System.out.println(msg);
         }
@@ -112,7 +112,7 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void warn(String msg)
     {
-        if(this.loggers.isEmpty())
+        if (this.loggers.isEmpty())
         {
             System.out.println("[WARNING] " + msg);
         }
@@ -129,7 +129,7 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void error(String msg)
     {
-        if(this.loggers.isEmpty())
+        if (this.loggers.isEmpty())
         {
             System.out.println("[ERROR] " + msg);
         }
@@ -146,7 +146,7 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void error(Exception e)
     {
-        if(this.loggers.isEmpty())
+        if (this.loggers.isEmpty())
         {
             e.printStackTrace();
         }
@@ -163,7 +163,7 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void error(Exception e, String msg)
     {
-        if(this.loggers.isEmpty())
+        if (this.loggers.isEmpty())
         {
             System.out.println("[ERROR] " + msg);
             e.printStackTrace();

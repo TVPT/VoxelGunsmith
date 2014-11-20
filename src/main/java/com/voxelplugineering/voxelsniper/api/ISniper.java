@@ -81,4 +81,9 @@ public interface ISniper
      */
     IVariableScope getBrushSettings();
 
+    /**
+     * Resets the players brush settings to the defaults.
+     */
+    void resetSettings();
+
 }

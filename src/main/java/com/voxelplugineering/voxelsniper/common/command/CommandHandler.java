@@ -101,15 +101,15 @@ public class CommandHandler
         }
         Command handler = this.commands.get(command);
         boolean allowed = false;
-        for(String s: handler.getPermissions())
+        for (String s : handler.getPermissions())
         {
-            if(Gunsmith.getPermissionProxy().hasPermission(player, s))
+            if (Gunsmith.getPermissionProxy().hasPermission(player, s))
             {
                 allowed = true;
                 break;
             }
         }
-        if(allowed)
+        if (allowed)
         {
             boolean success = handler.execute(player, args);
 
@@ -117,8 +117,7 @@ public class CommandHandler
             {
                 player.sendMessage(handler.getHelpMsg());
             }
-        }
-        else
+        } else
         {
             player.sendMessage(Gunsmith.getConfiguration().get("PERMISSIONS_REQUIRED_MESSAGE").toString());
         }
