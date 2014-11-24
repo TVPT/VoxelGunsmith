@@ -29,7 +29,8 @@ import java.io.ObjectInputStream;
 
 import com.thevoxelbox.vsl.classloader.ASMClassLoader;
 import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.NodeGraph;
+import com.thevoxelbox.vsl.node.ChainableNodeGraph;
+import com.voxelplugineering.voxelsniper.api.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.IBrushLoader;
 
@@ -40,22 +41,30 @@ public abstract class CommonBrushLoader implements IBrushLoader
 {
 
     /**
-     * Deserializes a NodeGraph from the given byte array and loads the NodeGraph into an appropriate implementation of the brush.
-     *
-     * @param classLoader the class loader to use to load the compiled class
-     * @param serialized the serialized version of the brush
-     * @return the class for the brush
+     * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, byte[] serialized)
     {
         ByteArrayInputStream stream = new ByteArrayInputStream(serialized);
         try
         {
             ObjectInputStream ois = new ObjectInputStream(stream);
-            NodeGraph brush = (NodeGraph) ois.readObject();
-            @SuppressWarnings("unchecked")
-            Class<? extends IBrush> compiled = (Class<? extends IBrush>) classLoader.getCompiler(IBrush.class).compile(classLoader, brush);
-            return compiled;
+            Object brush = ois.readObject();
+            Class<?> cls = brush.getClass();
+
+            if (cls.isAssignableFrom(IBrush.class))
+            {
+                return (Class<? extends IBrush>) cls;
+            }
+            if (cls.isAssignableFrom(ChainableNodeGraph.class))
+            {
+                return (Class<? extends IBrush>) classLoader.getCompiler(IBrush.class).compile(classLoader, (ChainableNodeGraph) brush);
+            } else
+            {
+                Gunsmith.getLogger().warn("Attempted to deserialize unknown class type: " + cls.getName() + " (Possible file corruption)");
+                return null;
+            }
         } catch (IOException e)
         {
             e.printStackTrace();

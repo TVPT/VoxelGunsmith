@@ -25,6 +25,8 @@ package com.voxelplugineering.voxelsniper.api;
 
 import com.thevoxelbox.vsl.api.IVariableScope;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
+import com.voxelplugineering.voxelsniper.common.CommonWorld;
+import com.voxelplugineering.voxelsniper.world.BlockChangeQueue;
 
 /**
  * Representation of a user within Gunsmith. Holds all state information relevant to the user.
@@ -85,5 +87,39 @@ public interface ISniper
      * Resets the players brush settings to the defaults.
      */
     void resetSettings();
+
+    /**
+     * Adds a queue to the history buffer for this player. If the size of the history buffer is greater than the maximum allowed size then the oldest
+     * stored queues are dropped.
+     * 
+     * @param invert the new queue for the buffer, this queue is assumed to be an inverse queue to an operation performed in the world.
+     */
+    void addHistory(BlockChangeQueue invert);
+
+    /**
+     * Resets the currently used queue.
+     */
+    void resetPersonalQueue();
+
+    /**
+     * Returns the world that this player is currently within.
+     * 
+     * @return this player's world
+     */
+    CommonWorld getWorld();
+
+    /**
+     * Returns the currently active change queue that this players changes should be pushed to.
+     * 
+     * @return the active queue
+     */
+    BlockChangeQueue getPersonalQueue();
+
+    /**
+     * Pushes the top n inverse change queues from the history buffer to the world, effectively undoing previous changes.
+     * 
+     * @param n the number of past changes to undo
+     */
+    void undoHistory(int n);
 
 }

@@ -23,6 +23,11 @@
  */
 package com.voxelplugineering.voxelsniper.util;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Label;
@@ -70,8 +75,20 @@ public class BrushCompiler extends ChainableGraphCompiler implements Opcodes
         {
             cgraph.incrementName();
         }
-        return (Class<? extends IRunnableGraph>) cl.defineClass("com.thevoxelbox.custom." + cgraph.getName() + cgraph.getIncrement(),
-                createClass(cgraph));
+        byte[] cls = createClass(cgraph);
+        try
+        {
+            FileOutputStream out = new FileOutputStream(new File(cgraph.getName() + ".class"));
+            out.write(cls);
+            out.close();
+        } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return (Class<? extends IRunnableGraph>) cl.defineClass("com.thevoxelbox.custom." + cgraph.getName() + cgraph.getIncrement(), cls);
     }
 
     /**
@@ -128,8 +145,17 @@ public class BrushCompiler extends ChainableGraphCompiler implements Opcodes
             mv.visitMaxs(0, 0);
             mv.visitEnd();
         }
-        {
+        { //create an empty run(IVariableHolder vars) method to satisfy the interface from VisualScripting
             mv = cw.visitMethod(ACC_PUBLIC, "run", "(Lcom/thevoxelbox/vsl/api/IVariableHolder;)V", null, null);
+            mv.visitCode();
+            mv.visitInsn(RETURN);
+            mv.visitMaxs(0, 0);
+            mv.visitEnd();
+        }
+        {
+            mv =
+                    cw.visitMethod(ACC_PUBLIC, "run", "(Lcom/thevoxelbox/vsl/api/IVariableHolder;Lcom/voxelplugineering/voxelsniper/api/ISniper;)V",
+                            null, null);
             mv.visitCode();
 
             int index = 3;
@@ -138,36 +164,32 @@ public class BrushCompiler extends ChainableGraphCompiler implements Opcodes
             {
                 index = current.insert(mv, index);
                 current = current.getNextNode();
-                if (current == null)
-                {
-
-                    /* Insert call to next graph in chain:
-                     * ===================================
-                     * 
-                        ALOAD 0: this
-                        GETFIELD this.next : IChainedRunnableGraph
-                        IFNULL L3
-                        ALOAD 0: this
-                        GETFIELD this.next : IChainedRunnableGraph
-                        ALOAD 1: vars
-                        INVOKEINTERFACE IChainedRunnableGraph.run (IVariableHolder) : void
-                       L3
-                     */
-
-                    mv.visitVarInsn(ALOAD, 0);
-                    mv.visitFieldInsn(GETFIELD, "com/thevoxelbox/custom/" + graph.getName() + graph.getIncrement(), "next",
-                            "Lcom/thevoxelbox/vsl/api/IChainedRunnableGraph;");
-                    Label l3 = new Label();
-                    mv.visitJumpInsn(IFNULL, l3);
-                    mv.visitVarInsn(ALOAD, 0);
-                    mv.visitFieldInsn(GETFIELD, "com/thevoxelbox/custom/" + graph.getName() + graph.getIncrement(), "next",
-                            "Lcom/thevoxelbox/vsl/api/IChainedRunnableGraph;");
-                    mv.visitVarInsn(ALOAD, 1);
-                    mv.visitMethodInsn(INVOKEINTERFACE, "com/thevoxelbox/vsl/api/IChainedRunnableGraph", "run",
-                            "(Lcom/thevoxelbox/vsl/api/IVariableHolder;)V", true);
-                    mv.visitLabel(l3);
-                }
             }
+            /* Insert call to next graph in chain:
+             * ===================================
+             * 
+                ALOAD 0: this
+                GETFIELD this.next : IChainedRunnableGraph
+                IFNULL L3
+                ALOAD 0: this
+                GETFIELD this.next : IChainedRunnableGraph
+                ALOAD 1: vars
+                INVOKEINTERFACE IChainedRunnableGraph.run (IVariableHolder) : void
+               L3
+             */
+
+            mv.visitVarInsn(ALOAD, 0);
+            mv.visitFieldInsn(GETFIELD, "com/thevoxelbox/custom/" + graph.getName() + graph.getIncrement(), "next",
+                    "Lcom/thevoxelbox/vsl/api/IChainedRunnableGraph;");
+            Label l3 = new Label();
+            mv.visitJumpInsn(IFNULL, l3);
+            mv.visitVarInsn(ALOAD, 0);
+            mv.visitFieldInsn(GETFIELD, "com/thevoxelbox/custom/" + graph.getName() + graph.getIncrement(), "next",
+                    "Lcom/thevoxelbox/vsl/api/IChainedRunnableGraph;");
+            mv.visitVarInsn(ALOAD, 1);
+            mv.visitMethodInsn(INVOKEINTERFACE, "com/thevoxelbox/vsl/api/IChainedRunnableGraph", "run",
+                    "(Lcom/thevoxelbox/vsl/api/IVariableHolder;)V", true);
+            mv.visitLabel(l3);
 
             mv.visitInsn(RETURN);
             mv.visitMaxs(0, 0);

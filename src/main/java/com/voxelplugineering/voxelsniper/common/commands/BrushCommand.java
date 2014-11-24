@@ -48,6 +48,9 @@ public class BrushCommand extends Command
         setPermissions("voxelsniper.command.brush");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean execute(ISniper sniper, Map<String, CommandArgument<?>> args)
     {
@@ -74,8 +77,13 @@ public class BrushCommand extends Command
                 IBrush brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName);
                 if (brush == null)
                 {
-                    sniper.sendMessage("Could not find a brush part named " + brushName);
-                    return false;
+                    sniper.getPersonalBrushManager().loadBrush(brushName);
+                    brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName);
+                    if (brush == null)
+                    {
+                        sniper.sendMessage("Could not find a brush part named " + brushName);
+                        return false;
+                    }
                 }
                 if (start == null)
                 {

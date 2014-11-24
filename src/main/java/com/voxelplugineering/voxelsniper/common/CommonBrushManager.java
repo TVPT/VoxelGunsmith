@@ -178,6 +178,9 @@ public class CommonBrushManager implements IBrushManager
         this.parent = parent;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ASMClassLoader getClassLoader()
     {

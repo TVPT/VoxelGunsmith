@@ -39,4 +39,11 @@ public interface IWorldFactory
      */
     CommonWorld getWorld(String name);
 
+    /**
+     * Returns an array of all currently cached worlds.
+     * 
+     * @return an array of worlds
+     */
+    CommonWorld[] getAllLoadedWorlds();
+
 }

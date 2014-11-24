@@ -23,25 +23,36 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
-import com.thevoxelbox.vsl.api.IChainedRunnableGraph;
-import com.thevoxelbox.vsl.api.IVariableHolder;
-import com.voxelplugineering.voxelsniper.util.BrushCompiler;
-
 /**
- * The Gunsmith version of {@link com.thevoxelbox.vsl.api.IRunnableGraph}. This contains the actual logic for the brush compiled from the visual
- * scripting language graphs.
- * <p>
- * Changes to this interface MUST be replicated in {@link BrushCompiler}!!!
+ * A Queue of changes, used to stagger large changes to the world to prevent CPU lockups and to allow pushing changes to the world asynchronously.
+ * 
+ * @param <T> the {@link com.voxelplugineering.voxelsniper.world.Change} type
  */
-public interface IBrush extends IChainedRunnableGraph
+public interface IChangeQueue<T>
 {
 
     /**
-     * Specialized run method for Gunsmith, adds a reference to the player executing the brush.
+     * Adds a new change to this queue.
      * 
-     * @param vars the execution variables
-     * @param player the player
+     * @param change the new change
      */
-    void run(IVariableHolder vars, ISniper player);
+    void add(T change);
+
+    /**
+     * Finalizes this queue and pushes it to the world for processing.
+     */
+    void flush();
+
+    /**
+     * Clears this queue.
+     */
+    void clear();
+
+    /**
+     * returns an {@link IChangeQueue} which represents the exact inverse operation to this queue.
+     * 
+     * @return the inverse queue
+     */
+    IChangeQueue<T> invert();
 
 }

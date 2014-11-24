@@ -38,13 +38,18 @@ public class MaterialSetNode extends ExecutableNode
 {
 
     /**
+     * 
+     */
+    private static final long serialVersionUID = 7186240432579248565L;
+
+    /**
      * Constructs a new MaterialSetNode
      */
     public MaterialSetNode()
     {
         super("MaterialSet", "world");
-        addInput("material", CommonMaterial.class, true, null);
-        addInput("targetBlock", CommonBlock.class, true, null);
+        addInput("material", CommonMaterial.COMMONMATERIAL_TYPE, true, null);
+        addInput("targetBlock", CommonBlock.COMMONBLOCK_TYPE, true, null);
     }
 
     /**
@@ -54,18 +59,30 @@ public class MaterialSetNode extends ExecutableNode
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {
         /*
-         *     ALOAD location
-         *     ALOAD material
-         *INVOKEVIRTUAL com/voxelplugineering/voxelsniper/common/CommonBlock.setMaterial (Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;)V
+            ALOAD sniper
+            INVOKEINTERFACE com/voxelplugineering/voxelsniper/api/ISniper.getPersonalQueue 
+                    ()Lcom/voxelplugineering/voxelsniper/world/BlockChangeQueue;
+            NEW com/voxelplugineering/voxelsniper/world/BlockChange
+            DUP
+            ALOAD target
+            ALOAD material
+            INVOKESPECIAL com/voxelplugineering/voxelsniper/world/BlockChange.<init> (Lcom/voxelplugineering/voxelsniper/common/CommonBlock;
+                    Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;)V
+            INVOKEVIRTUAL com/voxelplugineering/voxelsniper/world/BlockChangeQueue.add (Lcom/voxelplugineering/voxelsniper/world/BlockChange;)V
          */
         int targetBlock = getInput("targetBlock").getSource().get();
         int newMaterial = getInput("material").getSource().get();
+        mv.visitVarInsn(Opcodes.ALOAD, 2);
+        mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "com/voxelplugineering/voxelsniper/api/ISniper", "getPersonalQueue",
+                "()Lcom/voxelplugineering/voxelsniper/world/BlockChangeQueue;", true);
+        mv.visitTypeInsn(Opcodes.NEW, "com/voxelplugineering/voxelsniper/world/BlockChange");
+        mv.visitInsn(Opcodes.DUP);
         mv.visitVarInsn(Opcodes.ALOAD, targetBlock);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonBlock");
         mv.visitVarInsn(Opcodes.ALOAD, newMaterial);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonMaterial");
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonBlock", "setMaterial",
-                "(Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;)V", false);
+        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "com/voxelplugineering/voxelsniper/world/BlockChange", "<init>",
+                "(Lcom/voxelplugineering/voxelsniper/common/CommonBlock;Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;)V", false);
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/world/BlockChangeQueue", "add",
+                "(Lcom/voxelplugineering/voxelsniper/world/BlockChange;)V", false);
         return localsIndex;
     }
 

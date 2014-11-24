@@ -24,6 +24,8 @@
 package com.voxelplugineering.voxelsniper.common;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import com.thevoxelbox.vsl.VariableScope;
 import com.thevoxelbox.vsl.api.IVariableScope;
@@ -31,6 +33,7 @@ import com.voxelplugineering.voxelsniper.api.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.IBrushManager;
 import com.voxelplugineering.voxelsniper.api.ISniper;
+import com.voxelplugineering.voxelsniper.world.BlockChangeQueue;
 
 /**
  * A standard player class wrapping a user class from the underlying implementation.
@@ -42,19 +45,27 @@ public abstract class CommonPlayer<T> implements ISniper
     /**
      * A weak reference to the underlying player object.
      */
-    WeakReference<T> playerReference;
+    private WeakReference<T> playerReference;
     /**
      * This users specific brush manager.
      */
-    IBrushManager personalBrushManager;
+    private IBrushManager personalBrushManager;
     /**
      * The currently selected brush.
      */
-    IBrush currentBrush;
+    private IBrush currentBrush;
     /**
      * The brush settings specific to this player.
      */
-    IVariableScope brushVariables;
+    private IVariableScope brushVariables;
+    /**
+     * The history buffer for this player. Contains an ordered stack of inverse change queues.
+     */
+    private Deque<BlockChangeQueue> history;
+    /**
+     * The currently active change queue.
+     */
+    private BlockChangeQueue personal;
 
     /**
      * Creates a new CommonPlayer with a weak reference to the player.
@@ -68,6 +79,8 @@ public abstract class CommonPlayer<T> implements ISniper
         this.personalBrushManager = new CommonBrushManager(Gunsmith.getGlobalBrushManager());
         this.brushVariables = new VariableScope();
         resetSettings();
+        this.history = new ArrayDeque<BlockChangeQueue>();
+        resetPersonalQueue();
     }
 
     /**
@@ -121,5 +134,45 @@ public abstract class CommonPlayer<T> implements ISniper
         sendMessage("Brush set to " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH").toString());
         this.brushVariables.set("brushSize", Gunsmith.getConfiguration().get("DEFAULT_BRUSH_SIZE"));
         sendMessage("Your brush size was changed to " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH_SIZE").toString());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addHistory(BlockChangeQueue changeQueue)
+    {
+        this.history.addFirst(changeQueue);
+        while (this.history.size() > 20)
+        {
+            this.history.removeLast();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void undoHistory(int n)
+    {
+        while (n > 0 && !this.history.isEmpty())
+        {
+            BlockChangeQueue next = this.history.removeFirst();
+            next.getWorld().registerChangeQueue(next);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public BlockChangeQueue getPersonalQueue()
+    {
+        return this.personal;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resetPersonalQueue()
+    {
+        this.personal = new BlockChangeQueue(getWorld(), this);
     }
 }

@@ -37,5 +37,6 @@ public class BaseConfiguration
     static final String DEFAULT_BRUSH = "snipe";
     static final double DEFAULT_BRUSH_SIZE = 3;
     static final String PERMISSIONS_REQUIRED_MESSAGE = "You require more permissions in order to perform this action.";
+    static final int BLOCK_CHANGES_PER_TICK = 5000;
 
 }

@@ -23,11 +23,29 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.api.Gunsmith;
+import com.voxelplugineering.voxelsniper.world.BlockChangeQueue;
+
 /**
  * The representation of a world or scene of voxels. X and Z axes are assumed to be the horizontal axes and Y the vertical axis.
  */
 public abstract class CommonWorld
 {
+
+    /**
+     * The {@link com.thevoxelbox.vsl.type.Type} for materials.
+     */
+    public static Type COMMONVECTOR_TYPE = Type.getType("COMMONWORLD", "com/voxelplugineering/voxelsniper/common/CommonWorld", TypeDepth.SINGLE);
+    /**
+     * A List of Change Queues which are still in the process of being applied to the world.
+     */
+    List<BlockChangeQueue> pendingChanges = new ArrayList<BlockChangeQueue>();
 
     /**
      * Returns the name of the world.
@@ -100,5 +118,47 @@ public abstract class CommonWorld
      * @param material the new material
      */
     public abstract void setBlockAt(int x, int y, int z, CommonMaterial<?> material);
+
+    /**
+     * Apply the next set of changes to the world. This method should be called in a regular manner 5x per second from the specific implementation.
+     * <p>
+     * TODO: perhaps we should implements a scheduler within Gunsmith and tick the worlds from there rather than from the specific implementation.
+     */
+    public void tickChanges()
+    {
+        if (!Thread.currentThread().equals(Gunsmith.getVoxelSniper().getMainThread()))
+        {
+            Gunsmith.getLogger().warn("Attempted to tick world changes from invalid thread!");
+            return;
+        }
+        int total = (Integer) Gunsmith.getConfiguration().get("BLOCK_CHANGES_PER_TICK");
+        int n = this.pendingChanges.size();
+        for (Iterator<BlockChangeQueue> iterator = this.pendingChanges.iterator(); iterator.hasNext();)
+        {
+            int next = total / (n--);
+            BlockChangeQueue nextQueue = iterator.next();
+            int actual = nextQueue.perform(next);
+            total -= actual;
+            if (nextQueue.isFinished())
+            {
+                //TODO add this queue to the player's history buffer here rather than when the queue is flushed to the world.
+                iterator.remove();
+            }
+            if (total < 0)
+            {
+                break;
+            }
+        }
+    }
+
+    /**
+     * Adds a change queue to this world to be processed.
+     * 
+     * @param changeQueue the new queue
+     */
+    public void registerChangeQueue(BlockChangeQueue changeQueue)
+    {
+        this.pendingChanges.add(changeQueue);
+    }
 
 }
