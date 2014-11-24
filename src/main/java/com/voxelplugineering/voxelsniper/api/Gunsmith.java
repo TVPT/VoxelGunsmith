@@ -29,6 +29,7 @@ import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.thevoxelbox.vsl.api.IGraphCompilerFactory;
 import com.thevoxelbox.vsl.classloader.GraphCompilerFactory;
+import com.thevoxelbox.vsl.type.Type;
 import com.voxelplugineering.voxelsniper.common.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.common.event.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
@@ -355,12 +356,23 @@ public final class Gunsmith
     public static void beginInit()
     {
         check();
+
+        //Create standard log distributor
         logDistributor = new CommonLoggingDistributor();
         logDistributor.init();
         //TODO register standard gunsmith loggers here
 
         getLogger().info("Starting Gunsmith initialization process.");
 
+        //Register vsl types for common impl types
+        Type.registerType("COMMONBLOCK");
+        Type.registerType("COMMONLOCATION");
+        Type.registerType("COMMONMATERIAL");
+        Type.registerType("COMMONVECTOR");
+        Type.registerType("COMMONWORLD");
+        Type.registerType("SHAPE");
+
+        //Create the eventBus for all Gunsmith events
         eventBus = new AsyncEventBus(java.util.concurrent.Executors.newCachedThreadPool());
 
         defaultEventHandler = new CommonEventHandler();
@@ -372,6 +384,7 @@ public final class Gunsmith
         configuration.registerContainer(BaseConfiguration.class);
         //configuration is also setup here so that any values can be overwritten from the specific impl
 
+        //Setup the VSL graph compiler
         compilerFactory = new GraphCompilerFactory();
         compilerFactory.registerCompiler(IBrush.class, new BrushCompiler()); //the compiler for all brushes
     }
@@ -404,7 +417,7 @@ public final class Gunsmith
     }
 
     /**
-     * Stops gunsmith and dereferences all handlers and managers.
+     * Stops Gunsmith and dereferences all handlers and managers.
      */
     public static void stop()
     {

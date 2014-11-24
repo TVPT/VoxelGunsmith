@@ -23,6 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
+
 /**
  * Represents a Material type
  *
@@ -30,6 +33,12 @@ package com.voxelplugineering.voxelsniper.common;
  */
 public abstract class CommonMaterial<T>
 {
+
+    /**
+     * The {@link com.thevoxelbox.vsl.type.Type} for materials.
+     */
+    public static Type COMMONMATERIAL_TYPE = Type.getType("COMMONMATERIAL", "com/voxelplugineering/voxelsniper/common/CommonMaterial",
+            TypeDepth.SINGLE);
 
     /**
      * The underlying material class.
@@ -91,5 +100,19 @@ public abstract class CommonMaterial<T>
      * @return does support transparency
      */
     public abstract boolean isTransparent();
+
+    /**
+     * Returns if the material is a liquid.
+     * 
+     * @return is a liquid
+     */
+    public abstract boolean isLiquid();
+
+    /**
+     * Returns if the material is reliant on its environment. (ex. a torch hanging from a wall is reliant on the wall).
+     * 
+     * @return is reliant on the environment
+     */
+    public abstract boolean isReliantOnEnvironment();
 
 }

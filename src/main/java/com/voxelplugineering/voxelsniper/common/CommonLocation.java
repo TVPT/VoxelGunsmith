@@ -23,11 +23,21 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
+
 /**
  * Representation of a location within a world.
  */
 public final class CommonLocation implements Cloneable
 {
+
+    /**
+     * The {@link com.thevoxelbox.vsl.type.Type} for locations.
+     */
+    public static Type COMMONLOCATION_TYPE = Type.getType("COMMONLOCATION", "com/voxelplugineering/voxelsniper/common/CommonLocation",
+            TypeDepth.SINGLE);
+
     /**
      * The world that the location is within.
      */

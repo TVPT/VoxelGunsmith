@@ -23,11 +23,19 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
+
 /**
  * A combination location and material representation of a single voxel. The location is immutable.
  */
 public class CommonBlock
 {
+
+    /**
+     * The {@link com.thevoxelbox.vsl.type.Type} for blocks.
+     */
+    public static Type COMMONBLOCK_TYPE = Type.getType("COMMONBLOCK", "com/voxelplugineering/voxelsniper/common/CommonBlock", TypeDepth.SINGLE);
 
     /**
      * The location of this voxel.
@@ -78,7 +86,6 @@ public class CommonBlock
      */
     public void setMaterial(CommonMaterial<?> material)
     {
-        //Gunsmith.getLogger().debug("InBlock " + this.location.toString());
         this.material = material;
         this.location.getWorld().setBlockAt(this.location, material);
     }

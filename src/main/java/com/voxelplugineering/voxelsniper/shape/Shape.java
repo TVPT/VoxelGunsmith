@@ -26,6 +26,8 @@ package com.voxelplugineering.voxelsniper.shape;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
 import com.voxelplugineering.voxelsniper.common.CommonVector;
 
 /**
@@ -33,6 +35,11 @@ import com.voxelplugineering.voxelsniper.common.CommonVector;
  */
 public class Shape
 {
+
+    /**
+     * The {@link com.thevoxelbox.vsl.type.Type} for a shape.
+     */
+    public static Type SHAPE_TYPE = Type.getType("SHAPE", "com/voxelplugineering/voxelsniper/shape/Shape", TypeDepth.SINGLE);
 
     /**
      * The shape. Dimensions are [x][z][y/8].

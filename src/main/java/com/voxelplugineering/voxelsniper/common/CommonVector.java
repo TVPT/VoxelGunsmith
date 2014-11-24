@@ -25,11 +25,20 @@ package com.voxelplugineering.voxelsniper.common;
 
 import java.io.Serializable;
 
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
+
 /**
  * A 3-dimensional vector with double-precision floating point numbers.
  */
 public class CommonVector implements Serializable, Cloneable
 {
+
+    /**
+     * The {@link com.thevoxelbox.vsl.type.Type} for vectors.
+     */
+    public static Type COMMONVECTOR_TYPE = Type.getType("COMMONVECTOR", "com/voxelplugineering/voxelsniper/common/CommonVector", TypeDepth.SINGLE);
+
     private static final long serialVersionUID = 2185038435585259289L;
     /**
      * The vector data.
