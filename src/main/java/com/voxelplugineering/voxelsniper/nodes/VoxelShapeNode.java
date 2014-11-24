@@ -28,6 +28,7 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.type.Type;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 
 /**
@@ -37,13 +38,18 @@ public class VoxelShapeNode extends Node
 {
 
     /**
+     * 
+     */
+    private static final long serialVersionUID = -742959120344828826L;
+
+    /**
      * Creates a new node.
      */
     public VoxelShapeNode()
     {
         super("Voxel Shape", "shape");
-        addInput("radius", Double.class, true, null);
-        addOutput("shape", Shape.class, this);
+        addInput("radius", Type.FLOAT, true, null);
+        addOutput("shape", Shape.SHAPE_TYPE, this);
     }
 
     /**
@@ -62,9 +68,7 @@ public class VoxelShapeNode extends Node
          */
 
         int radius = getInput("radius").getSource().get();
-        mv.visitVarInsn(Opcodes.ALOAD, radius);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "java/lang/Double");
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D", false);
+        mv.visitVarInsn(Opcodes.DLOAD, radius);
         mv.visitInsn(Opcodes.D2I);
         mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/voxelplugineering/voxelsniper/shape/ShapeFactory", "createVoxel",
                 "(I)Lcom/voxelplugineering/voxelsniper/shape/Shape;", false);

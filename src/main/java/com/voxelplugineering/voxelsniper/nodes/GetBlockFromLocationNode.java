@@ -32,12 +32,15 @@ import com.voxelplugineering.voxelsniper.common.CommonBlock;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
 
 /**
- * 
  * A node for retrieving a block from a location. Equivalent to {@code location.getWorld().getBlockAt(location);}
- *
  */
 public class GetBlockFromLocationNode extends Node implements Opcodes
 {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2082923297938385218L;
 
     /**
      * Create a new node.
@@ -45,8 +48,8 @@ public class GetBlockFromLocationNode extends Node implements Opcodes
     public GetBlockFromLocationNode()
     {
         super("Block Get From World", "world");
-        addInput("location", CommonLocation.class, true, null);
-        addOutput("block", CommonBlock.class, this);
+        addInput("location", CommonLocation.COMMONLOCATION_TYPE, true, null);
+        addOutput("block", CommonBlock.COMMONBLOCK_TYPE, this);
     }
 
     /**
@@ -58,11 +61,9 @@ public class GetBlockFromLocationNode extends Node implements Opcodes
         int location = getInput("location").getSource().get();
 
         mv.visitVarInsn(ALOAD, location);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonLocation");
         mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getWorld",
                 "()Lcom/voxelplugineering/voxelsniper/common/CommonWorld;", false);
         mv.visitVarInsn(ALOAD, location);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonLocation");
         mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonWorld", "getBlockAt",
                 "(Lcom/voxelplugineering/voxelsniper/common/CommonLocation;)Lcom/voxelplugineering/voxelsniper/common/CommonBlock;", false);
         mv.visitVarInsn(ASTORE, localsIndex);

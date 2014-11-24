@@ -39,14 +39,19 @@ public class BlockBreakNode extends Node
 {
 
     /**
+     * 
+     */
+    private static final long serialVersionUID = -3407486022020201155L;
+
+    /**
      * Creates a new node.
      */
     public BlockBreakNode()
     {
         super("BlockLocation", "block");
-        addInput("block", CommonBlock.class, true, null);
-        addOutput("location", CommonLocation.class, this);
-        addOutput("material", CommonMaterial.class, this);
+        addInput("block", CommonBlock.COMMONBLOCK_TYPE, true, null);
+        addOutput("location", CommonLocation.COMMONLOCATION_TYPE, this);
+        addOutput("material", CommonMaterial.COMMONMATERIAL_TYPE, this);
     }
 
     /**
@@ -65,13 +70,11 @@ public class BlockBreakNode extends Node
          */
         int block = getInput("block").getSource().get();
         mv.visitVarInsn(Opcodes.ALOAD, block);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonBlock");
         mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonBlock", "getLocation",
                 "()Lcom/voxelplugineering/voxelsniper/common/CommonLocation;", false);
         mv.visitVarInsn(Opcodes.ASTORE, localsIndex);
         setOutput("location", localsIndex);
         mv.visitVarInsn(Opcodes.ALOAD, block);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonBlock");
         mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonBlock", "getMaterial",
                 "()Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;", false);
         mv.visitVarInsn(Opcodes.ASTORE, localsIndex + 1);

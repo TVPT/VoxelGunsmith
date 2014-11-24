@@ -40,14 +40,19 @@ public class GetBlockFromWorldNode extends Node implements Opcodes
 {
 
     /**
+     * 
+     */
+    private static final long serialVersionUID = -5847496393651127838L;
+
+    /**
      * Creates a new node.
      */
     public GetBlockFromWorldNode()
     {
         super("Block Get From World", "world");
-        addInput("world", CommonWorld.class, true, null);
-        addInput("vector", CommonVector.class, true, null);
-        addOutput("block", CommonBlock.class, this);
+        addInput("world", CommonWorld.COMMONVECTOR_TYPE, true, null);
+        addInput("vector", CommonVector.COMMONVECTOR_TYPE, true, null);
+        addOutput("block", CommonBlock.COMMONBLOCK_TYPE, this);
     }
 
     /**
@@ -60,7 +65,6 @@ public class GetBlockFromWorldNode extends Node implements Opcodes
         int vector = getInput("vector").getSource().get();
 
         mv.visitVarInsn(ALOAD, world);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonWorld");
         mv.visitVarInsn(ALOAD, vector);
         mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getX", "()D", false);
         mv.visitInsn(D2I);

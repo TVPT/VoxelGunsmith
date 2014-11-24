@@ -38,14 +38,19 @@ public class LocationOffsetNode extends Node implements Opcodes
 {
 
     /**
+     * 
+     */
+    private static final long serialVersionUID = -5841162432155578520L;
+
+    /**
      * Create a new node.
      */
     public LocationOffsetNode()
     {
         super("Location offset", "vector");
-        addInput("location", CommonLocation.class, true, null);
-        addInput("offset", CommonVector.class, true, null);
-        addOutput("result", CommonLocation.class, this);
+        addInput("location", CommonLocation.COMMONLOCATION_TYPE, true, null);
+        addInput("offset", CommonVector.COMMONVECTOR_TYPE, true, null);
+        addOutput("result", CommonLocation.COMMONLOCATION_TYPE, this);
     }
 
     /**
@@ -58,15 +63,11 @@ public class LocationOffsetNode extends Node implements Opcodes
         int offset = getInput("offset").getSource().get();
 
         mv.visitVarInsn(ALOAD, location);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonLocation");
         mv.visitVarInsn(ALOAD, offset);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonVector");
         mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getX", "()D", false);
         mv.visitVarInsn(ALOAD, offset);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonVector");
         mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getY", "()D", false);
         mv.visitVarInsn(ALOAD, offset);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, "com/voxelplugineering/voxelsniper/common/CommonVector");
         mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getZ", "()D", false);
         mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "add",
                 "(DDD)Lcom/voxelplugineering/voxelsniper/common/CommonLocation;", false);

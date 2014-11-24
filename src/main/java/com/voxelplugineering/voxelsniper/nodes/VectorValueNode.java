@@ -37,6 +37,10 @@ public class VectorValueNode extends Node implements Opcodes
 {
 
     /**
+     * 
+     */
+    private static final long serialVersionUID = -9020243582936473792L;
+    /**
      * The value to insert.
      */
     CommonVector value;
@@ -49,7 +53,7 @@ public class VectorValueNode extends Node implements Opcodes
     public VectorValueNode(CommonVector v)
     {
         super("Vector Value", "vector");
-        addOutput("value", CommonVector.class, this);
+        addOutput("value", CommonVector.COMMONVECTOR_TYPE, this);
         this.value = v;
     }
 

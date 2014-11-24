@@ -29,6 +29,7 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.ExecutableNode;
+import com.thevoxelbox.vsl.type.Type;
 import com.voxelplugineering.voxelsniper.common.CommonVector;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 
@@ -38,6 +39,10 @@ import com.voxelplugineering.voxelsniper.shape.Shape;
 public class ShapeForEachNode extends ExecutableNode implements Opcodes
 {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8693243523600819364L;
     /**
      * The body of the for loop.
      */
@@ -49,9 +54,9 @@ public class ShapeForEachNode extends ExecutableNode implements Opcodes
     public ShapeForEachNode()
     {
         super("Shape for-each", "shape");
-        addInput("shape", Shape.class, true, null);
-        addOutput("next", CommonVector.class, this);
-        addOutput("index", int.class, this);
+        addInput("shape", Shape.SHAPE_TYPE, true, null);
+        addOutput("next", CommonVector.COMMONVECTOR_TYPE, this);
+        addOutput("index", Type.INTEGER, this);
     }
 
     /**
@@ -59,7 +64,7 @@ public class ShapeForEachNode extends ExecutableNode implements Opcodes
      * 
      * @param b the new body
      */
-    public void setBode(ExecutableNode b)
+    public void setBody(ExecutableNode b)
     {
         this.body = b;
     }

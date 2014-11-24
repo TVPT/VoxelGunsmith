@@ -28,28 +28,28 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.voxelplugineering.voxelsniper.common.CommonVector;
+import com.thevoxelbox.vsl.type.Type;
+import com.voxelplugineering.voxelsniper.shape.Shape;
 
 /**
- * Adds two {@link CommonVector}s together and returns the result.
+ * Creates a sphere with with a diameter of radius*2+1
  */
-public class VectorAdditionNode extends Node implements Opcodes
+public class SphereShapeNode extends Node
 {
 
     /**
      * 
      */
-    private static final long serialVersionUID = 8532132984520786760L;
+    private static final long serialVersionUID = -7263550249408114074L;
 
     /**
-     * Create a new node.
+     * Creates a new node.
      */
-    public VectorAdditionNode()
+    public SphereShapeNode()
     {
-        super("Vector Addition", "vector");
-        addInput("a", CommonVector.COMMONVECTOR_TYPE, true, null);
-        addInput("b", CommonVector.COMMONVECTOR_TYPE, true, null);
-        addOutput("result", CommonVector.COMMONVECTOR_TYPE, this);
+        super("Sphere Shape", "shape");
+        addInput("radius", Type.FLOAT, true, null);
+        addOutput("shape", Shape.SHAPE_TYPE, this);
     }
 
     /**
@@ -58,15 +58,20 @@ public class VectorAdditionNode extends Node implements Opcodes
     @Override
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {
-        int a = getInput("a").getSource().get();
-        int b = getInput("b").getSource().get();
+        /*
+         * ALOAD radius
+         * CHECKCAST java/lang/Double
+         * INVOKEVIRTUAL Double.doubleValue () : double
+         * INVOKESTATIC ShapeFactory.createSphere (double) : Shape
+         * ASTORE shape
+         */
 
-        mv.visitVarInsn(ALOAD, a);
-        mv.visitVarInsn(ALOAD, b);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "add",
-                "(Lcom/voxelplugineering/voxelsniper/common/CommonVector;)Lcom/voxelplugineering/voxelsniper/common/CommonVector;", false);
-        mv.visitVarInsn(ASTORE, localsIndex);
-        setOutput("result", localsIndex);
+        int radius = getInput("radius").getSource().get();
+        mv.visitVarInsn(Opcodes.DLOAD, radius);
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/voxelplugineering/voxelsniper/shape/ShapeFactory", "createSphere",
+                "(D)Lcom/voxelplugineering/voxelsniper/shape/Shape;", false);
+        mv.visitVarInsn(Opcodes.ASTORE, localsIndex);
+        setOutput("shape", localsIndex);
         return localsIndex + 1;
     }
 }
