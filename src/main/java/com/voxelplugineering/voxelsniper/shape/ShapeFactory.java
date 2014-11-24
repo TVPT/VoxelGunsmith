@@ -66,20 +66,37 @@ public class ShapeFactory
      */
     public static Shape createEllipsoid(double rx, double ry, double rz)
     {
-        Shape s = new Shape((int) rx * 2 + 1, (int) ry * 2 + 1, (int) rz * 2 + 1, (int) rx, (int) ry, (int) rz);
-        for (int x = (int) -rx; x <= rx; x++)
+        Shape s =
+                new Shape((int) Math.ceil(rx) * 2 + 1, (int) Math.ceil(ry) * 2 + 1, (int) Math.ceil(rz) * 2 + 1, (int) Math.ceil(rx),
+                        (int) Math.ceil(ry), (int) Math.ceil(rz));
+        s.set((int) Math.ceil(rx), (int) Math.ceil(ry), (int) Math.ceil(rz));
+        for (double x = 0; x <= rx; x++)
         {
-            int nx = x + (int) rx;
-            for (int y = (int) -ry; y <= ry; y++)
+
+            final double xSquared = (x / (rx)) * (x / (rx));
+
+            for (double z = 0; z <= rz; z++)
             {
-                int ny = y + (int) ry;
-                for (int z = (int) -rz; z <= rz; z++)
+
+                final double zSquared = (z / (rz)) * (z / (rz));
+
+                for (double y = 0; y <= ry; y++)
                 {
-                    int nz = z + (int) rz;
-                    if ((x / rx) * (x / rx) + (y / ry) * (y / ry) + (z / rz) * (z / rz) < 1)
+
+                    final double ySquared = (y / (ry)) * (y / (ry));
+
+                    if (xSquared + ySquared + zSquared <= 1)
                     {
-                        s.set(nx, ny, nz);
+                        s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) + y), (int) (Math.ceil(rz) + z));
+                        s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) + y), (int) (Math.ceil(rz) - z));
+                        s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) - y), (int) (Math.ceil(rz) + z));
+                        s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) - y), (int) (Math.ceil(rz) - z));
+                        s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) + y), (int) (Math.ceil(rz) + z));
+                        s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) + y), (int) (Math.ceil(rz) - z));
+                        s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) - y), (int) (Math.ceil(rz) + z));
+                        s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) - y), (int) (Math.ceil(rz) - z));
                     }
+
                 }
             }
         }
