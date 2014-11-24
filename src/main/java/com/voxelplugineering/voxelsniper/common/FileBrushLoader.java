@@ -37,6 +37,9 @@ import com.voxelplugineering.voxelsniper.api.IBrush;
 public class FileBrushLoader extends CommonBrushLoader
 {
 
+    /**
+     * The current format version number.
+     */
     public static final int BRUSH_FILE_FORMAT_VERSION = 1;
 
     /*
@@ -100,11 +103,13 @@ public class FileBrushLoader extends CommonBrushLoader
                 din = new DataInputStream(new FileInputStream(data));
                 fileVersion = din.readInt();
             }
-            //int brushVersion = din.readInt();
-            //IBrush brush = Gunsmith.getBrushManager();
-            //TODO
+            din.readInt(); // the brush version, currently unsupported
+            int length = din.available();
+            byte[] brush = new byte[length];
+            din.read(brush, 0, length);
+            Class<? extends IBrush> loaded = loadBrush(classLoader, brush);
             din.close();
-            return null;
+            return loaded;
         } catch (Exception e)
         {
             Gunsmith.getLogger().error(e, "Error loading brush " + e.getMessage());
@@ -138,11 +143,17 @@ public class FileBrushLoader extends CommonBrushLoader
                     Gunsmith.getLogger().warn("Failed to convert " + ser.getAbsolutePath());
                     return null;
                 }
+            } else
+            {
+                return null;
             }
         }
         return loadBrush(classLoader, data);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, String ident)
     {
