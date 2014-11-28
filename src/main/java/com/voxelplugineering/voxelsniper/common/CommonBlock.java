@@ -23,19 +23,13 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * A combination location and material representation of a single voxel. The location is immutable.
  */
 public class CommonBlock
 {
-
-    /**
-     * The {@link com.thevoxelbox.vsl.type.Type} for blocks.
-     */
-    public static Type COMMONBLOCK_TYPE = Type.getType("COMMONBLOCK", "com/voxelplugineering/voxelsniper/common/CommonBlock", TypeDepth.SINGLE);
 
     /**
      * The location of this voxel.
@@ -49,11 +43,13 @@ public class CommonBlock
     /**
      * Creates a new CommonBlock with the given location and material
      *
-     * @param location the location
-     * @param material the material
+     * @param location the location, cannot be null
+     * @param material the material, cannot be null
      */
     public CommonBlock(CommonLocation location, CommonMaterial<?> material)
     {
+        checkNotNull(location, "Location cannot be null");
+        checkNotNull(material, "Material cannot be null");
         this.location = location;
         this.material = material;
     }
@@ -82,10 +78,11 @@ public class CommonBlock
     /**
      * Sets the material of the voxel at this location.
      * 
-     * @param material the new material
+     * @param material the new material, cannot be null
      */
     public void setMaterial(CommonMaterial<?> material)
     {
+        checkNotNull(material, "Material cannot be null");
         this.material = material;
         this.location.getWorld().setBlockAt(this.location, material);
     }
@@ -93,10 +90,11 @@ public class CommonBlock
     /**
      * Utility method for setting the material of the voxel without propagating the world changes.
      *
-     * @param mat the new material
+     * @param mat the new material, cannot be null
      */
     protected void localSetMaterial(CommonMaterial<?> mat)
     {
+        checkNotNull(material, "Material cannot be null");
         this.material = mat;
     }
 

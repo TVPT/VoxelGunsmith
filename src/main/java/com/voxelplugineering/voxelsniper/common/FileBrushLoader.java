@@ -23,6 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,10 +61,11 @@ public class FileBrushLoader extends CommonBrushLoader
     /**
      * Constructs a new FileBrushLoader with the default directory
      *
-     * @param defaultDir the directory to load brushes
+     * @param defaultDir the directory to load brushes, cannot be null
      */
     public FileBrushLoader(File defaultDir)
     {
+        checkNotNull(defaultDir, "Default directory cannot be null");
         this.defaultDirectory = defaultDir;
     }
 
@@ -84,6 +88,8 @@ public class FileBrushLoader extends CommonBrushLoader
      */
     public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, File data)
     {
+        checkNotNull(classLoader, "Classloader directory cannot be null");
+        checkNotNull(data, "Brush file directory cannot be null");
         try
         {
             DataInputStream din = new DataInputStream(new FileInputStream(data));
@@ -124,13 +130,17 @@ public class FileBrushLoader extends CommonBrushLoader
      * <p>
      * TODO: add a boolean to ignore file extension and load as if it was a .brush file.
      * 
-     * @param classLoader the class loader to load the brush with
-     * @param name the name of the brush to load
-     * @param directory the directory to load the brush from
+     * @param classLoader the class loader to load the brush with, cannot be null
+     * @param name the name of the brush to load, cannot be null or empty
+     * @param directory the directory to load the brush from, cannot be null
      * @return the brush
      */
     public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, String name, File directory)
     {
+        checkNotNull(classLoader, "Classloader directory cannot be null");
+        checkNotNull(name, "Name cannot be null!");
+        checkArgument(!name.isEmpty(), "Name cannot be empty");
+        checkNotNull(directory, "Brush directory directory cannot be null");
         File data = new File(directory, name + ".br");
         if (!data.exists())
         {
@@ -158,13 +168,12 @@ public class FileBrushLoader extends CommonBrushLoader
     public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, String ident)
     {
         return loadBrush(classLoader, ident, this.defaultDirectory);
-
     }
 
     /**
      * Converts the given .vsl script to a .brush file.
      * 
-     * @param serFile the .vsl script to convert
+     * @param serFile the .vsl script to convert, cannot be null
      * @return a success flag
      */
     public static boolean convertVSLGraph(File serFile)
@@ -175,7 +184,7 @@ public class FileBrushLoader extends CommonBrushLoader
     /**
      * For future file format changes to support converting old file formats to the most recent file format.
      * 
-     * @param old the old file
+     * @param old the old file, cannot be null
      * @return a success flag
      */
     public static boolean convertToVersion(File old)

@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -46,6 +48,8 @@ public abstract class CommonBrushLoader implements IBrushLoader
     @SuppressWarnings("unchecked")
     public Class<? extends IBrush> loadBrush(ASMClassLoader classLoader, byte[] serialized)
     {
+        checkNotNull(classLoader, "Classloader cannot be null");
+        checkNotNull(serialized, "Class data cannot be null");
         ByteArrayInputStream stream = new ByteArrayInputStream(serialized);
         try
         {

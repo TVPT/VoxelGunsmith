@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.common.event;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
@@ -71,7 +73,8 @@ public class CommonEventHandler
         brushVariables.set("targetBlock", ray.getTargetBlock());
         brushVariables.set("lastBlock", ray.getLastBlock());
         brushVariables.set("length", ray.getLength());
-        Gunsmith.getLogger().debug("Snipe at " + ray.getTargetBlock().getLocation().toString());
+        Gunsmith.getLogger()
+                .info("Snipe at " + ray.getTargetBlock().getLocation().toString() + " : " + sniper.getCurrentBrush().getClass().getName());
         sniper.getCurrentBrush().run(brushVariables, sniper);
     }
 

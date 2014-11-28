@@ -34,7 +34,7 @@ public interface IPermissionProxy
     /**
      * Whether the player is an operator, or has a wildcard permission.
      * 
-     * @param sniper the user to check
+     * @param sniper the user to check, cannot be null
      * @return whether they are an operator
      */
     boolean isOp(final ISniper sniper);
@@ -42,8 +42,8 @@ public interface IPermissionProxy
     /**
      * Checks if the user has the given permission node. Supports wildcards as permission nodes are made of a dot-separated sequence of nodes.
      * 
-     * @param sniper the user to check
-     * @param permission the permission node
+     * @param sniper the user to check, cannot be null
+     * @param permission the permission node, cannot be null or empty
      * @return the result of the check
      */
     boolean hasPermission(final ISniper sniper, final String permission);
@@ -51,9 +51,9 @@ public interface IPermissionProxy
     /**
      * Checks whether the user has the given node within the given world.
      * 
-     * @param sniper the user to check
-     * @param world the world to check the permission within
-     * @param permission the permission node
+     * @param sniper the user to check, cannot be null
+     * @param world the world to check the permission within, cannot be null
+     * @param permission the permission node, cannot be null or empty
      * @return the result of the check
      */
     boolean hasWorldPermission(final ISniper sniper, final CommonWorld world, final String permission);
@@ -61,9 +61,9 @@ public interface IPermissionProxy
     /**
      * Checks whether the user has the given node within the given world.
      * 
-     * @param sniper the user to check
-     * @param worldName the name of the world to check the permission within
-     * @param permission the permission node
+     * @param sniper the user to check, cannot be null
+     * @param worldName the name of the world to check the permission within, cannot be null or empty
+     * @param permission the permission node, cannot be null or empty
      * @return the result of the check
      */
     boolean hasWorldPermission(final ISniper sniper, final String worldName, final String permission);
@@ -71,26 +71,26 @@ public interface IPermissionProxy
     /**
      * Adds the given permission to the user with a global context.
      * 
-     * @param sniper the user to add the permission to
-     * @param permission the permission node to add
+     * @param sniper the user to add the permission to, cannot be null
+     * @param permission the permission node to add, cannot be null or empty
      */
     void addGlobalPermission(final ISniper sniper, final String permission);
 
     /**
      * Adds the given permission to the user with a context of only within the given world.
      * 
-     * @param sniper the user to add the permission to
-     * @param world the world to use as context
-     * @param permission the permission to add
+     * @param sniper the user to add the permission to, cannot be null
+     * @param world the world to use as context, cannot be null
+     * @param permission the permission to add, cannot be null or empty
      */
     void addWorldPermission(final ISniper sniper, final CommonWorld world, final String permission);
 
     /**
      * Adds the given permission to the user with a context of only within the given world, referenced by name.
      * 
-     * @param sniper the user to add the permission to
-     * @param worldName the world to use as context
-     * @param permission the permission to add
+     * @param sniper the user to add the permission to, cannot be null
+     * @param worldName the world to use as context, cannot be null or empty
+     * @param permission the permission to add, cannot be null or empty
      */
     void addWorldPermission(final ISniper sniper, final String worldName, final String permission);
 
@@ -102,8 +102,8 @@ public interface IPermissionProxy
      * </ul>
      * . The permission is not granted permanently to the user.
      *
-     * @param sniper the user to add the transient permission to
-     * @param permission the permission to add
+     * @param sniper the user to add the transient permission to, cannot be null
+     * @param permission the permission to add, cannot be null or empty
      */
     void addTransientGlobalPermission(final ISniper sniper, final String permission);
 
@@ -115,9 +115,9 @@ public interface IPermissionProxy
      * </ul>
      * . The permission is not granted permanently to the user.
      *
-     * @param sniper the user to add the transient permission to
-     * @param world the world to use as context
-     * @param permission the permission to add
+     * @param sniper the user to add the transient permission to, cannot be null
+     * @param world the world to use as context, cannot be null
+     * @param permission the permission to add, cannot be null or empty
      */
     void addTransientWorldPermission(final ISniper sniper, final CommonWorld world, final String permission);
 
@@ -129,35 +129,35 @@ public interface IPermissionProxy
      * </ul>
      * . The permission is not granted permanently to the user.
      *
-     * @param sniper the user to add the transient permission to
-     * @param worldName the world to use as context
-     * @param permission the permission to add
+     * @param sniper the user to add the transient permission to, cannot be null
+     * @param worldName the world to use as context, cannot be null or empty
+     * @param permission the permission to add, cannot be null or empty
      */
     void addTransientWorldPermission(final ISniper sniper, final String worldName, final String permission);
 
     /**
      * Removes the given permission from the user with a global context.
      * 
-     * @param sniper the user to remove the permission from
-     * @param permission the permission node to remove
+     * @param sniper the user to remove the permission from, cannot be null
+     * @param permission the permission node to remove, cannot be null or empty
      */
     void removeGlobalPermission(final ISniper sniper, final String permission);
 
     /**
      * Removes the given permission from the user with a context of only within the given world.
      * 
-     * @param sniper the user to remove the permission from
-     * @param world the world to use as context
-     * @param permission the permission to remove
+     * @param sniper the user to remove the permission from, cannot be null
+     * @param world the world to use as context, cannot be null
+     * @param permission the permission to remove, cannot be null or empty
      */
     void removeWorldPermission(final ISniper sniper, final CommonWorld world, final String permission);
 
     /**
      * Removes the given permission from the user with a context of only within the given world, referenced by name.
      * 
-     * @param sniper the user to remove the permission from
-     * @param worldName the world to use as context
-     * @param permission the permission to remove
+     * @param sniper the user to remove the permission from, cannot be null
+     * @param worldName the world to use as context, cannot be null or empty
+     * @param permission the permission to remove, cannot be null or empty
      */
     void removeWorldPermission(final ISniper sniper, final String worldName, final String permission);
 
@@ -170,8 +170,8 @@ public interface IPermissionProxy
      * </ul>
      * .
      *
-     * @param sniper the user to remove the transient permission from
-     * @param permission the permission to remove
+     * @param sniper the user to remove the transient permission from, cannot be null
+     * @param permission the permission to remove, cannot be null or empty
      */
     void removeTransientGlobalPermission(final ISniper sniper, final String permission);
 
@@ -184,9 +184,9 @@ public interface IPermissionProxy
      * </ul>
      * .
      *
-     * @param sniper the user to remove the transient permission from
-     * @param world the world to use as context
-     * @param permission the permission to remove
+     * @param sniper the user to remove the transient permission from, cannot be null
+     * @param world the world to use as context, cannot be null
+     * @param permission the permission to remove, cannot be null or empty
      */
     void removeTransientWorldPermission(final ISniper sniper, final CommonWorld world, final String permission);
 
@@ -199,9 +199,9 @@ public interface IPermissionProxy
      * </ul>
      * .
      *
-     * @param sniper the user to remove the transient permission from
-     * @param worldName the world to use as context
-     * @param permission the permission to remove
+     * @param sniper the user to remove the transient permission from, cannot be null
+     * @param worldName the world to use as context, cannot be null or empty
+     * @param permission the permission to remove, cannot be null or empty
      */
     void removeTransientWorldPermission(final ISniper sniper, final String worldName, final String permission);
 

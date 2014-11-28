@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.util;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -111,6 +112,7 @@ public class RayTrace
      */
     public RayTrace(CommonLocation origin, double yaw, double pitch)
     {
+        checkNotNull(origin, "Origin cannot be null");
         this.origin = origin;
         this.yaw = yaw;
         this.pitch = pitch;
@@ -179,6 +181,7 @@ public class RayTrace
      */
     public void setTraversalBlocks(CommonMaterial<?>... blocks)
     {
+        checkNotNull(blocks, "Traversal blocks cannot be null");
         this.traversalBlocks.clear();
         Collections.addAll(this.traversalBlocks, blocks);
     }

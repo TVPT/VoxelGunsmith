@@ -60,7 +60,7 @@ public class FlushPlayerQueueNode extends ExecutableNode
             INVOKEVIRTUAL BlockChangeQueue.flush () : void
          */
         mv.visitVarInsn(Opcodes.ALOAD, 2);
-        mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "com/voxelplugineering/voxelsniper/api/ISniper", "getPersonalQueue",
+        mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "com/voxelplugineering/voxelsniper/api/ISniper", "getActiveQueue",
                 "()Lcom/voxelplugineering/voxelsniper/world/BlockChangeQueue;", true);
         mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/world/BlockChangeQueue", "flush", "()V", false);
         return localsIndex;

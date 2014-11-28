@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.common.event;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.voxelplugineering.voxelsniper.api.ISniper;
 
 /**
@@ -37,13 +39,14 @@ public class SnipeEvent extends CommonEvent
     /**
      * Constructs a new SnipeEvent for processing
      *
-     * @param s the sniper involved
+     * @param sniper the sniper involved
      * @param y the yaw
      * @param p the pitch
      */
-    public SnipeEvent(ISniper s, double y, double p)
+    public SnipeEvent(ISniper sniper, double y, double p)
     {
-        this.sniper = s;
+        checkNotNull(sniper, "Sniper cannot be null!");
+        this.sniper = sniper;
         this.yaw = y;
         this.pitch = p;
     }

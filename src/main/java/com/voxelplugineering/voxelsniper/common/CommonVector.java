@@ -23,21 +23,14 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.Serializable;
-
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
  * A 3-dimensional vector with double-precision floating point numbers.
  */
 public class CommonVector implements Serializable, Cloneable
 {
-
-    /**
-     * The {@link com.thevoxelbox.vsl.type.Type} for vectors.
-     */
-    public static Type COMMONVECTOR_TYPE = Type.getType("COMMONVECTOR", "com/voxelplugineering/voxelsniper/common/CommonVector", TypeDepth.SINGLE);
 
     private static final long serialVersionUID = 2185038435585259289L;
     /**
@@ -95,6 +88,7 @@ public class CommonVector implements Serializable, Cloneable
      */
     public CommonVector add(CommonVector v)
     {
+        checkNotNull(v, "Vector cannot be null");
         return new CommonVector(getX() + v.getX(), getY() + v.getY(), getZ() + v.getZ());
     }
 
@@ -117,6 +111,7 @@ public class CommonVector implements Serializable, Cloneable
      */
     public CommonVector project(CommonVector b)
     {
+        checkNotNull(b, "Vector cannot be null");
         CommonVector a = clone();
         a.multipy(a.dot(b) / a.lengthSquared());
         return a;
@@ -130,6 +125,7 @@ public class CommonVector implements Serializable, Cloneable
      */
     public double dot(CommonVector v)
     {
+        checkNotNull(v, "Vector cannot be null");
         return getX() * v.getX() + getY() * v.getY() + getZ() * v.getZ();
     }
 
@@ -141,6 +137,7 @@ public class CommonVector implements Serializable, Cloneable
      */
     public CommonVector cross(CommonVector v)
     {
+        checkNotNull(v, "Vector cannot be null");
         return new CommonVector(getY() * v.getZ() - getZ() * v.getY(), getZ() * v.getX() - getX() * v.getZ(), getX() * v.getY() - getY() * v.getX());
     }
 

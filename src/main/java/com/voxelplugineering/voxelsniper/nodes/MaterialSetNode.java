@@ -28,8 +28,8 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.ExecutableNode;
-import com.voxelplugineering.voxelsniper.common.CommonBlock;
-import com.voxelplugineering.voxelsniper.common.CommonMaterial;
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
  * A visual scripting node to set the voxel at a location to the material.
@@ -48,8 +48,8 @@ public class MaterialSetNode extends ExecutableNode
     public MaterialSetNode()
     {
         super("MaterialSet", "world");
-        addInput("material", CommonMaterial.COMMONMATERIAL_TYPE, true, null);
-        addInput("targetBlock", CommonBlock.COMMONBLOCK_TYPE, true, null);
+        addInput("material", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE), true, null);
+        addInput("targetBlock", Type.getType("COMMONBLOCK", TypeDepth.SINGLE), true, null);
     }
 
     /**
@@ -73,7 +73,7 @@ public class MaterialSetNode extends ExecutableNode
         int targetBlock = getInput("targetBlock").getSource().get();
         int newMaterial = getInput("material").getSource().get();
         mv.visitVarInsn(Opcodes.ALOAD, 2);
-        mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "com/voxelplugineering/voxelsniper/api/ISniper", "getPersonalQueue",
+        mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "com/voxelplugineering/voxelsniper/api/ISniper", "getActiveQueue",
                 "()Lcom/voxelplugineering/voxelsniper/world/BlockChangeQueue;", true);
         mv.visitTypeInsn(Opcodes.NEW, "com/voxelplugineering/voxelsniper/world/BlockChange");
         mv.visitInsn(Opcodes.DUP);
@@ -85,5 +85,4 @@ public class MaterialSetNode extends ExecutableNode
                 "(Lcom/voxelplugineering/voxelsniper/world/BlockChange;)V", false);
         return localsIndex;
     }
-
 }

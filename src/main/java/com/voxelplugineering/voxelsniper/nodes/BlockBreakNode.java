@@ -28,9 +28,8 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.voxelplugineering.voxelsniper.common.CommonBlock;
-import com.voxelplugineering.voxelsniper.common.CommonLocation;
-import com.voxelplugineering.voxelsniper.common.CommonMaterial;
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
  * Node to get location and material from block
@@ -49,9 +48,9 @@ public class BlockBreakNode extends Node
     public BlockBreakNode()
     {
         super("BlockLocation", "block");
-        addInput("block", CommonBlock.COMMONBLOCK_TYPE, true, null);
-        addOutput("location", CommonLocation.COMMONLOCATION_TYPE, this);
-        addOutput("material", CommonMaterial.COMMONMATERIAL_TYPE, this);
+        addInput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE), true, null);
+        addOutput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE), this);
+        addOutput("material", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE), this);
     }
 
     /**

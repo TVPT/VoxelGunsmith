@@ -23,11 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.shape;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
 import com.voxelplugineering.voxelsniper.common.CommonVector;
 
 /**
@@ -35,11 +34,6 @@ import com.voxelplugineering.voxelsniper.common.CommonVector;
  */
 public class Shape
 {
-
-    /**
-     * The {@link com.thevoxelbox.vsl.type.Type} for a shape.
-     */
-    public static Type SHAPE_TYPE = Type.getType("SHAPE", "com/voxelplugineering/voxelsniper/shape/Shape", TypeDepth.SINGLE);
 
     /**
      * The shape. Dimensions are [x][z][y/8].
@@ -100,6 +94,7 @@ public class Shape
      */
     public void setOrigin(CommonVector origin)
     {
+        checkNotNull(origin, "Origin cannot be null");
         this.origin = origin;
     }
 
@@ -257,6 +252,7 @@ public class Shape
      */
     protected void matchSize(Shape other)
     {
+        checkNotNull(other, "Cannot match size with a null shape.");
         int dx = (int) (other.origin.getX() - this.origin.getX());
         int dy = (int) (other.origin.getY() - this.origin.getY());
         int dz = (int) (other.origin.getZ() - this.origin.getZ());
@@ -271,6 +267,7 @@ public class Shape
      */
     public void add(Shape s)
     {
+        checkNotNull(s, "Cannot operate with a null shape.");
         matchSize(s);
         for (int x = 0; x < this.width; x++)
         {
@@ -292,6 +289,7 @@ public class Shape
      */
     public void subtract(Shape s)
     {
+        checkNotNull(s, "Cannot operate with a null shape.");
         matchSize(s);
         for (int x = 0; x < this.width; x++)
         {
@@ -313,6 +311,7 @@ public class Shape
      */
     public void intersect(Shape s)
     {
+        checkNotNull(s, "Cannot operate with a null shape.");
         matchSize(s);
         for (int x = 0; x < this.width; x++)
         {
@@ -333,6 +332,7 @@ public class Shape
      */
     public void xor(Shape s)
     {
+        checkNotNull(s, "Cannot operate with a null shape.");
         matchSize(s);
         for (int x = 0; x < this.width; x++)
         {

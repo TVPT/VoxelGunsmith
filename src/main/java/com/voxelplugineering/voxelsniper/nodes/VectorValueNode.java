@@ -28,6 +28,8 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
 import com.voxelplugineering.voxelsniper.common.CommonVector;
 
 /**
@@ -53,7 +55,7 @@ public class VectorValueNode extends Node implements Opcodes
     public VectorValueNode(CommonVector v)
     {
         super("Vector Value", "vector");
-        addOutput("value", CommonVector.COMMONVECTOR_TYPE, this);
+        addOutput("value", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), this);
         this.value = v;
     }
 

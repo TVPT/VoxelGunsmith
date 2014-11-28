@@ -32,43 +32,43 @@ public interface ILogger
     /**
      * Logs a debug message to the output. Will not be displayed unless the output's logging level is set to debug.
      * 
-     * @param msg the debug message
+     * @param msg the debug message, cannot be null or empty
      */
     void debug(String msg);
 
     /**
      * Logs an info message to the output.
      * 
-     * @param msg the info message
+     * @param msg the info message, cannot be null or empty
      */
     void info(String msg);
 
     /**
      * Logs a warning to the output.
      * 
-     * @param msg the warning
+     * @param msg the warning, cannot be null or empty
      */
     void warn(String msg);
 
     /**
      * Logs an error to the output.
      * 
-     * @param msg the error message
+     * @param msg the error message, cannot be null or empty
      */
     void error(String msg);
 
     /**
      * Logs an error to the output.
      * 
-     * @param e the exception
+     * @param e the exception, cannot be null
      */
     void error(Exception e);
 
     /**
      * Logs an error to the output.
      * 
-     * @param e the exception
-     * @param msg an included message
+     * @param e the exception, cannot be null
+     * @param msg an included message, cannot be null or empty
      */
     void error(Exception e, String msg);
 

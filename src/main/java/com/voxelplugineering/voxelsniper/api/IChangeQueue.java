@@ -34,14 +34,9 @@ public interface IChangeQueue<T>
     /**
      * Adds a new change to this queue.
      * 
-     * @param change the new change
+     * @param change the new change, cannot be null
      */
     void add(T change);
-
-    /**
-     * Finalizes this queue and pushes it to the world for processing.
-     */
-    void flush();
 
     /**
      * Clears this queue.

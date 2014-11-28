@@ -28,8 +28,8 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.voxelplugineering.voxelsniper.common.CommonLocation;
-import com.voxelplugineering.voxelsniper.common.CommonVector;
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
  * Offsets a location by a given vector offset. Equivalent to {@code location.add(vector.getX(), vector.getY(), vector.getZ());}
@@ -48,9 +48,9 @@ public class LocationOffsetNode extends Node implements Opcodes
     public LocationOffsetNode()
     {
         super("Location offset", "vector");
-        addInput("location", CommonLocation.COMMONLOCATION_TYPE, true, null);
-        addInput("offset", CommonVector.COMMONVECTOR_TYPE, true, null);
-        addOutput("result", CommonLocation.COMMONLOCATION_TYPE, this);
+        addInput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE), true, null);
+        addInput("offset", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), true, null);
+        addOutput("result", Type.getType("COMMONLOCATION", TypeDepth.SINGLE), this);
     }
 
     /**

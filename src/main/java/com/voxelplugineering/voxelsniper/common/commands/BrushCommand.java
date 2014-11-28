@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.common.commands;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Map;
 
 import com.voxelplugineering.voxelsniper.api.IBrush;
@@ -54,6 +56,7 @@ public class BrushCommand extends Command
     @Override
     public boolean execute(ISniper sniper, Map<String, CommandArgument<?>> args)
     {
+        checkNotNull(sniper, "Cannot have a null sniper!");
         String[] s = ((RawArgument) args.get("raw")).getChoice();
         if (s.length == 1)
         {

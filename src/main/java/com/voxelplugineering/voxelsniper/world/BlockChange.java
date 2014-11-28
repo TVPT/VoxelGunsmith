@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.world;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.voxelplugineering.voxelsniper.common.CommonBlock;
 import com.voxelplugineering.voxelsniper.common.CommonMaterial;
 
@@ -59,6 +61,8 @@ public class BlockChange extends Change
     public BlockChange(int x, int y, int z, CommonMaterial<?> from, CommonMaterial<?> to)
     {
         super(x, y, z);
+        checkNotNull(from, "From material cannot be null");
+        checkNotNull(to, "To material cannot be null");
         this.from = from;
         this.to = to;
     }
@@ -73,6 +77,8 @@ public class BlockChange extends Change
     public BlockChange(CommonBlock target, CommonMaterial<?> mat)
     {
         super(target.getLocation().getFlooredX(), target.getLocation().getFlooredY(), target.getLocation().getFlooredZ());
+        checkNotNull(target, "Target block cannot be null");
+        checkNotNull(mat, "To material cannot be null");
         this.to = mat;
         this.from = target.getLocation().getWorld().getBlockAt(target.getLocation()).getMaterial();
     }

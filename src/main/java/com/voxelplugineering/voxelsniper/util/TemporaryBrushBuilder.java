@@ -39,10 +39,9 @@ import com.thevoxelbox.vsl.node.variables.ChainedInputNode;
 import com.thevoxelbox.vsl.node.variables.ChainedOutputNode;
 import com.thevoxelbox.vsl.node.variables.VariableGetNode;
 import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
 import com.voxelplugineering.voxelsniper.api.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
-import com.voxelplugineering.voxelsniper.common.CommonBlock;
-import com.voxelplugineering.voxelsniper.common.CommonMaterial;
 import com.voxelplugineering.voxelsniper.common.FileBrushLoader;
 import com.voxelplugineering.voxelsniper.nodes.BlockBreakNode;
 import com.voxelplugineering.voxelsniper.nodes.FlushPlayerQueueNode;
@@ -51,8 +50,8 @@ import com.voxelplugineering.voxelsniper.nodes.LocationOffsetNode;
 import com.voxelplugineering.voxelsniper.nodes.MaterialSetNode;
 import com.voxelplugineering.voxelsniper.nodes.ShapeForEachNode;
 import com.voxelplugineering.voxelsniper.nodes.SphereShapeNode;
+import com.voxelplugineering.voxelsniper.nodes.TestNode;
 import com.voxelplugineering.voxelsniper.nodes.VoxelShapeNode;
-import com.voxelplugineering.voxelsniper.shape.Shape;
 
 /**
  * In lieu of having flat file brushes this will temporarily serve as a builder for brushes at runtime for debugging during development.
@@ -144,13 +143,25 @@ public class TemporaryBrushBuilder
      */
     public static void buildBrushes()
     {
+        
+        try
+        { //test
+            TestNode test = new TestNode();
+
+            IChainableNodeGraph brush = new ChainableNodeGraph("test");
+            brush.setStartNode(test);
+            graphs.put("test", brush);
+        } catch (Exception e)
+        {
+            Gunsmith.getLogger().error(e, "Failed to create test brush part");
+        }
 
         try
         { //ball
             VariableGetNode radius = new VariableGetNode("brushSize", Type.FLOAT);
             SphereShapeNode shape = new SphereShapeNode();
             shape.mapInput("radius", radius.getOutput("value"));
-            ChainedOutputNode shapeOut = new ChainedOutputNode("shape", Shape.SHAPE_TYPE);
+            ChainedOutputNode shapeOut = new ChainedOutputNode("shape", Type.getType("SHAPE", TypeDepth.SINGLE));
             shapeOut.mapInput("value", shape.getOutput("shape"));
 
             IChainableNodeGraph brush = new ChainableNodeGraph("ball");
@@ -163,11 +174,11 @@ public class TemporaryBrushBuilder
 
         try
         { //TODO biome
-            ChainedInputNode shapeIn = new ChainedInputNode("shape", Shape.SHAPE_TYPE);
+            ChainedInputNode shapeIn = new ChainedInputNode("shape", Type.getType("SHAPE", TypeDepth.SINGLE));
             ShapeForEachNode forEach = new ShapeForEachNode();
             MaterialSetNode set = new MaterialSetNode();
-            VariableGetNode getMaterial = new VariableGetNode("setMaterial", CommonMaterial.COMMONMATERIAL_TYPE);
-            VariableGetNode target = new VariableGetNode("targetBlock", CommonBlock.COMMONBLOCK_TYPE);
+            VariableGetNode getMaterial = new VariableGetNode("setMaterial", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE));
+            VariableGetNode target = new VariableGetNode("targetBlock", Type.getType("COMMONBLOCK", TypeDepth.SINGLE));
             BlockBreakNode blockBreak = new BlockBreakNode();
             LocationOffsetNode location = new LocationOffsetNode();
             GetBlockFromLocationNode getBlock = new GetBlockFromLocationNode();
@@ -191,8 +202,8 @@ public class TemporaryBrushBuilder
 
         try
         { //Snipe brush
-            VariableGetNode getTarget = new VariableGetNode("targetBlock", CommonBlock.COMMONBLOCK_TYPE);
-            VariableGetNode getMaterial = new VariableGetNode("setMaterial", CommonMaterial.COMMONMATERIAL_TYPE);
+            VariableGetNode getTarget = new VariableGetNode("targetBlock", Type.getType("COMMONBLOCK", TypeDepth.SINGLE));
+            VariableGetNode getMaterial = new VariableGetNode("setMaterial", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE));
             MaterialSetNode set = new MaterialSetNode();
             set.mapInput("targetBlock", getTarget.getOutput("value"));
             set.mapInput("material", getMaterial.getOutput("value"));
@@ -210,7 +221,7 @@ public class TemporaryBrushBuilder
             VariableGetNode radius = new VariableGetNode("brushSize", Type.FLOAT);
             VoxelShapeNode shape = new VoxelShapeNode();
             shape.mapInput("radius", radius.getOutput("value"));
-            ChainedOutputNode shapeOut = new ChainedOutputNode("shape", Shape.SHAPE_TYPE);
+            ChainedOutputNode shapeOut = new ChainedOutputNode("shape", Type.getType("SHAPE", TypeDepth.SINGLE));
             shapeOut.mapInput("value", shape.getOutput("shape"));
 
             IChainableNodeGraph brush = new ChainableNodeGraph("voxel");
@@ -223,11 +234,11 @@ public class TemporaryBrushBuilder
 
         try
         { //shape set material
-            ChainedInputNode shapeIn = new ChainedInputNode("shape", Shape.SHAPE_TYPE);
+            ChainedInputNode shapeIn = new ChainedInputNode("shape", Type.getType("SHAPE", TypeDepth.SINGLE));
             ShapeForEachNode forEach = new ShapeForEachNode();
             MaterialSetNode set = new MaterialSetNode();
-            VariableGetNode getMaterial = new VariableGetNode("setMaterial", CommonMaterial.COMMONMATERIAL_TYPE);
-            VariableGetNode target = new VariableGetNode("targetBlock", CommonBlock.COMMONBLOCK_TYPE);
+            VariableGetNode getMaterial = new VariableGetNode("setMaterial", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE));
+            VariableGetNode target = new VariableGetNode("targetBlock", Type.getType("COMMONBLOCK", TypeDepth.SINGLE));
             BlockBreakNode blockBreak = new BlockBreakNode();
             LocationOffsetNode location = new LocationOffsetNode();
             GetBlockFromLocationNode getBlock = new GetBlockFromLocationNode();

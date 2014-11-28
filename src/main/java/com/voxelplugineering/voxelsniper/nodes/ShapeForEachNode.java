@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -30,8 +31,7 @@ import org.objectweb.asm.Opcodes;
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.ExecutableNode;
 import com.thevoxelbox.vsl.type.Type;
-import com.voxelplugineering.voxelsniper.common.CommonVector;
-import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
  * Iterates over each block of a shape and executes the body for-each block.
@@ -54,19 +54,20 @@ public class ShapeForEachNode extends ExecutableNode implements Opcodes
     public ShapeForEachNode()
     {
         super("Shape for-each", "shape");
-        addInput("shape", Shape.SHAPE_TYPE, true, null);
-        addOutput("next", CommonVector.COMMONVECTOR_TYPE, this);
+        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE), true, null);
+        addOutput("next", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), this);
         addOutput("index", Type.INTEGER, this);
     }
 
     /**
      * Sets the {@link ExecutableNode} to insert into the body of this for-each loop.
      * 
-     * @param b the new body
+     * @param body the new body
      */
-    public void setBody(ExecutableNode b)
+    public void setBody(ExecutableNode body)
     {
-        this.body = b;
+        checkNotNull(body, "Loop body cannot be null");
+        this.body = body;
     }
 
     /**

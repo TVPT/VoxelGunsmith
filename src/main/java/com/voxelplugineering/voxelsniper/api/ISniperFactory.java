@@ -34,7 +34,7 @@ public interface ISniperFactory<T> extends IManager
     /**
      * Returns the {@link ISniper} wrapping the given specific implementation's user.
      * 
-     * @param user the user object from the specific implementation
+     * @param user the user object from the specific implementation, cannot be null
      * @return the {@link ISniper} for the user
      */
     ISniper getSniper(T user);

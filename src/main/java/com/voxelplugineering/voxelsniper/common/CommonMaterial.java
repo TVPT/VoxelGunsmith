@@ -23,8 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Represents a Material type
@@ -33,12 +32,6 @@ import com.thevoxelbox.vsl.type.TypeDepth;
  */
 public abstract class CommonMaterial<T>
 {
-
-    /**
-     * The {@link com.thevoxelbox.vsl.type.Type} for materials.
-     */
-    public static Type COMMONMATERIAL_TYPE = Type.getType("COMMONMATERIAL", "com/voxelplugineering/voxelsniper/common/CommonMaterial",
-            TypeDepth.SINGLE);
 
     /**
      * The underlying material class.
@@ -52,6 +45,7 @@ public abstract class CommonMaterial<T>
      */
     public CommonMaterial(T value)
     {
+        checkNotNull(value, "Material object cannot be null");
         this.value = value;
     }
 

@@ -29,6 +29,9 @@ import java.util.Map;
 import com.voxelplugineering.voxelsniper.api.ILogger;
 import com.voxelplugineering.voxelsniper.api.ILoggingDistributor;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * A standard logging distributor.
  */
@@ -82,6 +85,10 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void debug(String msg)
     {
+        if (msg == null || msg.isEmpty())
+        {
+            return;
+        }
         for (String n : this.loggers.keySet())
         {
             ILogger l = this.loggers.get(n);
@@ -95,6 +102,10 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void info(String msg)
     {
+        if (msg == null || msg.isEmpty())
+        {
+            return;
+        }
         if (this.loggers.isEmpty())
         {
             System.out.println(msg);
@@ -112,6 +123,10 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void warn(String msg)
     {
+        if (msg == null || msg.isEmpty())
+        {
+            return;
+        }
         if (this.loggers.isEmpty())
         {
             System.out.println("[WARNING] " + msg);
@@ -129,6 +144,10 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void error(String msg)
     {
+        if (msg == null || msg.isEmpty())
+        {
+            return;
+        }
         if (this.loggers.isEmpty())
         {
             System.out.println("[ERROR] " + msg);
@@ -146,6 +165,10 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void error(Exception e)
     {
+        if (e == null)
+        {
+            return;
+        }
         if (this.loggers.isEmpty())
         {
             e.printStackTrace();
@@ -163,6 +186,10 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void error(Exception e, String msg)
     {
+        if (msg == null || msg.isEmpty() || e == null)
+        {
+            return;
+        }
         if (this.loggers.isEmpty())
         {
             System.out.println("[ERROR] " + msg);
@@ -181,6 +208,9 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void registerLogger(ILogger logger, String name)
     {
+        checkNotNull(logger, "Logger cannot be null!");
+        checkNotNull(name, "Name cannot be null!");
+        checkArgument(!name.isEmpty(), "Name cannot be empty");
         this.loggers.put(name, logger);
     }
 
@@ -190,6 +220,8 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void removeLogger(String name)
     {
+        checkNotNull(name, "Name cannot be null!");
+        checkArgument(!name.isEmpty(), "Name cannot be empty");
         this.loggers.remove(name);
     }
 

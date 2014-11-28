@@ -48,6 +48,9 @@ public class CommonMaterialFactory<T> implements IMaterialFactory<T>
      */
     private CommonMaterial<T> air = null;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void init()
     {
@@ -55,12 +58,18 @@ public class CommonMaterialFactory<T> implements IMaterialFactory<T>
         this.air = null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop()
     {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void restart()
     {
@@ -68,23 +77,34 @@ public class CommonMaterialFactory<T> implements IMaterialFactory<T>
         init();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonMaterial<T> getMaterial(String name)
     {
+        checkNotNull(name, "Name cannot be null!");
         checkArgument(name.length() != 0, "Name of material cannot be empty");
 
         return this.registry.get(name.toUpperCase());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonMaterial<T> getAirMaterial()
     {
         return this.air;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void registerMaterial(String name, CommonMaterial<T> material)
     {
+        checkNotNull(name, "Name cannot be null!");
         checkNotNull(material, "Material being registered cannot be null");
         checkArgument(name.length() != 0, "Name of material cannot be empty");
         name = name.toUpperCase();

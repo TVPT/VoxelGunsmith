@@ -32,15 +32,15 @@ public interface IConfiguration
     /**
      * Sets a value in configuration.
      * 
-     * @param name the name of the configuration key
-     * @param value the new value
+     * @param name the name of the configuration key, cannot be null or empty
+     * @param value the new value, cannot be null
      */
     void set(String name, Object value);
 
     /**
      * Returns a value from configuration.
      * 
-     * @param name the name or key to search and return from the configuration storage
+     * @param name the name or key to search and return from the configuration storage, cannot be null or empty
      * @return the value stored in configuration, or null if the key is not found
      */
     Object get(String name);
@@ -53,14 +53,14 @@ public interface IConfiguration
      * If any of the fields have names matching keys already stored within this configuration storage the values in this configuration storage will be
      * overwritten.
      * 
-     * @param container the new container to load.
+     * @param container the new container to load, cannot be null
      */
     void registerContainer(Class<?> container);
 
     /**
      * Returns the Class of a previously registered container. Returns null if no container matching the given name has been registered previously.
      * 
-     * @param containerName the name of the container
+     * @param containerName the name of the container, cannot be null or empty
      * @return the container class
      */
     Class<?> getContainer(String containerName);

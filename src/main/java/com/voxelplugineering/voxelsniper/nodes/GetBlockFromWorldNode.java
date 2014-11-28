@@ -28,9 +28,8 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.voxelplugineering.voxelsniper.common.CommonBlock;
-import com.voxelplugineering.voxelsniper.common.CommonVector;
-import com.voxelplugineering.voxelsniper.common.CommonWorld;
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
  * Takes a world and a vector position and returns the block at that location. Equivalent to
@@ -50,9 +49,9 @@ public class GetBlockFromWorldNode extends Node implements Opcodes
     public GetBlockFromWorldNode()
     {
         super("Block Get From World", "world");
-        addInput("world", CommonWorld.COMMONVECTOR_TYPE, true, null);
-        addInput("vector", CommonVector.COMMONVECTOR_TYPE, true, null);
-        addOutput("block", CommonBlock.COMMONBLOCK_TYPE, this);
+        addInput("world", Type.getType("COMMONWORLD", TypeDepth.SINGLE), true, null);
+        addInput("vector", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), true, null);
+        addOutput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE), this);
     }
 
     /**

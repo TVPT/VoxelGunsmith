@@ -31,6 +31,7 @@ import com.voxelplugineering.voxelsniper.api.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.ICommandRegistrar;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -62,10 +63,11 @@ public class CommandHandler
     /**
      * Sets the registrar for this handler.
      * 
-     * @param registrar the new registrar
+     * @param registrar the new registrar, cannot be null
      */
     public void setRegistrar(ICommandRegistrar registrar)
     {
+        checkNotNull(registrar, "Registrar cannot be null");
         this.registrar = registrar;
     }
 
@@ -77,6 +79,7 @@ public class CommandHandler
     public void registerCommand(Command cmd)
     {
         checkNotNull(cmd, "Cannot register a null command!");
+        checkNotNull(this.registrar, "Cannot register a command without setting the registrar first.");
         this.registrar.registerCommand(cmd);
         for (String alias : cmd.getAllAliases())
         {
@@ -95,6 +98,8 @@ public class CommandHandler
     {
         checkNotNull(player, "Cannot have a null sniper!");
         checkNotNull(command, "Cannot use a null command!");
+        checkNotNull(args, "Command arguments cannot be null!");
+        checkArgument(!command.isEmpty(), "Command cannot be empty");
         if (!this.commands.containsKey(command))
         {
             return;
@@ -133,6 +138,7 @@ public class CommandHandler
     {
         checkNotNull(player, "Cannot have a null sniper!");
         checkNotNull(fullCommand, "Cannot use a null command!");
+        checkArgument(!fullCommand.isEmpty(), "Command cannot be empty");
         String[] s = fullCommand.split(" ");
         onCommand(player, s[0], Arrays.copyOfRange(s, 1, s.length));
     }

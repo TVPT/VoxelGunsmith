@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.common.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
 import java.util.List;
 
 import com.voxelplugineering.voxelsniper.api.ISniper;
@@ -60,11 +62,13 @@ public abstract class CommandArgument<T>
     /**
      * Creates a new CommandArgument with the given name and requirement.
      *
-     * @param name the name of this argument
+     * @param name the name of this argument, cannot be null or empty
      * @param required whether this argument is required for command validation
      */
     protected CommandArgument(String name, boolean required)
     {
+        checkNotNull(name, "Name cannot be null!");
+        checkArgument(!name.isEmpty(), "Name cannot be empty");
         this.required = required;
         this.name = name;
     }

@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.config;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,21 +58,36 @@ public class Configuration implements IConfiguration
         this.containers = new HashMap<String, Class<?>>();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void set(String name, Object value)
     {
+        checkNotNull(name, "Name cannot be null!");
+        checkArgument(!name.isEmpty(), "Name cannot be empty");
+        checkNotNull(value, "Value cannot be null!");
         this.config.put(name, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object get(String name)
     {
+        checkNotNull(name, "Name cannot be null!");
+        checkArgument(!name.isEmpty(), "Name cannot be empty");
         return this.config.get(name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void registerContainer(Class<?> container)
     {
+        checkNotNull(container, "Container cannot be null!");
         String name = container.getName();
         if (this.containers.containsKey(name))
         {
@@ -96,12 +113,20 @@ public class Configuration implements IConfiguration
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<?> getContainer(String containerName)
     {
+        checkNotNull(containerName, "Name cannot be null!");
+        checkArgument(!containerName.isEmpty(), "Name cannot be empty");
         return this.containers.get(containerName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<?>[] getContainers()
     {

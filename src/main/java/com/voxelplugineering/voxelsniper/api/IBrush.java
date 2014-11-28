@@ -39,8 +39,8 @@ public interface IBrush extends IChainedRunnableGraph
     /**
      * Specialized run method for Gunsmith, adds a reference to the player executing the brush.
      * 
-     * @param vars the execution variables
-     * @param player the player
+     * @param vars the execution variables, cannot be null
+     * @param player the player, cannot be null
      */
     void run(IVariableHolder vars, ISniper player);
 

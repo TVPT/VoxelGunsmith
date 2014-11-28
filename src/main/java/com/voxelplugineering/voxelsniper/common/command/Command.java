@@ -152,6 +152,8 @@ public abstract class Command
      */
     private Map<String, CommandArgument<?>> extractArguements(ISniper sniper, String[] args)
     {
+        checkNotNull(sniper, "Sniper cannot be null");
+        checkNotNull(args, "CommanD arguments cannot be null");
         int i = 0;
         for (String c : this.arguments.keySet())
         {
@@ -204,10 +206,11 @@ public abstract class Command
     /**
      * Sets the valid permissions for this command.
      * 
-     * @param perms the permissions
+     * @param perms the permissions, cannot be null
      */
     public void setPermissions(String... perms)
     {
+        checkNotNull(perms, "Permissions cannot be null");
         this.permissions = perms;
     }
 

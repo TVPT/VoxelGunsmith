@@ -28,8 +28,8 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.voxelplugineering.voxelsniper.common.CommonBlock;
-import com.voxelplugineering.voxelsniper.common.CommonLocation;
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
  * A node for retrieving a block from a location. Equivalent to {@code location.getWorld().getBlockAt(location);}
@@ -48,8 +48,8 @@ public class GetBlockFromLocationNode extends Node implements Opcodes
     public GetBlockFromLocationNode()
     {
         super("Block Get From World", "world");
-        addInput("location", CommonLocation.COMMONLOCATION_TYPE, true, null);
-        addOutput("block", CommonBlock.COMMONBLOCK_TYPE, this);
+        addInput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE), true, null);
+        addOutput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE), this);
     }
 
     /**

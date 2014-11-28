@@ -36,7 +36,7 @@ public interface IMaterialFactory<T> extends IManager
     /**
      * Get the material with the given name.
      * 
-     * @param name the name of the material
+     * @param name the name of the material, cannot be null or empty
      * @return the associated {@link CommonMaterial}
      */
     CommonMaterial<T> getMaterial(String name);
@@ -44,8 +44,8 @@ public interface IMaterialFactory<T> extends IManager
     /**
      * Registers a material from the specific implementation with this factory.
      * 
-     * @param name the name of the material
-     * @param material the material object from the underlying implementation.
+     * @param name the name of the material, cannot be null or empty
+     * @param material the material object from the underlying implementation, cannot be null
      */
     void registerMaterial(String name, CommonMaterial<T> material);
 

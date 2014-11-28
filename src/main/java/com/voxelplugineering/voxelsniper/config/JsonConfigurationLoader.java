@@ -23,6 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.config;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -53,14 +56,18 @@ public class JsonConfigurationLoader
      * Loads a configuration container from the given jsonFile. The configuration container must be registered with the configuration storage before
      * calling this.
      * 
-     * @param jsonFile the jsonFile to load the container from
-     * @param configuration the configuration object to load the values into
-     * @param containerName the name of the container
+     * @param jsonFile the jsonFile to load the container from, cannot be null
+     * @param configuration the configuration object to load the values into, cannot be null
+     * @param containerName the name of the container, cannot be null or empty
      * @throws IOException if there is an issue with loading values from the file
      * @throws IllegalAccessException if there was an issue loading the values from the fields
      */
     public void load(File jsonFile, IConfiguration configuration, String containerName) throws IOException, IllegalAccessException
     {
+        checkNotNull(jsonFile, "Json File cannot be null!");
+        checkNotNull(configuration, "Configuration cannot be null!");
+        checkNotNull(containerName, "Name cannot be null!");
+        checkArgument(!containerName.isEmpty(), "Name cannot be empty");
         Class<?> container = configuration.getContainer(containerName);
         Reader reader = new InputStreamReader(new FileInputStream(jsonFile));
         Gson gson = new GsonBuilder().create();
@@ -91,6 +98,10 @@ public class JsonConfigurationLoader
     public void save(File output, IConfiguration configuration, String containerName) throws IOException, InstantiationException,
             IllegalAccessException
     {
+        checkNotNull(output, "File output cannot be null!");
+        checkNotNull(configuration, "Configuration cannot be null!");
+        checkNotNull(containerName, "Name cannot be null!");
+        checkArgument(!containerName.isEmpty(), "Name cannot be empty");
         Class<?> container = configuration.getContainer(containerName);
         Gson gson = new GsonBuilder().create();
         Writer writer = new FileWriter(output);
@@ -117,6 +128,8 @@ public class JsonConfigurationLoader
      */
     public void saveAllContainers(File outputFolder, IConfiguration configuration) throws IOException, InstantiationException, IllegalAccessException
     {
+        checkNotNull(outputFolder, "Output folder cannot be null!");
+        checkNotNull(configuration, "Configuration cannot be null!");
         Class<?>[] containers = configuration.getContainers();
 
         Gson gson = new GsonBuilder().create();

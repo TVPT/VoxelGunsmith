@@ -28,6 +28,8 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
 import com.voxelplugineering.voxelsniper.common.CommonVector;
 
 /**
@@ -47,9 +49,9 @@ public class VectorAdditionNode extends Node implements Opcodes
     public VectorAdditionNode()
     {
         super("Vector Addition", "vector");
-        addInput("a", CommonVector.COMMONVECTOR_TYPE, true, null);
-        addInput("b", CommonVector.COMMONVECTOR_TYPE, true, null);
-        addOutput("result", CommonVector.COMMONVECTOR_TYPE, this);
+        addInput("a", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), true, null);
+        addInput("b", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), true, null);
+        addOutput("result", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), this);
     }
 
     /**

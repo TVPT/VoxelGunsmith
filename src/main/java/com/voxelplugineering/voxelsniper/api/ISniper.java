@@ -44,7 +44,7 @@ public interface ISniper
     /**
      * Sends a message to the user.
      * 
-     * @param msg the message to send
+     * @param msg the message to send, cannot be null or empty
      */
     void sendMessage(String msg);
 
@@ -65,7 +65,7 @@ public interface ISniper
     /**
      * Sets the current brush of this sniper.
      * 
-     * @param brush the new brush
+     * @param brush the new brush, cannot be null
      */
     void setCurrentBrush(IBrush brush);
 
@@ -92,7 +92,7 @@ public interface ISniper
      * Adds a queue to the history buffer for this player. If the size of the history buffer is greater than the maximum allowed size then the oldest
      * stored queues are dropped.
      * 
-     * @param invert the new queue for the buffer, this queue is assumed to be an inverse queue to an operation performed in the world.
+     * @param invert the new queue for the buffer, this queue is assumed to be an inverse queue to an operation performed in the world, cannot be null
      */
     void addHistory(BlockChangeQueue invert);
 
@@ -113,13 +113,34 @@ public interface ISniper
      * 
      * @return the active queue
      */
-    BlockChangeQueue getPersonalQueue();
+    BlockChangeQueue getActiveQueue();
 
     /**
      * Pushes the top n inverse change queues from the history buffer to the world, effectively undoing previous changes.
      * 
-     * @param n the number of past changes to undo
+     * @param n the number of past changes to undo, cannot be negative
      */
     void undoHistory(int n);
+
+    /**
+     * Returns whether this sniper has pending change queues which have not yet been handled.
+     * 
+     * @return has pending changes
+     */
+    boolean hasPendingChanges();
+
+    /**
+     * Returns the next pending {@link BlockChangeQueue}.
+     * 
+     * @return the next change queue
+     */
+    BlockChangeQueue getNextPendingChange();
+
+    /**
+     * Adds the given change queue to the pending changes queue.
+     * 
+     * @param blockChangeQueue the new {@link BlockChangeQueue}, cannot be null
+     */
+    void addPending(BlockChangeQueue blockChangeQueue);
 
 }

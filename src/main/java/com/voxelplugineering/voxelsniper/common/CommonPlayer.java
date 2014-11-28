@@ -23,9 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import java.lang.ref.WeakReference;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import com.thevoxelbox.vsl.VariableScope;
 import com.thevoxelbox.vsl.api.IVariableScope;
@@ -63,9 +66,13 @@ public abstract class CommonPlayer<T> implements ISniper
      */
     private Deque<BlockChangeQueue> history;
     /**
+     * The queue of pending {@link BlockChangeQueue}s waiting to be processed.
+     */
+    private Queue<BlockChangeQueue> pending;
+    /**
      * The currently active change queue.
      */
-    private BlockChangeQueue personal;
+    private BlockChangeQueue active;
 
     /**
      * Creates a new CommonPlayer with a weak reference to the player.
@@ -74,12 +81,14 @@ public abstract class CommonPlayer<T> implements ISniper
      */
     protected CommonPlayer(T player)
     {
+        checkNotNull(player, "Player cannot be null");
         this.playerReference = new WeakReference<T>(player);
         //TODO: have player inherit brushes from group rather than the global brush manager always.
         this.personalBrushManager = new CommonBrushManager(Gunsmith.getGlobalBrushManager());
         this.brushVariables = new VariableScope();
         resetSettings();
         this.history = new ArrayDeque<BlockChangeQueue>();
+        this.pending = new LinkedList<BlockChangeQueue>();
         resetPersonalQueue();
     }
 
@@ -141,6 +150,7 @@ public abstract class CommonPlayer<T> implements ISniper
      */
     public void addHistory(BlockChangeQueue changeQueue)
     {
+        checkNotNull(changeQueue, "ChangeQueue cannot be null");
         this.history.addFirst(changeQueue);
         while (this.history.size() > 20)
         {
@@ -156,16 +166,16 @@ public abstract class CommonPlayer<T> implements ISniper
         while (n > 0 && !this.history.isEmpty())
         {
             BlockChangeQueue next = this.history.removeFirst();
-            next.getWorld().registerChangeQueue(next);
+            this.pending.add(next);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public BlockChangeQueue getPersonalQueue()
+    public BlockChangeQueue getActiveQueue()
     {
-        return this.personal;
+        return this.active;
     }
 
     /**
@@ -173,6 +183,41 @@ public abstract class CommonPlayer<T> implements ISniper
      */
     public void resetPersonalQueue()
     {
-        this.personal = new BlockChangeQueue(getWorld(), this);
+        this.active = new BlockChangeQueue(getWorld(), this);
+        this.pending.clear();
+    }
+
+    @Override
+    public boolean hasPendingChanges()
+    {
+        return this.pending.size() != 0;
+    }
+
+    @Override
+    public BlockChangeQueue getNextPendingChange()
+    {
+        return this.pending.peek();
+    }
+
+    @Override
+    public void addPending(BlockChangeQueue queue)
+    {
+        checkNotNull(queue, "ChangeQueue cannot be null");
+        this.pending.add(queue);
+    }
+
+    public void clearNextPending()
+    {
+        if (!this.pending.isEmpty())
+        {
+            this.pending.remove();
+        }
+    }
+
+    public void flushActiveQueue()
+    {
+        this.pending.add(this.active);
+        addHistory(this.active.invert());
+        resetPersonalQueue();
     }
 }

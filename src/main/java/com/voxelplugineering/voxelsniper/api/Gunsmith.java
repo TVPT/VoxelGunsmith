@@ -119,7 +119,7 @@ public final class Gunsmith
     /**
      * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.IPermissionProxy} to be used.
      *
-     * @param permissionProxy Implementation of IPermissionProxy to be used
+     * @param permissionProxy Implementation of IPermissionProxy to be used, cannot be null
      */
     public static void setPermissionProxy(IPermissionProxy permissionProxy)
     {
@@ -131,7 +131,7 @@ public final class Gunsmith
     /**
      * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.IBrushManager} to be used.
      *
-     * @param brushManager Implementation of IBrushManager to be used
+     * @param brushManager Implementation of IBrushManager to be used, cannot be null
      */
     public static void setGlobalBrushManager(IBrushManager brushManager)
     {
@@ -143,7 +143,7 @@ public final class Gunsmith
     /**
      * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.IBrushLoader} to be used.
      *
-     * @param brushLoader Implementation of IBrushLoader to be used
+     * @param brushLoader Implementation of IBrushLoader to be used, cannot be null
      */
     public static void setDefaultBrushLoader(IBrushLoader brushLoader)
     {
@@ -155,7 +155,7 @@ public final class Gunsmith
     /**
      * Sets the implementation of {@link com.voxelplugineering.voxelsniper.common.command.CommandHandler} to be used.
      *
-     * @param command Implementation of CommandHandler to be used
+     * @param command Implementation of CommandHandler to be used, cannot be null
      */
     public static void setCommandHandler(CommandHandler command)
     {
@@ -167,7 +167,7 @@ public final class Gunsmith
     /**
      * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.ISniperFactory} to be used.
      *
-     * @param manager Implementation of ISniperFactory to be used
+     * @param manager Implementation of ISniperFactory to be used, cannot be null
      */
     public static void setSniperManager(ISniperFactory<?> manager)
     {
@@ -179,7 +179,7 @@ public final class Gunsmith
     /**
      * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.IMaterialFactory} to be used.
      *
-     * @param factory Implementation of IMaterialFactory to be used
+     * @param factory Implementation of IMaterialFactory to be used, cannot be null
      */
     public static void setMaterialFactory(IMaterialFactory<?> factory)
     {
@@ -191,7 +191,7 @@ public final class Gunsmith
     /**
      * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.IWorldFactory} to be used.
      *
-     * @param factory Implementation of IWorldFactory to be used
+     * @param factory Implementation of IWorldFactory to be used, cannot be null
      */
     public static void setWorldFactory(IWorldFactory factory)
     {
@@ -365,12 +365,12 @@ public final class Gunsmith
         getLogger().info("Starting Gunsmith initialization process.");
 
         //Register vsl types for common impl types
-        Type.registerType("COMMONBLOCK");
-        Type.registerType("COMMONLOCATION");
-        Type.registerType("COMMONMATERIAL");
-        Type.registerType("COMMONVECTOR");
-        Type.registerType("COMMONWORLD");
-        Type.registerType("SHAPE");
+        Type.registerType("COMMONBLOCK", "com/voxelplugineering/voxelsniper/common/CommonBlock");
+        Type.registerType("COMMONLOCATION", "com/voxelplugineering/voxelsniper/common/CommonLocation");
+        Type.registerType("COMMONMATERIAL", "com/voxelplugineering/voxelsniper/common/CommonMaterial");
+        Type.registerType("COMMONVECTOR", "com/voxelplugineering/voxelsniper/common/CommonVector");
+        Type.registerType("COMMONWORLD", "com/voxelplugineering/voxelsniper/common/CommonWorld");
+        Type.registerType("SHAPE", "com/voxelplugineering/voxelsniper/shape/Shape");
 
         //Create the eventBus for all Gunsmith events
         eventBus = new AsyncEventBus(java.util.concurrent.Executors.newCachedThreadPool());

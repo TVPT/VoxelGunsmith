@@ -23,20 +23,13 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Representation of a location within a world.
  */
 public final class CommonLocation implements Cloneable
 {
-
-    /**
-     * The {@link com.thevoxelbox.vsl.type.Type} for locations.
-     */
-    public static Type COMMONLOCATION_TYPE = Type.getType("COMMONLOCATION", "com/voxelplugineering/voxelsniper/common/CommonLocation",
-            TypeDepth.SINGLE);
 
     /**
      * The world that the location is within.
@@ -50,13 +43,14 @@ public final class CommonLocation implements Cloneable
     /**
      * Creates a new CommonLocation for use in the API.
      *
-     * @param world the world
+     * @param world the world, cannot be null
      * @param x the x coordinate
      * @param y the y coordinate
      * @param z the z coordinate
      */
     public CommonLocation(CommonWorld world, double x, double y, double z)
     {
+        checkNotNull(world, "World cannot be null");
         this.world = world;
         this.x = x;
         this.y = y;

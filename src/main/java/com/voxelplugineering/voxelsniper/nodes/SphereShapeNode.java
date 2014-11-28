@@ -29,7 +29,7 @@ import org.objectweb.asm.Opcodes;
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.type.Type;
-import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
  * Creates a sphere with with a diameter of radius*2+1
@@ -49,7 +49,7 @@ public class SphereShapeNode extends Node
     {
         super("Sphere Shape", "shape");
         addInput("radius", Type.FLOAT, true, null);
-        addOutput("shape", Shape.SHAPE_TYPE, this);
+        addOutput("shape", Type.getType("SHAPE", TypeDepth.SINGLE), this);
     }
 
     /**

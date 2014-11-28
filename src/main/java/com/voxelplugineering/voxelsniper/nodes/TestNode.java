@@ -26,30 +26,28 @@ package com.voxelplugineering.voxelsniper.nodes;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import com.thevoxelbox.vsl.api.IVariableHolder;
 import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.Node;
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import com.thevoxelbox.vsl.node.ExecutableNode;
+import com.voxelplugineering.voxelsniper.api.ISniper;
 
 /**
- * Creates a square shape with a side length of radius*2+1.
+ * Offsets a location by a given vector offset. Equivalent to {@code location.add(vector.getX(), vector.getY(), vector.getZ());}
  */
-public class VoxelShapeNode extends Node
+public class TestNode extends ExecutableNode implements Opcodes
 {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -742959120344828826L;
+    private static final long serialVersionUID = -5841162432155578520L;
 
     /**
-     * Creates a new node.
+     * Create a new node.
      */
-    public VoxelShapeNode()
+    public TestNode()
     {
-        super("Voxel Shape", "shape");
-        addInput("radius", Type.FLOAT, true, null);
-        addOutput("shape", Type.getType("SHAPE", TypeDepth.SINGLE), this);
+        super("Test", "debug");
     }
 
     /**
@@ -58,22 +56,15 @@ public class VoxelShapeNode extends Node
     @Override
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {
-        /*
-         * ALOAD radius
-         * CHECKCAST java/lang/Double
-         * INVOKEVIRTUAL Double.doubleValue () : double
-         * D2I
-         * INVOKESTATIC ShapeFactory.createVoxel (int) : Shape
-         * ASTORE shape
-         */
-
-        int radius = getInput("radius").getSource().get();
-        mv.visitVarInsn(Opcodes.DLOAD, radius);
-        mv.visitInsn(Opcodes.D2I);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/voxelplugineering/voxelsniper/shape/ShapeFactory", "createVoxel",
-                "(I)Lcom/voxelplugineering/voxelsniper/shape/Shape;", false);
-        mv.visitVarInsn(Opcodes.ASTORE, localsIndex);
-        setOutput("shape", localsIndex);
-        return localsIndex + 1;
+        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+        mv.visitVarInsn(ALOAD, 2);
+        mv.visitMethodInsn(INVOKEINTERFACE, "com/voxelplugineering/voxelsniper/api/ISniper", "getName", "()Ljava/lang/String;", true);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+        return localsIndex;
+    }
+    
+    public void run(IVariableHolder vars, ISniper s)
+    {
+        System.out.println(s.getName());
     }
 }

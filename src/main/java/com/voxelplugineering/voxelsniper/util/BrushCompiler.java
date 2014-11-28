@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.util;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -62,10 +63,9 @@ public class BrushCompiler extends ChainableGraphCompiler implements Opcodes
     @Override
     public Class<? extends IRunnableGraph> compile(ASMClassLoader cl, INodeGraph graph) throws NullPointerException, GraphCompilationException
     {
-        if (graph.getStart() == null)
-        {
-            throw new NullPointerException("Start node is null");
-        }
+        checkNotNull(cl, "Classloader cannot be null");
+        checkNotNull(graph, "Node graph cannot be null");
+        checkNotNull(graph.getStart(), "Graph start cannot be null");
         if (!(graph instanceof IChainableNodeGraph))
         {
             throw new GraphCompilationException("Graph type is incorrect type for compiler!");
@@ -98,19 +98,20 @@ public class BrushCompiler extends ChainableGraphCompiler implements Opcodes
      * @return the class as a byte array
      * @throws GraphCompilationException if there is an error within the graph
      */
-    protected byte[] createClass(IChainableNodeGraph graph) throws GraphCompilationException
+    public byte[] createClass(IChainableNodeGraph graph) throws GraphCompilationException
     {
+        checkNotNull(graph, "Node graph cannot be null");
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
         MethodVisitor mv;
         FieldVisitor fv;
 
-        cw.visit(V1_7, ACC_PUBLIC + ACC_SUPER, "com/thevoxelbox/custom/" + graph.getName() + graph.getIncrement(), null, "java/lang/Object",
+        cw.visit(V1_6, ACC_PUBLIC + ACC_SUPER, "com/thevoxelbox/custom/" + graph.getName() + graph.getIncrement(), null, "java/lang/Object",
                 new String[] { "com/voxelplugineering/voxelsniper/api/IBrush" });
 
         cw.visitSource(graph.getName() + graph.getIncrement() + ".java", null);
 
         {
-            fv = cw.visitField(0, "next", "Lcom/thevoxelbox/vsl/api/IChainedRunnableGraph;", null, null);
+            fv = cw.visitField(ACC_PRIVATE, "next", "Lcom/thevoxelbox/vsl/api/IChainedRunnableGraph;", null, null);
             fv.visitEnd();
         }
         {
@@ -186,11 +187,12 @@ public class BrushCompiler extends ChainableGraphCompiler implements Opcodes
             mv.visitVarInsn(ALOAD, 0);
             mv.visitFieldInsn(GETFIELD, "com/thevoxelbox/custom/" + graph.getName() + graph.getIncrement(), "next",
                     "Lcom/thevoxelbox/vsl/api/IChainedRunnableGraph;");
+            mv.visitTypeInsn(CHECKCAST, "com/voxelplugineering/voxelsniper/api/IBrush");
             mv.visitVarInsn(ALOAD, 1);
-            mv.visitMethodInsn(INVOKEINTERFACE, "com/thevoxelbox/vsl/api/IChainedRunnableGraph", "run",
-                    "(Lcom/thevoxelbox/vsl/api/IVariableHolder;)V", true);
+            mv.visitVarInsn(ALOAD, 2);
+            mv.visitMethodInsn(INVOKEINTERFACE, "com/voxelplugineering/voxelsniper/api/IBrush", "run",
+                    "(Lcom/thevoxelbox/vsl/api/IVariableHolder;Lcom/voxelplugineering/voxelsniper/api/ISniper;)V", true);
             mv.visitLabel(l3);
-
             mv.visitInsn(RETURN);
             mv.visitMaxs(0, 0);
             mv.visitEnd();

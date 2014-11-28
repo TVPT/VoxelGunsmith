@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.world;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,11 +64,13 @@ public class BlockChangeQueue implements IChangeQueue<BlockChange>
     /**
      * Creates a new ChangeQueue
      * 
-     * @param world the world in which this queue is relevant
-     * @param owner the owner of this queue
+     * @param world the world in which this queue is relevant, cannot be null
+     * @param owner the owner of this queue, cannot be null
      */
     public BlockChangeQueue(CommonWorld world, ISniper owner)
     {
+        checkNotNull(world, "World cannot be null");
+        checkNotNull(owner, "Sniper cannot be null");
         this.world = world;
         this.owner = owner;
     }
@@ -97,12 +101,12 @@ public class BlockChangeQueue implements IChangeQueue<BlockChange>
     @Override
     public void add(BlockChange change)
     {
+        checkNotNull(change, "Change cannot be null");
         if (position != 0)
         {
             Gunsmith.getLogger().error("Attempted to modify a queue currently being processed.");
             return;
         }
-        Gunsmith.getLogger().debug("Added change " + change.toString());
         boolean from = change.getFrom().isReliantOnEnvironment() || change.getFrom().isLiquid();
         boolean to = change.getTo().isReliantOnEnvironment() || change.getTo().isLiquid();
 
@@ -121,23 +125,11 @@ public class BlockChangeQueue implements IChangeQueue<BlockChange>
         } else if (to)
         {
             changes.add(change);
-        } else
+        } else //if neither add the change to the middle of the queue, marked by the intermediate index
         {
             changes.add(this.intermediate++, change);
         }
 
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void flush()
-    {
-        Gunsmith.getLogger().debug("Flushed queue into world");
-        this.world.registerChangeQueue(this);
-        this.owner.addHistory(this.invert());
-        this.owner.resetPersonalQueue();
     }
 
     /**
@@ -177,10 +169,7 @@ public class BlockChangeQueue implements IChangeQueue<BlockChange>
         while ((count < next || position < intermediate) && position < this.changes.size())
         {
             BlockChange nextChange = this.changes.get(position);
-            if (this.world.getBlockAt(nextChange.getX(), nextChange.getY(), nextChange.getZ()).getMaterial().equals(nextChange.getFrom()))
-            {
-                this.world.setBlockAt(nextChange.getX(), nextChange.getY(), nextChange.getZ(), nextChange.getTo());
-            }
+            this.world.setBlockAt(nextChange.getX(), nextChange.getY(), nextChange.getZ(), nextChange.getTo());
             position++;
             count++;
         }

@@ -32,15 +32,15 @@ public interface ILoggingDistributor extends ILogger, IManager
     /**
      * Registers a new logger to distribute messages to.
      * 
-     * @param logger the new logger
-     * @param name a name to register this logger under
+     * @param logger the new logger, cannot be null
+     * @param name a name to register this logger under, cannot be null or empty
      */
     void registerLogger(ILogger logger, String name);
 
     /**
      * Removes a logger from the distribution collection by-name.
      * 
-     * @param name the name of the logger to remove
+     * @param name the name of the logger to remove, cannot be null or empty
      */
     void removeLogger(String name);
 

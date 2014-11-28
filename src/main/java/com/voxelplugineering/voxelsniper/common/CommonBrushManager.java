@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -122,6 +124,9 @@ public class CommonBrushManager implements IBrushManager
      */
     public void loadBrush(String identifier, Class<? extends IBrush> clazz)
     {
+        checkNotNull(identifier, "Name cannot be null!");
+        checkArgument(!identifier.isEmpty(), "Name cannot be empty");
+        checkNotNull(clazz, "Brush class cannot be null!");
         //TODO: Check version if already loaded
         this.brushes.put(identifier, clazz);
     }
@@ -131,6 +136,8 @@ public class CommonBrushManager implements IBrushManager
      */
     public void loadBrush(String identifier)
     {
+        checkNotNull(identifier, "Name cannot be null!");
+        checkArgument(!identifier.isEmpty(), "Name cannot be empty");
         Class<? extends IBrush> cls = null;
         for (Iterator<IBrushLoader> iter = this.loaders.iterator(); iter.hasNext() && cls == null;)
         {
@@ -148,6 +155,8 @@ public class CommonBrushManager implements IBrushManager
      */
     public IBrush getNewBrushInstance(String identifier)
     {
+        checkNotNull(identifier, "Name cannot be null!");
+        checkArgument(!identifier.isEmpty(), "Name cannot be empty");
         Class<? extends IBrush> br = this.brushes.get(identifier);
         if (br == null)
         {
