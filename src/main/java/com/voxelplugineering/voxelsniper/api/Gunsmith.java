@@ -25,6 +25,9 @@ package com.voxelplugineering.voxelsniper.api;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.thevoxelbox.vsl.api.IGraphCompilerFactory;
@@ -34,6 +37,8 @@ import com.voxelplugineering.voxelsniper.common.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.common.event.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
 import com.voxelplugineering.voxelsniper.config.Configuration;
+import com.voxelplugineering.voxelsniper.config.JsonConfigurationLoader;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.logging.CommonLoggingDistributor;
 import com.voxelplugineering.voxelsniper.util.BrushCompiler;
 
@@ -382,6 +387,7 @@ public final class Gunsmith
 
         configuration = new Configuration();
         configuration.registerContainer(BaseConfiguration.class);
+        configuration.registerContainer(VoxelSniperConfiguration.class);
         //configuration is also setup here so that any values can be overwritten from the specific impl
 
         //Setup the VSL graph compiler
@@ -401,6 +407,39 @@ public final class Gunsmith
             isPluginEnabled = false;
             throw new IllegalStateException("VoxelSniper was not properly setup while loading");
         }
+
+        File config = new File(plugin.getDataFolder(), "VoxelSniperConfiguration.json");
+        if(config.exists())
+        {
+            try
+            {
+                JsonConfigurationLoader.load(config, configuration, "VoxelSniperConfiguration");
+            } catch (IllegalAccessException e)
+            {
+                getLogger().error(e, "Error loading configuration");
+            } catch (IOException e)
+            {
+                getLogger().error(e, "Error loading configuration");
+            }
+        }
+        else
+        {
+            try
+            {
+                getLogger().info("Creating new user configuration file: " + config.getAbsolutePath());
+                JsonConfigurationLoader.save(config, configuration, "VoxelSniperConfiguration");
+            } catch (InstantiationException e)
+            {
+                getLogger().error(e, "Error saving configuration");
+            } catch (IllegalAccessException e)
+            {
+                getLogger().error(e, "Error saving configuration");
+            } catch (IOException e)
+            {
+                getLogger().error(e, "Error saving configuration");
+            }
+        }
+
         getLogger().info("Gunsmith initialization finalized.");
         isPluginEnabled = true;
     }

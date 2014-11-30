@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper.config;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class Configuration implements IConfiguration
     /**
      * A Map of containers imported to this configuration storage.
      */
-    private Map<String, Class<?>> containers;
+    private Map<String, Object> containers;
 
     /**
      * Constructs a new Configuration
@@ -55,7 +56,7 @@ public class Configuration implements IConfiguration
     public Configuration()
     {
         this.config = new HashMap<String, Object>();
-        this.containers = new HashMap<String, Class<?>>();
+        this.containers = new HashMap<String, Object>();
     }
 
     /**
@@ -88,36 +89,49 @@ public class Configuration implements IConfiguration
     public void registerContainer(Class<?> container)
     {
         checkNotNull(container, "Container cannot be null!");
-        String name = container.getName();
+        String name = container.getSimpleName();
         if (this.containers.containsKey(name))
         {
             throw new IllegalArgumentException("Cannot register an already registered container");
         }
-        this.containers.put(name, container);
         //Load default values from the container
-        for (Field f : container.getDeclaredFields())
+        Object obj;
+        try
         {
-            String n = f.getName();
-            try
+            obj = container.newInstance();
+            this.containers.put(name, obj);
+            Gunsmith.getLogger().info("Loading configuration container: " + name);
+            for (Field f : container.getDeclaredFields())
             {
-                Object v = f.get(container);
-                set(n, v);
-                Gunsmith.getLogger().info("Set configuration value " + n + " to " + v.toString());
-            } catch (IllegalArgumentException e)
-            {
-                e.printStackTrace();
-            } catch (IllegalAccessException e)
-            {
-                e.printStackTrace();
+                String n = f.getName();
+                try
+                {
+                    Object v = f.get(obj);
+                    set(n, v);
+                    Gunsmith.getLogger().info("Set configuration value " + n + " to " + v.toString());
+                } catch (IllegalArgumentException e)
+                {
+                    Gunsmith.getLogger().error(e, "Error setting configuration value.");
+                } catch (IllegalAccessException e)
+                {
+                    Gunsmith.getLogger().error(e, "Error setting configuration value.");
+                }
             }
+        } catch (InstantiationException e1)
+        {
+            Gunsmith.getLogger().error(e1, "Could not create a new instance of the container");
+        } catch (IllegalAccessException e1)
+        {
+            Gunsmith.getLogger().error(e1, "Could not create a new instance of the container");
         }
+
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Class<?> getContainer(String containerName)
+    public Object getContainer(String containerName)
     {
         checkNotNull(containerName, "Name cannot be null!");
         checkArgument(!containerName.isEmpty(), "Name cannot be empty");
@@ -128,12 +142,12 @@ public class Configuration implements IConfiguration
      * {@inheritDoc}
      */
     @Override
-    public Class<?>[] getContainers()
+    public Object[] getContainers()
     {
-        Set<Entry<String, Class<?>>> entries = this.containers.entrySet();
-        Class<?>[] containers = new Class<?>[entries.size()];
+        Set<Entry<String, Object>> entries = this.containers.entrySet();
+        Object[] containers = new Object[entries.size()];
         int i = 0;
-        for (Entry<String, Class<?>> e : entries)
+        for (Entry<String, Object> e : entries)
         {
             containers[i++] = e.getValue();
         }

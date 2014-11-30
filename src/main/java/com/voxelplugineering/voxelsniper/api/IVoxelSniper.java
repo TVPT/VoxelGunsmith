@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
+import java.io.File;
+
 /**
  * The specific implementation core class, provides direct access to the specific implementation's version of Gunsmith's interfaces.
  */
@@ -56,5 +58,12 @@ public interface IVoxelSniper
      * @return the thread
      */
     Thread getMainThread();
+    
+    /**
+     * Returns the main storage directory for data.
+     * 
+     * @return the data folder
+     */
+    File getDataFolder();
 
 }

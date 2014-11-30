@@ -24,14 +24,16 @@
 package com.voxelplugineering.voxelsniper.config;
 
 /**
- * Default base configuration values.
+ * A configuration container which is exposed for user settings.
  */
-public class BaseConfiguration
+public class VoxelSniperConfiguration
 {
 
-    double PLAYER_EYE_HEIGHT = 1.62;
-    int MINIMUM_WORLD_DEPTH = 0;
-    int MAXIMUM_WORLD_HEIGHT = 255;
-    double RAY_TRACE_STEP = 0.2;
-
+    double RAY_TRACE_RANGE = 250;
+    String DEFAULT_BRUSH = "snipe material";
+    double DEFAULT_BRUSH_SIZE = 3;
+    String DEFAULT_BRUSH_MATERIAL = "AIR";
+    String PERMISSIONS_REQUIRED_MESSAGE = "You require more permissions in order to perform this action.";
+    int BLOCK_CHANGES_PER_TICK = 80000;
+    
 }

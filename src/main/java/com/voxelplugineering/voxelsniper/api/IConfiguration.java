@@ -63,13 +63,13 @@ public interface IConfiguration
      * @param containerName the name of the container, cannot be null or empty
      * @return the container class
      */
-    Class<?> getContainer(String containerName);
+    Object getContainer(String containerName);
 
     /**
      * Returns an array of the Classes all previously registered containers.
      * 
      * @return an array of Classes
      */
-    Class<?>[] getContainers();
+    Object[] getContainers();
 
 }
