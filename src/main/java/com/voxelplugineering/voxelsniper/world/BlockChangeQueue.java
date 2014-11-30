@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.voxelplugineering.voxelsniper.api.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.IChangeQueue;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.CommonWorld;
 
@@ -37,21 +36,13 @@ import com.voxelplugineering.voxelsniper.common.CommonWorld;
  * A change queue representing a contained queue of changes relevant to a single world and player. This queue is the representation of a single
  * operation.
  */
-public class BlockChangeQueue implements IChangeQueue<BlockChange>
+public class BlockChangeQueue extends ChangeQueue
 {
 
     /**
      * A List of the changes contained by this queue.
      */
     private List<BlockChange> changes = new ArrayList<BlockChange>();
-    /**
-     * The world in which this queue is contained.
-     */
-    private CommonWorld world;
-    /**
-     * The owner of this queue.
-     */
-    private ISniper owner;
     /**
      * The index inside the queue of the first non-falloff material.
      */
@@ -67,38 +58,11 @@ public class BlockChangeQueue implements IChangeQueue<BlockChange>
      * @param world the world in which this queue is relevant, cannot be null
      * @param owner the owner of this queue, cannot be null
      */
-    public BlockChangeQueue(CommonWorld world, ISniper owner)
+    public BlockChangeQueue(ISniper owner, CommonWorld world)
     {
-        checkNotNull(world, "World cannot be null");
-        checkNotNull(owner, "Sniper cannot be null");
-        this.world = world;
-        this.owner = owner;
+        super(owner, world);
     }
 
-    /**
-     * Returns the world containing this queue.
-     * 
-     * @return the world
-     */
-    public CommonWorld getWorld()
-    {
-        return this.world;
-    }
-
-    /**
-     * Returns the owner of this queue.
-     * 
-     * @return the owner
-     */
-    public ISniper getOwner()
-    {
-        return this.owner;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void add(BlockChange change)
     {
         checkNotNull(change, "Change cannot be null");
@@ -127,15 +91,11 @@ public class BlockChangeQueue implements IChangeQueue<BlockChange>
             changes.add(change);
         } else //if neither add the change to the middle of the queue, marked by the intermediate index
         {
-            changes.add(this.intermediate++, change);
+            changes.add(this.intermediate, change);
         }
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void clear()
     {
         this.changes.clear();
@@ -147,12 +107,7 @@ public class BlockChangeQueue implements IChangeQueue<BlockChange>
     @Override
     public BlockChangeQueue invert()
     {
-        BlockChangeQueue inverse = new BlockChangeQueue(this.world, this.owner);
-        for (BlockChange c : this.changes)
-        {
-            inverse.add((BlockChange) c.getInverse());
-        }
-        return inverse;
+        return null;
     }
 
     /**
@@ -162,18 +117,20 @@ public class BlockChangeQueue implements IChangeQueue<BlockChange>
      * @param next the suggested number of operations to perform
      * @return the actual amount of operations performed
      */
+    @Override
     public int perform(int next)
     {
         int count = 0;
 
+        Gunsmith.getLogger().info("performing " + next + " changes");
         while ((count < next || position < intermediate) && position < this.changes.size())
         {
             BlockChange nextChange = this.changes.get(position);
-            this.world.setBlockAt(nextChange.getX(), nextChange.getY(), nextChange.getZ(), nextChange.getTo());
+            this.getWorld().setBlockAt(nextChange.getX(), nextChange.getY(), nextChange.getZ(), nextChange.getTo());
             position++;
             count++;
         }
-
+        Gunsmith.getLogger().info("performed " + count + " changes");
         return count;
     }
 
@@ -193,6 +150,14 @@ public class BlockChangeQueue implements IChangeQueue<BlockChange>
     public void reset()
     {
         this.position = 0;
+    }
+
+    @Override
+    public void flush()
+    {
+        reset();
+        this.getOwner().addPending(this);
+        this.getOwner().addHistory(this.invert());
     }
 
 }

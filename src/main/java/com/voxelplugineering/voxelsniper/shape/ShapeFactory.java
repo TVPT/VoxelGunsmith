@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.shape;
 
+import com.voxelplugineering.voxelsniper.common.CommonDirection;
+
 /**
  * A Factory for creating standard shapes.
  */
@@ -38,6 +40,21 @@ public class ShapeFactory
     public static Shape createVoxel(int radius)
     {
         return createCuboid(radius, radius, radius);
+    }
+
+    public static Shape createVoxelDisc(int radius, CommonDirection direction)
+    {
+        if (direction == CommonDirection.EAST || direction == CommonDirection.WEST) // x-axis
+        {
+            return createCuboid(1, radius, radius);
+        } else if (direction == CommonDirection.NORTH || direction == CommonDirection.SOUTH) // z-axis
+        {
+            return createCuboid(radius, radius, 1);
+        } else
+        // y-axis default
+        {
+            return createCuboid(radius, 1, radius);
+        }
     }
 
     /**
@@ -117,33 +134,116 @@ public class ShapeFactory
     /**
      * Creates an elliptical cylinder in the direction of the given axis. The axes are numbered as follows:
      * <p>
-     * 1: x-axis<br>
-     * 2: y-axis<br>
-     * 3: z-axis
-     * <p>
      * The axes are ordered according to the right had rule, where the directional access takes the place of the z-axis.
      * 
      * @param rx the first radius perpendicular to the axis
      * @param ry the second radius perpendicular to the axis
      * @param height the height of the cylinder
-     * @param axis the direction axis
+     * @param direction the direction axis
      * @return the new shape
      */
-    public static Shape createEllipticalCylinder(double rx, double ry, double height, int axis)
+    public static Shape createEllipticalCylinder(double rx, double ry, int height, CommonDirection direction)
     {
         Shape s;
-        if (axis == 1) // x-axis
+        if (direction == CommonDirection.EAST || direction == CommonDirection.WEST) // x-axis
         {
-            s = new Shape((int) height, (int) rx * 2 + 1, (int) ry * 2 + 1);
-        } else if (axis == 3) // z-axis
+            s = new Shape(height, (int) rx * 2 + 1, (int) ry * 2 + 1, 0, (int) Math.ceil(rx), (int) Math.ceil(ry));
+            s.set((int) Math.ceil(rx), (int) Math.ceil(ry), 0);
+            for (double x = 0; x <= rx; x++)
+            {
+
+                final double xSquared = (x / (rx)) * (x / (rx));
+
+                for (double y = 0; y <= ry; y++)
+                {
+
+                    final double zSquared = (y / (ry)) * (y / (ry));
+
+                    for (int z = 0; z <= height; z++)
+                    {
+                        if (xSquared + zSquared <= 1)
+                        {
+                            s.set(z, (int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) + y));
+                            s.set(z, (int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) - y));
+                            s.set(z, (int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) + y));
+                            s.set(z, (int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) - y));
+                        }
+
+                    }
+                }
+            }
+        } else if (direction == CommonDirection.NORTH || direction == CommonDirection.SOUTH) // z-axis
         {
-            s = new Shape((int) rx * 2 + 1, (int) ry * 2 + 1, (int) height);
+            s = new Shape((int) rx * 2 + 1, height, (int) ry * 2 + 1, (int) Math.ceil(rx), 0, (int) Math.ceil(ry));
+            s.set((int) Math.ceil(rx), 0, (int) Math.ceil(ry));
+            for (double x = 0; x <= rx; x++)
+            {
+
+                final double xSquared = (x / (rx)) * (x / (rx));
+
+                for (double y = 0; y <= ry; y++)
+                {
+
+                    final double zSquared = (y / (ry)) * (y / (ry));
+
+                    for (int z = 0; z <= height; z++)
+                    {
+                        if (xSquared + zSquared <= 1)
+                        {
+                            s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) + y), z);
+                            s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) - y), z);
+                            s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) + y), z);
+                            s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) - y), z);
+                        }
+
+                    }
+                }
+            }
         } else
         // y-axis default
         {
-            s = new Shape((int) rx * 2 + 1, (int) height, (int) ry * 2 + 1);
+            s = new Shape((int) rx * 2 + 1, height, (int) ry * 2 + 1, (int) Math.ceil(rx), 0, (int) Math.ceil(ry));
+            s.set((int) Math.ceil(rx), 0, (int) Math.ceil(ry));
+            for (double x = 0; x <= rx; x++)
+            {
+
+                final double xSquared = (x / (rx)) * (x / (rx));
+
+                for (double y = 0; y <= ry; y++)
+                {
+
+                    final double zSquared = (y / (ry)) * (y / (ry));
+
+                    for (int z = 0; z <= height; z++)
+                    {
+                        if (xSquared + zSquared <= 1)
+                        {
+                            s.set((int) (Math.ceil(rx) + x), z, (int) (Math.ceil(ry) + y));
+                            s.set((int) (Math.ceil(rx) + x), z, (int) (Math.ceil(ry) - y));
+                            s.set((int) (Math.ceil(rx) - x), z, (int) (Math.ceil(ry) + y));
+                            s.set((int) (Math.ceil(rx) - x), z, (int) (Math.ceil(ry) - y));
+                        }
+
+                    }
+                }
+            }
         }
         return s;
+    }
+    
+    public Shape createCylinder(double radius, int height, CommonDirection direction)
+    {
+        return createEllipticalCylinder(radius, radius, height, direction);
+    }
+    
+    public Shape createDisc(double radius, CommonDirection direction)
+    {
+        return createEllipticalCylinder(radius, radius, 1, direction);
+    }
+    
+    public Shape createEllipse(double rx, double ry, CommonDirection direction)
+    {
+        return createEllipticalCylinder(rx, ry, 1, direction);
     }
 
 }

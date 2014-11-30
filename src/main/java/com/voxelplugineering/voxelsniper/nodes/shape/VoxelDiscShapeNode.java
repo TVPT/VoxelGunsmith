@@ -21,33 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes;
+package com.voxelplugineering.voxelsniper.nodes.shape;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import com.thevoxelbox.vsl.api.IVariableHolder;
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.type.Type;
 import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.api.ISniper;
+import com.voxelplugineering.voxelsniper.common.CommonDirection;
+import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.shape.ShapeFactory;
 
 /**
- * Creates a square shape with a side length of radius*2+1.
+ * Creates a sphere with with a diameter of radius*2+1
  */
-public class VoxelShapeNode extends Node
+public class VoxelDiscShapeNode extends Node
 {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -742959120344828826L;
+    private static final long serialVersionUID = -7263550249408114074L;
 
     /**
      * Creates a new node.
      */
-    public VoxelShapeNode()
+    public VoxelDiscShapeNode()
     {
-        super("Voxel Shape", "shape");
+        super("Sphere Shape", "shape");
         addInput("radius", Type.FLOAT, true, null);
         addOutput("shape", Type.getType("SHAPE", TypeDepth.SINGLE), this);
     }
@@ -62,18 +67,22 @@ public class VoxelShapeNode extends Node
          * ALOAD radius
          * CHECKCAST java/lang/Double
          * INVOKEVIRTUAL Double.doubleValue () : double
-         * D2I
-         * INVOKESTATIC ShapeFactory.createVoxel (int) : Shape
+         * INVOKESTATIC ShapeFactory.createSphere (double) : Shape
          * ASTORE shape
          */
 
         int radius = getInput("radius").getSource().get();
         mv.visitVarInsn(Opcodes.DLOAD, radius);
-        mv.visitInsn(Opcodes.D2I);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/voxelplugineering/voxelsniper/shape/ShapeFactory", "createVoxel",
-                "(I)Lcom/voxelplugineering/voxelsniper/shape/Shape;", false);
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/voxelplugineering/voxelsniper/shape/ShapeFactory", "createSphere",
+                "(D)Lcom/voxelplugineering/voxelsniper/shape/Shape;", false);
         mv.visitVarInsn(Opcodes.ASTORE, localsIndex);
         setOutput("shape", localsIndex);
         return localsIndex + 1;
+    }
+    
+    public void run(IVariableHolder vars, ISniper sniper)
+    {
+        double brushSize = 0;
+        Shape s = ShapeFactory.createVoxelDisc((int) Math.ceil(brushSize), CommonDirection.UP);
     }
 }

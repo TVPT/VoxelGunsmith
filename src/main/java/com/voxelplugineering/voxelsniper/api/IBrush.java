@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper.api;
 
 import com.thevoxelbox.vsl.api.IChainedRunnableGraph;
 import com.thevoxelbox.vsl.api.IVariableHolder;
+import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
 import com.voxelplugineering.voxelsniper.util.BrushCompiler;
 
 /**
@@ -43,5 +44,9 @@ public interface IBrush extends IChainedRunnableGraph
      * @param player the player, cannot be null
      */
     void run(IVariableHolder vars, ISniper player);
+    
+    CommandArgument<?>[] getFlags();
+    
+    void setFlags(CommandArgument<?>... flags);
 
 }

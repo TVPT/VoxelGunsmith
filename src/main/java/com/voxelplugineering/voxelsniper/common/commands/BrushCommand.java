@@ -97,6 +97,7 @@ public class BrushCommand extends Command
                     last.chain(brush);
                     last = brush;
                 }
+
             }
             sniper.setCurrentBrush(start);
             sniper.sendMessage("Your brush has been set.");

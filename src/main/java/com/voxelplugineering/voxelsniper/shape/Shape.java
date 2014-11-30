@@ -87,6 +87,21 @@ public class Shape
         this.origin = new CommonVector(ox, oy, oz);
     }
 
+    public int getWidth()
+    {
+        return this.width;
+    }
+
+    public int getHeight()
+    {
+        return this.height;
+    }
+
+    public int getLength()
+    {
+        return this.length;
+    }
+
     /**
      * Sets the origin of this shape.
      * 

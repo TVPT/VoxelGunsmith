@@ -21,31 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes;
+package com.voxelplugineering.voxelsniper.nodes.shape;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.ExecutableNode;
+import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
- * A visual scripting node to flush the player's active change queue down to the world.
+ * Creates a square shape with a side length of radius*2+1.
  */
-public class FlushPlayerQueueNode extends ExecutableNode
+public class VoxelShapeNode extends Node
 {
 
     /**
      * 
      */
-    private static final long serialVersionUID = 7186240432579248565L;
+    private static final long serialVersionUID = -742959120344828826L;
 
     /**
-     * Constructs a new FlushPlayerQueueNode
+     * Creates a new node.
      */
-    public FlushPlayerQueueNode()
+    public VoxelShapeNode()
     {
-        super("Flush Queue", "world");
+        super("Voxel Shape", "shape");
+        addInput("radius", Type.FLOAT, true, null);
+        addOutput("shape", Type.getType("SHAPE", TypeDepth.SINGLE), this);
     }
 
     /**
@@ -55,14 +59,21 @@ public class FlushPlayerQueueNode extends ExecutableNode
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {
         /*
-            ALOAD 2: sniper
-            INVOKEINTERFACE ISniper.getPersonalQueue () : BlockChangeQueue
-            INVOKEVIRTUAL BlockChangeQueue.flush () : void
+         * ALOAD radius
+         * CHECKCAST java/lang/Double
+         * INVOKEVIRTUAL Double.doubleValue () : double
+         * D2I
+         * INVOKESTATIC ShapeFactory.createVoxel (int) : Shape
+         * ASTORE shape
          */
-        mv.visitVarInsn(Opcodes.ALOAD, 2);
-        mv.visitMethodInsn(Opcodes.INVOKEINTERFACE, "com/voxelplugineering/voxelsniper/api/ISniper", "getActiveQueue",
-                "()Lcom/voxelplugineering/voxelsniper/world/BlockChangeQueue;", true);
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/world/BlockChangeQueue", "flush", "()V", false);
-        return localsIndex;
+
+        int radius = getInput("radius").getSource().get();
+        mv.visitVarInsn(Opcodes.DLOAD, radius);
+        mv.visitInsn(Opcodes.D2I);
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/voxelplugineering/voxelsniper/shape/ShapeFactory", "createVoxel",
+                "(I)Lcom/voxelplugineering/voxelsniper/shape/Shape;", false);
+        mv.visitVarInsn(Opcodes.ASTORE, localsIndex);
+        setOutput("shape", localsIndex);
+        return localsIndex + 1;
     }
 }

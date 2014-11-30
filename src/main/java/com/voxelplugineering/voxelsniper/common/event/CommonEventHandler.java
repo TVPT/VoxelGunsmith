@@ -23,17 +23,25 @@
  */
 package com.voxelplugineering.voxelsniper.common.event;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 import com.thevoxelbox.vsl.VariableScope;
+import com.thevoxelbox.vsl.api.IChainedRunnableGraph;
+import com.thevoxelbox.vsl.api.IVariableHolder;
 import com.thevoxelbox.vsl.api.IVariableScope;
 import com.voxelplugineering.voxelsniper.api.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.ISniper;
+import com.voxelplugineering.voxelsniper.common.CommonBlock;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
+import com.voxelplugineering.voxelsniper.common.CommonMaterial;
+import com.voxelplugineering.voxelsniper.common.CommonVector;
+import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.shape.ShapeFactory;
 import com.voxelplugineering.voxelsniper.util.RayTrace;
+import com.voxelplugineering.voxelsniper.world.BlockChange;
+import com.voxelplugineering.voxelsniper.world.ShapeChangeQueue;
 
 /**
  * An event handler for the default behavior for events.

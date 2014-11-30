@@ -26,7 +26,7 @@ package com.voxelplugineering.voxelsniper.api;
 import com.thevoxelbox.vsl.api.IVariableScope;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
 import com.voxelplugineering.voxelsniper.common.CommonWorld;
-import com.voxelplugineering.voxelsniper.world.BlockChangeQueue;
+import com.voxelplugineering.voxelsniper.world.ChangeQueue;
 
 /**
  * Representation of a user within Gunsmith. Holds all state information relevant to the user.
@@ -94,12 +94,7 @@ public interface ISniper
      * 
      * @param invert the new queue for the buffer, this queue is assumed to be an inverse queue to an operation performed in the world, cannot be null
      */
-    void addHistory(BlockChangeQueue invert);
-
-    /**
-     * Resets the currently used queue.
-     */
-    void resetPersonalQueue();
+    void addHistory(ChangeQueue invert);
 
     /**
      * Returns the world that this player is currently within.
@@ -107,13 +102,6 @@ public interface ISniper
      * @return this player's world
      */
     CommonWorld getWorld();
-
-    /**
-     * Returns the currently active change queue that this players changes should be pushed to.
-     * 
-     * @return the active queue
-     */
-    BlockChangeQueue getActiveQueue();
 
     /**
      * Pushes the top n inverse change queues from the history buffer to the world, effectively undoing previous changes.
@@ -130,17 +118,22 @@ public interface ISniper
     boolean hasPendingChanges();
 
     /**
-     * Returns the next pending {@link BlockChangeQueue}.
+     * Returns the next pending {@link ChangeQueue}.
      * 
      * @return the next change queue
      */
-    BlockChangeQueue getNextPendingChange();
+    ChangeQueue getNextPendingChange();
 
     /**
      * Adds the given change queue to the pending changes queue.
      * 
-     * @param blockChangeQueue the new {@link BlockChangeQueue}, cannot be null
+     * @param blockChangeQueue the new {@link ChangeQueue}, cannot be null
      */
-    void addPending(BlockChangeQueue blockChangeQueue);
+    void addPending(ChangeQueue blockChangeQueue);
+
+    /**
+     * Removes the next pending change if it has finished.
+     */
+    void clearNextPending();
 
 }

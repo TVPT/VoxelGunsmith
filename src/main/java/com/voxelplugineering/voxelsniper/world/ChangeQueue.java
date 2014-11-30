@@ -21,33 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api;
+package com.voxelplugineering.voxelsniper.world;
 
-/**
- * A Queue of changes, used to stagger large changes to the world to prevent CPU lockups and to allow pushing changes to the world asynchronously.
- * 
- * @param <T> the {@link com.voxelplugineering.voxelsniper.world.Change} type
- */
-public interface IChangeQueue<T>
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.voxelplugineering.voxelsniper.api.ISniper;
+import com.voxelplugineering.voxelsniper.common.CommonWorld;
+
+public abstract class ChangeQueue
 {
 
-    /**
-     * Adds a new change to this queue.
-     * 
-     * @param change the new change, cannot be null
-     */
-    void add(T change);
+    private ISniper sniper;
+    private CommonWorld world;
 
-    /**
-     * Clears this queue.
-     */
-    void clear();
+    public ChangeQueue(ISniper sniper, CommonWorld world)
+    {
+        checkNotNull(world, "World cannot be null");
+        checkNotNull(sniper, "Sniper cannot be null");
+        this.world = world;
+        this.sniper = sniper;
+    }
 
-    /**
-     * returns an {@link IChangeQueue} which represents the exact inverse operation to this queue.
-     * 
-     * @return the inverse queue
-     */
-    IChangeQueue<T> invert();
+    public ISniper getOwner()
+    {
+        return this.sniper;
+    }
+
+    public CommonWorld getWorld()
+    {
+        return this.world;
+    }
+
+    public abstract boolean isFinished();
+
+    public abstract void flush();
+    
+    public abstract ChangeQueue invert();
+    
+    public abstract int perform(int next);
+    
+    public abstract void reset();
 
 }
