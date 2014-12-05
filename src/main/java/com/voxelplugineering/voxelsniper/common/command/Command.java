@@ -53,7 +53,7 @@ public abstract class Command
     /**
      * A help message for this command.
      */
-    private String helpMsg = "No help is provided for this command.";
+    private String helpMsg = "No help was provided for this command.";
     /**
      * If this command is player only or usable by the console as well.
      */
@@ -62,16 +62,6 @@ public abstract class Command
      * An array of permissions nodes, a sniper must have at least one of these in order to execute this command.
      */
     private String[] permissions = null;
-
-    /**
-     * Constructs a new command with the given name
-     *
-     * @param name the name of this command
-     */
-    protected Command(final String name)
-    {
-        this(name, "No help is provided for this command.");
-    }
 
     /**
      * Constructs a new command with the given name and help.
@@ -153,7 +143,7 @@ public abstract class Command
     private Map<String, CommandArgument<?>> extractArguements(ISniper sniper, String[] args)
     {
         checkNotNull(sniper, "Sniper cannot be null");
-        checkNotNull(args, "CommanD arguments cannot be null");
+        checkNotNull(args, "Command arguments cannot be null");
         int i = 0;
         for (String c : this.arguments.keySet())
         {

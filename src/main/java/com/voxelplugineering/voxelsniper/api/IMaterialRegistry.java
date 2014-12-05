@@ -21,18 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.config;
+package com.voxelplugineering.voxelsniper.api;
+
+import com.voxelplugineering.voxelsniper.common.CommonMaterial;
 
 /**
- * Default base configuration values.
+ * A factory for {@link CommonMaterial}s wrapping a Material from the underlying implementation.
+ * 
+ * @param <T> The material class of the specific implementation
  */
-public class BaseConfiguration
+public interface IMaterialRegistry<T> extends IRegistry<T, CommonMaterial<T>>
 {
 
-    double PLAYER_EYE_HEIGHT = 1.62;
-    int MINIMUM_WORLD_DEPTH = 0;
-    int MAXIMUM_WORLD_HEIGHT = 255;
-    double RAY_TRACE_STEP = 0.2;
-    int BRUSH_FILE_FORMAT_VERSION = 1;
+    /**
+     * Returns the {@link CommonMaterial} representation of air/empty space in the underlying implementation.
+     * 
+     * @return the material of air
+     */
+    CommonMaterial<T> getAirMaterial();
 
 }

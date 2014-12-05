@@ -28,8 +28,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.voxelplugineering.voxelsniper.api.Gunsmith;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.ISniper;
+import com.voxelplugineering.voxelsniper.common.CommonMaterial;
 import com.voxelplugineering.voxelsniper.common.CommonWorld;
 
 /**
@@ -51,18 +52,29 @@ public class BlockChangeQueue extends ChangeQueue
      * The current processing index of this queue.
      */
     private int position = 0;
+    /**
+     * The material to use as an intermediate block if both the from and to materials are breakable.
+     */
+    private CommonMaterial<?> intermediateMaterial;
 
     /**
      * Creates a new ChangeQueue
      * 
      * @param world the world in which this queue is relevant, cannot be null
      * @param owner the owner of this queue, cannot be null
+     * @param intermediate the intermediate material
      */
-    public BlockChangeQueue(ISniper owner, CommonWorld world)
+    public BlockChangeQueue(ISniper owner, CommonWorld<?> world, CommonMaterial<?> intermediate)
     {
         super(owner, world);
+        this.intermediateMaterial = intermediate;
     }
 
+    /**
+     * Adds the given change to this queue.
+     * 
+     * @param change the new change
+     */
     public void add(BlockChange change)
     {
         checkNotNull(change, "Change cannot be null");
@@ -77,9 +89,9 @@ public class BlockChangeQueue extends ChangeQueue
         if (from && to) //if both: split the change in two and add one to each side of the queue
         {
             BlockChange first =
-                    new BlockChange(change.getX(), change.getY(), change.getZ(), change.getFrom(), Gunsmith.getMaterialFactory().getAirMaterial());
+                    new BlockChange(change.getX(), change.getY(), change.getZ(), change.getFrom(), this.intermediateMaterial);
             BlockChange second =
-                    new BlockChange(change.getX(), change.getY(), change.getZ(), Gunsmith.getMaterialFactory().getAirMaterial(), change.getTo());
+                    new BlockChange(change.getX(), change.getY(), change.getZ(), this.intermediateMaterial, change.getTo());
             changes.add(0, first);
             changes.add(second);
         } else if (from) // if only the first: then add the change to the front of the queue
@@ -96,6 +108,9 @@ public class BlockChangeQueue extends ChangeQueue
 
     }
 
+    /**
+     * Clears the queue.
+     */
     public void clear()
     {
         this.changes.clear();
@@ -152,6 +167,9 @@ public class BlockChangeQueue extends ChangeQueue
         this.position = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void flush()
     {

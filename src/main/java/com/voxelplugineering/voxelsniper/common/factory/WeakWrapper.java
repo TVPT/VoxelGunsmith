@@ -21,18 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.config;
+package com.voxelplugineering.voxelsniper.common.factory;
+
+import java.lang.ref.WeakReference;
 
 /**
- * Default base configuration values.
+ * A wrapper for a weakly referenced object.
+ * 
+ * @param <T> the object type
  */
-public class BaseConfiguration
+public abstract class WeakWrapper<T>
 {
 
-    double PLAYER_EYE_HEIGHT = 1.62;
-    int MINIMUM_WORLD_DEPTH = 0;
-    int MAXIMUM_WORLD_HEIGHT = 255;
-    double RAY_TRACE_STEP = 0.2;
-    int BRUSH_FILE_FORMAT_VERSION = 1;
+    /**
+     * The object weak reference.
+     */
+    private final WeakReference<T> reference;
+
+    /**
+     * Creates a new {@link WeakWrapper}
+     * 
+     * @param value the reference to wrap
+     */
+    public WeakWrapper(T value)
+    {
+        this.reference = new WeakReference<T>(value);
+    }
+
+    /**
+     * Returns the wrapped value, or null if it has been garbage collected.
+     * 
+     * @return the wrapped object, may be null
+     */
+    public T getThis()
+    {
+        return this.reference.get();
+    }
 
 }

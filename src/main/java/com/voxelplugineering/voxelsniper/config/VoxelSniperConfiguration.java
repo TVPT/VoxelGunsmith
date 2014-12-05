@@ -28,12 +28,23 @@ package com.voxelplugineering.voxelsniper.config;
  */
 public class VoxelSniperConfiguration
 {
+    //Default constants
+    double RAY_TRACE_MAX_RANGE = 250;
+    int BLOCK_CHANGES_PER_SECOND = 160000;
+    int UNDO_HISTORY_SIZE = 20;
 
-    double RAY_TRACE_RANGE = 250;
+    //Default brush settings
     String DEFAULT_BRUSH = "snipe material";
     double DEFAULT_BRUSH_SIZE = 3;
     String DEFAULT_BRUSH_MATERIAL = "AIR";
-    String PERMISSIONS_REQUIRED_MESSAGE = "You require more permissions in order to perform this action.";
-    int BLOCK_CHANGES_PER_TICK = 80000;
     
+    //Default messages
+    String PERMISSIONS_REQUIRED_MESSAGE = "You require more permissions in order to perform this action.";
+    String DEFAULT_HELP_MESSAGE = "No help is provided for this command.";
+    String BRUSH_SIZE_CHANGED_MESSAGE = "Your brush size was changed to %.1f";
+    String BRUSH_NOT_FOUND_MESSAGE = "Could not find a brush part named %s";
+    String BRUSH_SET_MESSAGE = "Your brush has been set to %s";
+    String MATERIAL_NOT_FOUND_MESSAGE = "Could not find that material.";
+    String MATERIAL_SET_MESSAGE = "Set material to %s";
+    String MATERIAL_MASK_SET_MESSAGE = "Set secondary material to %s";
 }

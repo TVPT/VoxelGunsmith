@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.voxelplugineering.voxelsniper.api.Gunsmith;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IConfiguration;
 
 /**
@@ -152,6 +152,15 @@ public class Configuration implements IConfiguration
             containers[i++] = e.getValue();
         }
         return containers;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean has(String name)
+    {
+        return config.containsKey(name);
     }
 
 }

@@ -32,7 +32,7 @@ import java.io.ObjectInputStream;
 import com.thevoxelbox.vsl.classloader.ASMClassLoader;
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.ChainableNodeGraph;
-import com.voxelplugineering.voxelsniper.api.Gunsmith;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.IBrushLoader;
 

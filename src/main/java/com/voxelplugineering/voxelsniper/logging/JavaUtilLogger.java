@@ -21,51 +21,77 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.common;
+package com.voxelplugineering.voxelsniper.logging;
 
-import com.voxelplugineering.voxelsniper.common.factory.WeakWrapper;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- * A representation of a group of voxels within a world.
- */
-public abstract class CommonChunk<T> extends WeakWrapper<T>
+import com.voxelplugineering.voxelsniper.api.ILogger;
+
+public class JavaUtilLogger implements ILogger
 {
-
-    /**
-     * The world containing this chunk.
-     */
-    private CommonWorld<?> world;
+    private Logger logger;
     
     /**
-     * Creates a new chunk.
-     * 
-     * @param value the specific implementation's chunk
-     * @param world the containing world
+     * Creates a new {@link BukkitLogger}.
      */
-    public CommonChunk(T value, CommonWorld<?> world)
+    public JavaUtilLogger(Logger logger)
     {
-        super(value);
-        this.world = world;
+        this.logger = logger;
     }
 
     /**
-     * Returns the world that this voxel group resides within.
-     * 
-     * @return the associated world.
+     * {@inheritDoc}    
      */
-    public CommonWorld<?> getWorld()
+    @Override
+    public void debug(String msg)
     {
-        return this.world;
+        logger.log(Level.FINE, msg);
     }
 
     /**
-     * Returns the {@link CommonBlock} at the given position relative to the origin of this voxel chunk.
-     * 
-     * @param x x-axis offset from origin
-     * @param y y-axis offset from origin
-     * @param z z-axis offset from origin
-     * @return the {@link CommonBlock} at the relative position
+     * {@inheritDoc}
      */
-    public abstract CommonBlock getRelativeBlockAt(int x, int y, int z);
+    @Override
+    public void info(String msg)
+    {
+        logger.log(Level.INFO, msg);
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void warn(String msg)
+    {
+        logger.log(Level.WARNING, msg);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void error(String msg)
+    {
+        logger.log(Level.SEVERE, msg);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void error(Exception e)
+    {
+        logger.log(Level.SEVERE, e.getMessage(), e);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void error(Exception e, String msg)
+    {
+        logger.log(Level.SEVERE, msg, e);
+
+    }
 }

@@ -21,18 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.config;
+package com.voxelplugineering.voxelsniper.api;
+
+import com.voxelplugineering.voxelsniper.common.CommonPlayer;
 
 /**
- * Default base configuration values.
+ * A factory for creating instances of {@link ISniper} from the specific implementation's user class.
+ * 
+ * @param <T> the underlying Player class
  */
-public class BaseConfiguration
+public interface ISniperRegistry<T> extends IManager, IRegistry<T, CommonPlayer<T>>
 {
 
-    double PLAYER_EYE_HEIGHT = 1.62;
-    int MINIMUM_WORLD_DEPTH = 0;
-    int MAXIMUM_WORLD_HEIGHT = 255;
-    double RAY_TRACE_STEP = 0.2;
-    int BRUSH_FILE_FORMAT_VERSION = 1;
+    /**
+     * Returns a special case {@link ISniper} for the console of the dedicated server. Has no brush context but can recieve messages.
+     * 
+     * @return An {@link ISniper} representing the console
+     */
+    ISniper getConsoleSniperProxy();
 
 }

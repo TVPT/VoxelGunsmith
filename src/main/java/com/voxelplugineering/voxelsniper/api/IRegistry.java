@@ -21,51 +21,62 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.common;
-
-import com.voxelplugineering.voxelsniper.common.factory.WeakWrapper;
+package com.voxelplugineering.voxelsniper.api;
 
 /**
- * A representation of a group of voxels within a world.
+ * A registry for a name and an object key related to a value.
+ * 
+ * @param <K> the key type
+ * @param <V> the value type
  */
-public abstract class CommonChunk<T> extends WeakWrapper<T>
+public interface IRegistry<K, V>
 {
 
     /**
-     * The world containing this chunk.
+     * Registers a new value into this registry.
+     * 
+     * @param name the name of the new value
+     * @param key the object key for the value
+     * @param value the new value
      */
-    private CommonWorld<?> world;
+    void register(String name, K key, V value);
     
     /**
-     * Creates a new chunk.
+     * Given the object key returns the associated value.
      * 
-     * @param value the specific implementation's chunk
-     * @param world the containing world
+     * @param key the object key
+     * @return the value
      */
-    public CommonChunk(T value, CommonWorld<?> world)
-    {
-        super(value);
-        this.world = world;
-    }
-
+    V get(K key);
+    
     /**
-     * Returns the world that this voxel group resides within.
+     * Given the name returns the associated value.
      * 
-     * @return the associated world.
+     * @param name the name
+     * @return the value
      */
-    public CommonWorld<?> getWorld()
-    {
-        return this.world;
-    }
-
+    V get(String name);
+    
     /**
-     * Returns the {@link CommonBlock} at the given position relative to the origin of this voxel chunk.
+     * Given a value returns the name of it in the registry.
      * 
-     * @param x x-axis offset from origin
-     * @param y y-axis offset from origin
-     * @param z z-axis offset from origin
-     * @return the {@link CommonBlock} at the relative position
+     * @param value the value
+     * @return the name of the value in the registry
      */
-    public abstract CommonBlock getRelativeBlockAt(int x, int y, int z);
-
+    String getNameForValue(V value);
+    
+    /**
+     * Returns a collection of the names of all keys in this registry.
+     * 
+     * @return a collection of the names
+     */
+    Iterable<String> getRegisteredNames();
+    
+    /**
+     * Returns a collection of all values in this registry.
+     * 
+     * @return a collection of the values
+     */
+    Iterable<V> getRegisteredValues();
+    
 }

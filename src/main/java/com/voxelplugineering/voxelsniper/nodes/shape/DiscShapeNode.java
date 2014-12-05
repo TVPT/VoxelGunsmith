@@ -32,22 +32,18 @@ import com.thevoxelbox.vsl.type.Type;
 import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
- * Creates a square disc with with a side length of radius*2+1
+ * Creates a disc with with a diameter of radius*2+1
  */
-public class VoxelDiscShapeNode extends Node
+public class DiscShapeNode extends Node
 {
-
-    /**
-     * 
-     */
     private static final long serialVersionUID = -7263550249408114074L;
 
     /**
      * Creates a new node.
      */
-    public VoxelDiscShapeNode()
+    public DiscShapeNode()
     {
-        super("VoxelDisc Shape", "shape");
+        super("Disc Shape", "shape");
         addInput("radius", Type.FLOAT, true, null);
         addOutput("shape", Type.getType("SHAPE", TypeDepth.SINGLE), this);
     }
@@ -68,12 +64,10 @@ public class VoxelDiscShapeNode extends Node
 
         int radius = getInput("radius").getSource().get();
         mv.visitVarInsn(Opcodes.DLOAD, radius);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "ceil", "(D)D", false);
-        mv.visitInsn(Opcodes.D2I);
         mv.visitFieldInsn(Opcodes.GETSTATIC, "com/voxelplugineering/voxelsniper/common/CommonDirection", "UP",
                 "Lcom/voxelplugineering/voxelsniper/common/CommonDirection;");
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/voxelplugineering/voxelsniper/shape/ShapeFactory", "createVoxelDisc",
-                "(ILcom/voxelplugineering/voxelsniper/common/CommonDirection;)Lcom/voxelplugineering/voxelsniper/shape/Shape;", false);
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/voxelplugineering/voxelsniper/shape/ShapeFactory", "createDisc",
+                "(DLcom/voxelplugineering/voxelsniper/common/CommonDirection;)Lcom/voxelplugineering/voxelsniper/shape/Shape;", false);
         mv.visitVarInsn(Opcodes.ASTORE, localsIndex);
         setOutput("shape", localsIndex);
         return localsIndex + 1;

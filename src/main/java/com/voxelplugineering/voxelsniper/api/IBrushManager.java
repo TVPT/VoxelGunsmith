@@ -31,7 +31,7 @@ import com.thevoxelbox.vsl.classloader.ASMClassLoader;
  * environment. Therefore, by connecting the classloader to the brush manager when the manager is garbage collected (eg. when the user disconnects
  * from the environment) the classloader (and by extension all classes loaded explicitly for this manager) are also garbage connected.
  */
-public interface IBrushManager extends IManager
+public interface IBrushManager
 {
 
     /**

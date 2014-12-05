@@ -28,13 +28,28 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.CommonWorld;
 
+/**
+ * An abstract change queue.
+ */
 public abstract class ChangeQueue
 {
 
+    /**
+     * The sniper which this queue is attached to.
+     */
     private ISniper sniper;
-    private CommonWorld world;
+    /**
+     * The world that this queue is changing.
+     */
+    private CommonWorld<?> world;
 
-    public ChangeQueue(ISniper sniper, CommonWorld world)
+    /**
+     * Creates a new {@link ChangeQueue}.
+     * 
+     * @param sniper the player
+     * @param world the world
+     */
+    public ChangeQueue(ISniper sniper, CommonWorld<?> world)
     {
         checkNotNull(world, "World cannot be null");
         checkNotNull(sniper, "Sniper cannot be null");
@@ -42,24 +57,56 @@ public abstract class ChangeQueue
         this.sniper = sniper;
     }
 
+    /**
+     * Returns the player that this queue is attached to.
+     * 
+     * @return the owner
+     */
     public ISniper getOwner()
     {
         return this.sniper;
     }
 
-    public CommonWorld getWorld()
+    /**
+     * The world that this queue is change
+     * 
+     * @return the world
+     */
+    public CommonWorld<?> getWorld()
     {
         return this.world;
     }
 
+    /**
+     * Whether this queue has finished executing.
+     * 
+     * @return is finished
+     */
     public abstract boolean isFinished();
 
+    /**
+     * Flushes this queue's changes down to the world.
+     */
     public abstract void flush();
-    
+
+    /**
+     * Inverts the changes in this queue to create a new queue which would undo this queue's changes.
+     * 
+     * @return the inverse queue
+     */
     public abstract ChangeQueue invert();
-    
+
+    /**
+     * Applies the next n changes to the world.
+     * 
+     * @param next the number of changes to apply
+     * @return the actual number of changes applied
+     */
     public abstract int perform(int next);
-    
+
+    /**
+     * Resets the position of this queue's execution.
+     */
     public abstract void reset();
 
 }

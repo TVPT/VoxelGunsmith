@@ -21,18 +21,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.config;
+package com.voxelplugineering.voxelsniper.util;
 
 /**
- * Default base configuration values.
+ * A Connected pair of values. Named here as a key and value.
+ * 
+ * @param <K> the first type
+ * @param <V> the second type
  */
-public class BaseConfiguration
+public class Pair<K, V>
 {
+    /**
+     * The first value.
+     */
+    private K key;
+    /**
+     * The second value.
+     */
+    private V value;
 
-    double PLAYER_EYE_HEIGHT = 1.62;
-    int MINIMUM_WORLD_DEPTH = 0;
-    int MAXIMUM_WORLD_HEIGHT = 255;
-    double RAY_TRACE_STEP = 0.2;
-    int BRUSH_FILE_FORMAT_VERSION = 1;
+    /**
+     * Creates a new part.
+     * 
+     * @param k the first value
+     * @param v the second value
+     */
+    public Pair(K k, V v)
+    {
+        this.key = k;
+        this.value = v;
+    }
 
+    /**
+     * Returns the first value
+     * 
+     * @return the first
+     */
+    public K getKey()
+    {
+        return key;
+    }
+
+    /**
+     * Returns the second value
+     * 
+     * @return the second
+     */
+    public V getValue()
+    {
+        return value;
+    }
 }

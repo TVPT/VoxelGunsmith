@@ -130,8 +130,14 @@ public class Shape
      * @param y the y position to set
      * @param z the z position to set
      */
-    public void set(int x, int y, int z)
+    public void set(int x, int y, int z, boolean relative)
     {
+        if(relative)
+        {
+            x += origin.getX();
+            y += origin.getY();
+            z += origin.getZ();
+        }
         if (x >= width || x < 0 || y >= height || y < 0 || z >= length || z < 0)
         {
             throw new ArrayIndexOutOfBoundsException("Tried to set point outside of the shape. (" + x + ", " + y + ", " + z + ")");
@@ -146,8 +152,14 @@ public class Shape
      * @param y the y position to unset
      * @param z the z position to unset
      */
-    public void unset(int x, int y, int z)
+    public void unset(int x, int y, int z, boolean relative)
     {
+        if(relative)
+        {
+            x += origin.getX();
+            y += origin.getY();
+            z += origin.getZ();
+        }
         if (x >= width || x < 0 || y >= height || y < 0 || z >= length || z < 0)
         {
             throw new ArrayIndexOutOfBoundsException("Tried to set point outside of the shape. (" + x + ", " + y + ", " + z + ")");
@@ -163,8 +175,14 @@ public class Shape
      * @param z the z position to return
      * @return the state of the position
      */
-    public boolean get(int x, int y, int z)
+    public boolean get(int x, int y, int z, boolean relative)
     {
+        if(relative)
+        {
+            x += origin.getX();
+            y += origin.getY();
+            z += origin.getZ();
+        }
         if (x >= width || x < 0 || y >= height || y < 0 || z >= length || z < 0)
         {
             throw new ArrayIndexOutOfBoundsException("Tried to set point outside of the shape. (" + x + ", " + y + ", " + z + ")");
@@ -392,7 +410,7 @@ public class Shape
             {
                 for (int z = 0; z < this.length; z++)
                 {
-                    if (get(x, y, z))
+                    if (get(x, y, z, false))
                     {
                         points.add(new CommonVector(x - this.origin.getX(), y - this.origin.getY(), z - this.origin.getZ()));
                     }
@@ -400,6 +418,26 @@ public class Shape
             }
         }
         return points.toArray(new CommonVector[points.size()]);
+    }
+    
+    public void flatten()
+    {
+        for(int x = 0; x < this.width; x++)
+        {
+            for(int z = 0; z < this.length; z++)
+            {
+                for(int y = 0; y < this.height; y++)
+                {
+                    if(get(x, y, z, false))
+                    {
+                        set(x, 0, z, false);
+                        break;
+                    }
+                }
+            }
+        }
+        resize(width, 1, length);
+        setOrigin(new CommonVector(origin.getX(), 0, origin.getZ()));
     }
 
 }

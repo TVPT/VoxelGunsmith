@@ -44,6 +44,8 @@ public interface IConfiguration
      * @return the value stored in configuration, or null if the key is not found
      */
     Object get(String name);
+    
+    boolean has(String name);
 
     /**
      * Attempts to register the container with this configuration storage. This will load all values from the fields of the given object and place

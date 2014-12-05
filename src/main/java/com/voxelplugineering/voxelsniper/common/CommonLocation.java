@@ -34,7 +34,7 @@ public final class CommonLocation implements Cloneable
     /**
      * The world that the location is within.
      */
-    private final CommonWorld world;
+    private final CommonWorld<?> world;
 
     private final double x;
     private final double y;
@@ -48,7 +48,7 @@ public final class CommonLocation implements Cloneable
      * @param y the y coordinate
      * @param z the z coordinate
      */
-    public CommonLocation(CommonWorld world, double x, double y, double z)
+    public CommonLocation(CommonWorld<?> world, double x, double y, double z)
     {
         checkNotNull(world, "World cannot be null");
         this.world = world;
@@ -62,7 +62,7 @@ public final class CommonLocation implements Cloneable
      * 
      * @return the world
      */
-    public CommonWorld getWorld()
+    public CommonWorld<?> getWorld()
     {
         return this.world;
     }

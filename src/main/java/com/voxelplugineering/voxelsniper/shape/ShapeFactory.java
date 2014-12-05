@@ -86,7 +86,7 @@ public class ShapeFactory
         Shape s =
                 new Shape((int) Math.ceil(rx) * 2 + 1, (int) Math.ceil(ry) * 2 + 1, (int) Math.ceil(rz) * 2 + 1, (int) Math.ceil(rx),
                         (int) Math.ceil(ry), (int) Math.ceil(rz));
-        s.set((int) Math.ceil(rx), (int) Math.ceil(ry), (int) Math.ceil(rz));
+        s.set((int) Math.ceil(rx), (int) Math.ceil(ry), (int) Math.ceil(rz), false);
         for (double x = 0; x <= rx; x++)
         {
 
@@ -104,14 +104,14 @@ public class ShapeFactory
 
                     if (xSquared + ySquared + zSquared <= 1)
                     {
-                        s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) + y), (int) (Math.ceil(rz) + z));
-                        s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) + y), (int) (Math.ceil(rz) - z));
-                        s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) - y), (int) (Math.ceil(rz) + z));
-                        s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) - y), (int) (Math.ceil(rz) - z));
-                        s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) + y), (int) (Math.ceil(rz) + z));
-                        s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) + y), (int) (Math.ceil(rz) - z));
-                        s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) - y), (int) (Math.ceil(rz) + z));
-                        s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) - y), (int) (Math.ceil(rz) - z));
+                        s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) + y), (int) (Math.ceil(rz) + z), false);
+                        s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) + y), (int) (Math.ceil(rz) - z), false);
+                        s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) - y), (int) (Math.ceil(rz) + z), false);
+                        s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) - y), (int) (Math.ceil(rz) - z), false);
+                        s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) + y), (int) (Math.ceil(rz) + z), false);
+                        s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) + y), (int) (Math.ceil(rz) - z), false);
+                        s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) - y), (int) (Math.ceil(rz) + z), false);
+                        s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) - y), (int) (Math.ceil(rz) - z), false);
                     }
 
                 }
@@ -148,7 +148,7 @@ public class ShapeFactory
         if (direction == CommonDirection.EAST || direction == CommonDirection.WEST) // x-axis
         {
             s = new Shape(height, (int) rx * 2 + 1, (int) ry * 2 + 1, 0, (int) Math.ceil(rx), (int) Math.ceil(ry));
-            s.set((int) Math.ceil(rx), (int) Math.ceil(ry), 0);
+            s.set((int) Math.ceil(rx), (int) Math.ceil(ry), 0, false);
             for (double x = 0; x <= rx; x++)
             {
 
@@ -163,10 +163,10 @@ public class ShapeFactory
                     {
                         if (xSquared + zSquared <= 1)
                         {
-                            s.set(z, (int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) + y));
-                            s.set(z, (int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) - y));
-                            s.set(z, (int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) + y));
-                            s.set(z, (int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) - y));
+                            s.set(z, (int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) + y), false);
+                            s.set(z, (int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) - y), false);
+                            s.set(z, (int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) + y), false);
+                            s.set(z, (int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) - y), false);
                         }
 
                     }
@@ -175,7 +175,7 @@ public class ShapeFactory
         } else if (direction == CommonDirection.NORTH || direction == CommonDirection.SOUTH) // z-axis
         {
             s = new Shape((int) rx * 2 + 1, height, (int) ry * 2 + 1, (int) Math.ceil(rx), 0, (int) Math.ceil(ry));
-            s.set((int) Math.ceil(rx), 0, (int) Math.ceil(ry));
+            s.set((int) Math.ceil(rx), 0, (int) Math.ceil(ry), false);
             for (double x = 0; x <= rx; x++)
             {
 
@@ -190,10 +190,10 @@ public class ShapeFactory
                     {
                         if (xSquared + zSquared <= 1)
                         {
-                            s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) + y), z);
-                            s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) - y), z);
-                            s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) + y), z);
-                            s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) - y), z);
+                            s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) + y), z, false);
+                            s.set((int) (Math.ceil(rx) + x), (int) (Math.ceil(ry) - y), z, false);
+                            s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) + y), z, false);
+                            s.set((int) (Math.ceil(rx) - x), (int) (Math.ceil(ry) - y), z, false);
                         }
 
                     }
@@ -203,7 +203,7 @@ public class ShapeFactory
         // y-axis default
         {
             s = new Shape((int) rx * 2 + 1, height, (int) ry * 2 + 1, (int) Math.ceil(rx), 0, (int) Math.ceil(ry));
-            s.set((int) Math.ceil(rx), 0, (int) Math.ceil(ry));
+            s.set((int) Math.ceil(rx), 0, (int) Math.ceil(ry), false);
             for (double x = 0; x <= rx; x++)
             {
 
@@ -218,10 +218,10 @@ public class ShapeFactory
                     {
                         if (xSquared + zSquared <= 1)
                         {
-                            s.set((int) (Math.ceil(rx) + x), z, (int) (Math.ceil(ry) + y));
-                            s.set((int) (Math.ceil(rx) + x), z, (int) (Math.ceil(ry) - y));
-                            s.set((int) (Math.ceil(rx) - x), z, (int) (Math.ceil(ry) + y));
-                            s.set((int) (Math.ceil(rx) - x), z, (int) (Math.ceil(ry) - y));
+                            s.set((int) (Math.ceil(rx) + x), z, (int) (Math.ceil(ry) + y), false);
+                            s.set((int) (Math.ceil(rx) + x), z, (int) (Math.ceil(ry) - y), false);
+                            s.set((int) (Math.ceil(rx) - x), z, (int) (Math.ceil(ry) + y), false);
+                            s.set((int) (Math.ceil(rx) - x), z, (int) (Math.ceil(ry) - y), false);
                         }
 
                     }
@@ -231,17 +231,17 @@ public class ShapeFactory
         return s;
     }
     
-    public Shape createCylinder(double radius, int height, CommonDirection direction)
+    public static Shape createCylinder(double radius, int height, CommonDirection direction)
     {
         return createEllipticalCylinder(radius, radius, height, direction);
     }
     
-    public Shape createDisc(double radius, CommonDirection direction)
+    public static Shape createDisc(double radius, CommonDirection direction)
     {
         return createEllipticalCylinder(radius, radius, 1, direction);
     }
     
-    public Shape createEllipse(double rx, double ry, CommonDirection direction)
+    public static Shape createEllipse(double rx, double ry, CommonDirection direction)
     {
         return createEllipticalCylinder(rx, ry, 1, direction);
     }

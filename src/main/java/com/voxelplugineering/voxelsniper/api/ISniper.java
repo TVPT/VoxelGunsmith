@@ -47,6 +47,13 @@ public interface ISniper
      * @param msg the message to send, cannot be null or empty
      */
     void sendMessage(String msg);
+    /**
+     * Sends a message to the user. Created by the same specification of {@link String#format(String, Object...)}.
+     * 
+     * @param format the format string
+     * @param args the format arguments
+     */
+    void sendMessage(String format, Object... args);
 
     /**
      * Returns the brush manager specific to this user.
@@ -84,11 +91,6 @@ public interface ISniper
     IVariableScope getBrushSettings();
 
     /**
-     * Resets the players brush settings to the defaults.
-     */
-    void resetSettings();
-
-    /**
      * Adds a queue to the history buffer for this player. If the size of the history buffer is greater than the maximum allowed size then the oldest
      * stored queues are dropped.
      * 
@@ -101,7 +103,7 @@ public interface ISniper
      * 
      * @return this player's world
      */
-    CommonWorld getWorld();
+    CommonWorld<?> getWorld();
 
     /**
      * Pushes the top n inverse change queues from the history buffer to the world, effectively undoing previous changes.
@@ -135,5 +137,6 @@ public interface ISniper
      * Removes the next pending change if it has finished.
      */
     void clearNextPending();
+
 
 }

@@ -25,7 +25,6 @@ package com.voxelplugineering.voxelsniper.common;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -33,10 +32,11 @@ import java.util.Queue;
 
 import com.thevoxelbox.vsl.VariableScope;
 import com.thevoxelbox.vsl.api.IVariableScope;
-import com.voxelplugineering.voxelsniper.api.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
+import com.voxelplugineering.voxelsniper.api.IBrushLoader;
 import com.voxelplugineering.voxelsniper.api.IBrushManager;
 import com.voxelplugineering.voxelsniper.api.ISniper;
+import com.voxelplugineering.voxelsniper.common.factory.WeakWrapper;
 import com.voxelplugineering.voxelsniper.world.ChangeQueue;
 
 /**
@@ -44,12 +44,8 @@ import com.voxelplugineering.voxelsniper.world.ChangeQueue;
  * 
  * @param <T> the user class from the underlying implementation
  */
-public abstract class CommonPlayer<T> implements ISniper
+public abstract class CommonPlayer<T> extends WeakWrapper<T> implements ISniper
 {
-    /**
-     * A weak reference to the underlying player object.
-     */
-    private WeakReference<T> playerReference;
     /**
      * This users specific brush manager.
      */
@@ -70,32 +66,27 @@ public abstract class CommonPlayer<T> implements ISniper
      * The queue of pending {@link ChangeQueue}s waiting to be processed.
      */
     private Queue<ChangeQueue> pending;
+    /**
+     * The maximum size of the history buffer.
+     */
+    private int historyBufferSize;
 
     /**
      * Creates a new CommonPlayer with a weak reference to the player.
      * 
      * @param player the player object
+     * @param parentBrushManager the parent brush manager for this player's brush manager to inherit from
+     * @param loader the default loader for this player
+     * @param historySize the maximum history buffer size for this player
      */
-    protected CommonPlayer(T player)
+    protected CommonPlayer(T player, IBrushManager parentBrushManager, IBrushLoader loader, int historySize)
     {
-        checkNotNull(player, "Player cannot be null");
-        this.playerReference = new WeakReference<T>(player);
-        //TODO: have player inherit brushes from group rather than the global brush manager always.
-        this.personalBrushManager = new CommonBrushManager(Gunsmith.getGlobalBrushManager());
+        super(player);
+        this.personalBrushManager = new CommonBrushManager(parentBrushManager, loader, parentBrushManager.getClassLoader(), parentBrushManager.getClassLoader().getCompilerFactory());
         this.brushVariables = new VariableScope();
-        resetSettings();
         this.history = new ArrayDeque<ChangeQueue>();
         this.pending = new LinkedList<ChangeQueue>();
-    }
-
-    /**
-     * Returns the underlying player object.
-     *
-     * @return The player reference or null
-     */
-    public final T getPlayerReference()
-    {
-        return this.playerReference.get();
+        this.historyBufferSize = historySize;
     }
 
     /**
@@ -130,9 +121,7 @@ public abstract class CommonPlayer<T> implements ISniper
         return this.brushVariables;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+/* TODO move this to the sniper manager w/ setters for these values
     public void resetSettings()
     {
         IBrush start = null;
@@ -165,7 +154,7 @@ public abstract class CommonPlayer<T> implements ISniper
         sendMessage("Brush set to " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH").toString());
         this.brushVariables.set("brushSize", Gunsmith.getConfiguration().get("DEFAULT_BRUSH_SIZE"));
         sendMessage("Your brush size was changed to " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH_SIZE").toString());
-        CommonMaterial<?> material = Gunsmith.getMaterialFactory().getMaterial(Gunsmith.getConfiguration().get("DEFAULT_BRUSH_MATERIAL").toString());
+        CommonMaterial<?> material = Gunsmith.getMaterialFactory().get(Gunsmith.getConfiguration().get("DEFAULT_BRUSH_MATERIAL").toString());
         if (material == null)
         {
             sendMessage("Could not find material " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH_MATERIAL").toString());
@@ -175,7 +164,8 @@ public abstract class CommonPlayer<T> implements ISniper
             sendMessage("Set material to " + material.toString());
             getBrushSettings().set("setMaterial", material);
         }
-    }
+        getBrushSettings().set("maskMaterial", defaultMaterial);
+    }*/
 
     /**
      * {@inheritDoc}
@@ -184,7 +174,7 @@ public abstract class CommonPlayer<T> implements ISniper
     {
         checkNotNull(changeQueue, "ChangeQueue cannot be null");
         this.history.addFirst(changeQueue);
-        while (this.history.size() > 20)
+        while (this.history.size() > this.historyBufferSize)
         {
             this.history.removeLast();
         }

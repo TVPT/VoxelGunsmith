@@ -21,36 +21,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api;
+package com.voxelplugineering.voxelsniper.util;
+
+import com.thevoxelbox.vsl.api.INodeGraph;
+import com.thevoxelbox.vsl.node.ChainableNodeGraph;
 
 /**
- * A factory for creating instances of {@link ISniper} from the specific implementation's user class.
- * 
- * @param <T> the underlying Player class
+ * A {@link INodeGraph} for visual scripts representing brush parts.
  */
-public interface ISniperFactory<T> extends IManager
+public class BrushPartNodeGraph extends ChainableNodeGraph
 {
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Returns the {@link ISniper} wrapping the given specific implementation's user.
-     * 
-     * @param user the user object from the specific implementation, cannot be null
-     * @return the {@link ISniper} for the user
+     * The names of special variables which are required by this brush part. TODO change to a {@link Pair}{@literal<String, Type>}.
      */
-    ISniper getSniper(T user);
+    public String[] requiredVars = null;
 
     /**
-     * The user class of the specific implementation.
+     * Creates a new node graph.
      * 
-     * @return the user class
+     * @param name the graph name
      */
-    Class<T> getPlayerClass();
+    public BrushPartNodeGraph(String name)
+    {
+        super(name);
+    }
 
     /**
-     * Returns a special case {@link ISniper} for the console of the dedicated server. Has no brush context but can recieve messages.
+     * Returns variables required by this brush part.
      * 
-     * @return An {@link ISniper} representing the console
+     * @return the required variables
      */
-    ISniper getConsoleSniperProxy();
+    public String[] getRequiredVars()
+    {
+        return this.requiredVars;
+    }
+
+    /**
+     * Sets the required variables.
+     * 
+     * @param vars the required variables
+     */
+    public void setRequiredVars(String... vars)
+    {
+        this.requiredVars = vars;
+    }
 
 }

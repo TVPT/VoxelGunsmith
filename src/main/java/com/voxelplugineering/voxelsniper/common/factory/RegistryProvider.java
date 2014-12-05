@@ -21,18 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.config;
+package com.voxelplugineering.voxelsniper.common.factory;
+
+import com.voxelplugineering.voxelsniper.util.Pair;
 
 /**
- * Default base configuration values.
+ * A provider for values in a registry which is referenced when a key is not found within the registry.
+ * 
+ * @param <K> the key type
+ * @param <V> the value type
  */
-public class BaseConfiguration
+public interface RegistryProvider<K, V>
 {
 
-    double PLAYER_EYE_HEIGHT = 1.62;
-    int MINIMUM_WORLD_DEPTH = 0;
-    int MAXIMUM_WORLD_HEIGHT = 255;
-    double RAY_TRACE_STEP = 0.2;
-    int BRUSH_FILE_FORMAT_VERSION = 1;
-
+    /**
+     * Returns a new key value part from this provider.
+     * 
+     * @param name the name of the object to fetch.
+     * @return a key-value {@link Pair}
+     */
+    Pair<K, V> get(String name);
+    
 }

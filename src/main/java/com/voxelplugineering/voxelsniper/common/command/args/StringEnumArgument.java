@@ -26,6 +26,7 @@ package com.voxelplugineering.voxelsniper.common.command.args;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.Iterables;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
 
@@ -60,7 +61,61 @@ public class StringEnumArgument extends CommandArgument<String>
         checkNotNull(choices, "Cannot have null choices");
         this.def = def;
         this.choices = choices;
-
+        StringBuilder sb = new StringBuilder().append(!required ? '[' : '<');
+        for (String s : choices)
+        {
+            sb.append(s);
+            sb.append('|');
+        }
+        if (choices.length != 0)
+        {
+            sb.setLength(sb.length() - 1);
+        }
+        sb.append(!required ? ']' : '>');
+        this.usage = sb.toString();
+    }
+    
+    public StringEnumArgument(String name, boolean required, String def, Iterable<String> choices)
+    {
+        super(name, required);
+        if(!required)
+        {
+            checkNotNull(def, "Cannot have a null default if the argument is not required.");
+        }
+        checkNotNull(choices, "Cannot have null choices");
+        this.def = def;
+        this.choices = Iterables.toArray(choices, String.class);
+        StringBuilder sb = new StringBuilder().append(!required ? '[' : '<');
+        for (String s : choices)
+        {
+            sb.append(s);
+            sb.append('|');
+        }
+        if (this.choices.length != 0)
+        {
+            sb.setLength(sb.length() - 1);
+        }
+        sb.append(!required ? ']' : '>');
+        this.usage = sb.toString();
+    }
+    
+    public StringEnumArgument(String name, boolean required, String def, Class<?> enumClass)
+    {
+        super(name, required);
+        if(!required)
+        {
+            checkNotNull(def, "Cannot have a null default if the argument is not required.");
+        }
+        checkNotNull(enumClass, "Cannot have null enumClass");
+        checkArgument(enumClass.isEnum(), "Enum class must be an enum type.");
+        this.def = def;
+        Object[] values = enumClass.getEnumConstants();
+        this.choices = new String[values.length];
+        int i = 0;
+        for(Object o: values)
+        {
+            choices[i++] = o.toString();
+        }
         StringBuilder sb = new StringBuilder().append(!required ? '[' : '<');
         for (String s : choices)
         {

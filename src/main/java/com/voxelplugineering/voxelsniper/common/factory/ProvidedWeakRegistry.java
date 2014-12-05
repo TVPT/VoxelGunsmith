@@ -21,51 +21,61 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.common;
+package com.voxelplugineering.voxelsniper.common.factory;
 
-import com.voxelplugineering.voxelsniper.common.factory.WeakWrapper;
+import com.voxelplugineering.voxelsniper.util.Pair;
 
 /**
- * A representation of a group of voxels within a world.
+ * A {@link WeakRegistry} which takes a custom provider which is referenced to get the value when a key is not found within the registry.
+ * 
+ * @param <K> the key type
+ * @param <V> the value type
  */
-public abstract class CommonChunk<T> extends WeakWrapper<T>
+public class ProvidedWeakRegistry<K, V> extends WeakRegistry<K, V>
 {
 
     /**
-     * The world containing this chunk.
+     * The provider.
      */
-    private CommonWorld<?> world;
-    
+    private RegistryProvider<K, V> provider;
+
     /**
-     * Creates a new chunk.
+     * Creates a new {@link ProvidedWeakRegistry}.
      * 
-     * @param value the specific implementation's chunk
-     * @param world the containing world
+     * @param provider the provider
      */
-    public CommonChunk(T value, CommonWorld<?> world)
+    public ProvidedWeakRegistry(RegistryProvider<K, V> provider)
     {
-        super(value);
-        this.world = world;
+        super();
+        this.provider = provider;
     }
 
     /**
-     * Returns the world that this voxel group resides within.
-     * 
-     * @return the associated world.
+     * {@inheritDoc}
      */
-    public CommonWorld<?> getWorld()
+    public V get(String name)
     {
-        return this.world;
+        V value = super.get(name);
+        if (value == null)
+        {
+            Pair<K, V> v = provider.get(name);
+            if (v != null)
+            {
+                register(name, v.getKey(), v.getValue());
+                return v.getValue();
+            }
+        }
+        return null;
     }
 
     /**
-     * Returns the {@link CommonBlock} at the given position relative to the origin of this voxel chunk.
+     * Sets the provider for this registry.
      * 
-     * @param x x-axis offset from origin
-     * @param y y-axis offset from origin
-     * @param z z-axis offset from origin
-     * @return the {@link CommonBlock} at the relative position
+     * @param provider the new provider
      */
-    public abstract CommonBlock getRelativeBlockAt(int x, int y, int z);
+    public void setProvider(RegistryProvider<K, V> provider)
+    {
+        this.provider = provider;
+    }
 
 }

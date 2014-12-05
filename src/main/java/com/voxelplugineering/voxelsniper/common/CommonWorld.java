@@ -25,11 +25,41 @@ package com.voxelplugineering.voxelsniper.common;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.voxelplugineering.voxelsniper.api.IMaterialRegistry;
+import com.voxelplugineering.voxelsniper.common.factory.WeakWrapper;
+
 /**
  * The representation of a world or scene of voxels. X and Z axes are assumed to be the horizontal axes and Y the vertical axis.
  */
-public abstract class CommonWorld
+public abstract class CommonWorld<T> extends WeakWrapper<T>
 {
+    
+    /**
+     * The material registry for this world.
+     */
+    private IMaterialRegistry<?> materials;
+
+    /**
+     * Create a world.
+     * 
+     * @param world the underlying world
+     * @param materials the material registry for this world
+     */
+    public CommonWorld(T world, IMaterialRegistry<?> materials)
+    {
+        super(world);
+        this.materials = materials;
+    }
+    
+    /**
+     * Returns the material registry for this world.
+     * 
+     * @return the material registry
+     */
+    public IMaterialRegistry<?> getMaterialRegistry()
+    {
+        return this.materials;
+    }
 
     /**
      * Returns the name of the world.
@@ -46,7 +76,7 @@ public abstract class CommonWorld
      * @param z the chunk's z-axis position
      * @return the chunk
      */
-    public abstract CommonChunk getChunkAt(int x, int y, int z);
+    public abstract CommonChunk<?> getChunkAt(int x, int y, int z);
 
     /**
      * Returns the chunk at the given x, z coordinates. Assumes no y-axis arrangement of chunks (uses 0 for the y-axis). This method exists to better
@@ -56,7 +86,7 @@ public abstract class CommonWorld
      * @param z the chunk's z-axis position
      * @return the chunk
      */
-    public CommonChunk getChunkAt(int x, int z)
+    public CommonChunk<?> getChunkAt(int x, int z)
     {
         return getChunkAt(x, 0, z);
     }
@@ -105,5 +135,15 @@ public abstract class CommonWorld
      * @param material the new material
      */
     public abstract void setBlockAt(int x, int y, int z, CommonMaterial<?> material);
+    
+    /**
+     * Sets the biome at the given location.
+     * TODO this should probably have a y value as well even though minecraft doesn't use it for its biomes, another platform could, or minecraft could in the future.
+     * 
+     * @param x the x position to set
+     * @param z the y position to set
+     * @param biomeName the new biome
+     */
+    public abstract void setBiomeAt(int x, int z, CommonBiome<?> biomeName);
 
 }

@@ -23,16 +23,17 @@
  */
 package com.voxelplugineering.voxelsniper.common.command;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.voxelplugineering.voxelsniper.api.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.ICommandRegistrar;
+import com.voxelplugineering.voxelsniper.api.IConfiguration;
+import com.voxelplugineering.voxelsniper.api.IPermissionProxy;
 import com.voxelplugineering.voxelsniper.api.ISniper;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * A handler for commands which handles registration of command handlers and commands. Also delegates commands to the handlers and registers commands
@@ -42,13 +43,28 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class CommandHandler
 {
+    /**
+     * The message sent to players when they lack the required permission for a command.
+     */
+    private String permissionMessage = "You lack the required permission for this command.";
+    /**
+     * The permissions proxy for checking player permissions.
+     */
+    private IPermissionProxy permissions;
 
     /**
      * Constructs a command handler
+     * 
+     * @param permissions the permissions proxy
+     * @param configuration the configuration object
      */
-    public CommandHandler()
+    public CommandHandler(IPermissionProxy permissions, IConfiguration configuration)
     {
-
+        this.permissions = permissions;
+        if(configuration.has("PERMISSIONS_REQUIRED_MESSAGE"))
+        {
+            permissionMessage = configuration.get("PERMISSIONS_REQUIRED_MESSAGE").toString();
+        }
     }
 
     /**
@@ -108,7 +124,7 @@ public class CommandHandler
         boolean allowed = false;
         for (String s : handler.getPermissions())
         {
-            if (Gunsmith.getPermissionProxy().hasPermission(player, s))
+            if (this.permissions.hasPermission(player, s))
             {
                 allowed = true;
                 break;
@@ -124,7 +140,7 @@ public class CommandHandler
             }
         } else
         {
-            player.sendMessage(Gunsmith.getConfiguration().get("PERMISSIONS_REQUIRED_MESSAGE").toString());
+            player.sendMessage(this.permissionMessage);
         }
     }
 

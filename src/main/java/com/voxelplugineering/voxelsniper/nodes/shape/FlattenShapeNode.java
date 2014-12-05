@@ -27,29 +27,24 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.ExecutableNode;
 import com.thevoxelbox.vsl.type.Type;
 import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
- * Creates a square disc with with a side length of radius*2+1
+ * A node for flattening a shape into a 1 unit high disc.
  */
-public class VoxelDiscShapeNode extends Node
+public class FlattenShapeNode extends ExecutableNode implements Opcodes
 {
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -7263550249408114074L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new node.
      */
-    public VoxelDiscShapeNode()
+    public FlattenShapeNode()
     {
-        super("VoxelDisc Shape", "shape");
-        addInput("radius", Type.FLOAT, true, null);
-        addOutput("shape", Type.getType("SHAPE", TypeDepth.SINGLE), this);
+        super("Flatten Shape", "shape");
+        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE), true, null);
     }
 
     /**
@@ -58,24 +53,10 @@ public class VoxelDiscShapeNode extends Node
     @Override
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {
-        /*
-         * ALOAD radius
-         * CHECKCAST java/lang/Double
-         * INVOKEVIRTUAL Double.doubleValue () : double
-         * INVOKESTATIC ShapeFactory.createSphere (double) : Shape
-         * ASTORE shape
-         */
-
-        int radius = getInput("radius").getSource().get();
-        mv.visitVarInsn(Opcodes.DLOAD, radius);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "ceil", "(D)D", false);
-        mv.visitInsn(Opcodes.D2I);
-        mv.visitFieldInsn(Opcodes.GETSTATIC, "com/voxelplugineering/voxelsniper/common/CommonDirection", "UP",
-                "Lcom/voxelplugineering/voxelsniper/common/CommonDirection;");
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/voxelplugineering/voxelsniper/shape/ShapeFactory", "createVoxelDisc",
-                "(ILcom/voxelplugineering/voxelsniper/common/CommonDirection;)Lcom/voxelplugineering/voxelsniper/shape/Shape;", false);
-        mv.visitVarInsn(Opcodes.ASTORE, localsIndex);
-        setOutput("shape", localsIndex);
-        return localsIndex + 1;
+        int shape = getInput("shape").getSource().get();
+        mv.visitVarInsn(ALOAD, shape);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/shape/Shape", "flatten", "()V", false);
+        return localsIndex;
     }
+
 }

@@ -27,21 +27,13 @@ import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 import com.thevoxelbox.vsl.VariableScope;
-import com.thevoxelbox.vsl.api.IChainedRunnableGraph;
-import com.thevoxelbox.vsl.api.IVariableHolder;
 import com.thevoxelbox.vsl.api.IVariableScope;
-import com.voxelplugineering.voxelsniper.api.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.IBrush;
+import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.IConfiguration;
 import com.voxelplugineering.voxelsniper.api.ISniper;
-import com.voxelplugineering.voxelsniper.common.CommonBlock;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
 import com.voxelplugineering.voxelsniper.common.CommonMaterial;
-import com.voxelplugineering.voxelsniper.common.CommonVector;
-import com.voxelplugineering.voxelsniper.shape.Shape;
-import com.voxelplugineering.voxelsniper.shape.ShapeFactory;
 import com.voxelplugineering.voxelsniper.util.RayTrace;
-import com.voxelplugineering.voxelsniper.world.BlockChange;
-import com.voxelplugineering.voxelsniper.world.ShapeChangeQueue;
 
 /**
  * An event handler for the default behavior for events.
@@ -50,11 +42,44 @@ public class CommonEventHandler
 {
 
     /**
-     * Constructs a new CommonEventHandler
+     * The air material for the ray tracer traversal material.
      */
-    public CommonEventHandler()
+    private CommonMaterial<?> air;
+    /**
+     * The maximum of ray tracing.
+     */
+    private double range;
+    /**
+     * The minimum world depth.
+     */
+    private int minY;
+    /**
+     * The maximum world height.
+     */
+    private int maxY;
+    /**
+     * The step interval of the ray tracer, a smaller interval means a more exact trace (0.2 is a good value).
+     */
+    private double step;
+    /**
+     * The eye height of the player's view point relative to their stored position.
+     */
+    private double eyeHeight;
+    
+    /**
+     * Constructs a new CommonEventHandler
+     * 
+     * @param air the air material
+     * @param configuration the configuration object
+     */
+    public CommonEventHandler(CommonMaterial<?> air, IConfiguration configuration)
     {
-
+        this.air = air;
+        this.range = (Double) configuration.get("RAY_TRACE_MAX_RANGE");
+        this.minY = (Integer) configuration.get("MINIMUM_WORLD_DEPTH");
+        this.maxY = (Integer) configuration.get("MAXIMUM_WORLD_HEIGHT");
+        this.step = (Double) configuration.get("RAY_TRACE_STEP");
+        this.eyeHeight = (Double) configuration.get("PLAYER_EYE_HEIGHT");
     }
 
     /**
@@ -67,23 +92,42 @@ public class CommonEventHandler
     @AllowConcurrentEvents
     public void onSnipe(SnipeEvent event)
     {
-        ISniper sniper = event.getSniper();
-        CommonLocation location = sniper.getLocation();
-        double yaw = event.getYaw();
-        double pitch = event.getPitch();
-        RayTrace ray = new RayTrace(location, yaw, pitch);
-        ray.trace();
+        try
+        {
 
-        IVariableScope brushVariables = new VariableScope(sniper.getBrushSettings());
-        brushVariables.set("origin", location);
-        brushVariables.set("yaw", yaw);
-        brushVariables.set("pitch", pitch);
-        brushVariables.set("targetBlock", ray.getTargetBlock());
-        brushVariables.set("lastBlock", ray.getLastBlock());
-        brushVariables.set("length", ray.getLength());
-        Gunsmith.getLogger()
-                .info("Snipe at " + ray.getTargetBlock().getLocation().toString() + " : " + sniper.getCurrentBrush().getClass().getName());
-        sniper.getCurrentBrush().run(brushVariables, sniper);
+            ISniper sniper = event.getSniper();
+            CommonLocation location = sniper.getLocation();
+            double yaw = event.getYaw();
+            double pitch = event.getPitch();
+            RayTrace ray = new RayTrace(location, yaw, pitch, this.air, range, minY, maxY, step, eyeHeight);
+            ray.trace();
+
+            IVariableScope brushVariables = new VariableScope(sniper.getBrushSettings());
+            brushVariables.set("origin", location);
+            brushVariables.set("yaw", yaw);
+            brushVariables.set("pitch", pitch);
+            brushVariables.set("targetBlock", ray.getTargetBlock());
+            brushVariables.set("lastBlock", ray.getLastBlock());
+            brushVariables.set("length", ray.getLength());
+            boolean requirements = true;
+            for (String req : sniper.getCurrentBrush().getRequiredVars())
+            {
+                if (brushVariables.get(req) == null)
+                {
+                    requirements = false;
+                    sniper.sendMessage("Your current brush requires that the " + req + " variable to be set.");
+                }
+            }
+            if (requirements)
+            {
+                Gunsmith.getLogger().info(
+                        "Snipe at " + ray.getTargetBlock().getLocation().toString() + " : " + sniper.getCurrentBrush().getClass().getName());
+                sniper.getCurrentBrush().run(brushVariables, sniper);
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -21,73 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.common;
+package com.voxelplugineering.voxelsniper.common.factory;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkArgument;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import com.voxelplugineering.voxelsniper.api.IMaterialFactory;
+import com.voxelplugineering.voxelsniper.api.IMaterialRegistry;
+import com.voxelplugineering.voxelsniper.common.CommonMaterial;
 
 /**
  * A standard factory for creating static copies of {@link CommonMaterial} proxying materials in the underlying implementation.
  * 
  * @param <T> the underlying material type
  */
-public class CommonMaterialFactory<T> implements IMaterialFactory<T>
+public class CommonMaterialRegistry<T> extends WeakRegistry<T, CommonMaterial<T>> implements IMaterialRegistry<T>
 {
 
-    /**
-     * The {@link CommonMaterial} instances.
-     */
-    private Map<String, CommonMaterial<T>> registry;
     /**
      * A special case {@link CommonMaterial} representing air or empty space.
      */
     private CommonMaterial<T> air = null;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void init()
-    {
-        this.registry = new HashMap<String, CommonMaterial<T>>();
-        this.air = null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void stop()
-    {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void restart()
-    {
-        stop();
-        init();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public CommonMaterial<T> getMaterial(String name)
-    {
-        checkNotNull(name, "Name cannot be null!");
-        checkArgument(name.length() != 0, "Name of material cannot be empty");
-
-        return this.registry.get(name.toUpperCase());
-    }
 
     /**
      * {@inheritDoc}
@@ -102,17 +53,13 @@ public class CommonMaterialFactory<T> implements IMaterialFactory<T>
      * {@inheritDoc}
      */
     @Override
-    public void registerMaterial(String name, CommonMaterial<T> material)
+    public void register(String name, T key, CommonMaterial<T> value)
     {
-        checkNotNull(name, "Name cannot be null!");
-        checkNotNull(material, "Material being registered cannot be null");
-        checkArgument(name.length() != 0, "Name of material cannot be empty");
-        name = name.toUpperCase();
-        this.registry.put(name, material);
+        super.register(name, key, value);
 
         if ("AIR".equalsIgnoreCase(name) || "EMPTY".equalsIgnoreCase(name))
         {
-            this.air = material;
+            this.air = value;
         }
 
     }

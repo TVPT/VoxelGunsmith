@@ -28,6 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Map;
 
 import com.voxelplugineering.voxelsniper.api.IBrush;
+import com.voxelplugineering.voxelsniper.api.IConfiguration;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.command.Command;
 import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
@@ -38,16 +39,42 @@ import com.voxelplugineering.voxelsniper.common.command.args.RawArgument;
  */
 public class BrushCommand extends Command
 {
-
+    /**
+     * The message sent to players when their brush size is changed.
+     */
+    private String brushSizeChangeMessage = "Your brush size was changed to %.1f";
+    /**
+     * The message sent to players when a brush is not found.
+     */
+    private String brushNotFoundMessage = "Could not find a brush part named %s";
+    /**
+     * The message sent to players when their brush is set.
+     */
+    private String brushSetMessage = "Your brush has been set to %s";
+    
     /**
      * Constructs a new BrushCommand
+     * 
+     * @param configuration the configuration object
      */
-    public BrushCommand()
+    public BrushCommand(IConfiguration configuration)
     {
         super("brush", "Sets your current brush");
         setAliases("b", "brush");
         addArgument(new RawArgument("raw"));
         setPermissions("voxelsniper.command.brush");
+        if(configuration.has("BRUSH_SIZE_CHANGED_MESSAGE"))
+        {
+            brushSizeChangeMessage = configuration.get("BRUSH_SIZE_CHANGED_MESSAGE").toString();
+        }
+        if(configuration.has("BRUSH_NOT_FOUND_MESSAGE"))
+        {
+            brushNotFoundMessage = configuration.get("BRUSH_NOT_FOUND_MESSAGE").toString();
+        }
+        if(configuration.has("BRUSH_SET_MESSAGE"))
+        {
+            brushSetMessage = configuration.get("BRUSH_SET_MESSAGE").toString();
+        }
     }
 
     /**
@@ -64,7 +91,7 @@ public class BrushCommand extends Command
             {
                 double brushSize = Double.parseDouble(s[0]);
                 sniper.getBrushSettings().set("brushSize", brushSize);
-                sniper.sendMessage("Your brush size was changed to " + brushSize);
+                sniper.sendMessage(this.brushSizeChangeMessage, brushSize);
                 return true;
             } catch (NumberFormatException ignored)
             {
@@ -73,10 +100,13 @@ public class BrushCommand extends Command
         }
         if (s.length >= 1)
         {
+            String fullBrush = "";
             IBrush start = null;
             IBrush last = null;
             for (String brushName : s)
             {
+                fullBrush += brushName + " ";
+                
                 IBrush brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName);
                 if (brush == null)
                 {
@@ -84,7 +114,7 @@ public class BrushCommand extends Command
                     brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName);
                     if (brush == null)
                     {
-                        sniper.sendMessage("Could not find a brush part named " + brushName);
+                        sniper.sendMessage(this.brushNotFoundMessage, brushName);
                         return false;
                     }
                 }
@@ -100,7 +130,7 @@ public class BrushCommand extends Command
 
             }
             sniper.setCurrentBrush(start);
-            sniper.sendMessage("Your brush has been set.");
+            sniper.sendMessage(this.brushSetMessage, fullBrush);
             return true;
         }
         return false;

@@ -25,14 +25,15 @@ package com.voxelplugineering.voxelsniper.common;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.thevoxelbox.vsl.api.IGraphCompilerFactory;
 import com.thevoxelbox.vsl.classloader.ASMClassLoader;
-import com.voxelplugineering.voxelsniper.api.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.IBrushLoader;
 import com.voxelplugineering.voxelsniper.api.IBrushManager;
@@ -63,16 +64,13 @@ public class CommonBrushManager implements IBrushManager
     /**
      * Creates a new CommonBrushManager.
      */
-    public CommonBrushManager()
+    public CommonBrushManager(IBrushLoader defaultLoader, ClassLoader parentClassLoader, IGraphCompilerFactory compilerFactory)
     {
-        if (Gunsmith.getDefaultBrushLoader() != null)
+        if(defaultLoader != null)
         {
-            this.loaders.add(Gunsmith.getDefaultBrushLoader());
-        } else
-        {
-            Gunsmith.getLogger().warn("Created Brush Manager before default BrushLoader was set.");
+            this.loaders.add(defaultLoader);
         }
-        this.classLoader = new ASMClassLoader(Gunsmith.getVoxelSniper().getGunsmithClassLoader(), Gunsmith.getCompilerFactory());
+        this.classLoader = new ASMClassLoader(parentClassLoader, compilerFactory);
     }
 
     /**
@@ -80,35 +78,10 @@ public class CommonBrushManager implements IBrushManager
      *
      * @param parent the parent
      */
-    public CommonBrushManager(IBrushManager parent)
+    public CommonBrushManager(IBrushManager parent, IBrushLoader defaultLoader, ClassLoader parentClassLoader, IGraphCompilerFactory compilerFactory)
     {
-        this();
+        this(defaultLoader, parentClassLoader, compilerFactory);
         setParent(parent);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void init()
-    {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void stop()
-    {
-        this.brushes.clear();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void restart()
-    {
-        stop();
-        init();
     }
 
     /**

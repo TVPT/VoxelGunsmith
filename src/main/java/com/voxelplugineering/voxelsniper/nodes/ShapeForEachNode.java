@@ -86,7 +86,6 @@ public class ShapeForEachNode extends ExecutableNode implements Opcodes
         int i = localsIndex++;
         int target = localsIndex++;
         int next = localsIndex++;
-
         mv.visitVarInsn(ALOAD, shape);
         mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/shape/Shape", "getShape",
                 "()[Lcom/voxelplugineering/voxelsniper/common/CommonVector;", false);
@@ -117,6 +116,6 @@ public class ShapeForEachNode extends ExecutableNode implements Opcodes
         mv.visitVarInsn(ILOAD, i);
         mv.visitVarInsn(ILOAD, target);
         mv.visitJumpInsn(IF_ICMPLT, l3);
-        return 0;
+        return localsIndex;
     }
 }

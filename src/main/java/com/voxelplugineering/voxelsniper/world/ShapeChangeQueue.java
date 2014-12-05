@@ -23,21 +23,47 @@
  */
 package com.voxelplugineering.voxelsniper.world;
 
-import com.voxelplugineering.voxelsniper.api.Gunsmith;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
 import com.voxelplugineering.voxelsniper.common.CommonMaterial;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 
+/**
+ * A special change queue for setting all of a shape to a single material.
+ */
 public class ShapeChangeQueue extends ChangeQueue
 {
 
+    /**
+     * The shape to change.
+     */
     private Shape shape;
+    /**
+     * The material to set the shape to.
+     */
     private CommonMaterial<?> material;
+    /**
+     * The origin to set the shape relative to.
+     */
     private CommonLocation origin;
+    /**
+     * The current execution state of this change queue.
+     */
     private ExecutionState state;
+    /**
+     * The position of this queue's execution.
+     */
     private long position = 0;
 
+    /**
+     * Creates a new {@link ShapeChangeQueue}.
+     * 
+     * @param sniper the owner
+     * @param origin the origin of the shape in the world
+     * @param shape the shape
+     * @param material the material to set the shape to
+     */
     public ShapeChangeQueue(ISniper sniper, CommonLocation origin, Shape shape, CommonMaterial<?> material)
     {
         super(sniper, origin.getWorld());
@@ -47,6 +73,9 @@ public class ShapeChangeQueue extends ChangeQueue
         this.material = material;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isFinished()
     {
@@ -57,6 +86,9 @@ public class ShapeChangeQueue extends ChangeQueue
         return this.state == ExecutionState.DONE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void flush()
     {
@@ -65,12 +97,18 @@ public class ShapeChangeQueue extends ChangeQueue
         this.getOwner().addHistory(this.invert());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ChangeQueue invert()
     {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int perform(int next)
     {
@@ -83,7 +121,7 @@ public class ShapeChangeQueue extends ChangeQueue
                 {
                     for (int z = 0; z < shape.getLength(); z++)
                     {
-                        if (shape.get(x, y, z)
+                        if (shape.get(x, y, z, false)
                                 && (getWorld().getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).getMaterial()
                                         .isLiquid() || getWorld()
                                         .getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).getMaterial()
@@ -100,10 +138,10 @@ public class ShapeChangeQueue extends ChangeQueue
             Gunsmith.getLogger().info("Position at " + position);
             for (; position < shape.getWidth() * shape.getHeight() * shape.getLength() && count < next; position++)
             {
-                int z = (int) (position / (shape.getWidth()*shape.getHeight()));
-                int y = (int) ((position % (shape.getWidth()*shape.getHeight()))/shape.getWidth());
-                int x = (int) ((position % (shape.getWidth()*shape.getHeight()))%shape.getWidth());
-                if (shape.get(x, y, z)
+                int z = (int) (position / (shape.getWidth() * shape.getHeight()));
+                int y = (int) ((position % (shape.getWidth() * shape.getHeight())) / shape.getWidth());
+                int x = (int) ((position % (shape.getWidth() * shape.getHeight())) % shape.getWidth());
+                if (shape.get(x, y, z, false)
                         && !getWorld().getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).getMaterial()
                                 .isLiquid()
                         && !getWorld().getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).getMaterial()
@@ -129,6 +167,9 @@ public class ShapeChangeQueue extends ChangeQueue
 
 }
 
+/**
+ * The execution state.
+ */
 enum ExecutionState
 {
     UNSTARTED, INCREMENTAL, DONE;

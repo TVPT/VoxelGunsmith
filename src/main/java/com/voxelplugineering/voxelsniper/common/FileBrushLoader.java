@@ -31,7 +31,7 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import com.thevoxelbox.vsl.classloader.ASMClassLoader;
-import com.voxelplugineering.voxelsniper.api.Gunsmith;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 
 /**
@@ -39,11 +39,10 @@ import com.voxelplugineering.voxelsniper.api.IBrush;
  */
 public class FileBrushLoader extends CommonBrushLoader
 {
-
     /**
-     * The current format version number.
+     * The current file format version of this brush loader.
      */
-    public static final int BRUSH_FILE_FORMAT_VERSION = 1;
+    private static final int BRUSH_FILE_FORMAT_VERSION = 1;
 
     /*
      * Brush File Format Outline (Version 1)

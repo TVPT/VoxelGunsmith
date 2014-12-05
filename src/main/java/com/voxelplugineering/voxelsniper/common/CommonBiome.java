@@ -21,39 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api;
+package com.voxelplugineering.voxelsniper.common;
 
-import com.voxelplugineering.voxelsniper.common.CommonMaterial;
+import com.voxelplugineering.voxelsniper.common.factory.WeakWrapper;
 
 /**
- * A factory for {@link CommonMaterial}s wrapping a Material from the underlying implementation.
- * 
- * @param <T> The material class of the specific implementation
+ * A biome or other region within a world. TODO impl
  */
-public interface IMaterialFactory<T> extends IManager
+public class CommonBiome<T> extends WeakWrapper<T>
 {
 
     /**
-     * Get the material with the given name.
-     * 
-     * @param name the name of the material, cannot be null or empty
-     * @return the associated {@link CommonMaterial}
+     * The biome name.
      */
-    CommonMaterial<T> getMaterial(String name);
+    private String name;
 
     /**
-     * Registers a material from the specific implementation with this factory.
+     * Creates a new biome
      * 
-     * @param name the name of the material, cannot be null or empty
-     * @param material the material object from the underlying implementation, cannot be null
+     * @param n the name
      */
-    void registerMaterial(String name, CommonMaterial<T> material);
+    public CommonBiome(String n, T value)
+    {
+        super(value);
+        this.name = n;
+    }
 
     /**
-     * Returns the {@link CommonMaterial} representation of air/empty space in the underlying implementation.
+     * Returns the name of this biome.
      * 
-     * @return the material of air
+     * @return the name
      */
-    CommonMaterial<T> getAirMaterial();
-
+    public String getName()
+    {
+        return this.name;
+    }
+    
 }

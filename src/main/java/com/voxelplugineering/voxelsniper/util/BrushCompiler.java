@@ -98,7 +98,7 @@ public class BrushCompiler extends ChainableGraphCompiler implements Opcodes
      * @return the class as a byte array
      * @throws GraphCompilationException if there is an error within the graph
      */
-    public byte[] createClass(IChainableNodeGraph graph) throws GraphCompilationException
+    public byte[] createClass(BrushPartNodeGraph graph) throws GraphCompilationException
     {
         checkNotNull(graph, "Node graph cannot be null");
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
@@ -134,7 +134,24 @@ public class BrushCompiler extends ChainableGraphCompiler implements Opcodes
             mv.visitInsn(ARETURN);
             mv.visitMaxs(0, 0);
             mv.visitEnd();
-        }
+        }{
+            mv = cw.visitMethod(ACC_PUBLIC, "getRequiredVars", "()[Ljava/lang/String;", null, null);
+            mv.visitCode();
+            mv.visitIntInsn(BIPUSH, graph.getRequiredVars().length);
+            mv.visitTypeInsn(ANEWARRAY, "java/lang/String");
+            byte i = 0;
+            for(String var: graph.getRequiredVars())
+            {
+                mv.visitInsn(DUP);
+                mv.visitIntInsn(BIPUSH, i++);
+                mv.visitLdcInsn(var);
+                mv.visitInsn(AASTORE);
+            }
+            mv.visitInsn(ARETURN);
+            mv.visitMaxs(0, 0);
+            mv.visitEnd();
+            }
+
         {
             mv = cw.visitMethod(ACC_PUBLIC, "chain", "(Lcom/thevoxelbox/vsl/api/IChainedRunnableGraph;)V", null, null);
             mv.visitCode();
@@ -200,6 +217,11 @@ public class BrushCompiler extends ChainableGraphCompiler implements Opcodes
         cw.visitEnd();
 
         return cw.toByteArray();
+    }
+    
+    public String[] getRequiredVars()
+    {
+        return new String[]{"biome", "biome", "biome", "biome", "biome", "biome", "biome", "biome"};
     }
 
 }

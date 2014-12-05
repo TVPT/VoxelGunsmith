@@ -23,20 +23,15 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.voxelplugineering.voxelsniper.common.factory.WeakWrapper;
 
 /**
  * Represents a Material type
  *
  * @param <T> The type of material being wrapped
  */
-public abstract class CommonMaterial<T>
+public abstract class CommonMaterial<T> extends WeakWrapper<T>
 {
-
-    /**
-     * The underlying material class.
-     */
-    private final T value;
 
     /**
      * Constructs a new CommonMaterial for the given value.
@@ -45,18 +40,7 @@ public abstract class CommonMaterial<T>
      */
     public CommonMaterial(T value)
     {
-        checkNotNull(value, "Material object cannot be null");
-        this.value = value;
-    }
-
-    /**
-     * Returns the underlying material object.
-     * 
-     * @return the material
-     */
-    public final T getValue()
-    {
-        return this.value;
+        super(value);
     }
 
     /**
@@ -108,5 +92,26 @@ public abstract class CommonMaterial<T>
      * @return is reliant on the environment
      */
     public abstract boolean isReliantOnEnvironment();
+    
+    @Override
+    public boolean equals(Object other)
+    {
+        if(other instanceof CommonMaterial)
+        {
+            CommonMaterial<?> otherMat = (CommonMaterial<?>) other;
+            if(this.getThis().equals(otherMat.getThis()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Return the name of this material.
+     * 
+     * @return the name
+     */
+    public abstract String getName();
 
 }

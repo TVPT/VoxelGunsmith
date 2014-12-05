@@ -23,6 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
+/**
+ * An enum of directions.
+ */
 public enum CommonDirection
 {
     /*
@@ -69,26 +72,46 @@ public enum CommonDirection
         this.modZ = face1.getModZ() + face2.getModZ();
     }
 
+    /**
+     * Returns the x axis value of this direction.
+     * 
+     * @return the x axis value
+     */
     public int getModX()
     {
         return this.modX;
     }
 
+    /**
+     * Returns the y axis value of this direction.
+     * 
+     * @return the y axis value
+     */
     public int getModY()
     {
         return this.modY;
     }
 
+    /**
+     * Returns the z axis value of this direction.
+     * 
+     * @return the z axis value
+     */
     public int getModZ()
     {
         return this.modZ;
     }
-    
+
+    /**
+     * Returns the inverse direction to this direction.
+     * 
+     * @return the inverse
+     */
     public CommonDirection getOpposite()
     {
-        for(CommonDirection d: CommonDirection.values())
+        for (CommonDirection d : CommonDirection.values())
         {
-            if(d.getModX() == -getModX() && d.getModY() == -getModY() && d.getModZ() == -getModZ())
+            if (d.getModX() == -getModX() && d.getModY() == -getModY() && d.getModZ() == -getModZ())
             {
                 return d;
             }

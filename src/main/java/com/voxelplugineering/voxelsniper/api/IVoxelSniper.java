@@ -25,6 +25,8 @@ package com.voxelplugineering.voxelsniper.api;
 
 import java.io.File;
 
+import com.voxelplugineering.voxelsniper.Gunsmith;
+
 /**
  * The specific implementation core class, provides direct access to the specific implementation's version of Gunsmith's interfaces.
  */
@@ -32,19 +34,26 @@ public interface IVoxelSniper
 {
 
     /**
-     * Returns the specific implementation's sniper manager.
+     * Returns the global brush manager which is the parent brush manager to all others.
      * 
-     * @return the sniper manager
+     * @return the global brush manager
      */
-    ISniperFactory<?> getSniperManager();
+    IBrushManager getGlobalBrushManager();
 
     /**
-     * Returns the specific implementation's brush manager.
+     * Returns the default brush loader for new brush managers.
      * 
-     * @return the brush manager
+     * @return the default brush loader
      */
-    IBrushManager getBrushManager();
+    IBrushLoader getDefaultBrushLoader();
 
+    /**
+     * Returns the {@link Gunsmith} instance.
+     * 
+     * @return gunsmith
+     */
+    Gunsmith getGunsmith();
+    
     /**
      * Returns the ClassLoader used to load Gunsmith and its libraries.
      * 

@@ -23,27 +23,22 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
-import com.voxelplugineering.voxelsniper.common.CommonWorld;
-
-/**
- * A factory for getting {@link CommonWorld}s by name.
- */
-public interface IWorldFactory
+public interface ICustomInitManager
 {
 
     /**
-     * Returns the {@link CommonWorld} representing the specific implementation's world with the given name.
-     * 
-     * @param name the name of the world, cannot be null or empty
-     * @return the {@link CommonWorld}
+     * Starts the initialization process.
      */
-    CommonWorld getWorld(String name);
+    void beginInit();
 
     /**
-     * Returns an array of all currently cached worlds.
-     * 
-     * @return an array of worlds
+     * Finalize the initialization process.
      */
-    CommonWorld[] getAllLoadedWorlds();
+    void finishInit();
 
+    /**
+     * Stops this manager.
+     */
+    void stop();
+    
 }
