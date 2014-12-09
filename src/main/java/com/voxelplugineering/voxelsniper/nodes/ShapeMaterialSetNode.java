@@ -44,9 +44,9 @@ public class ShapeMaterialSetNode extends ExecutableNode implements Opcodes
     public ShapeMaterialSetNode()
     {
         super("MaterialSet", "world");
-        addInput("material", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE), true, null);
-        addInput("target", Type.getType("COMMONLOCATION", TypeDepth.SINGLE), true, null);
-        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE), true, null);
+        addInput("material", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), true, null);
+        addInput("target", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), true, null);
+        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get(), true, null);
     }
 
     /**

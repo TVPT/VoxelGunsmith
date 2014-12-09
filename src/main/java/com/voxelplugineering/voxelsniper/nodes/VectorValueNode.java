@@ -55,7 +55,7 @@ public class VectorValueNode extends Node implements Opcodes
     public VectorValueNode(CommonVector v)
     {
         super("Vector Value", "vector");
-        addOutput("value", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), this);
+        addOutput("value", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), this);
         this.value = v;
     }
 

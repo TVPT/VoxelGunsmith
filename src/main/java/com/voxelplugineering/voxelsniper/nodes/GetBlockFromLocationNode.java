@@ -48,8 +48,8 @@ public class GetBlockFromLocationNode extends Node implements Opcodes
     public GetBlockFromLocationNode()
     {
         super("Block Get From World", "world");
-        addInput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE), true, null);
-        addOutput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE), this);
+        addInput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), true, null);
+        addOutput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE).get(), this);
     }
 
     /**

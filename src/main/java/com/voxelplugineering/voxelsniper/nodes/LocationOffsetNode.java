@@ -48,9 +48,9 @@ public class LocationOffsetNode extends Node implements Opcodes
     public LocationOffsetNode()
     {
         super("Location offset", "vector");
-        addInput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE), true, null);
-        addInput("offset", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), true, null);
-        addOutput("result", Type.getType("COMMONLOCATION", TypeDepth.SINGLE), this);
+        addInput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), true, null);
+        addInput("offset", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
+        addOutput("result", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), this);
     }
 
     /**

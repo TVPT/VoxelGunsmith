@@ -41,8 +41,8 @@ public class MaterialCompareNode extends ExecutableNode implements Opcodes
     public MaterialCompareNode()
     {
         super("MaterialCompare", "material");
-        addInput("a", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE), true, null);
-        addInput("b", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE), true, null);
+        addInput("a", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), true, null);
+        addInput("b", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), true, null);
     }
 
     public void setBody(ExecutableNode body)

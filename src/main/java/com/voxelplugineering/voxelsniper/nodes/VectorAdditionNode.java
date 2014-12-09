@@ -49,9 +49,9 @@ public class VectorAdditionNode extends Node implements Opcodes
     public VectorAdditionNode()
     {
         super("Vector Addition", "vector");
-        addInput("a", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), true, null);
-        addInput("b", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), true, null);
-        addOutput("result", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), this);
+        addInput("a", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
+        addInput("b", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
+        addOutput("result", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), this);
     }
 
     /**

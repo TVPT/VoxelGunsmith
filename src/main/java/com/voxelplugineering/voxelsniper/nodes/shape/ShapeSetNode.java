@@ -44,8 +44,8 @@ public class ShapeSetNode extends ExecutableNode implements Opcodes
     public ShapeSetNode()
     {
         super("ShapeSet", "world");
-        addInput("target", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), true, null);
-        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE), true, null);
+        addInput("target", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
+        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get(), true, null);
     }
 
     /**

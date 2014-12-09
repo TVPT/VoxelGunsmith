@@ -44,7 +44,7 @@ public class FlattenShapeNode extends ExecutableNode implements Opcodes
     public FlattenShapeNode()
     {
         super("Flatten Shape", "shape");
-        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE), true, null);
+        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get(), true, null);
     }
 
     /**

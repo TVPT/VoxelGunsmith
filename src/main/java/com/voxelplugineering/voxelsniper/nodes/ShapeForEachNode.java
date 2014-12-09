@@ -54,8 +54,8 @@ public class ShapeForEachNode extends ExecutableNode implements Opcodes
     public ShapeForEachNode()
     {
         super("Shape for-each", "shape");
-        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE), true, null);
-        addOutput("next", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), this);
+        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get(), true, null);
+        addOutput("next", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), this);
         addOutput("index", Type.INTEGER, this);
     }
 

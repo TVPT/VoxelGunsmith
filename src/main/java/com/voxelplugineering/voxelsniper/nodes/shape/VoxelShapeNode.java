@@ -49,7 +49,7 @@ public class VoxelShapeNode extends Node
     {
         super("Voxel Shape", "shape");
         addInput("radius", Type.FLOAT, true, null);
-        addOutput("shape", Type.getType("SHAPE", TypeDepth.SINGLE), this);
+        addOutput("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get(), this);
     }
 
     /**

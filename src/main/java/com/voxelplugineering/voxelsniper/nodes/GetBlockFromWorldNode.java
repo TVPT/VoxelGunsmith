@@ -49,9 +49,9 @@ public class GetBlockFromWorldNode extends Node implements Opcodes
     public GetBlockFromWorldNode()
     {
         super("Block Get From World", "world");
-        addInput("world", Type.getType("COMMONWORLD", TypeDepth.SINGLE), true, null);
-        addInput("vector", Type.getType("COMMONVECTOR", TypeDepth.SINGLE), true, null);
-        addOutput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE), this);
+        addInput("world", Type.getType("COMMONWORLD", TypeDepth.SINGLE).get(), true, null);
+        addInput("vector", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
+        addOutput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE).get(), this);
     }
 
     /**

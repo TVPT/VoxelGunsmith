@@ -48,9 +48,9 @@ public class BlockBreakNode extends Node
     public BlockBreakNode()
     {
         super("BlockLocation", "block");
-        addInput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE), true, null);
-        addOutput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE), this);
-        addOutput("material", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE), this);
+        addInput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE).get(), true, null);
+        addOutput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), this);
+        addOutput("material", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), this);
     }
 
     /**

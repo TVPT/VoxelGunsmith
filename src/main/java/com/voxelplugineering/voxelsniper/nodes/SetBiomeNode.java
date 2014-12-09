@@ -38,7 +38,7 @@ public class SetBiomeNode extends ExecutableNode implements Opcodes
     public SetBiomeNode()
     {
         super("Set biome", "world");
-        addInput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE), true, null);
+        addInput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), true, null);
         addInput("biome", Type.STRING, true, null);
     }
 

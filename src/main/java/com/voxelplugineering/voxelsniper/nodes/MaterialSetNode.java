@@ -48,8 +48,8 @@ public class MaterialSetNode extends ExecutableNode
     public MaterialSetNode()
     {
         super("MaterialSet", "world");
-        addInput("material", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE), true, null);
-        addInput("targetBlock", Type.getType("COMMONBLOCK", TypeDepth.SINGLE), true, null);
+        addInput("material", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), true, null);
+        addInput("targetBlock", Type.getType("COMMONBLOCK", TypeDepth.SINGLE).get(), true, null);
     }
 
     /**
