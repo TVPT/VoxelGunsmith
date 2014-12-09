@@ -39,7 +39,6 @@ public class CommonMaterialRegistry<T> extends WeakRegistry<T, CommonMaterial<T>
      */
     private CommonMaterial<T> air = null;
 
-
     /**
      * {@inheritDoc}
      */

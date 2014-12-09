@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
+import com.google.common.base.Optional;
+
 /**
  * A storage space for configuration.
  */
@@ -43,8 +45,14 @@ public interface IConfiguration
      * @param name the name or key to search and return from the configuration storage, cannot be null or empty
      * @return the value stored in configuration, or null if the key is not found
      */
-    Object get(String name);
-    
+    Optional<Object> get(String name);
+
+    /**
+     * Returns whether the given key exists within this configuration registry.
+     * 
+     * @param name the key to check, cannot be null or empty
+     * @return whether the key exists
+     */
     boolean has(String name);
 
     /**
@@ -65,7 +73,7 @@ public interface IConfiguration
      * @param containerName the name of the container, cannot be null or empty
      * @return the container class
      */
-    Object getContainer(String containerName);
+    Optional<Object> getContainer(String containerName);
 
     /**
      * Returns an array of the Classes all previously registered containers.

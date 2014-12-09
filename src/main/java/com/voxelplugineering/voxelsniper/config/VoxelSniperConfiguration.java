@@ -37,7 +37,7 @@ public class VoxelSniperConfiguration
     String DEFAULT_BRUSH = "snipe material";
     double DEFAULT_BRUSH_SIZE = 3;
     String DEFAULT_BRUSH_MATERIAL = "AIR";
-    
+
     //Default messages
     String PERMISSIONS_REQUIRED_MESSAGE = "You require more permissions in order to perform this action.";
     String DEFAULT_HELP_MESSAGE = "No help is provided for this command.";

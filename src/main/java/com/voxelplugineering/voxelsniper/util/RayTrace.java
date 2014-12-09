@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.common.CommonBlock;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
 import com.voxelplugineering.voxelsniper.common.CommonMaterial;
@@ -102,7 +103,6 @@ public class RayTrace
     private double rotYSin;
     private double rotYCos;
     private double step;
-    private double eyeHeight;
 
     /**
      * Creates a new raytrace to reference with the given location yaw and pitch.
@@ -110,26 +110,19 @@ public class RayTrace
      * @param origin the origin location
      * @param yaw the yaw
      * @param pitch the pitch
-     * @param air the air material to initialize the transversal blocks with
-     * @param range the maximum range of this ray tracer
-     * @param minY the minimum depth of the world
-     * @param maxY the maximum height of the world
-     * @param step the step interval for the trace
-     * @param eyeHeight the eye offset of the y-axis position of the player's view point relative to the players stored position
      */
-    public RayTrace(CommonLocation origin, double yaw, double pitch, CommonMaterial<?> air, double range, int minY, int maxY, double step, double eyeHeight)
+    public RayTrace(CommonLocation origin, double yaw, double pitch)
     {
         checkNotNull(origin, "Origin cannot be null");
         this.origin = origin;
         this.yaw = yaw;
         this.pitch = pitch;
-        this.range = range;
-        this.minWorldY = minY;
-        this.maxWorldY = maxY;
-        this.step = step;
-        this.traversalBlocks.add(air);
+        this.range = (Double) Gunsmith.getConfiguration().get("RAY_TRACE_RANGE").get();
+        this.minWorldY = (Integer) Gunsmith.getConfiguration().get("MINIMUM_WORLD_DEPTH").get();
+        this.maxWorldY = (Integer) Gunsmith.getConfiguration().get("MAXIMUM_WORLD_HEIGHT").get();
+        this.step = (Double) Gunsmith.getConfiguration().get("RAY_TRACE_STEP").get();
+        this.traversalBlocks.add(world.getMaterialRegistry().getAirMaterial());
         this.world = this.origin.getWorld();
-        this.eyeHeight = eyeHeight;
     }
 
     /**
@@ -249,7 +242,7 @@ public class RayTrace
     private void init()
     {
         this.length = 0;
-        this.origin = this.origin.add(0, this.eyeHeight, 0);
+        this.origin = this.origin.add(0, ((Double) Gunsmith.getConfiguration().get("PLAYER_EYE_HEIGHT").get()), 0);
         this.currentX = this.origin.getX();
         this.currentY = this.origin.getY();
         this.currentZ = this.origin.getZ();
@@ -295,8 +288,8 @@ public class RayTrace
         {
             step();
         }
-        this.targetBlock = this.world.getBlockAt(this.targetX, this.targetY, this.targetZ);
-        this.lastBlock = this.world.getBlockAt(this.lastX, this.lastY, this.lastZ);
+        this.targetBlock = this.world.getBlockAt(this.targetX, this.targetY, this.targetZ).orNull();
+        this.lastBlock = this.world.getBlockAt(this.lastX, this.lastY, this.lastZ).or(this.targetBlock);
     }
 
     /**
@@ -327,7 +320,7 @@ public class RayTrace
         Gunsmith.getLogger().debug(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", 
                 length, range, currentX, currentY, currentZ, 
                 targetX, targetY, targetZ, lastX, lastY, lastZ, rotX, rotY, rotXSin, rotXCos, rotYSin, rotYCos));*/
-        if (!this.traversalBlocks.contains(this.world.getBlockAt(this.targetX, this.targetY, this.targetZ).getMaterial()))
+        if (!this.traversalBlocks.contains(this.world.getBlockAt(this.targetX, this.targetY, this.targetZ).get().getMaterial()))
         {
             //Gunsmith.getLogger().debug("Reached non-traversal block, ending trace. Block reached: " + this.world.getBlockAt(this.targetX, 
             //this.targetY, this.targetZ).getMaterial().toString());

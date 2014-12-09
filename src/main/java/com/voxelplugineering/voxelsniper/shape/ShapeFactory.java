@@ -230,17 +230,17 @@ public class ShapeFactory
         }
         return s;
     }
-    
+
     public static Shape createCylinder(double radius, int height, CommonDirection direction)
     {
         return createEllipticalCylinder(radius, radius, height, direction);
     }
-    
+
     public static Shape createDisc(double radius, CommonDirection direction)
     {
         return createEllipticalCylinder(radius, radius, 1, direction);
     }
-    
+
     public static Shape createEllipse(double rx, double ry, CommonDirection direction)
     {
         return createEllipticalCylinder(rx, ry, 1, direction);

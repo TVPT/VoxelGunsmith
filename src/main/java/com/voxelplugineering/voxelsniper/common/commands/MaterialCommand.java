@@ -27,7 +27,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Map;
 
-import com.voxelplugineering.voxelsniper.api.IConfiguration;
+import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IMaterialRegistry;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.CommonMaterial;
@@ -55,20 +56,20 @@ public class MaterialCommand extends Command
      * @param materialRegistry the material registry to use for command validation
      * @param configuration the configuration object
      */
-    public MaterialCommand(IMaterialRegistry<?> materialRegistry, IConfiguration configuration)
+    public MaterialCommand(IMaterialRegistry<?> materialRegistry)
     {
         super("material", "Sets your current brush material");
         setAliases("v");
         Iterable<String> materialNames = materialRegistry.getRegisteredNames();
         addArgument(new StringEnumArgument("mat", true, null, materialNames));
         setPermissions("voxelsniper.command.material");
-        if (configuration.has("MATERIAL_NOT_FOUND_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("MATERIAL_NOT_FOUND_MESSAGE"))
         {
-            materialNotFoundMessage = configuration.get("MATERIAL_NOT_FOUND_MESSAGE").toString();
+            materialNotFoundMessage = Gunsmith.getConfiguration().get("MATERIAL_NOT_FOUND_MESSAGE").toString();
         }
-        if (configuration.has("MATERIAL_SET_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("MATERIAL_SET_MESSAGE"))
         {
-            materialSetMessage = configuration.get("MATERIAL_SET_MESSAGE").toString();
+            materialSetMessage = Gunsmith.getConfiguration().get("MATERIAL_SET_MESSAGE").toString();
         }
     }
 
@@ -87,14 +88,14 @@ public class MaterialCommand extends Command
             return false;
         }
         materialName = mat.toString();
-        CommonMaterial<?> material = sniper.getWorld().getMaterialRegistry().get(materialName);
-        if (material == null)
+        Optional<?> material = sniper.getWorld().getMaterialRegistry().get(materialName);
+        if (!material.isPresent())
         {
             sniper.sendMessage(this.materialNotFoundMessage);
             return false;
         }
-        sniper.sendMessage(this.materialSetMessage, material.toString());
-        sniper.getBrushSettings().set("setMaterial", material);
+        sniper.sendMessage(this.materialSetMessage, material.get().toString());
+        sniper.getBrushSettings().set("setMaterial", material.get());
         return true;
     }
 

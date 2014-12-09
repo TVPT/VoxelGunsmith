@@ -44,5 +44,10 @@ public interface IBrush extends IChainedRunnableGraph
      */
     void run(IVariableHolder vars, ISniper player);
 
+    /**
+     * Returns an array of variables that are required by this brush part.
+     * 
+     * @return the variables
+     */
     String[] getRequiredVars();
 }

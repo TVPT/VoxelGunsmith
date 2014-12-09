@@ -88,10 +88,8 @@ public class BlockChangeQueue extends ChangeQueue
 
         if (from && to) //if both: split the change in two and add one to each side of the queue
         {
-            BlockChange first =
-                    new BlockChange(change.getX(), change.getY(), change.getZ(), change.getFrom(), this.intermediateMaterial);
-            BlockChange second =
-                    new BlockChange(change.getX(), change.getY(), change.getZ(), this.intermediateMaterial, change.getTo());
+            BlockChange first = new BlockChange(change.getX(), change.getY(), change.getZ(), change.getFrom(), this.intermediateMaterial);
+            BlockChange second = new BlockChange(change.getX(), change.getY(), change.getZ(), this.intermediateMaterial, change.getTo());
             changes.add(0, first);
             changes.add(second);
         } else if (from) // if only the first: then add the change to the front of the queue
@@ -101,7 +99,8 @@ public class BlockChangeQueue extends ChangeQueue
         } else if (to)
         {
             changes.add(change);
-        } else //if neither add the change to the middle of the queue, marked by the intermediate index
+        } else
+        //if neither add the change to the middle of the queue, marked by the intermediate index
         {
             changes.add(this.intermediate, change);
         }

@@ -122,9 +122,9 @@ public class ShapeChangeQueue extends ChangeQueue
                     for (int z = 0; z < shape.getLength(); z++)
                     {
                         if (shape.get(x, y, z, false)
-                                && (getWorld().getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).getMaterial()
-                                        .isLiquid() || getWorld()
-                                        .getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).getMaterial()
+                                && (getWorld().getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).get()
+                                        .getMaterial().isLiquid() || getWorld()
+                                        .getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).get().getMaterial()
                                         .isReliantOnEnvironment()))
                         {
                             getWorld().setBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ(), material);
@@ -142,9 +142,9 @@ public class ShapeChangeQueue extends ChangeQueue
                 int y = (int) ((position % (shape.getWidth() * shape.getHeight())) / shape.getWidth());
                 int x = (int) ((position % (shape.getWidth() * shape.getHeight())) % shape.getWidth());
                 if (shape.get(x, y, z, false)
-                        && !getWorld().getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).getMaterial()
+                        && !getWorld().getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).get().getMaterial()
                                 .isLiquid()
-                        && !getWorld().getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).getMaterial()
+                        && !getWorld().getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).get().getMaterial()
                                 .isReliantOnEnvironment())
                 {
                     count++;

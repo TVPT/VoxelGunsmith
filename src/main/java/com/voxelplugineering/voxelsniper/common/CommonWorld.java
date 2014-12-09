@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper.common;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.IMaterialRegistry;
 import com.voxelplugineering.voxelsniper.common.factory.WeakWrapper;
 
@@ -33,7 +34,7 @@ import com.voxelplugineering.voxelsniper.common.factory.WeakWrapper;
  */
 public abstract class CommonWorld<T> extends WeakWrapper<T>
 {
-    
+
     /**
      * The material registry for this world.
      */
@@ -50,7 +51,7 @@ public abstract class CommonWorld<T> extends WeakWrapper<T>
         super(world);
         this.materials = materials;
     }
-    
+
     /**
      * Returns the material registry for this world.
      * 
@@ -76,7 +77,7 @@ public abstract class CommonWorld<T> extends WeakWrapper<T>
      * @param z the chunk's z-axis position
      * @return the chunk
      */
-    public abstract CommonChunk<?> getChunkAt(int x, int y, int z);
+    public abstract Optional<CommonChunk<?>> getChunkAt(int x, int y, int z);
 
     /**
      * Returns the chunk at the given x, z coordinates. Assumes no y-axis arrangement of chunks (uses 0 for the y-axis). This method exists to better
@@ -86,7 +87,7 @@ public abstract class CommonWorld<T> extends WeakWrapper<T>
      * @param z the chunk's z-axis position
      * @return the chunk
      */
-    public CommonChunk<?> getChunkAt(int x, int z)
+    public Optional<CommonChunk<?>> getChunkAt(int x, int z)
     {
         return getChunkAt(x, 0, z);
     }
@@ -97,7 +98,7 @@ public abstract class CommonWorld<T> extends WeakWrapper<T>
      * @param location the location
      * @return the block
      */
-    public CommonBlock getBlockAt(CommonLocation location)
+    public Optional<CommonBlock> getBlockAt(CommonLocation location)
     {
         checkNotNull(location, "Location cannot be null");
         return getBlockAt(location.getFlooredX(), location.getFlooredY(), location.getFlooredZ());
@@ -111,7 +112,7 @@ public abstract class CommonWorld<T> extends WeakWrapper<T>
      * @param z the z position
      * @return the block
      */
-    public abstract CommonBlock getBlockAt(int x, int y, int z);
+    public abstract Optional<CommonBlock> getBlockAt(int x, int y, int z);
 
     /**
      * Sets the block at the given location to the given material.
@@ -135,10 +136,10 @@ public abstract class CommonWorld<T> extends WeakWrapper<T>
      * @param material the new material
      */
     public abstract void setBlockAt(int x, int y, int z, CommonMaterial<?> material);
-    
+
     /**
-     * Sets the biome at the given location.
-     * TODO this should probably have a y value as well even though minecraft doesn't use it for its biomes, another platform could, or minecraft could in the future.
+     * Sets the biome at the given location. TODO this should probably have a y value as well even though minecraft doesn't use it for its biomes,
+     * another platform could, or minecraft could in the future.
      * 
      * @param x the x position to set
      * @param z the y position to set

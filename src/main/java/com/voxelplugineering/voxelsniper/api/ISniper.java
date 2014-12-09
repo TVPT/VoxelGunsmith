@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
+import com.google.common.base.Optional;
 import com.thevoxelbox.vsl.api.IVariableScope;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
 import com.voxelplugineering.voxelsniper.common.CommonWorld;
@@ -47,6 +48,7 @@ public interface ISniper
      * @param msg the message to send, cannot be null or empty
      */
     void sendMessage(String msg);
+
     /**
      * Sends a message to the user. Created by the same specification of {@link String#format(String, Object...)}.
      * 
@@ -124,7 +126,7 @@ public interface ISniper
      * 
      * @return the next change queue
      */
-    ChangeQueue getNextPendingChange();
+    Optional<ChangeQueue> getNextPendingChange();
 
     /**
      * Adds the given change queue to the pending changes queue.
@@ -137,6 +139,5 @@ public interface ISniper
      * Removes the next pending change if it has finished.
      */
     void clearNextPending();
-
 
 }

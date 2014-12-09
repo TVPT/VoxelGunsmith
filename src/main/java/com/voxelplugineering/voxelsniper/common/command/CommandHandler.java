@@ -30,9 +30,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.ICommandRegistrar;
-import com.voxelplugineering.voxelsniper.api.IConfiguration;
-import com.voxelplugineering.voxelsniper.api.IPermissionProxy;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 
 /**
@@ -47,10 +46,6 @@ public class CommandHandler
      * The message sent to players when they lack the required permission for a command.
      */
     private String permissionMessage = "You lack the required permission for this command.";
-    /**
-     * The permissions proxy for checking player permissions.
-     */
-    private IPermissionProxy permissions;
 
     /**
      * Constructs a command handler
@@ -58,12 +53,11 @@ public class CommandHandler
      * @param permissions the permissions proxy
      * @param configuration the configuration object
      */
-    public CommandHandler(IPermissionProxy permissions, IConfiguration configuration)
+    public CommandHandler()
     {
-        this.permissions = permissions;
-        if(configuration.has("PERMISSIONS_REQUIRED_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("PERMISSIONS_REQUIRED_MESSAGE"))
         {
-            permissionMessage = configuration.get("PERMISSIONS_REQUIRED_MESSAGE").toString();
+            permissionMessage = Gunsmith.getConfiguration().get("PERMISSIONS_REQUIRED_MESSAGE").toString();
         }
     }
 
@@ -124,7 +118,7 @@ public class CommandHandler
         boolean allowed = false;
         for (String s : handler.getPermissions())
         {
-            if (this.permissions.hasPermission(player, s))
+            if (Gunsmith.getVoxelSniper().getPermissionProxy().hasPermission(player, s))
             {
                 allowed = true;
                 break;

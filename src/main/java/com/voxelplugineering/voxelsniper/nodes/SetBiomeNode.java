@@ -48,7 +48,8 @@ public class SetBiomeNode extends ExecutableNode implements Opcodes
         int location = getInput("location").getSource().get();
         int biome = getInput("biome").getSource().get();
         mv.visitVarInsn(ALOAD, location);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getWorld", "()Lcom/voxelplugineering/voxelsniper/common/CommonWorld;", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getWorld",
+                "()Lcom/voxelplugineering/voxelsniper/common/CommonWorld;", false);
         mv.visitVarInsn(ALOAD, location);
         mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getFlooredX", "()I", false);
         mv.visitVarInsn(ALOAD, location);
@@ -57,5 +58,5 @@ public class SetBiomeNode extends ExecutableNode implements Opcodes
         mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonWorld", "setBiomeAt", "(IILjava/lang/String;)V", false);
         return localsIndex;
     }
-    
+
 }

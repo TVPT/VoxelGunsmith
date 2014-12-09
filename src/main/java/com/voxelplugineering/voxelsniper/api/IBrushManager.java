@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
+import com.google.common.base.Optional;
 import com.thevoxelbox.vsl.classloader.ASMClassLoader;
 
 /**
@@ -65,7 +66,7 @@ public interface IBrushManager
      * @param identifier the brush name to be loaded, cannot be null or empty
      * @return an instance of the brush
      */
-    IBrush getNewBrushInstance(String identifier);
+    Optional<IBrush> getNewBrushInstance(String identifier);
 
     /**
      * Sets the parent brush loader, when a request for a brush instance is made and it is not found within this manager the request is passed up to

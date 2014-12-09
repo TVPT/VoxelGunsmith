@@ -132,7 +132,7 @@ public class Shape
      */
     public void set(int x, int y, int z, boolean relative)
     {
-        if(relative)
+        if (relative)
         {
             x += origin.getX();
             y += origin.getY();
@@ -154,7 +154,7 @@ public class Shape
      */
     public void unset(int x, int y, int z, boolean relative)
     {
-        if(relative)
+        if (relative)
         {
             x += origin.getX();
             y += origin.getY();
@@ -177,7 +177,7 @@ public class Shape
      */
     public boolean get(int x, int y, int z, boolean relative)
     {
-        if(relative)
+        if (relative)
         {
             x += origin.getX();
             y += origin.getY();
@@ -419,16 +419,16 @@ public class Shape
         }
         return points.toArray(new CommonVector[points.size()]);
     }
-    
+
     public void flatten()
     {
-        for(int x = 0; x < this.width; x++)
+        for (int x = 0; x < this.width; x++)
         {
-            for(int z = 0; z < this.length; z++)
+            for (int z = 0; z < this.length; z++)
             {
-                for(int y = 0; y < this.height; y++)
+                for (int y = 0; y < this.height; y++)
                 {
-                    if(get(x, y, z, false))
+                    if (get(x, y, z, false))
                     {
                         set(x, 0, z, false);
                         break;

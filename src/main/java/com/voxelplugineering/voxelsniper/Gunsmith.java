@@ -23,18 +23,28 @@
  */
 package com.voxelplugineering.voxelsniper;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.io.File;
+import java.io.IOException;
+
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.thevoxelbox.vsl.api.IGraphCompilerFactory;
 import com.thevoxelbox.vsl.classloader.GraphCompilerFactory;
 import com.thevoxelbox.vsl.type.Type;
 import com.voxelplugineering.voxelsniper.api.IBrush;
+import com.voxelplugineering.voxelsniper.api.IBrushLoader;
+import com.voxelplugineering.voxelsniper.api.IBrushManager;
 import com.voxelplugineering.voxelsniper.api.IConfiguration;
-import com.voxelplugineering.voxelsniper.api.ICustomInitManager;
 import com.voxelplugineering.voxelsniper.api.ILogger;
 import com.voxelplugineering.voxelsniper.api.ILoggingDistributor;
+import com.voxelplugineering.voxelsniper.api.IVoxelSniper;
+import com.voxelplugineering.voxelsniper.common.command.CommandHandler;
+import com.voxelplugineering.voxelsniper.common.event.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
 import com.voxelplugineering.voxelsniper.config.Configuration;
+import com.voxelplugineering.voxelsniper.config.JsonConfigurationLoader;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.logging.CommonLoggingDistributor;
 import com.voxelplugineering.voxelsniper.util.BrushCompiler;
@@ -42,17 +52,40 @@ import com.voxelplugineering.voxelsniper.util.BrushCompiler;
 /**
  * The Core of VoxelGunsmith, provides access to handlers and validates initialization is done completely and correctly.
  */
-public final class Gunsmith implements ICustomInitManager
+public final class Gunsmith
 {
 
     /**
+     * The core of the specific implementation.
+     */
+    private static IVoxelSniper plugin = null;
+    /**
+     * The global brush manager, manages the loading and registration of brushes which are available to all users of a multi-user environment. In a
+     * single-user environment this would be the core brush manager for the user.
+     */
+    private static IBrushManager globalBrushManager = null;
+    /**
+     * The default brush loader. The default source from which brushes are loaded, typically this is the brush loader used by the global brush
+     * manager.
+     */
+    private static IBrushLoader defaultBrushLoader = null;
+    /**
+     * The command handler, manages the registration of both commands and handlers, and distributes invocations of the commands to its registered
+     * handlers. Also handles automatic command argument validation.
+     */
+    private static CommandHandler commandHandler = null;
+    /**
+     * The handler for the default behavior for events.
+     */
+    private static CommonEventHandler defaultEventHandler = null;
+    /**
      * The internal event bus for events within Gunsmith.
      */
-    private EventBus eventBus = null;
+    private static EventBus eventBus = null;
     /**
      * The global configuration container for Gunsmith.
      */
-    private IConfiguration configuration = null;
+    private static IConfiguration configuration = null;
     /**
      * The global log distributor for Gunsmith.
      */
@@ -60,21 +93,99 @@ public final class Gunsmith implements ICustomInitManager
     /**
      * The VSL compiler factory for the Brush Managers to reference.
      */
-    private IGraphCompilerFactory compilerFactory = null;
+    private static GraphCompilerFactory compilerFactory = null;
+
     /**
      * The initialization state of Gunsmith.
      */
-    private boolean isPluginEnabled = false;
+    private static boolean isPluginEnabled = false;
 
+    /**
+     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.IVoxelSniper} to be used.
+     *
+     * @param sniper Implementation of IVoxelSniper to be used
+     */
+    public static void setPlugin(IVoxelSniper sniper)
+    {
+        checkNotNull(sniper, "Cannot set a null plugin!");
+        check();
+        Gunsmith.plugin = sniper;
+    }
+
+    /**
+     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.IBrushManager} to be used.
+     *
+     * @param brushManager Implementation of IBrushManager to be used, cannot be null
+     */
+    public static void setGlobalBrushManager(IBrushManager brushManager)
+    {
+        checkNotNull(brushManager, "Cannot set a null BrushManager!");
+        check();
+        Gunsmith.globalBrushManager = brushManager;
+    }
+
+    /**
+     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.IBrushLoader} to be used.
+     *
+     * @param brushLoader Implementation of IBrushLoader to be used, cannot be null
+     */
+    public static void setDefaultBrushLoader(IBrushLoader brushLoader)
+    {
+        checkNotNull(brushLoader, "Cannot set a null BrushLoader!");
+        check();
+        Gunsmith.defaultBrushLoader = brushLoader;
+    }
+
+    /**
+     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.common.command.CommandHandler} to be used.
+     *
+     * @param command Implementation of CommandHandler to be used, cannot be null
+     */
+    public static void setCommandHandler(CommandHandler command)
+    {
+        checkNotNull(command, "Cannot set a null CommandHandler!");
+        check();
+        Gunsmith.commandHandler = command;
+    }
+
+    /**
+     * Gets the instance of the implementation of IVoxelSniper.
+     *
+     * @return The instance of the implementation of IVoxelSniper
+     */
+    public static IVoxelSniper getVoxelSniper()
+    {
+        return plugin;
+    }
 
     /**
      * Returns the initialization state of Gunsmith.
      * 
      * @return the initialization state
      */
-    public boolean isEnabled()
+    public static boolean isEnabled()
     {
         return isPluginEnabled;
+    }
+
+    /**
+     * Gets the instance of the implementation of IBrushLoader.
+     *
+     * @return The instance of the implementation of IBrushLoader
+     */
+    public static IBrushLoader getDefaultBrushLoader()
+    {
+        return defaultBrushLoader;
+    }
+
+    /**
+     * Gets the instance of the implementation of IBrushLoader.
+     *
+     * @return The instance of the implementation of IBrushLoader
+     */
+    public static IBrushManager getGlobalBrushManager()
+    {
+        return globalBrushManager;
     }
 
     /**
@@ -82,9 +193,29 @@ public final class Gunsmith implements ICustomInitManager
      *
      * @return The instance of the implementation of EventBus
      */
-    public EventBus getEventBus()
+    public static EventBus getEventBus()
     {
         return eventBus;
+    }
+
+    /**
+     * Gets the instance of the implementation of CommandHandler.
+     *
+     * @return The instance of the implementation of CommandHandler
+     */
+    public static CommandHandler getCommandHandler()
+    {
+        return commandHandler;
+    }
+
+    /**
+     * Gets the instance of the implementation of CommonEventHandler.
+     *
+     * @return The instance of the implementation of CommonEventHandler
+     */
+    public static CommonEventHandler getDefaultEventHandler()
+    {
+        return defaultEventHandler;
     }
 
     /**
@@ -92,7 +223,7 @@ public final class Gunsmith implements ICustomInitManager
      *
      * @return The instance of the implementation of IConfiguration
      */
-    public IConfiguration getConfiguration()
+    public static IConfiguration getConfiguration()
     {
         return configuration;
     }
@@ -112,7 +243,7 @@ public final class Gunsmith implements ICustomInitManager
      * 
      * @return the logging distributor
      */
-    public ILoggingDistributor getLoggingDistributor()
+    public static ILoggingDistributor getLoggingDistributor()
     {
         return logDistributor;
     }
@@ -122,22 +253,22 @@ public final class Gunsmith implements ICustomInitManager
      * 
      * @return the factory
      */
-    public IGraphCompilerFactory getCompilerFactory()
+    public static IGraphCompilerFactory getCompilerFactory()
     {
         return compilerFactory;
     }
 
     /**
-     * {@inheritDoc}
+     * Should be called at the start of the initialization process. Sets up default states before the specific implementation registers its overrides.
      */
-    public void beginInit()
+    public static void beginInit()
     {
         check();
 
         //Create standard log distributor
         logDistributor = new CommonLoggingDistributor();
         logDistributor.init();
-        //TODO gunsmith log4j logger
+        //TODO register standard gunsmith loggers here
 
         getLogger().info("Starting Gunsmith initialization process.");
 
@@ -152,6 +283,11 @@ public final class Gunsmith implements ICustomInitManager
         //Create the eventBus for all Gunsmith events
         eventBus = new AsyncEventBus(java.util.concurrent.Executors.newCachedThreadPool());
 
+        defaultEventHandler = new CommonEventHandler();
+        eventBus.register(defaultEventHandler);
+        //default event handler is registered here so that if a plugin wishes it can unregister the
+        //event handler and register its own in its place
+
         configuration = new Configuration();
         configuration.registerContainer(BaseConfiguration.class);
         configuration.registerContainer(VoxelSniperConfiguration.class);
@@ -163,11 +299,48 @@ public final class Gunsmith implements ICustomInitManager
     }
 
     /**
-     * {@inheritDoc}
+     * Finalize the initialization process. Contains validations to ensure that the initialization was completed correctly and completely.
      */
-    public void finishInit()
+    public static void finish()
     {
         check();
+        if (plugin == null || globalBrushManager == null || defaultBrushLoader == null || logDistributor == null)
+        {
+            isPluginEnabled = false;
+            throw new IllegalStateException("VoxelSniper was not properly setup while loading");
+        }
+
+        File config = new File(plugin.getDataFolder(), "VoxelSniperConfiguration.json");
+        if (config.exists())
+        {
+            try
+            {
+                JsonConfigurationLoader.load(config, configuration, "VoxelSniperConfiguration");
+            } catch (IllegalAccessException e)
+            {
+                getLogger().error(e, "Error loading configuration");
+            } catch (IOException e)
+            {
+                getLogger().error(e, "Error loading configuration");
+            }
+        } else
+        {
+            try
+            {
+                getLogger().info("Creating new user configuration file: " + config.getAbsolutePath());
+                JsonConfigurationLoader.save(config, configuration, "VoxelSniperConfiguration");
+            } catch (InstantiationException e)
+            {
+                getLogger().error(e, "Error saving configuration");
+            } catch (IllegalAccessException e)
+            {
+                getLogger().error(e, "Error saving configuration");
+            } catch (IOException e)
+            {
+                getLogger().error(e, "Error saving configuration");
+            }
+        }
+
         getLogger().info("Gunsmith initialization finalized.");
         isPluginEnabled = true;
     }
@@ -175,7 +348,7 @@ public final class Gunsmith implements ICustomInitManager
     /**
      * Checks that Gunsmith is still in the initialization phase.
      */
-    private void check()
+    private static void check()
     {
         if (isPluginEnabled)
         {
@@ -184,21 +357,25 @@ public final class Gunsmith implements ICustomInitManager
     }
 
     /**
-     * {@inheritDoc}
+     * Stops Gunsmith and dereferences all handlers and managers.
      */
-    public void stop()
+    public static void stop()
     {
         if (!isPluginEnabled)
         {
             throw new IllegalStateException("VoxelSniper has not been enabled yet, cannot stop!");
         }
         isPluginEnabled = false;
+        plugin = null;
+        defaultBrushLoader = null;
+        defaultEventHandler = null;
+        globalBrushManager = null;
         eventBus = null;
+        commandHandler = null;
         if (logDistributor != null)
         {
             logDistributor.stop();
         }
         logDistributor = null;
     }
-
 }

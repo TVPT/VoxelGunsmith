@@ -92,14 +92,14 @@ public abstract class CommonMaterial<T> extends WeakWrapper<T>
      * @return is reliant on the environment
      */
     public abstract boolean isReliantOnEnvironment();
-    
+
     @Override
     public boolean equals(Object other)
     {
-        if(other instanceof CommonMaterial)
+        if (other instanceof CommonMaterial)
         {
             CommonMaterial<?> otherMat = (CommonMaterial<?>) other;
-            if(this.getThis().equals(otherMat.getThis()))
+            if (this.getThis().equals(otherMat.getThis()))
             {
                 return true;
             }

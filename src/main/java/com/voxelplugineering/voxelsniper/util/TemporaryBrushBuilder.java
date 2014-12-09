@@ -150,7 +150,7 @@ public class TemporaryBrushBuilder
      */
     public static void buildBrushes()
     {
-        
+
         try
         { //test
             TestNode test = new TestNode();
@@ -186,22 +186,22 @@ public class TemporaryBrushBuilder
             VariableGetNode target = new VariableGetNode("targetBlock", Type.getType("COMMONBLOCK", TypeDepth.SINGLE).get());
             FlattenShapeNode flatten = new FlattenShapeNode();
             flatten.mapInput("shape", shapeIn.getOutput("value"));
-            
+
             ShapeForEachNode forEach = new ShapeForEachNode();
             flatten.setNextNode(forEach);
-            
+
             BlockBreakNode blockBreak = new BlockBreakNode();
             blockBreak.mapInput("block", target.getOutput("value"));
-            
+
             LocationOffsetNode offset = new LocationOffsetNode();
             offset.mapInput("location", blockBreak.getOutput("location"));
             offset.mapInput("offset", forEach.getOutput("next"));
-            
+
             SetBiomeNode setBiome = new SetBiomeNode();
             forEach.setBody(setBiome);
             setBiome.mapInput("location", offset.getOutput("result"));
             setBiome.mapInput("biome", biome.getOutput("value"));
-            
+
             BrushPartNodeGraph brush = new BrushPartNodeGraph("biome");
             brush.setStartNode(flatten);
             brush.setRequiredVars("biome");
@@ -267,7 +267,7 @@ public class TemporaryBrushBuilder
 
             BlockBreakNode blockBreak = new BlockBreakNode();
             blockBreak.mapInput("block", target.getOutput("value"));
-            
+
             ShapeMaterialSetNode setMaterial = new ShapeMaterialSetNode();
             setMaterial.mapInput("target", blockBreak.getOutput("location"));
             setMaterial.mapInput("material", getMaterial.getOutput("value"));
@@ -280,7 +280,7 @@ public class TemporaryBrushBuilder
         {
             Gunsmith.getLogger().error(e, "Failed to create material brush part");
         }
-        
+
         try
         { //material mask
             ChainedInputNode shapeIn = new ChainedInputNode("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get());
@@ -289,7 +289,7 @@ public class TemporaryBrushBuilder
 
             ShapeForEachNode foreach = new ShapeForEachNode();
             foreach.mapInput("shape", shapeIn.getOutput("value"));
-            
+
             ShapeUnsetNode unset = new ShapeUnsetNode();
             foreach.setBody(unset);
             unset.mapInput("shape", shapeIn.getOutput("value"));
@@ -297,27 +297,27 @@ public class TemporaryBrushBuilder
 
             BlockBreakNode blockBreak = new BlockBreakNode();
             blockBreak.mapInput("block", target.getOutput("value"));
-            
+
             LocationOffsetNode offset = new LocationOffsetNode();
             offset.mapInput("location", blockBreak.getOutput("location"));
             offset.mapInput("offset", foreach.getOutput("next"));
-            
+
             GetBlockFromLocationNode getBlock = new GetBlockFromLocationNode();
             getBlock.mapInput("location", offset.getOutput("result"));
 
             BlockBreakNode blockBreak2 = new BlockBreakNode();
             blockBreak2.mapInput("block", getBlock.getOutput("block"));
-            
+
             MaterialCompareNode compare = new MaterialCompareNode();
             compare.mapInput("a", maskMaterial.getOutput("value"));
             compare.mapInput("b", blockBreak2.getOutput("material"));
             unset.setNextNode(compare);
-            
+
             ShapeSetNode set = new ShapeSetNode();
             set.mapInput("shape", shapeIn.getOutput("value"));
             set.mapInput("target", foreach.getOutput("next"));
             compare.setBody(set);
-            
+
             ChainedOutputNode shapeOut = new ChainedOutputNode("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get());
             shapeOut.mapInput("value", shapeIn.getOutput("value"));
             foreach.setNextNode(shapeOut);

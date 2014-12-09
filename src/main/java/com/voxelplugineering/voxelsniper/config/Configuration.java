@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IConfiguration;
 
@@ -75,11 +76,11 @@ public class Configuration implements IConfiguration
      * {@inheritDoc}
      */
     @Override
-    public Object get(String name)
+    public Optional<Object> get(String name)
     {
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
-        return this.config.get(name);
+        return has(name) ? Optional.of(this.config.get(name)) : Optional.absent();
     }
 
     /**
@@ -131,11 +132,11 @@ public class Configuration implements IConfiguration
      * {@inheritDoc}
      */
     @Override
-    public Object getContainer(String containerName)
+    public Optional<Object> getContainer(String containerName)
     {
         checkNotNull(containerName, "Name cannot be null!");
         checkArgument(!containerName.isEmpty(), "Name cannot be empty");
-        return this.containers.get(containerName);
+        return this.containers.containsKey(containerName) ? Optional.of(this.containers.get(containerName)) : Optional.absent();
     }
 
     /**

@@ -40,5 +40,5 @@ public interface ICustomInitManager
      * Stops this manager.
      */
     void stop();
-    
+
 }

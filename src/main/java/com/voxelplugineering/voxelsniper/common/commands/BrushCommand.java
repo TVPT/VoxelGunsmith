@@ -27,8 +27,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Map;
 
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
-import com.voxelplugineering.voxelsniper.api.IConfiguration;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.command.Command;
 import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
@@ -51,29 +51,29 @@ public class BrushCommand extends Command
      * The message sent to players when their brush is set.
      */
     private String brushSetMessage = "Your brush has been set to %s";
-    
+
     /**
      * Constructs a new BrushCommand
      * 
      * @param configuration the configuration object
      */
-    public BrushCommand(IConfiguration configuration)
+    public BrushCommand()
     {
         super("brush", "Sets your current brush");
         setAliases("b", "brush");
         addArgument(new RawArgument("raw"));
         setPermissions("voxelsniper.command.brush");
-        if(configuration.has("BRUSH_SIZE_CHANGED_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("BRUSH_SIZE_CHANGED_MESSAGE"))
         {
-            brushSizeChangeMessage = configuration.get("BRUSH_SIZE_CHANGED_MESSAGE").toString();
+            brushSizeChangeMessage = Gunsmith.getConfiguration().get("BRUSH_SIZE_CHANGED_MESSAGE").toString();
         }
-        if(configuration.has("BRUSH_NOT_FOUND_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("BRUSH_NOT_FOUND_MESSAGE"))
         {
-            brushNotFoundMessage = configuration.get("BRUSH_NOT_FOUND_MESSAGE").toString();
+            brushNotFoundMessage = Gunsmith.getConfiguration().get("BRUSH_NOT_FOUND_MESSAGE").toString();
         }
-        if(configuration.has("BRUSH_SET_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("BRUSH_SET_MESSAGE"))
         {
-            brushSetMessage = configuration.get("BRUSH_SET_MESSAGE").toString();
+            brushSetMessage = Gunsmith.getConfiguration().get("BRUSH_SET_MESSAGE").toString();
         }
     }
 
@@ -106,12 +106,12 @@ public class BrushCommand extends Command
             for (String brushName : s)
             {
                 fullBrush += brushName + " ";
-                
-                IBrush brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName);
+
+                IBrush brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName).orNull();
                 if (brush == null)
                 {
                     sniper.getPersonalBrushManager().loadBrush(brushName);
-                    brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName);
+                    brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName).orNull();
                     if (brush == null)
                     {
                         sniper.sendMessage(this.brushNotFoundMessage, brushName);

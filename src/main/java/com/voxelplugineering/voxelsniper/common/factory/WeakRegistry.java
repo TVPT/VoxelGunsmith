@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.WeakHashMap;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.voxelplugineering.voxelsniper.api.IRegistry;
@@ -76,25 +77,25 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
     /**
      * {@inheritDoc}
      */
-    public V get(K key)
+    public Optional<V> get(K key)
     {
-        return registry.get(key);
+        return registry.containsKey(key) ? Optional.<V> of(registry.get(key)) : Optional.<V> absent();
     }
 
     /**
      * {@inheritDoc}
      */
-    public V get(String name)
+    public Optional<V> get(String name)
     {
-        return validate(nameRegistry.get(name));
+        return nameRegistry.containsKey(name) ? Optional.<V> of(validate(nameRegistry.get(name))) : Optional.<V> absent();
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getNameForValue(V value)
+    public Optional<String> getNameForValue(V value)
     {
-        return inverseNameRegistry.get(validate(value));
+        return inverseNameRegistry.containsKey(value) ? Optional.<String> of(inverseNameRegistry.get(validate(value))) : Optional.<String> absent();
     }
 
     /**

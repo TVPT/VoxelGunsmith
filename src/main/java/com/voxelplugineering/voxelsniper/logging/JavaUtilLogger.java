@@ -31,7 +31,7 @@ import com.voxelplugineering.voxelsniper.api.ILogger;
 public class JavaUtilLogger implements ILogger
 {
     private Logger logger;
-    
+
     /**
      * Creates a new {@link BukkitLogger}.
      */
@@ -41,7 +41,7 @@ public class JavaUtilLogger implements ILogger
     }
 
     /**
-     * {@inheritDoc}    
+     * {@inheritDoc}
      */
     @Override
     public void debug(String msg)

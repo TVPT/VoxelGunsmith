@@ -27,7 +27,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Map;
 
-import com.voxelplugineering.voxelsniper.api.IConfiguration;
+import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IMaterialRegistry;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.CommonMaterial;
@@ -48,27 +49,27 @@ public class MaskMaterialCommand extends Command
      * The message sent to the player when their material is set.
      */
     private String materialSetMessage = "Set secondary material to %s";
-    
+
     /**
      * Constructs a new BrushCommand
      * 
      * @param materialRegistry the material registry to use for argument validation
      * @param configuration the configuration object
      */
-    public MaskMaterialCommand(IMaterialRegistry<?> materialRegistry, IConfiguration configuration)
+    public MaskMaterialCommand(IMaterialRegistry<?> materialRegistry)
     {
         super("maskmaterial", "Sets your current secondary brush material");
         setAliases("vr");
         Iterable<String> materialNames = materialRegistry.getRegisteredNames();
         addArgument(new StringEnumArgument("mat", true, null, materialNames));
         setPermissions("voxelsniper.command.materialmask");
-        if(configuration.has("MATERIAL_NOT_FOUND_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("MATERIAL_NOT_FOUND_MESSAGE"))
         {
-            materialNotFoundMessage = configuration.get("MATERIAL_NOT_FOUND_MESSAGE").toString();
+            materialNotFoundMessage = Gunsmith.getConfiguration().get("MATERIAL_NOT_FOUND_MESSAGE").toString();
         }
-        if(configuration.has("MATERIAL_MASK_SET_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("MATERIAL_MASK_SET_MESSAGE"))
         {
-            materialSetMessage = configuration.get("MATERIAL_MASK_SET_MESSAGE").toString();
+            materialSetMessage = Gunsmith.getConfiguration().get("MATERIAL_MASK_SET_MESSAGE").toString();
         }
     }
 
@@ -88,14 +89,14 @@ public class MaskMaterialCommand extends Command
         }
         materialName = mat.toString();
 
-        CommonMaterial<?> material = sniper.getWorld().getMaterialRegistry().get(materialName);
-        if (material == null)
+        Optional<?> material = sniper.getWorld().getMaterialRegistry().get(materialName);
+        if (!material.isPresent())
         {
             sniper.sendMessage(this.materialNotFoundMessage);
             return false;
         }
-        sniper.sendMessage(this.materialSetMessage, material.toString());
-        sniper.getBrushSettings().set("maskMaterial", material);
+        sniper.sendMessage(this.materialSetMessage, material.get().toString());
+        sniper.getBrushSettings().set("maskMaterial", material.get());
         return true;
     }
 

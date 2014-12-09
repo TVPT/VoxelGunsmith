@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.common;
 
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.common.factory.WeakWrapper;
 
 /**
@@ -35,7 +36,7 @@ public abstract class CommonChunk<T> extends WeakWrapper<T>
      * The world containing this chunk.
      */
     private CommonWorld<?> world;
-    
+
     /**
      * Creates a new chunk.
      * 
@@ -66,6 +67,6 @@ public abstract class CommonChunk<T> extends WeakWrapper<T>
      * @param z z-axis offset from origin
      * @return the {@link CommonBlock} at the relative position
      */
-    public abstract CommonBlock getRelativeBlockAt(int x, int y, int z);
+    public abstract Optional<CommonBlock> getRelativeBlockAt(int x, int y, int z);
 
 }

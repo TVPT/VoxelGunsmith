@@ -80,7 +80,7 @@ public class BlockChange extends Change
         checkNotNull(target, "Target block cannot be null");
         checkNotNull(mat, "To material cannot be null");
         this.to = mat;
-        this.from = target.getLocation().getWorld().getBlockAt(target.getLocation()).getMaterial();
+        this.from = target.getLocation().getWorld().getBlockAt(target.getLocation()).get().getMaterial();
     }
 
     /**

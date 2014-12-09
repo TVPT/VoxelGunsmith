@@ -118,7 +118,8 @@ public class JsonConfigurationLoader
      * @throws InstantiationException if there was a problem creating the writer to save the file
      * @throws IllegalAccessException if there was a problem getting the data from the container
      */
-    public static void saveAllContainers(File outputFolder, IConfiguration configuration) throws IOException, InstantiationException, IllegalAccessException
+    public static void saveAllContainers(File outputFolder, IConfiguration configuration) throws IOException, InstantiationException,
+            IllegalAccessException
     {
         checkNotNull(outputFolder, "Output folder cannot be null!");
         checkNotNull(configuration, "Configuration cannot be null!");

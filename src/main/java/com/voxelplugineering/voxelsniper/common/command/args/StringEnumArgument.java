@@ -74,11 +74,11 @@ public class StringEnumArgument extends CommandArgument<String>
         sb.append(!required ? ']' : '>');
         this.usage = sb.toString();
     }
-    
+
     public StringEnumArgument(String name, boolean required, String def, Iterable<String> choices)
     {
         super(name, required);
-        if(!required)
+        if (!required)
         {
             checkNotNull(def, "Cannot have a null default if the argument is not required.");
         }
@@ -98,11 +98,11 @@ public class StringEnumArgument extends CommandArgument<String>
         sb.append(!required ? ']' : '>');
         this.usage = sb.toString();
     }
-    
+
     public StringEnumArgument(String name, boolean required, String def, Class<?> enumClass)
     {
         super(name, required);
-        if(!required)
+        if (!required)
         {
             checkNotNull(def, "Cannot have a null default if the argument is not required.");
         }
@@ -112,7 +112,7 @@ public class StringEnumArgument extends CommandArgument<String>
         Object[] values = enumClass.getEnumConstants();
         this.choices = new String[values.length];
         int i = 0;
-        for(Object o: values)
+        for (Object o : values)
         {
             choices[i++] = o.toString();
         }

@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.common.factory;
 
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.util.Pair;
 
 /**
@@ -40,6 +41,6 @@ public interface RegistryProvider<K, V>
      * @param name the name of the object to fetch.
      * @return a key-value {@link Pair}
      */
-    Pair<K, V> get(String name);
-    
+    Optional<Pair<K, V>> get(String name);
+
 }

@@ -58,12 +58,12 @@ public class VSCommand extends Command
         checkNotNull(sniper, "Cannot have a null sniper!");
         String[] s = ((RawArgument) args.get("raw")).getChoice();
         String full = "";
-        for(String part: s)
+        for (String part : s)
         {
             full += part + " ";
         }
         full = full.trim();
-        if(full.contains("="))
+        if (full.contains("="))
         {
             String[] split = full.split("=");
             String key = split[0].trim().toLowerCase();

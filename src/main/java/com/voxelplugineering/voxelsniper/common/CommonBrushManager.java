@@ -32,8 +32,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.thevoxelbox.vsl.api.IGraphCompilerFactory;
+import com.google.common.base.Optional;
 import com.thevoxelbox.vsl.classloader.ASMClassLoader;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.IBrushLoader;
 import com.voxelplugineering.voxelsniper.api.IBrushManager;
@@ -64,13 +65,16 @@ public class CommonBrushManager implements IBrushManager
     /**
      * Creates a new CommonBrushManager.
      */
-    public CommonBrushManager(IBrushLoader defaultLoader, ClassLoader parentClassLoader, IGraphCompilerFactory compilerFactory)
+    public CommonBrushManager()
     {
-        if(defaultLoader != null)
+        if (Gunsmith.getDefaultBrushLoader() != null)
         {
-            this.loaders.add(defaultLoader);
+            this.loaders.add(Gunsmith.getDefaultBrushLoader());
+        } else
+        {
+            Gunsmith.getLogger().warn("Created Brush Manager before default BrushLoader was set.");
         }
-        this.classLoader = new ASMClassLoader(parentClassLoader, compilerFactory);
+        this.classLoader = new ASMClassLoader(Gunsmith.getVoxelSniper().getGunsmithClassLoader(), Gunsmith.getCompilerFactory());
     }
 
     /**
@@ -78,10 +82,35 @@ public class CommonBrushManager implements IBrushManager
      *
      * @param parent the parent
      */
-    public CommonBrushManager(IBrushManager parent, IBrushLoader defaultLoader, ClassLoader parentClassLoader, IGraphCompilerFactory compilerFactory)
+    public CommonBrushManager(IBrushManager parent)
     {
-        this(defaultLoader, parentClassLoader, compilerFactory);
+        this();
         setParent(parent);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void init()
+    {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void stop()
+    {
+        this.brushes.clear();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void restart()
+    {
+        stop();
+        init();
     }
 
     /**
@@ -126,7 +155,7 @@ public class CommonBrushManager implements IBrushManager
     /**
      * {@inheritDoc}
      */
-    public IBrush getNewBrushInstance(String identifier)
+    public Optional<IBrush> getNewBrushInstance(String identifier)
     {
         checkNotNull(identifier, "Name cannot be null!");
         checkArgument(!identifier.isEmpty(), "Name cannot be empty");
@@ -141,7 +170,7 @@ public class CommonBrushManager implements IBrushManager
         }
         try
         {
-            return br.newInstance();
+            return Optional.<IBrush> of(br.newInstance());
         } catch (InstantiationException e)
         {
             e.printStackTrace();
@@ -149,7 +178,7 @@ public class CommonBrushManager implements IBrushManager
         {
             e.printStackTrace();
         }
-        return null;
+        return Optional.absent();
     }
 
     /**

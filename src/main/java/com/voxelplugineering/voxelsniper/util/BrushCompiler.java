@@ -134,13 +134,14 @@ public class BrushCompiler extends ChainableGraphCompiler implements Opcodes
             mv.visitInsn(ARETURN);
             mv.visitMaxs(0, 0);
             mv.visitEnd();
-        }{
+        }
+        {
             mv = cw.visitMethod(ACC_PUBLIC, "getRequiredVars", "()[Ljava/lang/String;", null, null);
             mv.visitCode();
             mv.visitIntInsn(BIPUSH, graph.getRequiredVars().length);
             mv.visitTypeInsn(ANEWARRAY, "java/lang/String");
             byte i = 0;
-            for(String var: graph.getRequiredVars())
+            for (String var : graph.getRequiredVars())
             {
                 mv.visitInsn(DUP);
                 mv.visitIntInsn(BIPUSH, i++);
@@ -150,7 +151,7 @@ public class BrushCompiler extends ChainableGraphCompiler implements Opcodes
             mv.visitInsn(ARETURN);
             mv.visitMaxs(0, 0);
             mv.visitEnd();
-            }
+        }
 
         {
             mv = cw.visitMethod(ACC_PUBLIC, "chain", "(Lcom/thevoxelbox/vsl/api/IChainedRunnableGraph;)V", null, null);
@@ -218,10 +219,10 @@ public class BrushCompiler extends ChainableGraphCompiler implements Opcodes
 
         return cw.toByteArray();
     }
-    
+
     public String[] getRequiredVars()
     {
-        return new String[]{"biome", "biome", "biome", "biome", "biome", "biome", "biome", "biome"};
+        return new String[] { "biome", "biome", "biome", "biome", "biome", "biome", "biome", "biome" };
     }
 
 }

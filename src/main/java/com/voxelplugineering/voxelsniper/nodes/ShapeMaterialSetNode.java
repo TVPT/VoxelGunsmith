@@ -76,13 +76,9 @@ public class ShapeMaterialSetNode extends ExecutableNode implements Opcodes
         mv.visitVarInsn(ALOAD, target);
         mv.visitVarInsn(ALOAD, shape);
         mv.visitVarInsn(ALOAD, material);
-        mv.visitMethodInsn(
-                INVOKESPECIAL,
-                "com/voxelplugineering/voxelsniper/world/ShapeChangeQueue",
-                "<init>",
+        mv.visitMethodInsn(INVOKESPECIAL, "com/voxelplugineering/voxelsniper/world/ShapeChangeQueue", "<init>",
                 "(Lcom/voxelplugineering/voxelsniper/api/ISniper;Lcom/voxelplugineering/voxelsniper/common/CommonLocation;"
-                + "Lcom/voxelplugineering/voxelsniper/shape/Shape;Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;)V",
-                false);
+                        + "Lcom/voxelplugineering/voxelsniper/shape/Shape;Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;)V", false);
         mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/world/ShapeChangeQueue", "flush", "()V", false);
         return localsIndex;
     }

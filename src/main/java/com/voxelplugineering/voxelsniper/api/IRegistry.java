@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
+import com.google.common.base.Optional;
+
 /**
  * A registry for a name and an object key related to a value.
  * 
@@ -40,43 +42,43 @@ public interface IRegistry<K, V>
      * @param value the new value
      */
     void register(String name, K key, V value);
-    
+
     /**
      * Given the object key returns the associated value.
      * 
      * @param key the object key
      * @return the value
      */
-    V get(K key);
-    
+    Optional<V> get(K key);
+
     /**
      * Given the name returns the associated value.
      * 
      * @param name the name
      * @return the value
      */
-    V get(String name);
-    
+    Optional<V> get(String name);
+
     /**
      * Given a value returns the name of it in the registry.
      * 
      * @param value the value
      * @return the name of the value in the registry
      */
-    String getNameForValue(V value);
-    
+    Optional<String> getNameForValue(V value);
+
     /**
      * Returns a collection of the names of all keys in this registry.
      * 
      * @return a collection of the names
      */
     Iterable<String> getRegisteredNames();
-    
+
     /**
      * Returns a collection of all values in this registry.
      * 
      * @return a collection of the values
      */
     Iterable<V> getRegisteredValues();
-    
+
 }

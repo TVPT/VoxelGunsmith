@@ -62,7 +62,7 @@ public class TestNode extends ExecutableNode implements Opcodes
         mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
         return localsIndex;
     }
-    
+
     public void run(IVariableHolder vars, ISniper s)
     {
         System.out.println(s.getName());

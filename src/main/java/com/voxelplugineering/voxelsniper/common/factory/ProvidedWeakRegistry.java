@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.common.factory;
 
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.util.Pair;
 
 /**
@@ -53,19 +54,19 @@ public class ProvidedWeakRegistry<K, V> extends WeakRegistry<K, V>
     /**
      * {@inheritDoc}
      */
-    public V get(String name)
+    public Optional<V> get(String name)
     {
-        V value = super.get(name);
-        if (value == null)
+        Optional<V> value = super.get(name);
+        if (!value.isPresent())
         {
-            Pair<K, V> v = provider.get(name);
-            if (v != null)
+            Optional<Pair<K, V>> v = provider.get(name);
+            if (v.isPresent())
             {
-                register(name, v.getKey(), v.getValue());
-                return v.getValue();
+                register(name, v.get().getKey(), v.get().getValue());
+                return Optional.of(v.get().getValue());
             }
         }
-        return null;
+        return Optional.absent();
     }
 
     /**
