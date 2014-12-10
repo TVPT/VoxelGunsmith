@@ -29,7 +29,7 @@ import com.voxelplugineering.voxelsniper.api.ILogger;
 
 public class Log4jLogger implements ILogger
 {
-    
+
     private Logger logger;
 
     public Log4jLogger(Logger logger)

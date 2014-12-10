@@ -169,7 +169,7 @@ public class CommonBrushManager implements IBrushManager
             return Optional.absent();
         }
         System.out.println(identifier + " " + br.getName() + " " + br.getSuperclass().getName());
-        for(Class<?> i: br.getInterfaces())
+        for (Class<?> i : br.getInterfaces())
         {
             System.out.println("\t" + i.getName());
         }

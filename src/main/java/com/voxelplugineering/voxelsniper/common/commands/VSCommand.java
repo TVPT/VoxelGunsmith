@@ -43,10 +43,10 @@ public class VSCommand extends Command
      */
     public VSCommand()
     {
-        super("brush", "Sets your current brush");
-        setAliases("b", "brush");
+        super("vs", "Sets your current brush");
+        setAliases("vs", "voxelsniper");
         addArgument(new RawArgument("raw"));
-        setPermissions("voxelsniper.command.brush");
+        setPermissions("voxelsniper.command.vs");
     }
 
     /**

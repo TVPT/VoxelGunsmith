@@ -54,7 +54,7 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
      * The inverse of the nameRegistry mapping value to name.
      */
     BiMap<V, String> inverseNameRegistry;
-    
+
     private boolean caseSensitiveKeys = true;
 
     /**
@@ -66,7 +66,7 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
         nameRegistry = HashBiMap.create();
         inverseNameRegistry = nameRegistry.inverse();
     }
-    
+
     protected void setCaseSensitiveKeys(boolean c)
     {
         this.caseSensitiveKeys = c;
@@ -78,7 +78,7 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
     public void register(String name, K key, V value)
     {
         registry.put(key, value);
-        nameRegistry.put(caseSensitiveKeys? name : name.toUpperCase(), value);
+        nameRegistry.put(caseSensitiveKeys ? name : name.toUpperCase(), value);
     }
 
     /**
@@ -94,7 +94,7 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
      */
     public Optional<V> get(String name)
     {
-        if(!caseSensitiveKeys)
+        if (!caseSensitiveKeys)
         {
             name = name.toUpperCase();
         }

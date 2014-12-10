@@ -90,8 +90,7 @@ public class MaterialCommand extends Command
             }
             sniper.sendMessage(this.materialSetMessage, material.get().toString());
             sniper.getBrushSettings().set("setMaterial", material.get());
-        }
-        else
+        } else
         {
             sniper.sendMessage(this.getHelpMsg());
         }
