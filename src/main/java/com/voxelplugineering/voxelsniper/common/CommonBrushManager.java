@@ -166,11 +166,17 @@ public class CommonBrushManager implements IBrushManager
             {
                 return this.parent.getNewBrushInstance(identifier);
             }
-            return null;
+            return Optional.absent();
+        }
+        System.out.println(identifier + " " + br.getName() + " " + br.getSuperclass().getName());
+        for(Class<?> i: br.getInterfaces())
+        {
+            System.out.println("\t" + i.getName());
         }
         try
         {
-            return Optional.<IBrush> of(br.newInstance());
+            IBrush brush = br.newInstance();
+            return Optional.<IBrush> of(brush);
         } catch (InstantiationException e)
         {
             e.printStackTrace();

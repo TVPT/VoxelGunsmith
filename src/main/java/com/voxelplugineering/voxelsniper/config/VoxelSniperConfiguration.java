@@ -29,12 +29,12 @@ package com.voxelplugineering.voxelsniper.config;
 public class VoxelSniperConfiguration
 {
     //Default constants
-    double RAY_TRACE_MAX_RANGE = 250;
+    double RAY_TRACE_RANGE = 250;
     int BLOCK_CHANGES_PER_SECOND = 160000;
     int UNDO_HISTORY_SIZE = 20;
 
     //Default brush settings
-    String DEFAULT_BRUSH = "snipe material";
+    String DEFAULT_BRUSH = "voxel material";
     double DEFAULT_BRUSH_SIZE = 3;
     String DEFAULT_BRUSH_MATERIAL = "AIR";
 

@@ -47,9 +47,16 @@ public class CommonEventHandler
 
     }
 
+    @Subscribe
+    @AllowConcurrentEvents
+    public void onPlayerJoin(SniperCreateEvent event)
+    {
+        event.getSniper();
+    }
+
     /**
      * Processes the given {@link com.voxelplugineering.voxelsniper.common.event.SnipeEvent} and performs all necessary checks of the event. This
-     * event handler is supports asyncronous callback.
+     * event handler is supports asynchronous callback.
      *
      * @param event the snipe event to perform
      */
@@ -58,22 +65,30 @@ public class CommonEventHandler
     public void onSnipe(SnipeEvent event)
     {
         ISniper sniper = event.getSniper();
-        CommonLocation location = sniper.getLocation();
-        double yaw = event.getYaw();
-        double pitch = event.getPitch();
-        RayTrace ray = new RayTrace(location, yaw, pitch);
-        ray.trace();
+        try
+        {
+            CommonLocation location = sniper.getLocation();
+            double yaw = event.getYaw();
+            double pitch = event.getPitch();
+            RayTrace ray = new RayTrace(location, yaw, pitch);
+            ray.trace();
 
-        IVariableScope brushVariables = new VariableScope(sniper.getBrushSettings());
-        brushVariables.set("origin", location);
-        brushVariables.set("yaw", yaw);
-        brushVariables.set("pitch", pitch);
-        brushVariables.set("targetBlock", ray.getTargetBlock());
-        brushVariables.set("lastBlock", ray.getLastBlock());
-        brushVariables.set("length", ray.getLength());
-        Gunsmith.getLogger()
-                .info("Snipe at " + ray.getTargetBlock().getLocation().toString() + " : " + sniper.getCurrentBrush().getClass().getName());
-        sniper.getCurrentBrush().run(brushVariables, sniper);
+            IVariableScope brushVariables = new VariableScope(sniper.getBrushSettings());
+            brushVariables.set("origin", location);
+            brushVariables.set("yaw", yaw);
+            brushVariables.set("pitch", pitch);
+            brushVariables.set("targetBlock", ray.getTargetBlock());
+            brushVariables.set("lastBlock", ray.getLastBlock());
+            brushVariables.set("length", ray.getLength());
+            Gunsmith.getLogger().info(
+                    "Snipe at " + ray.getTargetBlock().getLocation().toString() + " : " + sniper.getCurrentBrush().getClass().getName());
+
+            sniper.getCurrentBrush().run(brushVariables, sniper);
+        } catch (Exception e)
+        {
+            sniper.sendMessage("Error executing brush, see console for more details.");
+            Gunsmith.getLogger().error(e, "Error executing brush");
+        }
     }
 
     /**

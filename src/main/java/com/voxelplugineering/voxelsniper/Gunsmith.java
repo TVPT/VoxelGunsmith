@@ -27,6 +27,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
@@ -261,16 +263,22 @@ public final class Gunsmith
     /**
      * Should be called at the start of the initialization process. Sets up default states before the specific implementation registers its overrides.
      */
-    public static void beginInit()
+    public static void beginInit(File base)
     {
         check();
 
         //Create standard log distributor
         logDistributor = new CommonLoggingDistributor();
         logDistributor.init();
-        //TODO register standard gunsmith loggers here
+        //System.setProperty("voxel.log.location", base.getAbsolutePath());
+        //File config = new File(base.getAbsolutePath(), "log4j2.xml");
+        //System.out.println("log4j config: " + config.getAbsolutePath());
+        //System.setProperty("log4j.configurationFile", config.getAbsolutePath());
+        //logDistributor.registerLogger(new Log4jLogger(LogManager.getLogger(Gunsmith.class)), "log4j");
 
-        getLogger().info("Starting Gunsmith initialization process.");
+        getLogger().info(
+                "Starting Gunsmith initialization process. ("
+                        + new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z").format(new Date(System.currentTimeMillis())) + ")");
 
         //Register vsl types for common impl types
         Type.registerType("COMMONBLOCK", "com/voxelplugineering/voxelsniper/common/CommonBlock");

@@ -121,8 +121,8 @@ public class RayTrace
         this.minWorldY = (Integer) Gunsmith.getConfiguration().get("MINIMUM_WORLD_DEPTH").get();
         this.maxWorldY = (Integer) Gunsmith.getConfiguration().get("MAXIMUM_WORLD_HEIGHT").get();
         this.step = (Double) Gunsmith.getConfiguration().get("RAY_TRACE_STEP").get();
-        this.traversalBlocks.add(world.getMaterialRegistry().getAirMaterial());
         this.world = this.origin.getWorld();
+        this.traversalBlocks.add(world.getMaterialRegistry().getAirMaterial());
     }
 
     /**

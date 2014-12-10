@@ -101,7 +101,7 @@ public class JsonConfigurationLoader
         for (Field f : container.getClass().getFields())
         {
             String name = f.getName();
-            Object value = configuration.get(name);
+            Object value = configuration.get(name).get();
             f.set(container, value);
         }
         gson.toJson(container, writer);
@@ -133,7 +133,7 @@ public class JsonConfigurationLoader
             for (Field f : container.getFields())
             {
                 String name = f.getName();
-                Object value = configuration.get(name);
+                Object value = configuration.get(name).get();
                 f.set(obj, value);
             }
             gson.toJson(obj, writer);

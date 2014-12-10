@@ -65,8 +65,9 @@ public class ProvidedWeakRegistry<K, V> extends WeakRegistry<K, V>
                 register(name, v.get().getKey(), v.get().getValue());
                 return Optional.of(v.get().getValue());
             }
+            return Optional.absent();
         }
-        return Optional.absent();
+        return value;
     }
 
     /**

@@ -57,11 +57,11 @@ public abstract class CommonBrushLoader implements IBrushLoader
             Object brush = ois.readObject();
             Class<?> cls = brush.getClass();
 
-            if (cls.isAssignableFrom(IBrush.class))
+            if (IBrush.class.isAssignableFrom(cls))
             {
                 return (Class<? extends IBrush>) cls;
             }
-            if (cls.isAssignableFrom(ChainableNodeGraph.class))
+            if (ChainableNodeGraph.class.isAssignableFrom(cls))
             {
                 return (Class<? extends IBrush>) classLoader.getCompiler(IBrush.class).compile(classLoader, (ChainableNodeGraph) brush);
             } else

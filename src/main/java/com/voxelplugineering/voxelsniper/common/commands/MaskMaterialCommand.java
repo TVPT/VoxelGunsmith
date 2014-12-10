@@ -29,12 +29,10 @@ import java.util.Map;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.IMaterialRegistry;
 import com.voxelplugineering.voxelsniper.api.ISniper;
-import com.voxelplugineering.voxelsniper.common.CommonMaterial;
 import com.voxelplugineering.voxelsniper.common.command.Command;
 import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
-import com.voxelplugineering.voxelsniper.common.command.args.StringEnumArgument;
+import com.voxelplugineering.voxelsniper.common.command.args.RawArgument;
 
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.
@@ -56,20 +54,19 @@ public class MaskMaterialCommand extends Command
      * @param materialRegistry the material registry to use for argument validation
      * @param configuration the configuration object
      */
-    public MaskMaterialCommand(IMaterialRegistry<?> materialRegistry)
+    public MaskMaterialCommand()
     {
         super("maskmaterial", "Sets your current secondary brush material");
         setAliases("vr");
-        Iterable<String> materialNames = materialRegistry.getRegisteredNames();
-        addArgument(new StringEnumArgument("mat", true, null, materialNames));
+        addArgument(new RawArgument("raw"));
         setPermissions("voxelsniper.command.materialmask");
         if (Gunsmith.getConfiguration().has("MATERIAL_NOT_FOUND_MESSAGE"))
         {
-            materialNotFoundMessage = Gunsmith.getConfiguration().get("MATERIAL_NOT_FOUND_MESSAGE").toString();
+            materialNotFoundMessage = Gunsmith.getConfiguration().get("MATERIAL_NOT_FOUND_MESSAGE").get().toString();
         }
         if (Gunsmith.getConfiguration().has("MATERIAL_MASK_SET_MESSAGE"))
         {
-            materialSetMessage = Gunsmith.getConfiguration().get("MATERIAL_MASK_SET_MESSAGE").toString();
+            materialSetMessage = Gunsmith.getConfiguration().get("MATERIAL_MASK_SET_MESSAGE").get().toString();
         }
     }
 
@@ -81,22 +78,23 @@ public class MaskMaterialCommand extends Command
     {
         checkNotNull(sniper, "Cannot have a null sniper!");
         String materialName = "air";
-        Object mat = args.get("mat").getChoice();
-        if (mat == null)
+        String[] s = ((RawArgument) args.get("raw")).getChoice();
+        if (s.length >= 1)
         {
-            sniper.sendMessage(this.materialNotFoundMessage);
-            return false;
+            materialName = s[0];
+            Optional<?> material = sniper.getWorld().getMaterialRegistry().get(materialName);
+            if (!material.isPresent())
+            {
+                sniper.sendMessage(this.materialNotFoundMessage);
+                return false;
+            }
+            sniper.sendMessage(this.materialSetMessage, material.get().toString());
+            sniper.getBrushSettings().set("maskMaterial", material.get());
         }
-        materialName = mat.toString();
-
-        Optional<?> material = sniper.getWorld().getMaterialRegistry().get(materialName);
-        if (!material.isPresent())
+        else
         {
-            sniper.sendMessage(this.materialNotFoundMessage);
-            return false;
+            sniper.sendMessage(this.getHelpMsg());
         }
-        sniper.sendMessage(this.materialSetMessage, material.get().toString());
-        sniper.getBrushSettings().set("maskMaterial", material.get());
         return true;
     }
 

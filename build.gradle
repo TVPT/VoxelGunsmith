@@ -47,9 +47,10 @@ dependencies {
     compile 'com.google.guava:guava:18.0'
     testCompile 'junit:junit:4.11'
     compile 'org.ow2.asm:asm:5.0.3'
-    compile 'com.thevoxelbox:VisualScripting:0.1.11-SNAPSHOT'
+    compile 'com.thevoxelbox:VisualScripting:0.1.12-SNAPSHOT'
 	compile 'com.google.code.gson:gson:2.3'
 	compile 'org.mockito:mockito-core:1.9.5'
+	compile 'org.apache.logging.log4j:log4j-core:2.1'
 }
 
 // Generates javadoc.jar

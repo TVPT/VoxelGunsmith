@@ -46,6 +46,7 @@ public class BrushPartNodeGraph extends ChainableNodeGraph
     public BrushPartNodeGraph(String name)
     {
         super(name);
+        this.requiredVars = new String[0];
     }
 
     /**

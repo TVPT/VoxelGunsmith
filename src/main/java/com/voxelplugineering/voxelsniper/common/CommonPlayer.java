@@ -123,7 +123,7 @@ public abstract class CommonPlayer<T> extends WeakWrapper<T> implements ISniper
     {
         IBrush start = null;
         IBrush last = null;
-        for (String brushName : Gunsmith.getConfiguration().get("DEFAULT_BRUSH").toString().split(" "))
+        for (String brushName : Gunsmith.getConfiguration().get("DEFAULT_BRUSH").get().toString().split(" "))
         {
             IBrush brush = getPersonalBrushManager().getNewBrushInstance(brushName).orNull();
             if (brush == null)
@@ -148,9 +148,9 @@ public abstract class CommonPlayer<T> extends WeakWrapper<T> implements ISniper
 
         }
         setCurrentBrush(start);
-        sendMessage("Brush set to " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH").toString());
-        this.brushVariables.set("brushSize", Gunsmith.getConfiguration().get("DEFAULT_BRUSH_SIZE"));
-        sendMessage("Your brush size was changed to " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH_SIZE").toString());
+        sendMessage("Brush set to " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH").get().toString());
+        this.brushVariables.set("brushSize", Gunsmith.getConfiguration().get("DEFAULT_BRUSH_SIZE").get());
+        sendMessage("Your brush size was changed to " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH_SIZE").get().toString());
         CommonMaterial<?> material =
                 getWorld()
                         .getMaterialRegistry()
@@ -165,12 +165,12 @@ public abstract class CommonPlayer<T> extends WeakWrapper<T> implements ISniper
      */
     public void addHistory(ChangeQueue changeQueue)
     {
-        checkNotNull(changeQueue, "ChangeQueue cannot be null");
+        /*checkNotNull(changeQueue, "ChangeQueue cannot be null");
         this.history.addFirst(changeQueue);
         while (this.history.size() > 20)
         {
             this.history.removeLast();
-        }
+        }*/
     }
 
     /**

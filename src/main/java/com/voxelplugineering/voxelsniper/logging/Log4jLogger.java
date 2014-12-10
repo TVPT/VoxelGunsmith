@@ -21,52 +21,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.common.factory;
+package com.voxelplugineering.voxelsniper.logging;
 
-import com.voxelplugineering.voxelsniper.api.IMaterialRegistry;
-import com.voxelplugineering.voxelsniper.common.CommonMaterial;
+import org.apache.logging.log4j.Logger;
 
-/**
- * A standard factory for creating static copies of {@link CommonMaterial} proxying materials in the underlying implementation.
- * 
- * @param <T> the underlying material type
- */
-public class CommonMaterialRegistry<T> extends WeakRegistry<T, CommonMaterial<T>> implements IMaterialRegistry<T>
+import com.voxelplugineering.voxelsniper.api.ILogger;
+
+public class Log4jLogger implements ILogger
 {
+    
+    private Logger logger;
 
-    /**
-     * A special case {@link CommonMaterial} representing air or empty space.
-     */
-    private CommonMaterial<T> air = null;
-
-    public CommonMaterialRegistry()
+    public Log4jLogger(Logger logger)
     {
-        setCaseSensitiveKeys(false);
+        this.logger = logger;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public CommonMaterial<T> getAirMaterial()
+    public void debug(String msg)
     {
-        return this.air;
+        logger.debug(msg);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void register(String name, T key, CommonMaterial<T> value)
+    public void info(String msg)
     {
-        super.register(name, key, value);
-
-        if ("AIR".equalsIgnoreCase(name) || "EMPTY".equalsIgnoreCase(name)) //TODO determine the name of air via config.
-        {
-            System.out.println("Set air material");
-            this.air = value;
-        }
-
+        logger.info(msg);
     }
 
+    @Override
+    public void warn(String msg)
+    {
+        logger.warn(msg);
+    }
+
+    @Override
+    public void error(String msg)
+    {
+        logger.error(msg);
+    }
+
+    @Override
+    public void error(Exception e)
+    {
+        logger.error("", e);
+    }
+
+    @Override
+    public void error(Exception e, String msg)
+    {
+        logger.error(msg, e);
+    }
 }

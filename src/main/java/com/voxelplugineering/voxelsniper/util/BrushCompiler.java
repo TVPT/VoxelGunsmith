@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -36,10 +37,10 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.api.IChainableNodeGraph;
+import com.thevoxelbox.vsl.api.IGraphCompiler;
 import com.thevoxelbox.vsl.api.INodeGraph;
 import com.thevoxelbox.vsl.api.IRunnableGraph;
 import com.thevoxelbox.vsl.classloader.ASMClassLoader;
-import com.thevoxelbox.vsl.classloader.ChainableGraphCompiler;
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.ExecutableNode;
 import com.voxelplugineering.voxelsniper.api.IBrush;
@@ -47,7 +48,7 @@ import com.voxelplugineering.voxelsniper.api.IBrush;
 /**
  * A compiler for compiling {@link com.thevoxelbox.vsl.api.INodeGraph}s into {@link IBrush}s.
  */
-public class BrushCompiler extends ChainableGraphCompiler implements Opcodes
+public class BrushCompiler implements IGraphCompiler, Opcodes
 {
 
     /**
@@ -70,7 +71,7 @@ public class BrushCompiler extends ChainableGraphCompiler implements Opcodes
         {
             throw new GraphCompilationException("Graph type is incorrect type for compiler!");
         }
-        IChainableNodeGraph cgraph = (IChainableNodeGraph) graph;
+        BrushPartNodeGraph cgraph = (BrushPartNodeGraph) graph;
         while (cl.isClassLoaded("com.thevoxelbox.custom." + cgraph.getName() + cgraph.getIncrement()))
         {
             cgraph.incrementName();
