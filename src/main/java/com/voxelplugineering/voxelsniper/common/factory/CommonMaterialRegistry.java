@@ -39,6 +39,9 @@ public class CommonMaterialRegistry<T> extends WeakRegistry<T, CommonMaterial<T>
      */
     private CommonMaterial<T> air = null;
 
+    /**
+     * Creates a new {@link CommonMaterialRegistry}.
+     */
     public CommonMaterialRegistry()
     {
         setCaseSensitiveKeys(false);

@@ -28,6 +28,8 @@ import com.voxelplugineering.voxelsniper.common.factory.WeakWrapper;
 
 /**
  * A representation of a group of voxels within a world.
+ * 
+ * @param <T> The chunk type
  */
 public abstract class CommonChunk<T> extends WeakWrapper<T>
 {

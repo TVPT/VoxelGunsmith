@@ -31,10 +31,16 @@ import com.thevoxelbox.vsl.node.ExecutableNode;
 import com.thevoxelbox.vsl.type.Type;
 import com.thevoxelbox.vsl.type.TypeDepth;
 
+/**
+ * A node for setting the biome of a world at a location.
+ */
 public class SetBiomeNode extends ExecutableNode implements Opcodes
 {
     private static final long serialVersionUID = 4934446335692436694L;
 
+    /**
+     * Creates a new {@link SetBiomeNode}.
+     */
     public SetBiomeNode()
     {
         super("Set biome", "world");
@@ -42,6 +48,9 @@ public class SetBiomeNode extends ExecutableNode implements Opcodes
         addInput("biome", Type.STRING, true, null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {

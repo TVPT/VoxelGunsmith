@@ -140,4 +140,9 @@ public interface ISniper
      */
     void clearNextPending();
 
+    /**
+     * Resets the settings of this player to their default configuration.
+     */
+    void resetSettings();
+
 }

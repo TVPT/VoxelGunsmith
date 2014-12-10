@@ -50,9 +50,6 @@ public class MaterialCommand extends Command
 
     /**
      * Constructs a new BrushCommand
-     * 
-     * @param materialRegistry the material registry to use for command validation
-     * @param configuration the configuration object
      */
     public MaterialCommand()
     {
@@ -60,13 +57,13 @@ public class MaterialCommand extends Command
         setAliases("v");
         addArgument(new RawArgument("raw"));
         setPermissions("voxelsniper.command.material");
-        if (Gunsmith.getConfiguration().has("MATERIAL_NOT_FOUND_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("materialNotFoundMessage"))
         {
-            materialNotFoundMessage = Gunsmith.getConfiguration().get("MATERIAL_NOT_FOUND_MESSAGE").get().toString();
+            materialNotFoundMessage = Gunsmith.getConfiguration().get("materialNotFoundMessage").get().toString();
         }
-        if (Gunsmith.getConfiguration().has("MATERIAL_SET_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("materialSetMessage"))
         {
-            materialSetMessage = Gunsmith.getConfiguration().get("MATERIAL_SET_MESSAGE").get().toString();
+            materialSetMessage = Gunsmith.getConfiguration().get("materialSetMessage").get().toString();
         }
     }
 

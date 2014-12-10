@@ -50,9 +50,6 @@ public class MaskMaterialCommand extends Command
 
     /**
      * Constructs a new BrushCommand
-     * 
-     * @param materialRegistry the material registry to use for argument validation
-     * @param configuration the configuration object
      */
     public MaskMaterialCommand()
     {
@@ -60,13 +57,13 @@ public class MaskMaterialCommand extends Command
         setAliases("vr");
         addArgument(new RawArgument("raw"));
         setPermissions("voxelsniper.command.materialmask");
-        if (Gunsmith.getConfiguration().has("MATERIAL_NOT_FOUND_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("materialNotFoundMessage"))
         {
-            materialNotFoundMessage = Gunsmith.getConfiguration().get("MATERIAL_NOT_FOUND_MESSAGE").get().toString();
+            materialNotFoundMessage = Gunsmith.getConfiguration().get("materialNotFoundMessage").get().toString();
         }
-        if (Gunsmith.getConfiguration().has("MATERIAL_MASK_SET_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("materialMaskSetMessage"))
         {
-            materialSetMessage = Gunsmith.getConfiguration().get("MATERIAL_MASK_SET_MESSAGE").get().toString();
+            materialSetMessage = Gunsmith.getConfiguration().get("materialMaskSetMessage").get().toString();
         }
     }
 

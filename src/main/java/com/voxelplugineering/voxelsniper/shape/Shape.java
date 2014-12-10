@@ -87,16 +87,31 @@ public class Shape
         this.origin = new CommonVector(ox, oy, oz);
     }
 
+    /**
+     * Returns the width of this shape (x-axis size).
+     * 
+     * @return the width
+     */
     public int getWidth()
     {
         return this.width;
     }
 
+    /**
+     * Returns the height of this shape (y-axis size).
+     * 
+     * @return the height
+     */
     public int getHeight()
     {
         return this.height;
     }
 
+    /**
+     * Returns the length of this shape (z-axis size).
+     * 
+     * @return the length
+     */
     public int getLength()
     {
         return this.length;
@@ -129,6 +144,7 @@ public class Shape
      * @param x the x position to set
      * @param y the y position to set
      * @param z the z position to set
+     * @param relative if the position being retrieved should be offset of the origin of this shape
      */
     public void set(int x, int y, int z, boolean relative)
     {
@@ -151,6 +167,7 @@ public class Shape
      * @param x the x position to unset
      * @param y the y position to unset
      * @param z the z position to unset
+     * @param relative if the position being retrieved should be offset of the origin of this shape
      */
     public void unset(int x, int y, int z, boolean relative)
     {
@@ -173,6 +190,7 @@ public class Shape
      * @param x the x position to return
      * @param y the y position to return
      * @param z the z position to return
+     * @param relative if the position being retrieved should be offset of the origin of this shape
      * @return the state of the position
      */
     public boolean get(int x, int y, int z, boolean relative)
@@ -420,6 +438,10 @@ public class Shape
         return points.toArray(new CommonVector[points.size()]);
     }
 
+    /**
+     * Flattens this shape. The resultant shape has a height of 1 with the position at each x,z position set if any block in a column above that point
+     * was set. As a side effect the origin is set to have a y value of 0.
+     */
     public void flatten()
     {
         for (int x = 0; x < this.width; x++)

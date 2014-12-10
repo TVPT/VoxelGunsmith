@@ -49,15 +49,12 @@ public class CommandHandler
 
     /**
      * Constructs a command handler
-     * 
-     * @param permissions the permissions proxy
-     * @param configuration the configuration object
      */
     public CommandHandler()
     {
-        if (Gunsmith.getConfiguration().has("PERMISSIONS_REQUIRED_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("permissionsRequiredMessage"))
         {
-            permissionMessage = Gunsmith.getConfiguration().get("PERMISSIONS_REQUIRED_MESSAGE").get().toString();
+            permissionMessage = Gunsmith.getConfiguration().get("permissionsRequiredMessage").get().toString();
         }
     }
 

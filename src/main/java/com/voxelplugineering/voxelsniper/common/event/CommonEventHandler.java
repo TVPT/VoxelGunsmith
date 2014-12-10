@@ -31,6 +31,7 @@ import com.thevoxelbox.vsl.api.IVariableScope;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
+import com.voxelplugineering.voxelsniper.common.CommonPlayer;
 import com.voxelplugineering.voxelsniper.util.RayTrace;
 
 /**
@@ -47,6 +48,12 @@ public class CommonEventHandler
 
     }
 
+    /**
+     * An event handler for the {@link SniperCreateEvent}s. This should initialize the players into the player registry, creating their
+     * {@link CommonPlayer} objects and setting their defaults.
+     * 
+     * @param event the event
+     */
     @Subscribe
     @AllowConcurrentEvents
     public void onPlayerJoin(SniperCreateEvent event)

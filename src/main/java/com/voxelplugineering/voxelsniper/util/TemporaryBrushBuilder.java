@@ -50,7 +50,6 @@ import com.voxelplugineering.voxelsniper.nodes.MaterialCompareNode;
 import com.voxelplugineering.voxelsniper.nodes.SetBiomeNode;
 import com.voxelplugineering.voxelsniper.nodes.ShapeForEachNode;
 import com.voxelplugineering.voxelsniper.nodes.ShapeMaterialSetNode;
-import com.voxelplugineering.voxelsniper.nodes.TestNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.DiscShapeNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.FlattenShapeNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.ShapeSetNode;
@@ -150,18 +149,6 @@ public class TemporaryBrushBuilder
      */
     public static void buildBrushes()
     {
-
-        try
-        { //test
-            TestNode test = new TestNode();
-
-            IChainableNodeGraph brush = new BrushPartNodeGraph("test");
-            brush.setStartNode(test);
-            graphs.put("test", brush);
-        } catch (Exception e)
-        {
-            Gunsmith.getLogger().error(e, "Failed to create test brush part");
-        }
 
         try
         { //ball

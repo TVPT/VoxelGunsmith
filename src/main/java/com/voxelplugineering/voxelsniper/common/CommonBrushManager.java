@@ -176,7 +176,7 @@ public class CommonBrushManager implements IBrushManager
         try
         {
             IBrush brush = br.newInstance();
-            return Optional.<IBrush> of(brush);
+            return Optional.<IBrush>of(brush);
         } catch (InstantiationException e)
         {
             e.printStackTrace();

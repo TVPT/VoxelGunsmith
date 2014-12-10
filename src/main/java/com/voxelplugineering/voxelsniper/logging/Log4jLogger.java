@@ -27,46 +27,72 @@ import org.apache.logging.log4j.Logger;
 
 import com.voxelplugineering.voxelsniper.api.ILogger;
 
+/**
+ * A wrapper for a {@link org.apache.logging.log4j.Logger}.
+ */
 public class Log4jLogger implements ILogger
 {
 
     private Logger logger;
 
+    /**
+     * Creates a new {@link Log4jLogger}.
+     * 
+     * @param logger the logger to wrap
+     */
     public Log4jLogger(Logger logger)
     {
         this.logger = logger;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void debug(String msg)
     {
         logger.debug(msg);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void info(String msg)
     {
         logger.info(msg);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void warn(String msg)
     {
         logger.warn(msg);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void error(String msg)
     {
         logger.error(msg);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void error(Exception e)
     {
         logger.error("", e);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void error(Exception e, String msg)
     {

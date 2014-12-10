@@ -67,6 +67,12 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
         inverseNameRegistry = nameRegistry.inverse();
     }
 
+    /**
+     * Sets whether the keys of this registry are case sensitive. If the keys are case insensitive then all keys in all operations are cast to upper
+     * case.
+     * 
+     * @param c is case sensitive
+     */
     protected void setCaseSensitiveKeys(boolean c)
     {
         this.caseSensitiveKeys = c;
@@ -86,7 +92,7 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
      */
     public Optional<V> get(K key)
     {
-        return registry.containsKey(key) ? Optional.<V> of(registry.get(key)) : Optional.<V> absent();
+        return registry.containsKey(key) ? Optional.<V>of(registry.get(key)) : Optional.<V>absent();
     }
 
     /**
@@ -98,7 +104,7 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
         {
             name = name.toUpperCase();
         }
-        return nameRegistry.containsKey(name) ? Optional.<V> of(validate(nameRegistry.get(name))) : Optional.<V> absent();
+        return nameRegistry.containsKey(name) ? Optional.<V>of(validate(nameRegistry.get(name))) : Optional.<V>absent();
     }
 
     /**
@@ -106,7 +112,7 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
      */
     public Optional<String> getNameForValue(V value)
     {
-        return inverseNameRegistry.containsKey(value) ? Optional.<String> of(inverseNameRegistry.get(validate(value))) : Optional.<String> absent();
+        return inverseNameRegistry.containsKey(value) ? Optional.<String>of(inverseNameRegistry.get(validate(value))) : Optional.<String>absent();
     }
 
     /**

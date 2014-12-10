@@ -75,6 +75,14 @@ public class StringEnumArgument extends CommandArgument<String>
         this.usage = sb.toString();
     }
 
+    /**
+     * Constructs a normalized argument that parses for a set of string based choices.
+     * 
+     * @param name the name of this argument
+     * @param required whether this argument is required for validation
+     * @param def the default value
+     * @param choices the choices of which can be chosen from
+     */
     public StringEnumArgument(String name, boolean required, String def, Iterable<String> choices)
     {
         super(name, required);
@@ -99,6 +107,14 @@ public class StringEnumArgument extends CommandArgument<String>
         this.usage = sb.toString();
     }
 
+    /**
+     * Constructs a normalized argument that parses for a set of string based choices.
+     * 
+     * @param name the name of this argument
+     * @param required whether this argument is required for validation
+     * @param def the default value
+     * @param enumClass An Enum type to use as valid choices
+     */
     public StringEnumArgument(String name, boolean required, String def, Class<?> enumClass)
     {
         super(name, required);
@@ -151,12 +167,18 @@ public class StringEnumArgument extends CommandArgument<String>
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getUsageString(boolean optional)
     {
         return this.usage;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int matches(ISniper caster, String[] allArgs, int startPosition)
     {
@@ -171,6 +193,9 @@ public class StringEnumArgument extends CommandArgument<String>
         return -1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void parse(ISniper caster, String[] allArgs, int startPosition)
     {
@@ -184,18 +209,27 @@ public class StringEnumArgument extends CommandArgument<String>
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void skippedOptional(ISniper user)
     {
         this.choice = this.def;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clean()
     {
         this.choice = this.def;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> tabComplete(ISniper caster, String[] allArgs, int startPosition)
     {

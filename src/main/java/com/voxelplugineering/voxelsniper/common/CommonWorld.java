@@ -31,6 +31,8 @@ import com.voxelplugineering.voxelsniper.common.factory.WeakWrapper;
 
 /**
  * The representation of a world or scene of voxels. X and Z axes are assumed to be the horizontal axes and Y the vertical axis.
+ * 
+ * @param <T> The world type
  */
 public abstract class CommonWorld<T> extends WeakWrapper<T>
 {

@@ -42,6 +42,13 @@ public class ShapeFactory
         return createCuboid(radius, radius, radius);
     }
 
+    /**
+     * Creates a square disc with a height of 1, aligned orthogonally to the given direction.
+     * 
+     * @param radius the radius of the disc
+     * @param direction the direction
+     * @return the new shape
+     */
     public static Shape createVoxelDisc(int radius, CommonDirection direction)
     {
         if (direction == CommonDirection.EAST || direction == CommonDirection.WEST) // x-axis
@@ -132,9 +139,9 @@ public class ShapeFactory
     }
 
     /**
-     * Creates an elliptical cylinder in the direction of the given axis. The axes are numbered as follows:
+     * Creates an elliptical cylinder in the direction of the given axis.
      * <p>
-     * The axes are ordered according to the right had rule, where the directional access takes the place of the z-axis.
+     * The axes are ordered according to the right had rule, where the directional axis takes the place of the z-axis.
      * 
      * @param rx the first radius perpendicular to the axis
      * @param ry the second radius perpendicular to the axis
@@ -231,16 +238,41 @@ public class ShapeFactory
         return s;
     }
 
+    /**
+     * Creates a cylinder with the given radius and height, the flat plane of the cylinder is aligned to be orthogonal to the given direction.
+     * 
+     * @param radius the radius
+     * @param height the height
+     * @param direction the direction
+     * @return the new shape
+     */
     public static Shape createCylinder(double radius, int height, CommonDirection direction)
     {
         return createEllipticalCylinder(radius, radius, height, direction);
     }
 
+    /**
+     * Creates a disc with the given radius and a height of 1, the flat plane of the disc is aligned to be orthogonal to the given direction.
+     * 
+     * @param radius the radius
+     * @param direction the direction
+     * @return the new shape
+     */
     public static Shape createDisc(double radius, CommonDirection direction)
     {
         return createEllipticalCylinder(radius, radius, 1, direction);
     }
 
+    /**
+     * Creates a ellipse with the given pair of radii, the flat plane of the ellipse is aligned to be orthogonal to the given direction.
+     * <p>
+     * The axes are ordered according to the right had rule, where the direction takes the place of the z-axis.
+     * 
+     * @param rx the radius in the x-direction
+     * @param ry the radius in the y direction
+     * @param direction the direction
+     * @return the new shape
+     */
     public static Shape createEllipse(double rx, double ry, CommonDirection direction)
     {
         return createEllipticalCylinder(rx, ry, 1, direction);

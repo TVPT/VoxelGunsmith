@@ -221,9 +221,4 @@ public class BrushCompiler implements IGraphCompiler, Opcodes
         return cw.toByteArray();
     }
 
-    public String[] getRequiredVars()
-    {
-        return new String[] { "biome", "biome", "biome", "biome", "biome", "biome", "biome", "biome" };
-    }
-
 }

@@ -27,6 +27,8 @@ import com.voxelplugineering.voxelsniper.common.factory.WeakWrapper;
 
 /**
  * A biome or other region within a world. TODO impl
+ * 
+ * @param <T> The biome type being wrapped
  */
 public class CommonBiome<T> extends WeakWrapper<T>
 {
@@ -39,12 +41,13 @@ public class CommonBiome<T> extends WeakWrapper<T>
     /**
      * Creates a new biome
      * 
-     * @param n the name
+     * @param name the name
+     * @param value the underlying biome type
      */
-    public CommonBiome(String n, T value)
+    public CommonBiome(String name, T value)
     {
         super(value);
-        this.name = n;
+        this.name = name;
     }
 
     /**

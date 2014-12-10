@@ -123,7 +123,7 @@ public abstract class CommonPlayer<T> extends WeakWrapper<T> implements ISniper
     {
         IBrush start = null;
         IBrush last = null;
-        for (String brushName : Gunsmith.getConfiguration().get("DEFAULT_BRUSH").get().toString().split(" "))
+        for (String brushName : Gunsmith.getConfiguration().get("defaultBrush").get().toString().split(" "))
         {
             IBrush brush = getPersonalBrushManager().getNewBrushInstance(brushName).orNull();
             if (brush == null)
@@ -148,14 +148,14 @@ public abstract class CommonPlayer<T> extends WeakWrapper<T> implements ISniper
 
         }
         setCurrentBrush(start);
-        sendMessage("Brush set to " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH").get().toString());
-        this.brushVariables.set("brushSize", Gunsmith.getConfiguration().get("DEFAULT_BRUSH_SIZE").get());
-        sendMessage("Your brush size was changed to " + Gunsmith.getConfiguration().get("DEFAULT_BRUSH_SIZE").get().toString());
+        sendMessage("Brush set to " + Gunsmith.getConfiguration().get("defaultBrush").get().toString());
+        this.brushVariables.set("brushSize", Gunsmith.getConfiguration().get("defaultBrushSize").get());
+        sendMessage("Your brush size was changed to " + Gunsmith.getConfiguration().get("defaultBrushSize").get().toString());
         CommonMaterial<?> material =
                 getWorld()
                         .getMaterialRegistry()
-                        .get(Gunsmith.getConfiguration().get("DEFAULT_BRUSH_MATERIAL").or(getWorld().getMaterialRegistry().getAirMaterial())
-                                .toString()).get();
+                        .get(Gunsmith.getConfiguration().get("defaultBrushMaterial").or(getWorld().getMaterialRegistry().getAirMaterial()).toString())
+                        .get();
         sendMessage("Set material to " + material.toString());
         getBrushSettings().set("setMaterial", material);
     }
@@ -200,7 +200,7 @@ public abstract class CommonPlayer<T> extends WeakWrapper<T> implements ISniper
     @Override
     public Optional<ChangeQueue> getNextPendingChange()
     {
-        return (this.pending.isEmpty() ? Optional.<ChangeQueue> absent() : Optional.<ChangeQueue> of(this.pending.peek()));
+        return (this.pending.isEmpty() ? Optional.<ChangeQueue>absent() : Optional.<ChangeQueue>of(this.pending.peek()));
     }
 
     /**

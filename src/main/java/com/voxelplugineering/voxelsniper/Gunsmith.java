@@ -262,6 +262,8 @@ public final class Gunsmith
 
     /**
      * Should be called at the start of the initialization process. Sets up default states before the specific implementation registers its overrides.
+     * 
+     * @param base The root data folder for Gunsmith's data
      */
     public static void beginInit(File base)
     {

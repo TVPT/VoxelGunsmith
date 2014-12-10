@@ -28,12 +28,17 @@ import java.util.logging.Logger;
 
 import com.voxelplugineering.voxelsniper.api.ILogger;
 
+/**
+ * A wrapper for a {@link java.util.logging.Logger} to receive logging messages from gunsmith.
+ */
 public class JavaUtilLogger implements ILogger
 {
     private Logger logger;
 
     /**
-     * Creates a new {@link BukkitLogger}.
+     * Creates a new {@link JavaUtilLogger}.
+     * 
+     * @param logger the logger to wrap
      */
     public JavaUtilLogger(Logger logger)
     {

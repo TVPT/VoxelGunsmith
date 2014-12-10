@@ -32,12 +32,18 @@ import com.thevoxelbox.vsl.node.ExecutableNode;
 import com.thevoxelbox.vsl.type.Type;
 import com.thevoxelbox.vsl.type.TypeDepth;
 
+/**
+ * A node for comparing two materials and executing another {@link ExecutableNode} if the comparison is true.
+ */
 public class MaterialCompareNode extends ExecutableNode implements Opcodes
 {
 
     private static final long serialVersionUID = -8174504428098635690L;
     private ExecutableNode body = null;
 
+    /**
+     * Creates a new {@link MaterialCompareNode}.
+     */
     public MaterialCompareNode()
     {
         super("MaterialCompare", "material");
@@ -45,11 +51,19 @@ public class MaterialCompareNode extends ExecutableNode implements Opcodes
         addInput("b", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), true, null);
     }
 
+    /**
+     * Sets the body of the if-statement formed by this comparison.
+     * 
+     * @param body the node to execute if the comparison is true
+     */
     public void setBody(ExecutableNode body)
     {
         this.body = body;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {

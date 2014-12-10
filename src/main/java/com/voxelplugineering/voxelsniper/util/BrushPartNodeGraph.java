@@ -34,7 +34,7 @@ public class BrushPartNodeGraph extends ChainableNodeGraph
     private static final long serialVersionUID = 1L;
 
     /**
-     * The names of special variables which are required by this brush part. TODO change to a {@link Pair}{@literal<String, Type>}.
+     * The names of special variables which are required by this brush part. TODO change to a {@link Pair}{@literal <String, Type>}.
      */
     public String[] requiredVars = null;
 

@@ -29,10 +29,9 @@ package com.voxelplugineering.voxelsniper.config;
 public class BaseConfiguration
 {
 
-    double PLAYER_EYE_HEIGHT = 1.62;
-    int MINIMUM_WORLD_DEPTH = 0;
-    int MAXIMUM_WORLD_HEIGHT = 255;
-    double RAY_TRACE_STEP = 0.2;
-    int BRUSH_FILE_FORMAT_VERSION = 1;
+    double playerEyeHeight = 1.62;
+    int minimumWorldDepth = 0;
+    int maximumWorldHeight = 255;
+    double rayTraceStep = 0.2;
 
 }

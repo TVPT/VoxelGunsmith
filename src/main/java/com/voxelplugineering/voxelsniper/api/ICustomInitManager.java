@@ -23,6 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
+/**
+ * A manager with an extended initialization process. The idea being that between {@link #beginInit()} and {@link #finishInit()} a number of
+ * operations could be applied (eg. setters and startup processes called from outside the class and then validated by {@link #finishInit()}.
+ */
 public interface ICustomInitManager
 {
 

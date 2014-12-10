@@ -29,22 +29,22 @@ package com.voxelplugineering.voxelsniper.config;
 public class VoxelSniperConfiguration
 {
     //Default constants
-    double RAY_TRACE_RANGE = 250;
-    int BLOCK_CHANGES_PER_SECOND = 160000;
-    int UNDO_HISTORY_SIZE = 20;
+    double rayTraceRange = 250;
+    int blockChangesPerSecond = 160000;
+    int undoHistorySize = 20;
 
     //Default brush settings
-    String DEFAULT_BRUSH = "voxel material";
-    double DEFAULT_BRUSH_SIZE = 3;
-    String DEFAULT_BRUSH_MATERIAL = "AIR";
+    String defaultBrush = "voxel material";
+    double defaultBrushSize = 3;
+    String defaultBrushMaterial = "AIR";
 
     //Default messages
-    String PERMISSIONS_REQUIRED_MESSAGE = "You require more permissions in order to perform this action.";
-    String DEFAULT_HELP_MESSAGE = "No help is provided for this command.";
-    String BRUSH_SIZE_CHANGED_MESSAGE = "Your brush size was changed to %.1f";
-    String BRUSH_NOT_FOUND_MESSAGE = "Could not find a brush part named %s";
-    String BRUSH_SET_MESSAGE = "Your brush has been set to %s";
-    String MATERIAL_NOT_FOUND_MESSAGE = "Could not find that material.";
-    String MATERIAL_SET_MESSAGE = "Set material to %s";
-    String MATERIAL_MASK_SET_MESSAGE = "Set secondary material to %s";
+    String permissionsRequiredMessage = "You require more permissions in order to perform this action.";
+    String defaultHelpMessage = "No help is provided for this command.";
+    String brushSizeChangedMessage = "Your brush size was changed to %.1f";
+    String brushNotFoundMessage = "Could not find a brush part named %s";
+    String brushSetMessage = "Your brush has been set to %s";
+    String materialNotFoundMessage = "Could not find that material.";
+    String materialSetMessage = "Set material to %s";
+    String materialMaskSetMessage = "Set secondary material to %s";
 }

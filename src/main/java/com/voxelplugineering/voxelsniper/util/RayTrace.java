@@ -117,10 +117,10 @@ public class RayTrace
         this.origin = origin;
         this.yaw = yaw;
         this.pitch = pitch;
-        this.range = (Double) Gunsmith.getConfiguration().get("RAY_TRACE_RANGE").get();
-        this.minWorldY = (Integer) Gunsmith.getConfiguration().get("MINIMUM_WORLD_DEPTH").get();
-        this.maxWorldY = (Integer) Gunsmith.getConfiguration().get("MAXIMUM_WORLD_HEIGHT").get();
-        this.step = (Double) Gunsmith.getConfiguration().get("RAY_TRACE_STEP").get();
+        this.range = (Double) Gunsmith.getConfiguration().get("rayTraceRange").get();
+        this.minWorldY = (Integer) Gunsmith.getConfiguration().get("minimumWorldDepth").get();
+        this.maxWorldY = (Integer) Gunsmith.getConfiguration().get("maximumWorldHeight").get();
+        this.step = (Double) Gunsmith.getConfiguration().get("rayTraceStep").get();
         this.world = this.origin.getWorld();
         this.traversalBlocks.add(world.getMaterialRegistry().getAirMaterial());
     }
@@ -242,7 +242,7 @@ public class RayTrace
     private void init()
     {
         this.length = 0;
-        this.origin = this.origin.add(0, ((Double) Gunsmith.getConfiguration().get("PLAYER_EYE_HEIGHT").get()), 0);
+        this.origin = this.origin.add(0, ((Double) Gunsmith.getConfiguration().get("playerEyeHeight").get()), 0);
         this.currentX = this.origin.getX();
         this.currentY = this.origin.getY();
         this.currentZ = this.origin.getZ();

@@ -54,8 +54,6 @@ public class BrushCommand extends Command
 
     /**
      * Constructs a new BrushCommand
-     * 
-     * @param configuration the configuration object
      */
     public BrushCommand()
     {
@@ -63,17 +61,17 @@ public class BrushCommand extends Command
         setAliases("b", "brush");
         addArgument(new RawArgument("raw"));
         setPermissions("voxelsniper.command.brush");
-        if (Gunsmith.getConfiguration().has("BRUSH_SIZE_CHANGED_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("brushSizeChangedMessage"))
         {
-            brushSizeChangeMessage = Gunsmith.getConfiguration().get("BRUSH_SIZE_CHANGED_MESSAGE").get().toString();
+            brushSizeChangeMessage = Gunsmith.getConfiguration().get("brushSizeChangedMessage").get().toString();
         }
-        if (Gunsmith.getConfiguration().has("BRUSH_NOT_FOUND_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("brushNotFoundMessage"))
         {
-            brushNotFoundMessage = Gunsmith.getConfiguration().get("BRUSH_NOT_FOUND_MESSAGE").get().toString();
+            brushNotFoundMessage = Gunsmith.getConfiguration().get("brushNotFoundMessage").get().toString();
         }
-        if (Gunsmith.getConfiguration().has("BRUSH_SET_MESSAGE"))
+        if (Gunsmith.getConfiguration().has("brushSetMessage"))
         {
-            brushSetMessage = Gunsmith.getConfiguration().get("BRUSH_SET_MESSAGE").get().toString();
+            brushSetMessage = Gunsmith.getConfiguration().get("brushSetMessage").get().toString();
         }
     }
 
