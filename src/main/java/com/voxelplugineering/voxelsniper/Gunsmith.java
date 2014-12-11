@@ -42,6 +42,7 @@ import com.voxelplugineering.voxelsniper.api.IConfiguration;
 import com.voxelplugineering.voxelsniper.api.ILogger;
 import com.voxelplugineering.voxelsniper.api.ILoggingDistributor;
 import com.voxelplugineering.voxelsniper.api.IVoxelSniper;
+import com.voxelplugineering.voxelsniper.common.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.common.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.common.event.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
@@ -96,6 +97,7 @@ public final class Gunsmith
      * The VSL compiler factory for the Brush Managers to reference.
      */
     private static GraphCompilerFactory compilerFactory = null;
+    private static AliasHandler globalAliasRegistries = null;
 
     /**
      * The initialization state of Gunsmith.
@@ -259,6 +261,11 @@ public final class Gunsmith
     {
         return compilerFactory;
     }
+    
+    public static AliasHandler getGlobalAliasHandler()
+    {
+        return globalAliasRegistries;
+    }
 
     /**
      * Should be called at the start of the initialization process. Sets up default states before the specific implementation registers its overrides.
@@ -306,6 +313,9 @@ public final class Gunsmith
         //Setup the VSL graph compiler
         compilerFactory = new GraphCompilerFactory();
         compilerFactory.registerCompiler(IBrush.class, new BrushCompiler()); //the compiler for all brushes
+        
+        globalAliasRegistries = new AliasHandler();
+        globalAliasRegistries.registerTarget("brush");
     }
 
     /**

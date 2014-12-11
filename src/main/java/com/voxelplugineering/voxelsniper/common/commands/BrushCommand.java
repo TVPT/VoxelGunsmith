@@ -27,12 +27,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Map;
 
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.ISniper;
+import com.voxelplugineering.voxelsniper.common.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.common.command.Command;
 import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
 import com.voxelplugineering.voxelsniper.common.command.args.RawArgument;
+import com.voxelplugineering.voxelsniper.util.Utilities;
 
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.
@@ -98,12 +101,17 @@ public class BrushCommand extends Command
         }
         if (s.length >= 1)
         {
-            String fullBrush = "";
+            
+            Optional<AliasRegistry> alias = sniper.getPersonalAliasHandler().getRegistry("brush");
+            String fullBrush = Utilities.getSection(s, 0, s.length-1);
+            if(alias.isPresent())
+            {
+                fullBrush = alias.get().expand(fullBrush);
+            }
             IBrush start = null;
             IBrush last = null;
-            for (String brushName : s)
+            for (String brushName : fullBrush.split(" "))
             {
-                fullBrush += brushName + " ";
 
                 IBrush brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName).orNull();
                 if (brush == null)

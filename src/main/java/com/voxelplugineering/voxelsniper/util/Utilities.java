@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Common utilities class for Gunsmith
@@ -98,6 +99,70 @@ public class Utilities
 
         List<String> ret = new ArrayList<String>();
         copyPartialMatches(partial, candidates, ret);
+        return ret;
+    }
+
+    /**
+     * Returns the array positions between start and end (both inclusive) concatenated as a space separated string.
+     * 
+     * @param array the array
+     * @param start the start point (inclusive)
+     * @param end the end point (inclusive)
+     * @return the concatenated section
+     */
+    public static String getSection(String[] array, int start, int end)
+    {
+        checkNotNull(array, "Array cannot be null.");
+        checkArgument(start >= 0, "Start point cannot be negative.");
+        checkArgument(end >= start, "End point cannot be before start point.");
+        checkArgument(array.length > end, "End point must be less than the array length.");
+
+        String ret = "";
+        for (int i = start; i <= end; i++)
+        {
+            ret += array[i];
+            if (i < end)
+            {
+                ret += " ";
+            }
+        }
+
+        return ret;
+    }
+
+    /**
+     * Returns an array which is equivalent to source[o:start-1] + insert[o:length] + source[end+1:length].
+     * 
+     * @param source the source array
+     * @param insert the array to insert
+     * @param start the start point (inclusive)
+     * @param end the end point (inclusive)
+     * @return the result array
+     */
+    public static String[] replaceSection(String[] source, String[] insert, int start, int end)
+    {
+        checkNotNull(source, "Source cannot be null.");
+        checkNotNull(insert, "Insert cannot be null.");
+        checkArgument(start >= 0, "Start point cannot be negative.");
+        checkArgument(end >= start, "End point cannot be before start point.");
+        checkArgument(source.length > end, "End point must be less than the array length.");
+
+        String[] ret = new String[source.length - (end - start + 1) + insert.length];
+        int i = 0;
+
+        for (; i < start; i++)
+        {
+            ret[i] = source[i];
+        }
+        for (int o = 0; o < insert.length; o++)
+        {
+            ret[i++] = insert[o];
+        }
+        for (int o = end + 1; o < source.length; o++)
+        {
+            ret[i++] = source[o];
+        }
+        
         return ret;
     }
 }

@@ -37,6 +37,7 @@ import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.IBrushManager;
 import com.voxelplugineering.voxelsniper.api.ISniper;
+import com.voxelplugineering.voxelsniper.common.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.common.factory.WeakWrapper;
 import com.voxelplugineering.voxelsniper.world.ChangeQueue;
 
@@ -67,6 +68,7 @@ public abstract class CommonPlayer<T> extends WeakWrapper<T> implements ISniper
      * The queue of pending {@link ChangeQueue}s waiting to be processed.
      */
     private Queue<ChangeQueue> pending;
+    private AliasHandler personalAliasHandler;
 
     /**
      * Creates a new CommonPlayer with a weak reference to the player. TODO add constructor for receiving custom parent brush manager
@@ -82,6 +84,7 @@ public abstract class CommonPlayer<T> extends WeakWrapper<T> implements ISniper
         resetSettings();
         this.history = new ArrayDeque<ChangeQueue>();
         this.pending = new LinkedList<ChangeQueue>();
+        personalAliasHandler = new AliasHandler(Gunsmith.getGlobalAliasHandler());
     }
 
     /**
@@ -223,6 +226,15 @@ public abstract class CommonPlayer<T> extends WeakWrapper<T> implements ISniper
         {
             this.pending.remove();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AliasHandler getPersonalAliasHandler()
+    {
+        return this.personalAliasHandler;
     }
 
 }

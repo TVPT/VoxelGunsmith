@@ -41,7 +41,7 @@ public abstract class Command
     /**
      * Aliases for this command.
      */
-    String[] aliases;
+    String[] aliases = new String[0];
     /**
      * A map of arguments for this command.
      */

@@ -27,6 +27,7 @@ import com.google.common.base.Optional;
 import com.thevoxelbox.vsl.api.IVariableScope;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
 import com.voxelplugineering.voxelsniper.common.CommonWorld;
+import com.voxelplugineering.voxelsniper.common.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.world.ChangeQueue;
 
 /**
@@ -144,5 +145,7 @@ public interface ISniper
      * Resets the settings of this player to their default configuration.
      */
     void resetSettings();
+    
+    AliasHandler getPersonalAliasHandler();
 
 }
