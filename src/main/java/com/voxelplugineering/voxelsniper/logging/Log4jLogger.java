@@ -51,7 +51,7 @@ public class Log4jLogger implements ILogger
     @Override
     public void debug(String msg)
     {
-        logger.debug(msg);
+        this.logger.debug(msg);
     }
 
     /**
@@ -60,7 +60,7 @@ public class Log4jLogger implements ILogger
     @Override
     public void info(String msg)
     {
-        logger.info(msg);
+        this.logger.info(msg);
     }
 
     /**
@@ -69,7 +69,7 @@ public class Log4jLogger implements ILogger
     @Override
     public void warn(String msg)
     {
-        logger.warn(msg);
+        this.logger.warn(msg);
     }
 
     /**
@@ -78,7 +78,7 @@ public class Log4jLogger implements ILogger
     @Override
     public void error(String msg)
     {
-        logger.error(msg);
+        this.logger.error(msg);
     }
 
     /**
@@ -87,7 +87,7 @@ public class Log4jLogger implements ILogger
     @Override
     public void error(Exception e)
     {
-        logger.error("", e);
+        this.logger.error("", e);
     }
 
     /**
@@ -96,6 +96,6 @@ public class Log4jLogger implements ILogger
     @Override
     public void error(Exception e, String msg)
     {
-        logger.error(msg, e);
+        this.logger.error(msg, e);
     }
 }

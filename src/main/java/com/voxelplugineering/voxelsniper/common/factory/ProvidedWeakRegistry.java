@@ -59,7 +59,7 @@ public class ProvidedWeakRegistry<K, V> extends WeakRegistry<K, V>
         Optional<V> value = super.get(name);
         if (!value.isPresent())
         {
-            Optional<Pair<K, V>> v = provider.get(name);
+            Optional<Pair<K, V>> v = this.provider.get(name);
             if (v.isPresent())
             {
                 register(name, v.get().getKey(), v.get().getValue());

@@ -79,9 +79,9 @@ public class VectorValueNode extends Node implements Opcodes
 
         mv.visitTypeInsn(NEW, "com/voxelplugineering/voxelsniper/common/CommonVector");
         mv.visitInsn(DUP);
-        mv.visitLdcInsn(value.getX());
-        mv.visitLdcInsn(value.getY());
-        mv.visitLdcInsn(value.getZ());
+        mv.visitLdcInsn(this.value.getX());
+        mv.visitLdcInsn(this.value.getY());
+        mv.visitLdcInsn(this.value.getZ());
         mv.visitMethodInsn(INVOKESPECIAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "<init>", "(DDD)V", false);
         mv.visitVarInsn(ASTORE, localsIndex);
         setOutput("value", localsIndex);

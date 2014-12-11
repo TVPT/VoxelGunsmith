@@ -63,15 +63,15 @@ public class BrushCommand extends Command
         setPermissions("voxelsniper.command.brush");
         if (Gunsmith.getConfiguration().has("brushSizeChangedMessage"))
         {
-            brushSizeChangeMessage = Gunsmith.getConfiguration().get("brushSizeChangedMessage").get().toString();
+            this.brushSizeChangeMessage = Gunsmith.getConfiguration().get("brushSizeChangedMessage").get().toString();
         }
         if (Gunsmith.getConfiguration().has("brushNotFoundMessage"))
         {
-            brushNotFoundMessage = Gunsmith.getConfiguration().get("brushNotFoundMessage").get().toString();
+            this.brushNotFoundMessage = Gunsmith.getConfiguration().get("brushNotFoundMessage").get().toString();
         }
         if (Gunsmith.getConfiguration().has("brushSetMessage"))
         {
-            brushSetMessage = Gunsmith.getConfiguration().get("brushSetMessage").get().toString();
+            this.brushSetMessage = Gunsmith.getConfiguration().get("brushSetMessage").get().toString();
         }
     }
 

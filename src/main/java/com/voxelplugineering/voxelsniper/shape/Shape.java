@@ -150,11 +150,11 @@ public class Shape
     {
         if (relative)
         {
-            x += origin.getX();
-            y += origin.getY();
-            z += origin.getZ();
+            x += this.origin.getX();
+            y += this.origin.getY();
+            z += this.origin.getZ();
         }
-        if (x >= width || x < 0 || y >= height || y < 0 || z >= length || z < 0)
+        if (x >= this.width || x < 0 || y >= this.height || y < 0 || z >= this.length || z < 0)
         {
             throw new ArrayIndexOutOfBoundsException("Tried to set point outside of the shape. (" + x + ", " + y + ", " + z + ")");
         }
@@ -173,11 +173,11 @@ public class Shape
     {
         if (relative)
         {
-            x += origin.getX();
-            y += origin.getY();
-            z += origin.getZ();
+            x += this.origin.getX();
+            y += this.origin.getY();
+            z += this.origin.getZ();
         }
-        if (x >= width || x < 0 || y >= height || y < 0 || z >= length || z < 0)
+        if (x >= this.width || x < 0 || y >= this.height || y < 0 || z >= this.length || z < 0)
         {
             throw new ArrayIndexOutOfBoundsException("Tried to set point outside of the shape. (" + x + ", " + y + ", " + z + ")");
         }
@@ -197,11 +197,11 @@ public class Shape
     {
         if (relative)
         {
-            x += origin.getX();
-            y += origin.getY();
-            z += origin.getZ();
+            x += this.origin.getX();
+            y += this.origin.getY();
+            z += this.origin.getZ();
         }
-        if (x >= width || x < 0 || y >= height || y < 0 || z >= length || z < 0)
+        if (x >= this.width || x < 0 || y >= this.height || y < 0 || z >= this.length || z < 0)
         {
             throw new ArrayIndexOutOfBoundsException("Tried to set point outside of the shape. (" + x + ", " + y + ", " + z + ")");
         }
@@ -458,8 +458,8 @@ public class Shape
                 }
             }
         }
-        resize(width, 1, length);
-        setOrigin(new CommonVector(origin.getX(), 0, origin.getZ()));
+        resize(this.width, 1, this.length);
+        setOrigin(new CommonVector(this.origin.getX(), 0, this.origin.getZ()));
     }
 
 }

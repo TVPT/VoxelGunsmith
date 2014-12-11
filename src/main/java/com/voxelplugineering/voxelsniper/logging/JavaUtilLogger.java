@@ -51,7 +51,7 @@ public class JavaUtilLogger implements ILogger
     @Override
     public void debug(String msg)
     {
-        logger.log(Level.FINE, msg);
+        this.logger.log(Level.FINE, msg);
     }
 
     /**
@@ -60,7 +60,7 @@ public class JavaUtilLogger implements ILogger
     @Override
     public void info(String msg)
     {
-        logger.log(Level.INFO, msg);
+        this.logger.log(Level.INFO, msg);
     }
 
     /**
@@ -69,7 +69,7 @@ public class JavaUtilLogger implements ILogger
     @Override
     public void warn(String msg)
     {
-        logger.log(Level.WARNING, msg);
+        this.logger.log(Level.WARNING, msg);
     }
 
     /**
@@ -78,7 +78,7 @@ public class JavaUtilLogger implements ILogger
     @Override
     public void error(String msg)
     {
-        logger.log(Level.SEVERE, msg);
+        this.logger.log(Level.SEVERE, msg);
     }
 
     /**
@@ -87,7 +87,7 @@ public class JavaUtilLogger implements ILogger
     @Override
     public void error(Exception e)
     {
-        logger.log(Level.SEVERE, e.getMessage(), e);
+        this.logger.log(Level.SEVERE, e.getMessage(), e);
     }
 
     /**
@@ -96,7 +96,7 @@ public class JavaUtilLogger implements ILogger
     @Override
     public void error(Exception e, String msg)
     {
-        logger.log(Level.SEVERE, msg, e);
+        this.logger.log(Level.SEVERE, msg, e);
 
     }
 }

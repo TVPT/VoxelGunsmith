@@ -76,7 +76,7 @@ public class ShapeForEachNode extends ExecutableNode implements Opcodes
     @Override
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {
-        if (body == null)
+        if (this.body == null)
         {
             return localsIndex;
         }

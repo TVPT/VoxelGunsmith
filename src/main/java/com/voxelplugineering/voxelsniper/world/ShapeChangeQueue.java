@@ -79,7 +79,7 @@ public class ShapeChangeQueue extends ChangeQueue
     @Override
     public boolean isFinished()
     {
-        if (position == shape.getWidth() * shape.getHeight() * shape.getLength())
+        if (this.position == this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength())
         {
             this.state = ExecutionState.DONE;
         }
@@ -113,45 +113,45 @@ public class ShapeChangeQueue extends ChangeQueue
     public int perform(int next)
     {
         int count = 0;
-        if (state == ExecutionState.UNSTARTED)
+        if (this.state == ExecutionState.UNSTARTED)
         {
-            for (int x = 0; x < shape.getWidth(); x++)
+            for (int x = 0; x < this.shape.getWidth(); x++)
             {
-                for (int y = 0; y < shape.getHeight(); y++)
+                for (int y = 0; y < this.shape.getHeight(); y++)
                 {
-                    for (int z = 0; z < shape.getLength(); z++)
+                    for (int z = 0; z < this.shape.getLength(); z++)
                     {
-                        if (shape.get(x, y, z, false)
-                                && (getWorld().getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).get()
+                        if (this.shape.get(x, y, z, false)
+                                && (getWorld().getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ()).get()
                                         .getMaterial().isLiquid() || getWorld()
-                                        .getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).get().getMaterial()
+                                        .getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ()).get().getMaterial()
                                         .isReliantOnEnvironment()))
                         {
-                            getWorld().setBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ(), material);
+                            getWorld().setBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ(), this.material);
                         }
                     }
                 }
             }
             this.state = ExecutionState.INCREMENTAL;
-        } else if (state == ExecutionState.INCREMENTAL)
+        } else if (this.state == ExecutionState.INCREMENTAL)
         {
-            Gunsmith.getLogger().info("Position at " + position);
-            for (; position < shape.getWidth() * shape.getHeight() * shape.getLength() && count < next; position++)
+            Gunsmith.getLogger().info("Position at " + this.position);
+            for (; this.position < this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength() && count < next; this.position++)
             {
-                int z = (int) (position / (shape.getWidth() * shape.getHeight()));
-                int y = (int) ((position % (shape.getWidth() * shape.getHeight())) / shape.getWidth());
-                int x = (int) ((position % (shape.getWidth() * shape.getHeight())) % shape.getWidth());
-                if (shape.get(x, y, z, false)
-                        && !getWorld().getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).get().getMaterial()
+                int z = (int) (this.position / (this.shape.getWidth() * this.shape.getHeight()));
+                int y = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) / this.shape.getWidth());
+                int x = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) % this.shape.getWidth());
+                if (this.shape.get(x, y, z, false)
+                        && !getWorld().getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ()).get().getMaterial()
                                 .isLiquid()
-                        && !getWorld().getBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ()).get().getMaterial()
+                        && !getWorld().getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ()).get().getMaterial()
                                 .isReliantOnEnvironment())
                 {
                     count++;
-                    getWorld().setBlockAt(x + origin.getFlooredX(), y + origin.getFlooredY(), z + origin.getFlooredZ(), material);
+                    getWorld().setBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ(), this.material);
                 }
             }
-            if (position == shape.getWidth() * shape.getHeight() * shape.getLength())
+            if (this.position == this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength())
             {
                 this.state = ExecutionState.DONE;
             }

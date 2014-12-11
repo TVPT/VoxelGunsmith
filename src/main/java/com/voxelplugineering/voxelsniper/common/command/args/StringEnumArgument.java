@@ -130,15 +130,15 @@ public class StringEnumArgument extends CommandArgument<String>
         int i = 0;
         for (Object o : values)
         {
-            choices[i++] = o.toString();
+            this.choices[i++] = o.toString();
         }
         StringBuilder sb = new StringBuilder().append(!required ? '[' : '<');
-        for (String s : choices)
+        for (String s : this.choices)
         {
             sb.append(s);
             sb.append('|');
         }
-        if (choices.length != 0)
+        if (this.choices.length != 0)
         {
             sb.setLength(sb.length() - 1);
         }

@@ -122,7 +122,7 @@ public class RayTrace
         this.maxWorldY = (Integer) Gunsmith.getConfiguration().get("maximumWorldHeight").get();
         this.step = (Double) Gunsmith.getConfiguration().get("rayTraceStep").get();
         this.world = this.origin.getWorld();
-        this.traversalBlocks.add(world.getMaterialRegistry().getAirMaterial());
+        this.traversalBlocks.add(this.world.getMaterialRegistry().getAirMaterial());
     }
 
     /**

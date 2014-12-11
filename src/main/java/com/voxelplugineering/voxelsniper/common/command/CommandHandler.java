@@ -54,7 +54,7 @@ public class CommandHandler
     {
         if (Gunsmith.getConfiguration().has("permissionsRequiredMessage"))
         {
-            permissionMessage = Gunsmith.getConfiguration().get("permissionsRequiredMessage").get().toString();
+            this.permissionMessage = Gunsmith.getConfiguration().get("permissionsRequiredMessage").get().toString();
         }
     }
 

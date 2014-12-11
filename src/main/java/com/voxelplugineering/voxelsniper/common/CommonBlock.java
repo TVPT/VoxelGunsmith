@@ -94,7 +94,7 @@ public class CommonBlock
      */
     protected void localSetMaterial(CommonMaterial<?> mat)
     {
-        checkNotNull(material, "Material cannot be null");
+        checkNotNull(this.material, "Material cannot be null");
         this.material = mat;
     }
 

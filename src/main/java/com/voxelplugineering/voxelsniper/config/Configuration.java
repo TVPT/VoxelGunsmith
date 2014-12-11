@@ -161,7 +161,7 @@ public class Configuration implements IConfiguration
     @Override
     public boolean has(String name)
     {
-        return config.containsKey(name);
+        return this.config.containsKey(name);
     }
 
 }

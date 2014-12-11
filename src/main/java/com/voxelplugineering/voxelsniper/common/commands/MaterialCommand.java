@@ -59,11 +59,11 @@ public class MaterialCommand extends Command
         setPermissions("voxelsniper.command.material");
         if (Gunsmith.getConfiguration().has("materialNotFoundMessage"))
         {
-            materialNotFoundMessage = Gunsmith.getConfiguration().get("materialNotFoundMessage").get().toString();
+            this.materialNotFoundMessage = Gunsmith.getConfiguration().get("materialNotFoundMessage").get().toString();
         }
         if (Gunsmith.getConfiguration().has("materialSetMessage"))
         {
-            materialSetMessage = Gunsmith.getConfiguration().get("materialSetMessage").get().toString();
+            this.materialSetMessage = Gunsmith.getConfiguration().get("materialSetMessage").get().toString();
         }
     }
 

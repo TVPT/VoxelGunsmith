@@ -78,7 +78,7 @@ public class BlockChangeQueue extends ChangeQueue
     public void add(BlockChange change)
     {
         checkNotNull(change, "Change cannot be null");
-        if (position != 0)
+        if (this.position != 0)
         {
             Gunsmith.getLogger().error("Attempted to modify a queue currently being processed.");
             return;
@@ -90,19 +90,19 @@ public class BlockChangeQueue extends ChangeQueue
         {
             BlockChange first = new BlockChange(change.getX(), change.getY(), change.getZ(), change.getFrom(), this.intermediateMaterial);
             BlockChange second = new BlockChange(change.getX(), change.getY(), change.getZ(), this.intermediateMaterial, change.getTo());
-            changes.add(0, first);
-            changes.add(second);
+            this.changes.add(0, first);
+            this.changes.add(second);
         } else if (from) // if only the first: then add the change to the front of the queue
         {
-            changes.add(0, change);
+            this.changes.add(0, change);
             this.intermediate++;
         } else if (to)
         {
-            changes.add(change);
+            this.changes.add(change);
         } else
         //if neither add the change to the middle of the queue, marked by the intermediate index
         {
-            changes.add(this.intermediate, change);
+            this.changes.add(this.intermediate, change);
         }
 
     }
@@ -137,11 +137,11 @@ public class BlockChangeQueue extends ChangeQueue
         int count = 0;
 
         Gunsmith.getLogger().info("performing " + next + " changes");
-        while ((count < next || position < intermediate) && position < this.changes.size())
+        while ((count < next || this.position < this.intermediate) && this.position < this.changes.size())
         {
-            BlockChange nextChange = this.changes.get(position);
+            BlockChange nextChange = this.changes.get(this.position);
             this.getWorld().setBlockAt(nextChange.getX(), nextChange.getY(), nextChange.getZ(), nextChange.getTo());
-            position++;
+            this.position++;
             count++;
         }
         Gunsmith.getLogger().info("performed " + count + " changes");
@@ -155,7 +155,7 @@ public class BlockChangeQueue extends ChangeQueue
      */
     public boolean isFinished()
     {
-        return position >= this.changes.size();
+        return this.position >= this.changes.size();
     }
 
     /**

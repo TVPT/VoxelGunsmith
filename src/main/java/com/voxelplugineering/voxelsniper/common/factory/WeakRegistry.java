@@ -62,9 +62,9 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
      */
     public WeakRegistry()
     {
-        registry = new WeakHashMap<K, V>();
-        nameRegistry = HashBiMap.create();
-        inverseNameRegistry = nameRegistry.inverse();
+        this.registry = new WeakHashMap<K, V>();
+        this.nameRegistry = HashBiMap.create();
+        this.inverseNameRegistry = this.nameRegistry.inverse();
     }
 
     /**
@@ -83,8 +83,8 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
      */
     public void register(String name, K key, V value)
     {
-        registry.put(key, value);
-        nameRegistry.put(caseSensitiveKeys ? name : name.toUpperCase(), value);
+        this.registry.put(key, value);
+        this.nameRegistry.put(this.caseSensitiveKeys ? name : name.toUpperCase(), value);
     }
 
     /**
@@ -92,7 +92,7 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
      */
     public Optional<V> get(K key)
     {
-        return registry.containsKey(key) ? Optional.<V>of(registry.get(key)) : Optional.<V>absent();
+        return this.registry.containsKey(key) ? Optional.<V>of(this.registry.get(key)) : Optional.<V>absent();
     }
 
     /**
@@ -100,11 +100,11 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
      */
     public Optional<V> get(String name)
     {
-        if (!caseSensitiveKeys)
+        if (!this.caseSensitiveKeys)
         {
             name = name.toUpperCase();
         }
-        return nameRegistry.containsKey(name) ? Optional.<V>of(validate(nameRegistry.get(name))) : Optional.<V>absent();
+        return this.nameRegistry.containsKey(name) ? Optional.<V>of(validate(this.nameRegistry.get(name))) : Optional.<V>absent();
     }
 
     /**
@@ -112,7 +112,7 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
      */
     public Optional<String> getNameForValue(V value)
     {
-        return inverseNameRegistry.containsKey(value) ? Optional.<String>of(inverseNameRegistry.get(validate(value))) : Optional.<String>absent();
+        return this.inverseNameRegistry.containsKey(value) ? Optional.<String>of(this.inverseNameRegistry.get(validate(value))) : Optional.<String>absent();
     }
 
     /**
@@ -123,14 +123,14 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
      */
     private V validate(V value)
     {
-        for (Entry<K, V> e : registry.entrySet())
+        for (Entry<K, V> e : this.registry.entrySet())
         {
             if (e.getValue().equals(value))
             {
                 return value;
             }
         }
-        inverseNameRegistry.remove(value);//This is automatically reflected within the nameRegistry.
+        this.inverseNameRegistry.remove(value);//This is automatically reflected within the nameRegistry.
         return null;
     }
 
@@ -139,7 +139,7 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
      */
     public Iterable<String> getRegisteredNames()
     {
-        return nameRegistry.keySet();
+        return this.nameRegistry.keySet();
     }
 
     /**
@@ -147,7 +147,7 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
      */
     public Iterable<V> getRegisteredValues()
     {
-        return inverseNameRegistry.keySet();
+        return this.inverseNameRegistry.keySet();
     }
 
 }

@@ -59,7 +59,7 @@ public class Pair<K, V>
      */
     public K getKey()
     {
-        return key;
+        return this.key;
     }
 
     /**
@@ -69,6 +69,6 @@ public class Pair<K, V>
      */
     public V getValue()
     {
-        return value;
+        return this.value;
     }
 }
