@@ -145,7 +145,12 @@ public interface ISniper
      * Resets the settings of this player to their default configuration.
      */
     void resetSettings();
-    
+
+    /**
+     * Returns this sniper's personal alias handler.
+     * 
+     * @return the alias handler
+     */
     AliasHandler getPersonalAliasHandler();
 
 }

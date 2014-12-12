@@ -101,10 +101,10 @@ public class BrushCommand extends Command
         }
         if (s.length >= 1)
         {
-            
+
             Optional<AliasRegistry> alias = sniper.getPersonalAliasHandler().getRegistry("brush");
-            String fullBrush = Utilities.getSection(s, 0, s.length-1);
-            if(alias.isPresent())
+            String fullBrush = Utilities.getSection(s, 0, s.length - 1);
+            if (alias.isPresent())
             {
                 fullBrush = alias.get().expand(fullBrush);
             }

@@ -122,12 +122,14 @@ public class ShapeChangeQueue extends ChangeQueue
                     for (int z = 0; z < this.shape.getLength(); z++)
                     {
                         if (this.shape.get(x, y, z, false)
-                                && (getWorld().getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ()).get()
-                                        .getMaterial().isLiquid() || getWorld()
-                                        .getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ()).get().getMaterial()
-                                        .isReliantOnEnvironment()))
+                                && (getWorld()
+                                        .getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ())
+                                        .get().getMaterial().isLiquid() || getWorld()
+                                        .getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ())
+                                        .get().getMaterial().isReliantOnEnvironment()))
                         {
-                            getWorld().setBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ(), this.material);
+                            getWorld().setBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ(),
+                                    this.material);
                         }
                     }
                 }
@@ -142,10 +144,10 @@ public class ShapeChangeQueue extends ChangeQueue
                 int y = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) / this.shape.getWidth());
                 int x = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) % this.shape.getWidth());
                 if (this.shape.get(x, y, z, false)
-                        && !getWorld().getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ()).get().getMaterial()
-                                .isLiquid()
-                        && !getWorld().getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ()).get().getMaterial()
-                                .isReliantOnEnvironment())
+                        && !getWorld().getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ()).get()
+                                .getMaterial().isLiquid()
+                        && !getWorld().getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ()).get()
+                                .getMaterial().isReliantOnEnvironment())
                 {
                     count++;
                     getWorld().setBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ(), this.material);

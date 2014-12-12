@@ -78,6 +78,11 @@ public class CommonEventHandler
         }
     }
 
+    /**
+     * An event handler for {@link SniperDestroyEvent} in order to save player-specific settings.
+     * 
+     * @param event the event
+     */
     public void onPlayerLeave(SniperDestroyEvent event)
     {
         ISniper s = event.getSniper();

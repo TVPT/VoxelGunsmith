@@ -84,7 +84,7 @@ public abstract class CommonPlayer<T> extends WeakWrapper<T> implements ISniper
         resetSettings();
         this.history = new ArrayDeque<ChangeQueue>();
         this.pending = new LinkedList<ChangeQueue>();
-        personalAliasHandler = new AliasHandler(Gunsmith.getGlobalAliasHandler());
+        this.personalAliasHandler = new AliasHandler(Gunsmith.getGlobalAliasHandler());
     }
 
     /**

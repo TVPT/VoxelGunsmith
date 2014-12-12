@@ -1,3 +1,26 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 The Voxel Plugineering Team
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package com.voxelplugineering.voxelsniper.common.alias;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -5,6 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +41,7 @@ import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.util.Utilities;
 
 /**
- * A registry for aliases.  
+ * A registry for aliases.
  */
 public class AliasRegistry
 {
@@ -90,7 +114,7 @@ public class AliasRegistry
     {
         this.aliases.clear();
     }
-    
+
     /**
      * Returns the alias value for the given alias key.
      * 
@@ -99,20 +123,19 @@ public class AliasRegistry
      */
     public Optional<String> getAlias(String alias)
     {
-        if(!this.aliases.containsKey(alias))
+        if (!this.aliases.containsKey(alias))
         {
-            if(this.parent != null)
+            if (this.parent != null)
             {
                 return this.parent.getAlias(alias);
             }
             return Optional.absent();
-        }
-        else
+        } else
         {
             return Optional.of(this.aliases.get(alias));
         }
     }
-    
+
     /**
      * Returns all keys of this collection. Including, if the deep flag is set, all keys of its parent registries as well.
      * 
@@ -123,7 +146,7 @@ public class AliasRegistry
     {
         Set<String> keys = new HashSet<String>();
         keys.addAll(this.aliases.keySet());
-        if(this.parent != null && deep)
+        if (this.parent != null && deep)
         {
             keys.addAll(this.parent.getKeys(true));
         }
@@ -166,10 +189,16 @@ public class AliasRegistry
         }
         return Utilities.getSection(split, 0, split.length - 1);
     }
-    
+
+    /**
+     * Returns a Set of all entries in this registry. Intended for use in serialization only, nor for fetching aliases, use {@link #getAlias(String)}
+     * instead.
+     * 
+     * @return the set of entries
+     */
     public Set<Entry<String, String>> getEntries()
     {
-        return this.aliases.entrySet();
+        return Collections.unmodifiableSet(this.aliases.entrySet());
     }
 
 }

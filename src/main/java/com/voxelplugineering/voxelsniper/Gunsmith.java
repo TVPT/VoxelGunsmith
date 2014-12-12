@@ -262,6 +262,11 @@ public final class Gunsmith
         return compilerFactory;
     }
 
+    /**
+     * Returns the global alias handler.
+     * 
+     * @return the global alias handler
+     */
     public static AliasHandler getGlobalAliasHandler()
     {
         return globalAliasRegistries;
@@ -318,13 +323,12 @@ public final class Gunsmith
         globalAliasRegistries.registerTarget("brush");
 
         File globalAliases = new File(getVoxelSniper().getDataFolder(), "aliases.json");
-        if(globalAliases.exists())
+        if (globalAliases.exists())
         {
             try
             {
                 globalAliasRegistries.load(globalAliases);
-            }
-            catch(IOException e)
+            } catch (IOException e)
             {
                 getLogger().error(e, "Error loading global aliases");
             }
@@ -398,7 +402,7 @@ public final class Gunsmith
         {
             throw new IllegalStateException("VoxelSniper has not been enabled yet, cannot stop!");
         }
-        
+
         File globalAliases = new File(getVoxelSniper().getDataFolder(), "aliases.json");
 
         try

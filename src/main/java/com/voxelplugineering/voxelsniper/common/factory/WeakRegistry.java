@@ -112,7 +112,8 @@ public class WeakRegistry<K, V> implements IRegistry<K, V>
      */
     public Optional<String> getNameForValue(V value)
     {
-        return this.inverseNameRegistry.containsKey(value) ? Optional.<String>of(this.inverseNameRegistry.get(validate(value))) : Optional.<String>absent();
+        return this.inverseNameRegistry.containsKey(value) ? Optional.<String>of(this.inverseNameRegistry.get(validate(value))) : Optional
+                .<String>absent();
     }
 
     /**

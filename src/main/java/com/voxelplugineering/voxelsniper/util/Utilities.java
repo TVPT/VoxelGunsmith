@@ -162,7 +162,7 @@ public class Utilities
         {
             ret[i++] = source[o];
         }
-        
+
         return ret;
     }
 }
