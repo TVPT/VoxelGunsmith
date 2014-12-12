@@ -75,4 +75,11 @@ public interface IVoxelSniper
      */
     ISniperRegistry<?> getPlayerRegistry();
 
+    /**
+     * Returns the scheduler proxy.
+     * 
+     * @return the proxy
+     */
+    ISchedulerProxy getSchedulerProxy();
+
 }

@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
 
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
@@ -52,6 +53,7 @@ import com.voxelplugineering.voxelsniper.config.JsonConfigurationLoader;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.logging.CommonLoggingDistributor;
 import com.voxelplugineering.voxelsniper.util.BrushCompiler;
+import com.voxelplugineering.voxelsniper.world.ChangeQueueTask;
 
 /**
  * The Core of VoxelGunsmith, provides access to handlers and validates initialization is done completely and correctly.
@@ -99,6 +101,7 @@ public final class Gunsmith
      */
     private static GraphCompilerFactory compilerFactory = null;
     private static AliasHandler globalAliasRegistries = null;
+    private static ExecutorService eventBusExecutor;
 
     /**
      * The initialization state of Gunsmith.
@@ -304,7 +307,7 @@ public final class Gunsmith
         Type.registerType("SHAPE", "com/voxelplugineering/voxelsniper/shape/Shape");
 
         //Create the eventBus for all Gunsmith events
-        eventBus = new AsyncEventBus(java.util.concurrent.Executors.newCachedThreadPool());
+        eventBus = new AsyncEventBus(eventBusExecutor = java.util.concurrent.Executors.newCachedThreadPool());
 
         defaultEventHandler = new CommonEventHandler();
         eventBus.register(defaultEventHandler);
@@ -323,17 +326,6 @@ public final class Gunsmith
         globalAliasRegistries = new AliasHandler();
         globalAliasRegistries.registerTarget("brush");
 
-        File globalAliases = new File(getVoxelSniper().getDataFolder(), "aliases.json");
-        if (globalAliases.exists())
-        {
-            try
-            {
-                globalAliasRegistries.load(globalAliases);
-            } catch (IOException e)
-            {
-                getLogger().error(e, "Error loading global aliases");
-            }
-        }
     }
 
     /**
@@ -378,6 +370,20 @@ public final class Gunsmith
                 getLogger().error(e, "Error saving configuration");
             }
         }
+
+        File globalAliases = new File(getVoxelSniper().getDataFolder(), "aliases.json");
+        if (globalAliases.exists())
+        {
+            try
+            {
+                globalAliasRegistries.load(globalAliases);
+            } catch (IOException e)
+            {
+                getLogger().error(e, "Error loading global aliases");
+            }
+        }
+
+        getVoxelSniper().getSchedulerProxy().startSynchronousTask(new ChangeQueueTask(), 100);
 
         getLogger().info("Gunsmith initialization finalized.");
         isPluginEnabled = true;
@@ -435,6 +441,12 @@ public final class Gunsmith
             {
                 Gunsmith.getLogger().error(e, "Error saving player aliases!");
             }
+        }
+
+        if (eventBusExecutor != null)
+        {
+            eventBusExecutor.shutdown();
+            eventBusExecutor = null;
         }
 
         isPluginEnabled = false;

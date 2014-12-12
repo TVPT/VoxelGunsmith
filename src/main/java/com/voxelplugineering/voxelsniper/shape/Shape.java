@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.shape;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +86,23 @@ public class Shape
         this.height = height;
         this.length = length;
         this.origin = new CommonVector(ox, oy, oz);
+    }
+
+    /**
+     * Creates a new shape. The shape is initially all unset.
+     * 
+     * @param width the width
+     * @param height the height
+     * @param length the length
+     * @param origin the origin
+     */
+    public Shape(int width, int height, int length, CommonVector origin)
+    {
+        this.shape = new byte[width][length][height / 8 + 1];
+        this.width = width;
+        this.height = height;
+        this.length = length;
+        this.origin = origin;
     }
 
     /**
@@ -462,4 +480,28 @@ public class Shape
         setOrigin(new CommonVector(this.origin.getX(), 0, this.origin.getZ()));
     }
 
+    /**
+     * Creates a new Shape identical to this one.
+     * 
+     * @return the duplicate shape
+     */
+    @Override
+    public Shape clone()
+    {
+        Shape newShape = new Shape(this.width, this.height, this.length, this.origin);
+        for (int x = 0; x < this.width; x++)
+        {
+            for (int y = 0; y < this.height; y++)
+            {
+                for (int z = 0; z < this.length; z++)
+                {
+                    if (get(x, y, z, false))
+                    {
+                        newShape.set(x, y, z, false);
+                    }
+                }
+            }
+        }
+        return newShape;
+    }
 }

@@ -23,27 +23,21 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
+import com.voxelplugineering.voxelsniper.util.Task;
+
 /**
- * A proxy for the permission system of the specific implementation.
+ * A proxy for a specific implementations scheduler.
  */
-public interface IPermissionProxy
+public interface ISchedulerProxy
 {
 
     /**
-     * Whether the player is an operator, or has a wildcard permission.
+     * Starts a new task synchronized to the main thread of the underlying platform.
      * 
-     * @param sniper the user to check, cannot be null
-     * @return whether they are an operator
+     * @param runnable the task runnable, cannot be null
+     * @param interval the interval, in milliseconds
+     * @return the new task
      */
-    boolean isOp(final ISniper sniper);
-
-    /**
-     * Checks if the user has the given permission node. Supports wildcards as permission nodes are made of a dot-separated sequence of nodes.
-     * 
-     * @param sniper the user to check, cannot be null
-     * @param permission the permission node, cannot be null or empty
-     * @return the result of the check
-     */
-    boolean hasPermission(final ISniper sniper, final String permission);
+    Task startSynchronousTask(Runnable runnable, int interval);
 
 }

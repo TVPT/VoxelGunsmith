@@ -30,7 +30,7 @@ import com.voxelplugineering.voxelsniper.common.CommonPlayer;
  * 
  * @param <T> the underlying Player class
  */
-public interface ISniperRegistry<T> extends IManager, IRegistry<T, CommonPlayer<T>>
+public interface ISniperRegistry<T> extends IRegistry<T, CommonPlayer<T>>
 {
 
     /**

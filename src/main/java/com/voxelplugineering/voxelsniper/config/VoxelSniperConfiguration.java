@@ -30,7 +30,7 @@ public class VoxelSniperConfiguration
 {
     //Default constants
     double rayTraceRange = 250;
-    int blockChangesPerSecond = 160000;
+    int blockChangesPerSecond = 80000;
     int undoHistorySize = 20;
 
     //Default brush settings

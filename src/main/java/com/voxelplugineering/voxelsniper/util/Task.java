@@ -21,29 +21,52 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api;
+package com.voxelplugineering.voxelsniper.util;
 
 /**
- * A proxy for the permission system of the specific implementation.
+ * An abstract task for the scheduler proxy.
  */
-public interface IPermissionProxy
+public abstract class Task
 {
 
-    /**
-     * Whether the player is an operator, or has a wildcard permission.
-     * 
-     * @param sniper the user to check, cannot be null
-     * @return whether they are an operator
-     */
-    boolean isOp(final ISniper sniper);
+    private final Runnable runnable;
+    private final int interval;
 
     /**
-     * Checks if the user has the given permission node. Supports wildcards as permission nodes are made of a dot-separated sequence of nodes.
+     * Creates a new {@link Task}.
      * 
-     * @param sniper the user to check, cannot be null
-     * @param permission the permission node, cannot be null or empty
-     * @return the result of the check
+     * @param runnable the task's runnable
+     * @param interval the interval of the task's execution, in milliseconds
      */
-    boolean hasPermission(final ISniper sniper, final String permission);
+    public Task(Runnable runnable, int interval)
+    {
+        this.runnable = runnable;
+        this.interval = interval;
+    }
+
+    /**
+     * Returns the task's runnable.
+     * 
+     * @return the runnable
+     */
+    public Runnable getRunnable()
+    {
+        return this.runnable;
+    }
+
+    /**
+     * The task's interval in milliseconds.
+     * 
+     * @return the interval
+     */
+    public int getInterval()
+    {
+        return this.interval;
+    }
+
+    /**
+     * Cancels this task.
+     */
+    public abstract void cancel();
 
 }

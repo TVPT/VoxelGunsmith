@@ -69,7 +69,7 @@ public class ShapeChangeQueue extends ChangeQueue
         super(sniper, origin.getWorld());
         this.origin = origin.add(-shape.getOrigin().getX(), -shape.getOrigin().getY(), -shape.getOrigin().getZ());
         this.state = ExecutionState.UNSTARTED;
-        this.shape = shape;
+        this.shape = shape.clone();
         this.material = material;
     }
 
@@ -121,13 +121,12 @@ public class ShapeChangeQueue extends ChangeQueue
                 {
                     for (int z = 0; z < this.shape.getLength(); z++)
                     {
-                        if (this.shape.get(x, y, z, false)
-                                && (getWorld()
-                                        .getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ())
-                                        .get().getMaterial().isLiquid() || getWorld()
-                                        .getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ())
-                                        .get().getMaterial().isReliantOnEnvironment()))
+                        CommonMaterial<?> material =
+                                getWorld().getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ())
+                                        .get().getMaterial();
+                        if (this.shape.get(x, y, z, false) && (material.isLiquid() || material.isReliantOnEnvironment()))
                         {
+                            this.shape.unset(x, y, z, false);
                             getWorld().setBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ(),
                                     this.material);
                         }
@@ -137,19 +136,16 @@ public class ShapeChangeQueue extends ChangeQueue
             this.state = ExecutionState.INCREMENTAL;
         } else if (this.state == ExecutionState.INCREMENTAL)
         {
-            Gunsmith.getLogger().info("Position at " + this.position);
+            //Gunsmith.getLogger().info("Position at " + this.position);
             for (; this.position < this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength() && count < next; this.position++)
             {
                 int z = (int) (this.position / (this.shape.getWidth() * this.shape.getHeight()));
                 int y = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) / this.shape.getWidth());
                 int x = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) % this.shape.getWidth());
-                if (this.shape.get(x, y, z, false)
-                        && !getWorld().getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ()).get()
-                                .getMaterial().isLiquid()
-                        && !getWorld().getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ()).get()
-                                .getMaterial().isReliantOnEnvironment())
+                if (this.shape.get(x, y, z, false))
                 {
                     count++;
+                    this.shape.unset(x, y, z, false);
                     getWorld().setBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ(), this.material);
                 }
             }
