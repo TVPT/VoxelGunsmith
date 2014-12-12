@@ -61,16 +61,16 @@ public class CommonEventHandler
     @AllowConcurrentEvents
     public void onPlayerJoin(SniperCreateEvent event)
     {
-        ISniper s = event.getSniper();
+        ISniper player = event.getSniper();
         //TODO use UUID for directory name
-        File playerFolder = new File(Gunsmith.getVoxelSniper().getDataFolder(), "players/" + s.getName());
+        File playerFolder = new File(Gunsmith.getVoxelSniper().getDataFolder(), "players/" + player.getName());
         playerFolder.mkdirs();
         File aliases = new File(playerFolder, "aliases.json");
         if (aliases.exists())
         {
             try
             {
-                s.getPersonalAliasHandler().load(aliases);
+                player.getPersonalAliasHandler().load(aliases);
             } catch (IOException e)
             {
                 Gunsmith.getLogger().error(e, "Error loading player aliases!");
@@ -85,8 +85,8 @@ public class CommonEventHandler
      */
     public void onPlayerLeave(SniperDestroyEvent event)
     {
-        ISniper s = event.getSniper();
-        File playerFolder = new File(Gunsmith.getVoxelSniper().getDataFolder(), "players/" + s.getName());
+        ISniper player = event.getSniper();
+        File playerFolder = new File(Gunsmith.getVoxelSniper().getDataFolder(), "players/" + player.getName());
         File aliases = new File(playerFolder, "aliases.json");
 
         try
@@ -95,7 +95,7 @@ public class CommonEventHandler
             {
                 aliases.createNewFile();
             }
-            s.getPersonalAliasHandler().save(aliases);
+            player.getPersonalAliasHandler().save(aliases);
         } catch (IOException e)
         {
             Gunsmith.getLogger().error(e, "Error saving player aliases!");

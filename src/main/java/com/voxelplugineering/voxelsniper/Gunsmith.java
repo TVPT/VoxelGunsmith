@@ -41,6 +41,7 @@ import com.voxelplugineering.voxelsniper.api.IBrushManager;
 import com.voxelplugineering.voxelsniper.api.IConfiguration;
 import com.voxelplugineering.voxelsniper.api.ILogger;
 import com.voxelplugineering.voxelsniper.api.ILoggingDistributor;
+import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.api.IVoxelSniper;
 import com.voxelplugineering.voxelsniper.common.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.common.command.CommandHandler;
@@ -415,6 +416,25 @@ public final class Gunsmith
         } catch (IOException e)
         {
             getLogger().error(e, "Error saving global aliases");
+        }
+
+        //save all player's personal aliases
+        for (ISniper player : getVoxelSniper().getPlayerRegistry().getRegisteredValues())
+        {
+            File playerFolder = new File(Gunsmith.getVoxelSniper().getDataFolder(), "players/" + player.getName());
+            File aliases = new File(playerFolder, "aliases.json");
+
+            try
+            {
+                if (aliases.exists())
+                {
+                    aliases.createNewFile();
+                }
+                player.getPersonalAliasHandler().save(aliases);
+            } catch (IOException e)
+            {
+                Gunsmith.getLogger().error(e, "Error saving player aliases!");
+            }
         }
 
         isPluginEnabled = false;
