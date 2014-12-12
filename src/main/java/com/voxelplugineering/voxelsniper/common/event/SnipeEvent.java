@@ -30,9 +30,8 @@ import com.voxelplugineering.voxelsniper.api.ISniper;
 /**
  * The event for a sniper action.
  */
-public class SnipeEvent extends CommonEvent
+public class SnipeEvent extends SniperEvent
 {
-    private final ISniper sniper;
     private final double yaw;
     private final double pitch;
 
@@ -46,19 +45,9 @@ public class SnipeEvent extends CommonEvent
     public SnipeEvent(ISniper sniper, double y, double p)
     {
         checkNotNull(sniper, "Sniper cannot be null!");
-        this.sniper = sniper;
+        setSniper(sniper);
         this.yaw = y;
         this.pitch = p;
-    }
-
-    /**
-     * Returns the player who sent this snipe.
-     * 
-     * @return the player
-     */
-    public ISniper getSniper()
-    {
-        return this.sniper;
     }
 
     /**

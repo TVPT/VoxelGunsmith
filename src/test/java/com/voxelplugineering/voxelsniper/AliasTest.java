@@ -1,10 +1,15 @@
 package com.voxelplugineering.voxelsniper;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.voxelplugineering.voxelsniper.common.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.common.alias.AliasRegistry;
 
 /**
@@ -133,5 +138,27 @@ public class AliasTest
         assertEquals("test absd def", child.expand(init));
         
         alias.clear();
+    }
+    
+    @Test
+    public void testSave() throws IOException
+    {
+        File f = new File("test.json");
+        AliasHandler handler = new AliasHandler();
+        handler.registerTarget("test");
+        AliasRegistry testReg = handler.getRegistry("test").get();
+        testReg.register("abc", "rawr");
+        testReg.register("abs", "dbh");
+        testReg.register("af", "he");
+        testReg.register("ag", "sdf");
+        assertTrue(testReg.getAlias("abc").isPresent());
+        handler.save(f);
+        testReg.clear();
+        assertTrue(!testReg.getAlias("abc").isPresent());
+        handler.load(f);
+        assertEquals(testReg.getAlias("abc").get(), "rawr");
+        assertEquals(testReg.getAlias("abs").get(), "dbh");
+        assertEquals(testReg.getAlias("af").get(), "he");
+        assertEquals(testReg.getAlias("ag").get(), "sdf");
     }
 }

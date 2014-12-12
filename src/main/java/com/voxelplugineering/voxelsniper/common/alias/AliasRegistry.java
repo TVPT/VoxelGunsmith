@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -164,6 +165,11 @@ public class AliasRegistry
             }
         }
         return Utilities.getSection(split, 0, split.length - 1);
+    }
+    
+    public Set<Entry<String, String>> getEntries()
+    {
+        return this.aliases.entrySet();
     }
 
 }

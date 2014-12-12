@@ -23,6 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.common.event;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
@@ -58,7 +61,40 @@ public class CommonEventHandler
     @AllowConcurrentEvents
     public void onPlayerJoin(SniperCreateEvent event)
     {
-        event.getSniper();
+        ISniper s = event.getSniper();
+        //TODO use UUID for directory name
+        File playerFolder = new File(Gunsmith.getVoxelSniper().getDataFolder(), "players/" + s.getName());
+        playerFolder.mkdirs();
+        File aliases = new File(playerFolder, "aliases.json");
+        if (aliases.exists())
+        {
+            try
+            {
+                s.getPersonalAliasHandler().load(aliases);
+            } catch (IOException e)
+            {
+                Gunsmith.getLogger().error(e, "Error loading player aliases!");
+            }
+        }
+    }
+
+    public void onPlayerLeave(SniperDestroyEvent event)
+    {
+        ISniper s = event.getSniper();
+        File playerFolder = new File(Gunsmith.getVoxelSniper().getDataFolder(), "players/" + s.getName());
+        File aliases = new File(playerFolder, "aliases.json");
+
+        try
+        {
+            if (aliases.exists())
+            {
+                aliases.createNewFile();
+            }
+            s.getPersonalAliasHandler().save(aliases);
+        } catch (IOException e)
+        {
+            Gunsmith.getLogger().error(e, "Error saving player aliases!");
+        }
     }
 
     /**

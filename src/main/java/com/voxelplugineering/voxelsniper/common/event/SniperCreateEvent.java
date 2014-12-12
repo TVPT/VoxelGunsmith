@@ -30,13 +30,8 @@ import com.voxelplugineering.voxelsniper.api.ISniper;
 /**
  * The event for the creation of a new user in a multi-user environment.
  */
-public class SniperCreateEvent extends CommonEvent
+public class SniperCreateEvent extends SniperEvent
 {
-
-    /**
-     * The new sniper.
-     */
-    private final ISniper sniper;
 
     /**
      * Creates a new SniperCreateEvent
@@ -46,17 +41,7 @@ public class SniperCreateEvent extends CommonEvent
     public SniperCreateEvent(ISniper sniper)
     {
         checkNotNull(sniper, "Sniper cannot be null!");
-        this.sniper = sniper;
-    }
-
-    /**
-     * Returns the new sniper.
-     * 
-     * @return the sniper
-     */
-    public ISniper getSniper()
-    {
-        return this.sniper;
+        setSniper(sniper);
     }
 
 }

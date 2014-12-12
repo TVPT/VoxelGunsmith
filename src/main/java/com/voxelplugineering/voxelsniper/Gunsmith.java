@@ -261,7 +261,7 @@ public final class Gunsmith
     {
         return compilerFactory;
     }
-    
+
     public static AliasHandler getGlobalAliasHandler()
     {
         return globalAliasRegistries;
@@ -313,9 +313,22 @@ public final class Gunsmith
         //Setup the VSL graph compiler
         compilerFactory = new GraphCompilerFactory();
         compilerFactory.registerCompiler(IBrush.class, new BrushCompiler()); //the compiler for all brushes
-        
+
         globalAliasRegistries = new AliasHandler();
         globalAliasRegistries.registerTarget("brush");
+
+        File globalAliases = new File(getVoxelSniper().getDataFolder(), "aliases.json");
+        if(globalAliases.exists())
+        {
+            try
+            {
+                globalAliasRegistries.load(globalAliases);
+            }
+            catch(IOException e)
+            {
+                getLogger().error(e, "Error loading global aliases");
+            }
+        }
     }
 
     /**
@@ -385,6 +398,21 @@ public final class Gunsmith
         {
             throw new IllegalStateException("VoxelSniper has not been enabled yet, cannot stop!");
         }
+        
+        File globalAliases = new File(getVoxelSniper().getDataFolder(), "aliases.json");
+
+        try
+        {
+            if (!globalAliases.exists())
+            {
+                globalAliases.createNewFile();
+            }
+            getGlobalAliasHandler().save(globalAliases);
+        } catch (IOException e)
+        {
+            getLogger().error(e, "Error saving global aliases");
+        }
+
         isPluginEnabled = false;
         plugin = null;
         defaultBrushLoader = null;
