@@ -63,7 +63,7 @@ public class CommonEventHandler
     {
         ISniper player = event.getSniper();
         //TODO use UUID for directory name
-        File playerFolder = new File(Gunsmith.getVoxelSniper().getDataFolder(), "players/" + player.getName());
+        File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), "players/" + player.getName());
         playerFolder.mkdirs();
         File aliases = new File(playerFolder, "aliases.json");
         if (aliases.exists())
@@ -86,7 +86,7 @@ public class CommonEventHandler
     public void onPlayerLeave(SniperDestroyEvent event)
     {
         ISniper player = event.getSniper();
-        File playerFolder = new File(Gunsmith.getVoxelSniper().getDataFolder(), "players/" + player.getName());
+        File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), "players/" + player.getName());
         File aliases = new File(playerFolder, "aliases.json");
 
         try

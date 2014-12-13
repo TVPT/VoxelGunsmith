@@ -165,4 +165,16 @@ public class Utilities
 
         return ret;
     }
+
+    /**
+     * Floors the number.
+     *
+     * @param num The double to floor
+     * @return The floored integer
+     */
+    public static int floor(double num)
+    {
+        final int floor = (int) num;
+        return floor == num ? floor : floor - (int) (Double.doubleToRawLongBits(num) >>> 63);
+    }
 }

@@ -53,6 +53,10 @@ dependencies {
 	compile 'org.apache.logging.log4j:log4j-core:2.1'
 }
 
+javadoc {
+    exclude '**/org/mcstats/**'
+}
+
 // Generates javadoc.jar
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier 'javadoc'
@@ -172,6 +176,7 @@ license {
     mapping {
         java = 'SLASHSTAR_STYLE'
     }
+    exclude("**/Metrics*")
 }
 
 
@@ -196,6 +201,12 @@ jar {
                 "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
                 "Implementation-Vendor": url
         )
+    }
+}
+
+checkstyleMain{
+    source = sourceSets.main.allJava.matching{
+        exclude '**/org/mcstats/**/*'
     }
 }
 

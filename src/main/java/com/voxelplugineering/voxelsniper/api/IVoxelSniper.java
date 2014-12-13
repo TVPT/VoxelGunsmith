@@ -23,8 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
-import java.io.File;
-
 import com.voxelplugineering.voxelsniper.common.CommonWorld;
 
 /**
@@ -32,28 +30,6 @@ import com.voxelplugineering.voxelsniper.common.CommonWorld;
  */
 public interface IVoxelSniper
 {
-
-    /**
-     * Returns the ClassLoader used to load Gunsmith and its libraries.
-     * 
-     * @return the classloader
-     */
-    ClassLoader getGunsmithClassLoader();
-
-    /**
-     * Returns the main thread of VoxelSniper.
-     * 
-     * @return the thread
-     */
-    Thread getMainThread();
-
-    /**
-     * Returns the main storage directory for data.
-     * 
-     * @return the data folder
-     */
-    File getDataFolder();
-
     /**
      * Returns the permissions proxy.
      * 

@@ -42,6 +42,7 @@ import com.voxelplugineering.voxelsniper.api.IBrushManager;
 import com.voxelplugineering.voxelsniper.api.IConfiguration;
 import com.voxelplugineering.voxelsniper.api.ILogger;
 import com.voxelplugineering.voxelsniper.api.ILoggingDistributor;
+import com.voxelplugineering.voxelsniper.api.IPlatformProxy;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.api.IVoxelSniper;
 import com.voxelplugineering.voxelsniper.common.alias.AliasHandler;
@@ -102,6 +103,7 @@ public final class Gunsmith
     private static GraphCompilerFactory compilerFactory = null;
     private static AliasHandler globalAliasRegistries = null;
     private static ExecutorService eventBusExecutor;
+    private static IPlatformProxy platformProxy = null;
 
     /**
      * The initialization state of Gunsmith.
@@ -118,6 +120,18 @@ public final class Gunsmith
         checkNotNull(sniper, "Cannot set a null plugin!");
         check();
         Gunsmith.plugin = sniper;
+    }
+
+    /**
+     * Sets the Platform proxy to be used.
+     *
+     * @param proxy Implementation of IPlatformProxy to be used
+     */
+    public static void setPlatform(IPlatformProxy proxy)
+    {
+        checkNotNull(proxy, "Cannot set a null proxy!");
+        check();
+        Gunsmith.platformProxy = proxy;
     }
 
     /**
@@ -164,6 +178,16 @@ public final class Gunsmith
     public static IVoxelSniper getVoxelSniper()
     {
         return plugin;
+    }
+
+    /**
+     * Gets the instance of the implementation of IPlatformProxy.
+     *
+     * @return The instance of the implementation of IPlatformProxy
+     */
+    public static IPlatformProxy getPlatformProxy()
+    {
+        return platformProxy;
     }
 
     /**
@@ -340,7 +364,7 @@ public final class Gunsmith
             throw new IllegalStateException("VoxelSniper was not properly setup while loading");
         }
 
-        File config = new File(plugin.getDataFolder(), "VoxelSniperConfiguration.json");
+        File config = new File(platformProxy.getDataFolder(), "VoxelSniperConfiguration.json");
         if (config.exists())
         {
             try
@@ -371,7 +395,7 @@ public final class Gunsmith
             }
         }
 
-        File globalAliases = new File(getVoxelSniper().getDataFolder(), "aliases.json");
+        File globalAliases = new File(platformProxy.getDataFolder(), "aliases.json");
         if (globalAliases.exists())
         {
             try
@@ -410,7 +434,7 @@ public final class Gunsmith
             throw new IllegalStateException("VoxelSniper has not been enabled yet, cannot stop!");
         }
 
-        File globalAliases = new File(getVoxelSniper().getDataFolder(), "aliases.json");
+        File globalAliases = new File(platformProxy.getDataFolder(), "aliases.json");
 
         try
         {
@@ -427,7 +451,7 @@ public final class Gunsmith
         //save all player's personal aliases
         for (ISniper player : getVoxelSniper().getPlayerRegistry().getRegisteredValues())
         {
-            File playerFolder = new File(Gunsmith.getVoxelSniper().getDataFolder(), "players/" + player.getName());
+            File playerFolder = new File(Gunsmith.platformProxy.getDataFolder(), "players/" + player.getName());
             File aliases = new File(playerFolder, "aliases.json");
 
             try

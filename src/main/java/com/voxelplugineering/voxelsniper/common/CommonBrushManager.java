@@ -74,7 +74,7 @@ public class CommonBrushManager implements IBrushManager
         {
             Gunsmith.getLogger().warn("Created Brush Manager before default BrushLoader was set.");
         }
-        this.classLoader = new ASMClassLoader(Gunsmith.getVoxelSniper().getGunsmithClassLoader(), Gunsmith.getCompilerFactory());
+        this.classLoader = new ASMClassLoader(Gunsmith.getPlatformProxy().getGunsmithClassLoader(), Gunsmith.getCompilerFactory());
     }
 
     /**
