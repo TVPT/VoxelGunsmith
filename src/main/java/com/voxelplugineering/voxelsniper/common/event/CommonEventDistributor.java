@@ -23,15 +23,51 @@
  */
 package com.voxelplugineering.voxelsniper.common.event;
 
-/**
- * The base event class.
- */
-public class CommonEvent
-{
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    public boolean wantsResponce()
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+
+import com.google.common.base.Optional;
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.EventBus;
+import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.IEventDistributor;
+
+/**
+ * A standard {@link IEventDistributor}. This is intended to act as a distribution point for event distribution to platform-specific event
+ * distributors or to platforms/extensions without their own event systems.
+ */
+public class CommonEventDistributor implements IEventDistributor
+{
+    
+    ExecutorService ex = java.util.concurrent.Executors.newCachedThreadPool();
+
+    @Override
+    public void register(Class<?> rec)
     {
-        return false;
+        
+        
+        
     }
 
+    @Override
+    public void callEvent(CommonEvent event)
+    {
+        ex.
+    }
+
+
+
+}
+
+class Handler
+{
+    
+
+    
 }

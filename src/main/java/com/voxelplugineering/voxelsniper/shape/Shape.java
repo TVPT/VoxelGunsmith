@@ -106,7 +106,8 @@ public class Shape
     }
 
     /**
-     * Returns the width of this shape (x-axis size).
+     * Returns the width of this shape (x-axis size). Note that this is not the width of the region set, but rather the width of the total possible
+     * volume.
      * 
      * @return the width
      */
@@ -116,7 +117,8 @@ public class Shape
     }
 
     /**
-     * Returns the height of this shape (y-axis size).
+     * Returns the height of this shape (y-axis size). Note that this is not the height of the region set, but rather the height of the total possible
+     * volume.
      * 
      * @return the height
      */
@@ -126,7 +128,8 @@ public class Shape
     }
 
     /**
-     * Returns the length of this shape (z-axis size).
+     * Returns the length of this shape (z-axis size). Note that this is not the length of the region set, but rather the length of the total possible
+     * volume.
      * 
      * @return the length
      */
@@ -221,7 +224,7 @@ public class Shape
         }
         if (x >= this.width || x < 0 || y >= this.height || y < 0 || z >= this.length || z < 0)
         {
-            throw new ArrayIndexOutOfBoundsException("Tried to set point outside of the shape. (" + x + ", " + y + ", " + z + ")");
+            return false; //ArrayIndexOutOfBounds exception is good for a set operation, but for a get it should just fail silently and return false
         }
         return ((this.shape[x][z][y / 8] >> y % 8) & 1) == 1;
     }

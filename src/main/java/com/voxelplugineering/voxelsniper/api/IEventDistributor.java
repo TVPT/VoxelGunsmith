@@ -21,17 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.common.event;
+package com.voxelplugineering.voxelsniper.api;
+
+import com.voxelplugineering.voxelsniper.common.event.CommonEvent;
 
 /**
- * The base event class.
+ * A registry for event receivers.
  */
-public class CommonEvent
+public interface IEventDistributor
 {
 
-    public boolean wantsResponce()
-    {
-        return false;
-    }
+    /**
+     * Registers a new event receiver with this registry.
+     * 
+     * @param rec the new receiver
+     */
+    void register(Class<?> rec);
+    
+    void callEvent(CommonEvent event);
 
 }

@@ -55,18 +55,6 @@ public class ShapeMaterialSetNode extends ExecutableNode implements Opcodes
     @Override
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {
-        /*
-            ALOAD sniper
-            INVOKEINTERFACE com/voxelplugineering/voxelsniper/api/ISniper.getPersonalQueue 
-                    ()Lcom/voxelplugineering/voxelsniper/world/BlockChangeQueue;
-            NEW com/voxelplugineering/voxelsniper/world/BlockChange
-            DUP
-            ALOAD target
-            ALOAD material
-            INVOKESPECIAL com/voxelplugineering/voxelsniper/world/BlockChange.<init> (Lcom/voxelplugineering/voxelsniper/common/CommonBlock;
-                    Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;)V
-            INVOKEVIRTUAL com/voxelplugineering/voxelsniper/world/BlockChangeQueue.add (Lcom/voxelplugineering/voxelsniper/world/BlockChange;)V
-         */
         int target = getInput("target").getSource().get();
         int shape = getInput("shape").getSource().get();
         int material = getInput("material").getSource().get();
@@ -74,12 +62,24 @@ public class ShapeMaterialSetNode extends ExecutableNode implements Opcodes
         mv.visitInsn(DUP);
         mv.visitVarInsn(ALOAD, 2);
         mv.visitVarInsn(ALOAD, target);
+        mv.visitTypeInsn(NEW, "com/voxelplugineering/voxelsniper/shape/MaterialShape");
+        mv.visitInsn(DUP);
         mv.visitVarInsn(ALOAD, shape);
         mv.visitVarInsn(ALOAD, material);
+        mv.visitMethodInsn(INVOKESPECIAL, "com/voxelplugineering/voxelsniper/shape/MaterialShape", "<init>",
+                "(Lcom/voxelplugineering/voxelsniper/shape/Shape;Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;)V", false);
         mv.visitMethodInsn(INVOKESPECIAL, "com/voxelplugineering/voxelsniper/world/ShapeChangeQueue", "<init>",
                 "(Lcom/voxelplugineering/voxelsniper/api/ISniper;Lcom/voxelplugineering/voxelsniper/common/CommonLocation;"
-                        + "Lcom/voxelplugineering/voxelsniper/shape/Shape;Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;)V", false);
+                        + "Lcom/voxelplugineering/voxelsniper/shape/MaterialShape;)V", false);
         mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/world/ShapeChangeQueue", "flush", "()V", false);
         return localsIndex;
     }
+
+    /*    public void run(IVariableScope vars, ISniper sniper)
+        {
+            CommonLocation target = null;
+            Shape shape = null;
+            CommonMaterial<?> material = null;
+            new ShapeChangeQueue(sniper, target, new MaterialShape(shape, material)).flush();
+        }*/
 }

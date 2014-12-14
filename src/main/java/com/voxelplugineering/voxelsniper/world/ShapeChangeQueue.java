@@ -23,11 +23,11 @@
  */
 package com.voxelplugineering.voxelsniper.world;
 
-import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
 import com.voxelplugineering.voxelsniper.common.CommonMaterial;
-import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 
 /**
  * A special change queue for setting all of a shape to a single material.
@@ -38,11 +38,7 @@ public class ShapeChangeQueue extends ChangeQueue
     /**
      * The shape to change.
      */
-    private Shape shape;
-    /**
-     * The material to set the shape to.
-     */
-    private CommonMaterial<?> material;
+    private MaterialShape shape;
     /**
      * The origin to set the shape relative to.
      */
@@ -62,15 +58,13 @@ public class ShapeChangeQueue extends ChangeQueue
      * @param sniper the owner
      * @param origin the origin of the shape in the world
      * @param shape the shape
-     * @param material the material to set the shape to
      */
-    public ShapeChangeQueue(ISniper sniper, CommonLocation origin, Shape shape, CommonMaterial<?> material)
+    public ShapeChangeQueue(ISniper sniper, CommonLocation origin, MaterialShape shape)
     {
         super(sniper, origin.getWorld());
         this.origin = origin.add(-shape.getOrigin().getX(), -shape.getOrigin().getY(), -shape.getOrigin().getZ());
         this.state = ExecutionState.UNSTARTED;
-        this.shape = shape.clone();
-        this.material = material;
+        this.shape = shape;
     }
 
     /**
@@ -121,14 +115,14 @@ public class ShapeChangeQueue extends ChangeQueue
                 {
                     for (int z = 0; z < this.shape.getLength(); z++)
                     {
-                        CommonMaterial<?> material =
+                        CommonMaterial<?> existingMaterial =
                                 getWorld().getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ())
                                         .get().getMaterial();
-                        if (this.shape.get(x, y, z, false) && (material.isLiquid() || material.isReliantOnEnvironment()))
+                        Optional<CommonMaterial<?>> newMaterial = this.shape.get(x, y, z, false);
+                        if (newMaterial.isPresent() && (existingMaterial.isLiquid() || existingMaterial.isReliantOnEnvironment()))
                         {
-                            this.shape.unset(x, y, z, false);
                             getWorld().setBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ(),
-                                    this.material);
+                                    newMaterial.get());
                         }
                     }
                 }
@@ -142,11 +136,15 @@ public class ShapeChangeQueue extends ChangeQueue
                 int z = (int) (this.position / (this.shape.getWidth() * this.shape.getHeight()));
                 int y = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) / this.shape.getWidth());
                 int x = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) % this.shape.getWidth());
-                if (this.shape.get(x, y, z, false))
+                CommonMaterial<?> existingMaterial =
+                        getWorld().getBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ()).get()
+                                .getMaterial();
+                Optional<CommonMaterial<?>> newMaterial = this.shape.get(x, y, z, false);
+                if (newMaterial.isPresent() && !(existingMaterial.isLiquid() || existingMaterial.isReliantOnEnvironment()))
                 {
                     count++;
-                    this.shape.unset(x, y, z, false);
-                    getWorld().setBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ(), this.material);
+                    getWorld().setBlockAt(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ(),
+                            newMaterial.get());
                 }
             }
             if (this.position == this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength())
