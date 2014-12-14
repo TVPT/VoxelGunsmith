@@ -60,9 +60,9 @@ public class ChangeQueueTask implements Runnable
                 continue;
             }
             int allocation = remaining / (n--);
-            //For the frankly hilarious case where there are more pending change queues than blocks allocated per tick we simple set the allocation to a minimum of 1
-            //which will at least do something slowly rather than nothing
-            if(allocation < 0)
+            //For the frankly hilarious case where there are more pending change queues than blocks allocated per tick we simple set the 
+            //allocation to a minimum of 1 which will at least do something slowly rather than nothing
+            if (allocation < 0)
             {
                 allocation = 1;
             }

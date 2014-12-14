@@ -139,7 +139,6 @@ public final class SniperStats extends Metrics implements IManager
                 }
             });
 
-
             final Graph brushUsageGraph = createGraph("Brush Usage");
 
             for (final Map.Entry<String, Integer> entry : brushUsageCounter.entrySet())
@@ -173,7 +172,8 @@ public final class SniperStats extends Metrics implements IManager
         try
         {
             disable();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             Gunsmith.getLogger().warn("Failed to terminate Metrics!");
         }
     }
