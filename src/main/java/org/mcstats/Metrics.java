@@ -155,7 +155,7 @@ public abstract class Metrics {
      *
      * @return
      */
-    public abstract String getFullServerVersion();
+    public abstract String getServerVersion();
 
     /**
      * Get the amount of players online
@@ -347,7 +347,7 @@ public abstract class Metrics {
      * Generic method that posts a plugin to the metrics website
      */
     private void postPlugin(final boolean isPing) throws IOException {
-        String serverVersion = getFullServerVersion();
+        String serverVersion = getServerVersion();
         int playersOnline = getPlayersOnline();
 
         // END server software specific section -- all code below does not use any code outside of this class / Java

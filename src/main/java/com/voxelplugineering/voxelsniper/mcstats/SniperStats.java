@@ -86,24 +86,36 @@ public final class SniperStats extends Metrics implements IManager
         super("VoxelSniper", pluginVersion);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public String getFullServerVersion()
+    public String getServerVersion()
     {
-        return Gunsmith.getPlatformProxy().getFullVersion();
+        return Gunsmith.getPlatformProxy().getVersion();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getPlayersOnline()
     {
         return Gunsmith.getPlatformProxy().getNumberOfPlayersOnline();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public File getConfigFile()
     {
         return Gunsmith.getPlatformProxy().getMetricsFile();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void init()
     {
@@ -166,6 +178,9 @@ public final class SniperStats extends Metrics implements IManager
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop()
     {
@@ -178,6 +193,9 @@ public final class SniperStats extends Metrics implements IManager
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void restart()
     {
