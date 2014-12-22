@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes;
+package com.voxelplugineering.voxelsniper.nodes.world;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -32,25 +32,24 @@ import com.thevoxelbox.vsl.type.Type;
 import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
- * Offsets a location by a given vector offset. Equivalent to {@code location.add(vector.getX(), vector.getY(), vector.getZ());}
+ * A node for retrieving a block from a location. Equivalent to {@code location.getWorld().getBlockAt(location);}
  */
-public class LocationOffsetNode extends Node implements Opcodes
+public class GetBlockFromLocationNode extends Node implements Opcodes
 {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -5841162432155578520L;
+    private static final long serialVersionUID = -2082923297938385218L;
 
     /**
      * Create a new node.
      */
-    public LocationOffsetNode()
+    public GetBlockFromLocationNode()
     {
-        super("Location offset", "vector");
+        super("Block Get From World", "world");
         addInput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), true, null);
-        addInput("offset", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
-        addOutput("result", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), this);
+        addOutput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE).get(), this);
     }
 
     /**
@@ -60,19 +59,15 @@ public class LocationOffsetNode extends Node implements Opcodes
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {
         int location = getInput("location").getSource().get();
-        int offset = getInput("offset").getSource().get();
 
         mv.visitVarInsn(ALOAD, location);
-        mv.visitVarInsn(ALOAD, offset);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getX", "()D", false);
-        mv.visitVarInsn(ALOAD, offset);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getY", "()D", false);
-        mv.visitVarInsn(ALOAD, offset);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getZ", "()D", false);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "add",
-                "(DDD)Lcom/voxelplugineering/voxelsniper/common/CommonLocation;", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getWorld",
+                "()Lcom/voxelplugineering/voxelsniper/common/CommonWorld;", false);
+        mv.visitVarInsn(ALOAD, location);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonWorld", "getBlockAt",
+                "(Lcom/voxelplugineering/voxelsniper/common/CommonLocation;)Lcom/voxelplugineering/voxelsniper/common/CommonBlock;", false);
         mv.visitVarInsn(ASTORE, localsIndex);
-        setOutput("result", localsIndex);
+        setOutput("block", localsIndex);
         return localsIndex + 1;
     }
 }

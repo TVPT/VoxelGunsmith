@@ -43,19 +43,19 @@ import com.thevoxelbox.vsl.type.TypeDepth;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.IBrushManager;
-import com.voxelplugineering.voxelsniper.nodes.BlockBreakNode;
-import com.voxelplugineering.voxelsniper.nodes.GetBlockFromLocationNode;
-import com.voxelplugineering.voxelsniper.nodes.LocationOffsetNode;
-import com.voxelplugineering.voxelsniper.nodes.MaterialCompareNode;
-import com.voxelplugineering.voxelsniper.nodes.SetBiomeNode;
-import com.voxelplugineering.voxelsniper.nodes.ShapeForEachNode;
-import com.voxelplugineering.voxelsniper.nodes.ShapeMaterialSetNode;
+import com.voxelplugineering.voxelsniper.nodes.block.BlockBreakNode;
+import com.voxelplugineering.voxelsniper.nodes.material.MaterialCompareNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.DiscShapeNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.FlattenShapeNode;
+import com.voxelplugineering.voxelsniper.nodes.shape.ShapeForEachNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.ShapeSetNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.ShapeUnsetNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.SphereShapeNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.VoxelShapeNode;
+import com.voxelplugineering.voxelsniper.nodes.vector.LocationOffsetNode;
+import com.voxelplugineering.voxelsniper.nodes.world.GetBlockFromLocationNode;
+import com.voxelplugineering.voxelsniper.nodes.world.SetBiomeNode;
+import com.voxelplugineering.voxelsniper.nodes.world.ShapeMaterialSetNode;
 
 /**
  * In lieu of having flat file brushes this will temporarily serve as a builder for brushes at runtime for debugging during development.

@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
+import com.google.common.base.Optional;
+import com.sun.istack.internal.Nullable;
 import com.voxelplugineering.voxelsniper.common.CommonWorld;
 
 /**
@@ -57,5 +59,7 @@ public interface IVoxelSniper
      * @return the proxy
      */
     ISchedulerProxy getSchedulerProxy();
+    
+    Optional<IMaterialRegistry<?>> getMaterialRegistry(@Nullable CommonWorld<?> world);
 
 }

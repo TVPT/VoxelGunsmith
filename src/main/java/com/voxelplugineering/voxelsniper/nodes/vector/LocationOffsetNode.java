@@ -21,31 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes;
+package com.voxelplugineering.voxelsniper.nodes.vector;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.ExecutableNode;
+import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.type.Type;
 import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
- * A node for setting the biome of a world at a location.
+ * Offsets a location by a given vector offset. Equivalent to {@code location.add(vector.getX(), vector.getY(), vector.getZ());}
  */
-public class SetBiomeNode extends ExecutableNode implements Opcodes
+public class LocationOffsetNode extends Node implements Opcodes
 {
-    private static final long serialVersionUID = 4934446335692436694L;
 
     /**
-     * Creates a new {@link SetBiomeNode}.
+     * 
      */
-    public SetBiomeNode()
+    private static final long serialVersionUID = -5841162432155578520L;
+
+    /**
+     * Create a new node.
+     */
+    public LocationOffsetNode()
     {
-        super("Set biome", "world");
+        super("Location offset", "vector");
         addInput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), true, null);
-        addInput("biome", Type.STRING, true, null);
+        addInput("offset", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
+        addOutput("result", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), this);
     }
 
     /**
@@ -55,17 +60,19 @@ public class SetBiomeNode extends ExecutableNode implements Opcodes
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {
         int location = getInput("location").getSource().get();
-        int biome = getInput("biome").getSource().get();
-        mv.visitVarInsn(ALOAD, location);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getWorld",
-                "()Lcom/voxelplugineering/voxelsniper/common/CommonWorld;", false);
-        mv.visitVarInsn(ALOAD, location);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getFlooredX", "()I", false);
-        mv.visitVarInsn(ALOAD, location);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getFlooredZ", "()I", false);
-        mv.visitVarInsn(ALOAD, biome);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonWorld", "setBiomeAt", "(IILjava/lang/String;)V", false);
-        return localsIndex;
-    }
+        int offset = getInput("offset").getSource().get();
 
+        mv.visitVarInsn(ALOAD, location);
+        mv.visitVarInsn(ALOAD, offset);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getX", "()D", false);
+        mv.visitVarInsn(ALOAD, offset);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getY", "()D", false);
+        mv.visitVarInsn(ALOAD, offset);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getZ", "()D", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "add",
+                "(DDD)Lcom/voxelplugineering/voxelsniper/common/CommonLocation;", false);
+        mv.visitVarInsn(ASTORE, localsIndex);
+        setOutput("result", localsIndex);
+        return localsIndex + 1;
+    }
 }

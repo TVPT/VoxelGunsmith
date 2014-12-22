@@ -21,35 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes;
+package com.voxelplugineering.voxelsniper.nodes.world;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.ExecutableNode;
 import com.thevoxelbox.vsl.type.Type;
 import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
- * A node for retrieving a block from a location. Equivalent to {@code location.getWorld().getBlockAt(location);}
+ * A node for setting the biome of a world at a location.
  */
-public class GetBlockFromLocationNode extends Node implements Opcodes
+public class SetBiomeNode extends ExecutableNode implements Opcodes
 {
+    private static final long serialVersionUID = 4934446335692436694L;
 
     /**
-     * 
+     * Creates a new {@link SetBiomeNode}.
      */
-    private static final long serialVersionUID = -2082923297938385218L;
-
-    /**
-     * Create a new node.
-     */
-    public GetBlockFromLocationNode()
+    public SetBiomeNode()
     {
-        super("Block Get From World", "world");
+        super("Set biome", "world");
         addInput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), true, null);
-        addOutput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE).get(), this);
+        addInput("biome", Type.STRING, true, null);
     }
 
     /**
@@ -59,15 +55,17 @@ public class GetBlockFromLocationNode extends Node implements Opcodes
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {
         int location = getInput("location").getSource().get();
-
+        int biome = getInput("biome").getSource().get();
         mv.visitVarInsn(ALOAD, location);
         mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getWorld",
                 "()Lcom/voxelplugineering/voxelsniper/common/CommonWorld;", false);
         mv.visitVarInsn(ALOAD, location);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonWorld", "getBlockAt",
-                "(Lcom/voxelplugineering/voxelsniper/common/CommonLocation;)Lcom/voxelplugineering/voxelsniper/common/CommonBlock;", false);
-        mv.visitVarInsn(ASTORE, localsIndex);
-        setOutput("block", localsIndex);
-        return localsIndex + 1;
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getFlooredX", "()I", false);
+        mv.visitVarInsn(ALOAD, location);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getFlooredZ", "()I", false);
+        mv.visitVarInsn(ALOAD, biome);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonWorld", "setBiomeAt", "(IILjava/lang/String;)V", false);
+        return localsIndex;
     }
+
 }

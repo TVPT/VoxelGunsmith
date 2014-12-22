@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes;
+package com.voxelplugineering.voxelsniper.nodes.block;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;

@@ -21,8 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes;
+package com.voxelplugineering.voxelsniper.nodes.shape;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -33,31 +34,39 @@ import com.thevoxelbox.vsl.type.Type;
 import com.thevoxelbox.vsl.type.TypeDepth;
 
 /**
- * A node for comparing two materials and executing another {@link ExecutableNode} if the comparison is true.
+ * Iterates over each block of a shape and executes the body for-each block.
  */
-public class MaterialCompareNode extends ExecutableNode implements Opcodes
+public class ShapeForEachNode extends ExecutableNode implements Opcodes
 {
 
-    private static final long serialVersionUID = -8174504428098635690L;
-    private ExecutableNode body = null;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8693243523600819364L;
+    /**
+     * The body of the for loop.
+     */
+    ExecutableNode body = null;
 
     /**
-     * Creates a new {@link MaterialCompareNode}.
+     * Create a new node.
      */
-    public MaterialCompareNode()
+    public ShapeForEachNode()
     {
-        super("MaterialCompare", "material");
-        addInput("a", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), true, null);
-        addInput("b", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), true, null);
+        super("Shape for-each", "shape");
+        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get(), true, null);
+        addOutput("next", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), this);
+        addOutput("index", Type.INTEGER, this);
     }
 
     /**
-     * Sets the body of the if-statement formed by this comparison.
+     * Sets the {@link ExecutableNode} to insert into the body of this for-each loop.
      * 
-     * @param body the node to execute if the comparison is true
+     * @param body the new body
      */
     public void setBody(ExecutableNode body)
     {
+        checkNotNull(body, "Loop body cannot be null");
         this.body = body;
     }
 
@@ -71,21 +80,42 @@ public class MaterialCompareNode extends ExecutableNode implements Opcodes
         {
             return localsIndex;
         }
-        int a = getInput("a").getSource().get();
-        int b = getInput("b").getSource().get();
-        mv.visitVarInsn(ALOAD, a);
-        mv.visitVarInsn(ALOAD, b);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Object", "equals", "(Ljava/lang/Object;)Z", false);
-        Label l = new Label();
-        mv.visitJumpInsn(IFEQ, l);
+
+        int shape = getInput("shape").getSource().get();
+        int array = localsIndex++;
+        int i = localsIndex++;
+        int target = localsIndex++;
+        int next = localsIndex++;
+        mv.visitVarInsn(ALOAD, shape);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/shape/Shape", "getShape",
+                "()[Lcom/voxelplugineering/voxelsniper/common/CommonVector;", false);
+        mv.visitInsn(DUP);
+        mv.visitVarInsn(ASTORE, array);
+        mv.visitInsn(ARRAYLENGTH);
+        mv.visitVarInsn(ISTORE, target);
+        mv.visitInsn(ICONST_0);
+        mv.visitVarInsn(ISTORE, i);
+        Label l2 = new Label();
+        mv.visitJumpInsn(GOTO, l2);
+        Label l3 = new Label();
+        mv.visitLabel(l3);
+        mv.visitVarInsn(ALOAD, array);
+        mv.visitVarInsn(ILOAD, i);
+        mv.visitInsn(AALOAD);
+        mv.visitVarInsn(ASTORE, next);
+        setOutput("next", next);
+        setOutput("index", i);
         ExecutableNode current = this.body;
         while (current != null)
         {
             localsIndex = current.insert(mv, localsIndex);
             current = current.getNextNode();
         }
-        mv.visitLabel(l);
+        mv.visitIincInsn(i, 1);
+        mv.visitLabel(l2);
+        mv.visitVarInsn(ILOAD, i);
+        mv.visitVarInsn(ILOAD, target);
+        mv.visitJumpInsn(IF_ICMPLT, l3);
         return localsIndex;
     }
-
 }

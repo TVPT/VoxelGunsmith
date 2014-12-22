@@ -73,13 +73,6 @@ public abstract class CommonMaterial<T> extends WeakWrapper<T>
     public abstract boolean isSolid();
 
     /**
-     * Returns if the material supports transparency.
-     * 
-     * @return does support transparency
-     */
-    public abstract boolean isTransparent();
-
-    /**
      * Returns if the material is a liquid.
      * 
      * @return is a liquid

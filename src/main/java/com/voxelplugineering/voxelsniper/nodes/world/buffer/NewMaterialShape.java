@@ -21,54 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes;
+package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.ExecutableNode;
 import com.thevoxelbox.vsl.type.Type;
 import com.thevoxelbox.vsl.type.TypeDepth;
-import com.voxelplugineering.voxelsniper.common.CommonVector;
 
 /**
- * Adds two {@link CommonVector}s together and returns the result.
+ * Creates a new MaterialShape wrapped around the given shape.
  */
-public class VectorAdditionNode extends Node implements Opcodes
+public class NewMaterialShape extends ExecutableNode
 {
+    private static final long serialVersionUID = 3254355895746699212L;
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 8532132984520786760L;
-
-    /**
-     * Create a new node.
-     */
-    public VectorAdditionNode()
+    public NewMaterialShape()
     {
-        super("Vector Addition", "vector");
-        addInput("a", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
-        addInput("b", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
-        addOutput("result", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), this);
+        super("NewMaterialShape", "world.buffer");
+        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get(), true, null);
+        addInput("default", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), true, null);
+        addOutput("materialShape", Type.getType("MATERIALSHAPE", TypeDepth.SINGLE).get(), this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {
-        int a = getInput("a").getSource().get();
-        int b = getInput("b").getSource().get();
-
-        mv.visitVarInsn(ALOAD, a);
-        mv.visitVarInsn(ALOAD, b);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "add",
-                "(Lcom/voxelplugineering/voxelsniper/common/CommonVector;)Lcom/voxelplugineering/voxelsniper/common/CommonVector;", false);
-        mv.visitVarInsn(ASTORE, localsIndex);
-        setOutput("result", localsIndex);
-        return localsIndex + 1;
+        // TODO
+        return localsIndex;
     }
+
 }

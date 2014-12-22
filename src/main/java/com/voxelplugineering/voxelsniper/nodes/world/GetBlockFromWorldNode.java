@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes;
+package com.voxelplugineering.voxelsniper.nodes.world;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -30,33 +30,28 @@ import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.type.Type;
 import com.thevoxelbox.vsl.type.TypeDepth;
-import com.voxelplugineering.voxelsniper.common.CommonVector;
 
 /**
- * Inserts a {@link CommonVector} value.
+ * Takes a world and a vector position and returns the block at that location. Equivalent to
+ * {@code world.getBlockAt(vector.getX(), vector.getY(), vector.getZ());}
  */
-public class VectorValueNode extends Node implements Opcodes
+public class GetBlockFromWorldNode extends Node implements Opcodes
 {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -9020243582936473792L;
-    /**
-     * The value to insert.
-     */
-    CommonVector value;
+    private static final long serialVersionUID = -5847496393651127838L;
 
     /**
      * Creates a new node.
-     * 
-     * @param v the value to insert
      */
-    public VectorValueNode(CommonVector v)
+    public GetBlockFromWorldNode()
     {
-        super("Vector Value", "vector");
-        addOutput("value", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), this);
-        this.value = v;
+        super("Block Get From World", "world");
+        addInput("world", Type.getType("COMMONWORLD", TypeDepth.SINGLE).get(), true, null);
+        addInput("vector", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
+        addOutput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE).get(), this);
     }
 
     /**
@@ -65,26 +60,23 @@ public class VectorValueNode extends Node implements Opcodes
     @Override
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {
-        /*
-         
-           NEW com/voxelplugineering/voxelsniper/common/CommonVector
-           DUP
-           LDC x
-           LDC y
-           LDC z
-           INVOKESPECIAL com/voxelplugineering/voxelsniper/common/CommonVector : <init> (DDD)V
-           ASTORE value
-         
-         */
+        int world = getInput("world").getSource().get();
+        int vector = getInput("vector").getSource().get();
 
-        mv.visitTypeInsn(NEW, "com/voxelplugineering/voxelsniper/common/CommonVector");
-        mv.visitInsn(DUP);
-        mv.visitLdcInsn(this.value.getX());
-        mv.visitLdcInsn(this.value.getY());
-        mv.visitLdcInsn(this.value.getZ());
-        mv.visitMethodInsn(INVOKESPECIAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "<init>", "(DDD)V", false);
+        mv.visitVarInsn(ALOAD, world);
+        mv.visitVarInsn(ALOAD, vector);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getX", "()D", false);
+        mv.visitInsn(D2I);
+        mv.visitVarInsn(ALOAD, vector);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getY", "()D", false);
+        mv.visitInsn(D2I);
+        mv.visitVarInsn(ALOAD, vector);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getZ", "()D", false);
+        mv.visitInsn(D2I);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonWorld", "getBlockAt",
+                "(III)Lcom/voxelplugineering/voxelsniper/common/CommonBlock;", false);
         mv.visitVarInsn(ASTORE, localsIndex);
-        setOutput("value", localsIndex);
+        setOutput("block", localsIndex);
         return localsIndex + 1;
     }
 }

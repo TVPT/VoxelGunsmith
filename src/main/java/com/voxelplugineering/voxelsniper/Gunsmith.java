@@ -329,6 +329,7 @@ public final class Gunsmith
         Type.registerType("COMMONVECTOR", "com/voxelplugineering/voxelsniper/common/CommonVector");
         Type.registerType("COMMONWORLD", "com/voxelplugineering/voxelsniper/common/CommonWorld");
         Type.registerType("SHAPE", "com/voxelplugineering/voxelsniper/shape/Shape");
+        Type.registerType("MATERIALSHAPE", "com/voxelplugineering/voxelsniper/shape/MaterialShape");
 
         //Create the eventBus for all Gunsmith events
         eventBus = new AsyncEventBus(eventBusExecutor = java.util.concurrent.Executors.newCachedThreadPool());
