@@ -28,9 +28,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.Maps;
 import com.thevoxelbox.vsl.api.IChainableNodeGraph;
 import com.thevoxelbox.vsl.api.IGraphCompiler;
 import com.thevoxelbox.vsl.classloader.ASMClassLoader;
@@ -66,7 +66,7 @@ public class TemporaryBrushBuilder
     /**
      * A map of all graphs created from this temporary utility.
      */
-    private static final Map<String, IChainableNodeGraph> graphs = new HashMap<String, IChainableNodeGraph>();
+    private static final Map<String, IChainableNodeGraph> graphs = Maps.newHashMap();
 
     /**
      * Loads all the graphs from this utility into the global brush manager.

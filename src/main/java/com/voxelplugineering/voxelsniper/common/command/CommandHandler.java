@@ -27,9 +27,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.ICommandRegistrar;
 import com.voxelplugineering.voxelsniper.api.ISniper;
@@ -48,6 +48,15 @@ public class CommandHandler
     private String permissionMessage = "You lack the required permission for this command.";
 
     /**
+     * A Map of commands with their primary alias as the key.
+     */
+    private final Map<String, Command> commands;
+    /**
+     * The registrar of the underlying system for registering commands.
+     */
+    private ICommandRegistrar registrar;
+
+    /**
      * Constructs a command handler
      */
     public CommandHandler()
@@ -56,16 +65,8 @@ public class CommandHandler
         {
             this.permissionMessage = Gunsmith.getConfiguration().get("permissionsRequiredMessage").get().toString();
         }
+        this.commands = Maps.newHashMap();
     }
-
-    /**
-     * A Map of commands with their primary alias as the key.
-     */
-    private Map<String, Command> commands = new HashMap<String, Command>();
-    /**
-     * The registrar of the underlying system for registering commands.
-     */
-    private ICommandRegistrar registrar;
 
     /**
      * Sets the registrar for this handler.

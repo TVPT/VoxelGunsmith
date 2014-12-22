@@ -26,13 +26,13 @@ package com.voxelplugineering.voxelsniper.common;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.thevoxelbox.vsl.classloader.ASMClassLoader;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
@@ -56,11 +56,11 @@ public class CommonBrushManager implements IBrushManager
     /**
      * A map of brushes loaded in this manager.
      */
-    private Map<String, Class<? extends IBrush>> brushes = new HashMap<String, Class<? extends IBrush>>();
+    private Map<String, Class<? extends IBrush>> brushes = Maps.newHashMap();
     /**
      * An ordered list of loaders used to load brushes by name.
      */
-    private List<IBrushLoader> loaders = new ArrayList<IBrushLoader>();
+    private List<IBrushLoader> loaders = Lists.newArrayList();
 
     /**
      * Creates a new CommonBrushManager.

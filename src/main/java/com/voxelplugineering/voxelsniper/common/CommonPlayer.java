@@ -25,12 +25,12 @@ package com.voxelplugineering.voxelsniper.common;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Queues;
 import com.thevoxelbox.vsl.VariableScope;
 import com.thevoxelbox.vsl.api.IVariableScope;
 import com.voxelplugineering.voxelsniper.Gunsmith;
@@ -82,7 +82,7 @@ public abstract class CommonPlayer<T> extends WeakWrapper<T> implements ISniper
         this.personalBrushManager = new CommonBrushManager(Gunsmith.getGlobalBrushManager());
         this.brushVariables = new VariableScope();
         resetSettings();
-        this.history = new ArrayDeque<ChangeQueue>();
+        this.history = Queues.newArrayDeque();
         this.pending = new LinkedList<ChangeQueue>();
         this.personalAliasHandler = new AliasHandler(Gunsmith.getGlobalAliasHandler());
     }

@@ -27,9 +27,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 
 /**
@@ -87,7 +87,7 @@ public abstract class Command
         checkNotNull(argument, "Cannot add a null argument!");
         if (this.arguments == null)
         {
-            this.arguments = new HashMap<String, CommandArgument<?>>();
+            this.arguments = Maps.newHashMap();
         }
         this.arguments.put(argument.getName(), argument);
     }

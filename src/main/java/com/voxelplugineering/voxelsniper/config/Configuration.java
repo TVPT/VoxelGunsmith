@@ -23,16 +23,16 @@
  */
 package com.voxelplugineering.voxelsniper.config;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IConfiguration;
 
@@ -56,8 +56,8 @@ public class Configuration implements IConfiguration
      */
     public Configuration()
     {
-        this.config = new HashMap<String, Object>();
-        this.containers = new HashMap<String, Object>();
+        this.config = Maps.newHashMap();
+        this.containers = Maps.newHashMap();
     }
 
     /**

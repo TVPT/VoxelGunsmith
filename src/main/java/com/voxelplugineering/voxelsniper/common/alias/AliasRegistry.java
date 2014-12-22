@@ -35,9 +35,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.util.Utilities;
 
 /**
@@ -64,7 +64,7 @@ public class AliasRegistry
      */
     public AliasRegistry(AliasRegistry parent)
     {
-        this.aliases = new TreeMap<String, String>(new Comparator<String>()
+        this.aliases = Maps.newTreeMap(new Comparator<String>()
         {
 
             @Override

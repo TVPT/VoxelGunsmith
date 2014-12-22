@@ -23,14 +23,14 @@
  */
 package com.voxelplugineering.voxelsniper.logging;
 
-import java.util.HashMap;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Map;
 
+import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.ILogger;
 import com.voxelplugineering.voxelsniper.api.ILoggingDistributor;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * A standard logging distributor.
@@ -57,7 +57,7 @@ public class CommonLoggingDistributor implements ILoggingDistributor
     @Override
     public void init()
     {
-        this.loggers = new HashMap<String, ILogger>();
+        this.loggers = Maps.newHashMap();
     }
 
     /**

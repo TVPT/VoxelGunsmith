@@ -26,9 +26,9 @@ package com.voxelplugineering.voxelsniper.util;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
+import com.google.common.collect.Sets;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.common.CommonBlock;
 import com.voxelplugineering.voxelsniper.common.CommonLocation;
@@ -53,7 +53,7 @@ public class RayTrace
     /**
      * A set of materials which are treated as non-solid to the ray (eg. the ray passes through them without stopping)
      */
-    private Set<CommonMaterial<?>> traversalBlocks = new HashSet<CommonMaterial<?>>();
+    private Set<CommonMaterial<?>> traversalBlocks = Sets.newHashSet();
 
     /**
      * The block targeted by the last trace.

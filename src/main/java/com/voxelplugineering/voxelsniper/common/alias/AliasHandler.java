@@ -29,12 +29,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -66,7 +66,7 @@ public class AliasHandler
     public AliasHandler(AliasHandler parent)
     {
         this.parent = parent;
-        this.aliasTargets = new HashMap<String, AliasRegistry>();
+        this.aliasTargets = Maps.newHashMap();
         if (parent != null)
         {
             for (String target : this.parent.getValidTargets())
