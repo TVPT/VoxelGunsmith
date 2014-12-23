@@ -37,6 +37,9 @@ public class NewMaterialShape extends ExecutableNode
 {
     private static final long serialVersionUID = 3254355895746699212L;
 
+    /**
+     * Creates a {@link NewMaterialShape}.
+     */
     public NewMaterialShape()
     {
         super("NewMaterialShape", "world.buffer");
@@ -45,6 +48,9 @@ public class NewMaterialShape extends ExecutableNode
         addOutput("materialShape", Type.getType("MATERIALSHAPE", TypeDepth.SINGLE).get(), this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
     {

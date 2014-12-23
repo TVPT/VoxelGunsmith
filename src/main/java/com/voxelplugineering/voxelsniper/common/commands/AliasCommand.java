@@ -25,15 +25,11 @@ package com.voxelplugineering.voxelsniper.common.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
-
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.common.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.common.command.Command;
-import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
-import com.voxelplugineering.voxelsniper.common.command.args.RawArgument;
 import com.voxelplugineering.voxelsniper.util.Utilities;
 
 /**
@@ -48,7 +44,6 @@ public class AliasCommand extends Command
     public AliasCommand()
     {
         super("alias", "Sets an alias: /alias [target] [-g] alias=value");
-        addArgument(new RawArgument("raw"));
         setPermissions("voxelsniper.command.alias");
     }
 
@@ -56,24 +51,23 @@ public class AliasCommand extends Command
      * {@inheritDoc}
      */
     @Override
-    public boolean execute(ISniper sniper, Map<String, CommandArgument<?>> args)
+    public boolean execute(ISniper sniper, String[] args)
     {
         checkNotNull(sniper, "Cannot have a null sniper!");
-        String[] s = ((RawArgument) args.get("raw")).getChoice();
 
-        if (s.length < 2)
+        if (args.length < 2)
         {
             sniper.sendMessage(this.getHelpMsg());
             return true;
         }
-        String target = s[0];
-        boolean global = s[1].equalsIgnoreCase("-g");
+        String target = args[0];
+        boolean global = args[1].equalsIgnoreCase("-g");
         AliasHandler alias = global ? Gunsmith.getGlobalAliasHandler() : sniper.getPersonalAliasHandler();
         int n = global ? 2 : 1;
         if (alias.hasTarget(target))
         {
             AliasRegistry registry = alias.getRegistry(target).get();
-            String arg = Utilities.getSection(s, n, s.length - 1);
+            String arg = Utilities.getSection(args, n, args.length - 1);
             if (!arg.contains("="))
             {
                 if (Utilities.startsWithIgnoreCase(arg, "clear") && !global)

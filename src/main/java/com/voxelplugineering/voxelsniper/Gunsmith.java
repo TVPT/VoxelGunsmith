@@ -35,7 +35,6 @@ import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.thevoxelbox.vsl.api.IGraphCompilerFactory;
 import com.thevoxelbox.vsl.classloader.GraphCompilerFactory;
-import com.thevoxelbox.vsl.type.Type;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.IBrushLoader;
 import com.voxelplugineering.voxelsniper.api.IBrushManager;
@@ -54,6 +53,7 @@ import com.voxelplugineering.voxelsniper.config.JsonConfigurationLoader;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.logging.CommonLoggingDistributor;
 import com.voxelplugineering.voxelsniper.util.BrushCompiler;
+import com.voxelplugineering.voxelsniper.util.GunsmithTypes;
 import com.voxelplugineering.voxelsniper.world.ChangeQueueTask;
 
 /**
@@ -322,14 +322,8 @@ public final class Gunsmith
                 "Starting Gunsmith initialization process. ("
                         + new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z").format(new Date(System.currentTimeMillis())) + ")");
 
-        //Register vsl types for common impl types
-        Type.registerType("COMMONBLOCK", "com/voxelplugineering/voxelsniper/common/CommonBlock");
-        Type.registerType("COMMONLOCATION", "com/voxelplugineering/voxelsniper/common/CommonLocation");
-        Type.registerType("COMMONMATERIAL", "com/voxelplugineering/voxelsniper/common/CommonMaterial");
-        Type.registerType("COMMONVECTOR", "com/voxelplugineering/voxelsniper/common/CommonVector");
-        Type.registerType("COMMONWORLD", "com/voxelplugineering/voxelsniper/common/CommonWorld");
-        Type.registerType("SHAPE", "com/voxelplugineering/voxelsniper/shape/Shape");
-        Type.registerType("MATERIALSHAPE", "com/voxelplugineering/voxelsniper/shape/MaterialShape");
+        //Register vsl types for common impl types and set library path
+        GunsmithTypes.init();
 
         //Create the eventBus for all Gunsmith events
         eventBus = new AsyncEventBus(eventBusExecutor = java.util.concurrent.Executors.newCachedThreadPool());

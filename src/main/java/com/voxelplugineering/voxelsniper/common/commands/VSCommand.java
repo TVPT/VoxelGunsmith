@@ -25,12 +25,8 @@ package com.voxelplugineering.voxelsniper.common.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
-
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.command.Command;
-import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
-import com.voxelplugineering.voxelsniper.common.command.args.RawArgument;
 
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.
@@ -44,8 +40,7 @@ public class VSCommand extends Command
     public VSCommand()
     {
         super("vs", "Sets your current brush");
-        setAliases("vs", "voxelsniper");
-        addArgument(new RawArgument("raw"));
+        setAliases("voxelsniper");
         setPermissions("voxelsniper.command.vs");
     }
 
@@ -53,12 +48,11 @@ public class VSCommand extends Command
      * {@inheritDoc}
      */
     @Override
-    public boolean execute(ISniper sniper, Map<String, CommandArgument<?>> args)
+    public boolean execute(ISniper sniper, String[] args)
     {
         checkNotNull(sniper, "Cannot have a null sniper!");
-        String[] s = ((RawArgument) args.get("raw")).getChoice();
         String full = "";
-        for (String part : s)
+        for (String part : args)
         {
             full += part + " ";
         }

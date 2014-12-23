@@ -21,51 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api;
+package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 
-import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.common.CommonWorld;
+import org.objectweb.asm.MethodVisitor;
+
+import com.thevoxelbox.vsl.error.GraphCompilationException;
+import com.thevoxelbox.vsl.node.Node;
+import com.voxelplugineering.voxelsniper.shape.MaterialShape;
+import com.voxelplugineering.voxelsniper.util.GunsmithTypes;
 
 /**
- * The specific implementation core class, provides direct access to the specific implementation's version of Gunsmith's interfaces.
+ * Gets the material of a {@link MaterialShape} at the given vector target.
  */
-public interface IVoxelSniper
+public class MaterialShapeGetNode extends Node
 {
-    /**
-     * Returns the permissions proxy.
-     * 
-     * @return the permissions proxy
-     */
-    IPermissionProxy getPermissionProxy();
+    private static final long serialVersionUID = -4941853046402524582L;
 
     /**
-     * Returns the world registry.
-     * 
-     * @return the world registry
+     * Creates a {@link MaterialShapeGetNode}.
      */
-    IRegistry<?, ? extends CommonWorld<?>> getWorldRegistry();
+    public MaterialShapeGetNode()
+    {
+        super("MaterialShapeSet", "world.buffer");
+        addInput("materialShape", GunsmithTypes.MATERIALSHAPE, true, null);
+        addInput("target", GunsmithTypes.COMMONVECTOR, true, null);
+        addOutput("material", GunsmithTypes.COMMONMATERIAL, this);
+    }
 
     /**
-     * Returns the player registry.
-     * 
-     * @return the player registry
+     * {@inheritDoc}
      */
-    ISniperRegistry<?> getPlayerRegistry();
-
-    /**
-     * Returns the scheduler proxy.
-     * 
-     * @return the proxy
-     */
-    ISchedulerProxy getSchedulerProxy();
-
-    /**
-     * Returns the material registry for the specific world. If the implementation supports a global or common material registry then world may be
-     * null.
-     * 
-     * @param world The world
-     * @return The material registry
-     */
-    Optional<IMaterialRegistry<?>> getMaterialRegistry(CommonWorld<?> world);
+    @Override
+    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    {
+        //TODO
+        return localsIndex;
+    }
 
 }

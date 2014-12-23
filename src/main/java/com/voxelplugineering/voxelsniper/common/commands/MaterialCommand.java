@@ -25,14 +25,10 @@ package com.voxelplugineering.voxelsniper.common.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
-
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.command.Command;
-import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
-import com.voxelplugineering.voxelsniper.common.command.args.RawArgument;
 
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.
@@ -55,7 +51,6 @@ public class MaterialCommand extends Command
     {
         super("material", "Sets your current brush material");
         setAliases("v");
-        addArgument(new RawArgument("raw"));
         setPermissions("voxelsniper.command.material");
         if (Gunsmith.getConfiguration().has("materialNotFoundMessage"))
         {
@@ -71,14 +66,13 @@ public class MaterialCommand extends Command
      * {@inheritDoc}
      */
     @Override
-    public boolean execute(ISniper sniper, Map<String, CommandArgument<?>> args)
+    public boolean execute(ISniper sniper, String[] args)
     {
         checkNotNull(sniper, "Cannot have a null sniper!");
         String materialName = "air";
-        String[] s = ((RawArgument) args.get("raw")).getChoice();
-        if (s.length >= 1)
+        if (args.length >= 1)
         {
-            materialName = s[0];
+            materialName = args[0];
             Optional<?> material = sniper.getWorld().getMaterialRegistry().get(materialName);
             if (!material.isPresent())
             {

@@ -25,6 +25,8 @@ package com.voxelplugineering.voxelsniper.shape;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Arrays;
+
 import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -39,7 +41,7 @@ public class MaterialShape
     private short nextId = 1;
     private BiMap<Short, CommonMaterial<?>> materialDictionary;
     private BiMap<CommonMaterial<?>, Short> inverseDictionary;
-    private short[][][] materials;
+    private short[] materials;
     private Shape shape;
 
     /**
@@ -54,9 +56,9 @@ public class MaterialShape
         this.shape = checkNotNull(shape);
         this.materialDictionary = HashBiMap.create();
         this.inverseDictionary = this.materialDictionary.inverse();
-        this.materials = new short[shape.getWidth()][shape.getHeight()][shape.getLength()];
+        this.materials = new short[shape.getWidth() * shape.getLength() * shape.getHeight()];
         this.materialDictionary.put((short) 0, defaultMaterial);
-        this.setEntireExistingShape(defaultMaterial);
+        this.flood(defaultMaterial);
     }
 
     /**
@@ -82,11 +84,11 @@ public class MaterialShape
     {
         if (this.getShape().get(x, y, z, relative))
         {
-            if (this.materials[x][y][z] == -1)
+            if (this.materials[getIndex(x, y, z)] == -1)
             {
-                this.materials[x][y][z] = 0; // the default material
+                this.materials[getIndex(x, y, z)] = 0; // the default material
             }
-            return Optional.<CommonMaterial<?>>of(this.materialDictionary.get(this.materials[x][y][z]));
+            return Optional.<CommonMaterial<?>>of(this.materialDictionary.get(this.materials[getIndex(x, y, z)]));
         } else
         {
             return Optional.absent();
@@ -116,7 +118,7 @@ public class MaterialShape
             throw new ArrayIndexOutOfBoundsException("Tried to set material outside of the shape. (" + x + ", " + y + ", " + z + ")");
         }
         short id = this.getOrRegisterMaterial(material);
-        this.materials[x][y][z] = id;
+        this.materials[getIndex(x, y, z)] = id;
         getShape().set(x, y, z, false);
     }
 
@@ -140,7 +142,7 @@ public class MaterialShape
         {
             throw new ArrayIndexOutOfBoundsException("Tried to unset material outside of the shape. (" + x + ", " + y + ", " + z + ")");
         }
-        this.materials[x][y][z] = -1;
+        this.materials[getIndex(x, y, z)] = -1;
         getShape().unset(x, y, z, false);
     }
 
@@ -149,7 +151,7 @@ public class MaterialShape
      * 
      * @param material the material
      */
-    public void setEntireExistingShape(CommonMaterial<?> material)
+    public void flood(CommonMaterial<?> material)
     {
         short id = this.getOrRegisterMaterial(material);
         for (int x = 0; x < getShape().getWidth(); x++)
@@ -160,14 +162,29 @@ public class MaterialShape
                 {
                     if (this.getShape().get(x, y, z, false))
                     {
-                        this.materials[x][y][z] = id;
+                        this.materials[getIndex(x, y, z)] = id;
                     } else
                     {
-                        this.materials[x][y][z] = -1;
+                        this.materials[getIndex(x, y, z)] = -1;
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Fills the entire horizontal layers between y and height with the given material.
+     * 
+     * @param material The material
+     * @param y The starting y layer
+     * @param height The height of the area to fill
+     */
+    public void setHorizontalLayer(CommonMaterial<?> material, int y, int height)
+    {
+        short id = this.getOrRegisterMaterial(material);
+        int startIndex = getIndex(0, y, 0);
+        int endIndex = getIndex(this.shape.getWidth() - 1, y + height - 1, this.shape.getLength() - 1) + 1;
+        Arrays.fill(this.materials, startIndex, endIndex, id);
     }
 
     /**
@@ -231,6 +248,19 @@ public class MaterialShape
     public CommonVector getOrigin()
     {
         return this.shape.getOrigin();
+    }
+
+    /**
+     * Gets the index for the given location.
+     * 
+     * @param x The X position
+     * @param y The Y position
+     * @param z The Z position
+     * @return The index
+     */
+    protected int getIndex(int x, int y, int z)
+    {
+        return y * (this.shape.getWidth() * this.shape.getLength()) + z * (this.shape.getWidth()) + x;
     }
 
 }

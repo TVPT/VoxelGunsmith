@@ -25,16 +25,12 @@ package com.voxelplugineering.voxelsniper.common.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
-
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.IBrush;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 import com.voxelplugineering.voxelsniper.common.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.common.command.Command;
-import com.voxelplugineering.voxelsniper.common.command.CommandArgument;
-import com.voxelplugineering.voxelsniper.common.command.args.RawArgument;
 import com.voxelplugineering.voxelsniper.util.Utilities;
 
 /**
@@ -61,8 +57,7 @@ public class BrushCommand extends Command
     public BrushCommand()
     {
         super("brush", "Sets your current brush");
-        setAliases("b", "brush");
-        addArgument(new RawArgument("raw"));
+        setAliases("b");
         setPermissions("voxelsniper.command.brush");
         if (Gunsmith.getConfiguration().has("brushSizeChangedMessage"))
         {
@@ -82,28 +77,27 @@ public class BrushCommand extends Command
      * {@inheritDoc}
      */
     @Override
-    public boolean execute(ISniper sniper, Map<String, CommandArgument<?>> args)
+    public boolean execute(ISniper sniper, String[] args)
     {
         checkNotNull(sniper, "Cannot have a null sniper!");
-        String[] s = ((RawArgument) args.get("raw")).getChoice();
-        if (s.length == 1)
+        if (args.length == 1)
         {
             try
             {
-                double brushSize = Double.parseDouble(s[0]);
+                double brushSize = Double.parseDouble(args[0]);
                 sniper.getBrushSettings().set("brushSize", brushSize);
                 sniper.sendMessage(this.brushSizeChangeMessage, brushSize);
                 return true;
             } catch (NumberFormatException ignored)
             {
-                assert true; //lol checkstyle warnings ;)
+                assert true;
             }
         }
-        if (s.length >= 1)
+        if (args.length >= 1)
         {
 
             Optional<AliasRegistry> alias = sniper.getPersonalAliasHandler().getRegistry("brush");
-            String fullBrush = Utilities.getSection(s, 0, s.length - 1);
+            String fullBrush = Utilities.getSection(args, 0, args.length - 1);
             if (alias.isPresent())
             {
                 fullBrush = alias.get().expand(fullBrush);

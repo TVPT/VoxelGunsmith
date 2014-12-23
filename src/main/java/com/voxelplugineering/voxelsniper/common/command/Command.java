@@ -26,10 +26,6 @@ package com.voxelplugineering.voxelsniper.common.command;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Collections;
-import java.util.Map;
-
-import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.ISniper;
 
 /**
@@ -42,10 +38,6 @@ public abstract class Command
      * Aliases for this command.
      */
     String[] aliases = new String[0];
-    /**
-     * A map of arguments for this command.
-     */
-    private Map<String, CommandArgument<?>> arguments;
     /**
      * The name of this command, the primary command alias.
      */
@@ -78,40 +70,13 @@ public abstract class Command
     }
 
     /**
-     * Adds a argument for this command.
-     * 
-     * @param argument the new argument
-     */
-    protected void addArgument(CommandArgument<?> argument)
-    {
-        checkNotNull(argument, "Cannot add a null argument!");
-        if (this.arguments == null)
-        {
-            this.arguments = Maps.newHashMap();
-        }
-        this.arguments.put(argument.getName(), argument);
-    }
-
-    /**
-     * Executes this command with the given sniper as the source for the command.
-     * 
-     * @param sniper the command source
-     * @param args the arguments for the command
-     * @return a success flag
-     */
-    public abstract boolean execute(ISniper sniper, Map<String, CommandArgument<?>> args);
-
-    /**
      * Extracts and validates the arguments for the command and passes it to the specific executor.
      * 
      * @param sniper the command source
      * @param args the raw command arguments
      * @return a success flag
      */
-    public boolean execute(ISniper sniper, String[] args)
-    {
-        return execute(sniper, extractArguements(sniper, args));
-    }
+    public abstract boolean execute(ISniper sniper, String[] args);
 
     /**
      * Returns the aliases for this command (not including the primary alias).
@@ -131,26 +96,6 @@ public abstract class Command
     protected void setAliases(String... aliases)
     {
         this.aliases = aliases;
-    }
-
-    /**
-     * Extracts and validates the command arguments from the given raw arguments. The returned {@link Map} is unmodifiable.
-     * 
-     * @param sniper the command source
-     * @param args the raw arguments
-     * @return the extracted arguments
-     */
-    private Map<String, CommandArgument<?>> extractArguements(ISniper sniper, String[] args)
-    {
-        checkNotNull(sniper, "Sniper cannot be null");
-        checkNotNull(args, "Command arguments cannot be null");
-        int i = 0;
-        for (String c : this.arguments.keySet())
-        {
-            CommandArgument<?> ca = this.arguments.get(c);
-            ca.parse(sniper, args, i++);
-        }
-        return Collections.unmodifiableMap(this.arguments);
     }
 
     /**

@@ -21,51 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api;
+package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 
-import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.common.CommonWorld;
+import org.objectweb.asm.MethodVisitor;
+
+import com.thevoxelbox.vsl.error.GraphCompilationException;
+import com.thevoxelbox.vsl.node.ExecutableNode;
+import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 
 /**
- * The specific implementation core class, provides direct access to the specific implementation's version of Gunsmith's interfaces.
+ * Sets the material of a {@link MaterialShape} at the given vector target.
  */
-public interface IVoxelSniper
+public class MaterialShapeSetNode extends ExecutableNode
 {
-    /**
-     * Returns the permissions proxy.
-     * 
-     * @return the permissions proxy
-     */
-    IPermissionProxy getPermissionProxy();
+    private static final long serialVersionUID = -4941853046402524582L;
 
     /**
-     * Returns the world registry.
-     * 
-     * @return the world registry
+     * Creates a {@link MaterialShapeSetNode}.
      */
-    IRegistry<?, ? extends CommonWorld<?>> getWorldRegistry();
+    public MaterialShapeSetNode()
+    {
+        super("MaterialShapeSet", "world.buffer");
+        addInput("materialShape", Type.getType("MATERIALSHAPE", TypeDepth.SINGLE).get(), true, null);
+        addInput("target", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
+        addInput("material", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), true, null);
+    }
 
     /**
-     * Returns the player registry.
-     * 
-     * @return the player registry
+     * {@inheritDoc}
      */
-    ISniperRegistry<?> getPlayerRegistry();
-
-    /**
-     * Returns the scheduler proxy.
-     * 
-     * @return the proxy
-     */
-    ISchedulerProxy getSchedulerProxy();
-
-    /**
-     * Returns the material registry for the specific world. If the implementation supports a global or common material registry then world may be
-     * null.
-     * 
-     * @param world The world
-     * @return The material registry
-     */
-    Optional<IMaterialRegistry<?>> getMaterialRegistry(CommonWorld<?> world);
+    @Override
+    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    {
+        //TODO
+        return localsIndex;
+    }
 
 }
