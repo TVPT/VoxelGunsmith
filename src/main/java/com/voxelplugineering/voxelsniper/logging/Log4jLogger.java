@@ -25,7 +25,7 @@ package com.voxelplugineering.voxelsniper.logging;
 
 import org.apache.logging.log4j.Logger;
 
-import com.voxelplugineering.voxelsniper.api.ILogger;
+import com.voxelplugineering.voxelsniper.api.logging.ILogger;
 
 /**
  * A wrapper for a {@link org.apache.logging.log4j.Logger}.

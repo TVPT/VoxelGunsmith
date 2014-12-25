@@ -31,13 +31,12 @@ import org.mcstats.Metrics;
 
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.IManager;
-import com.voxelplugineering.voxelsniper.util.Utilities;
+import com.voxelplugineering.voxelsniper.api.Manager;
 
 /**
  * Implementation of Sniper Stats.
  */
-public final class SniperStats extends Metrics implements IManager
+public final class SniperStats extends Metrics implements Manager
 {
     private static int snipesDone = 0;
     private static long snipeCounterInitTimeStamp = 0;
@@ -147,7 +146,7 @@ public final class SniperStats extends Metrics implements IManager
                         average = 0;
                     }
 
-                    return Utilities.floor(average);
+                    return (int) Math.floor(average);
                 }
             });
 

@@ -28,8 +28,7 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * Offsets a location by a given vector offset. Equivalent to {@code location.add(vector.getX(), vector.getY(), vector.getZ());}
@@ -48,9 +47,9 @@ public class LocationOffsetNode extends Node implements Opcodes
     public LocationOffsetNode()
     {
         super("Location offset", "vector");
-        addInput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), true, null);
-        addInput("offset", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
-        addOutput("result", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), this);
+        addInput("location", GunsmithTypes.LOCATION, true, null);
+        addInput("offset", GunsmithTypes.VECTOR3I, true, null);
+        addOutput("result", GunsmithTypes.LOCATION, this);
     }
 
     /**
@@ -64,13 +63,13 @@ public class LocationOffsetNode extends Node implements Opcodes
 
         mv.visitVarInsn(ALOAD, location);
         mv.visitVarInsn(ALOAD, offset);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getX", "()D", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getX", "()D", false);
         mv.visitVarInsn(ALOAD, offset);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getY", "()D", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getY", "()D", false);
         mv.visitVarInsn(ALOAD, offset);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getZ", "()D", false);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "add",
-                "(DDD)Lcom/voxelplugineering/voxelsniper/common/CommonLocation;", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getZ", "()D", false);
+        mv.visitMethodInsn(INVOKEINTERFACE, GunsmithTypes.LOCATION.getInternalName(), "add", "(DDD)L" + GunsmithTypes.LOCATION.getInternalName()
+                + ";", false);
         mv.visitVarInsn(ASTORE, localsIndex);
         setOutput("result", localsIndex);
         return localsIndex + 1;

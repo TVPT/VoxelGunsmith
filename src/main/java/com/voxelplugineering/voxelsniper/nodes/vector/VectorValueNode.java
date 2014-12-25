@@ -28,12 +28,11 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
-import com.voxelplugineering.voxelsniper.common.CommonVector;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
- * Inserts a {@link CommonVector} value.
+ * Inserts a {@link Vector3i} value.
  */
 public class VectorValueNode extends Node implements Opcodes
 {
@@ -45,17 +44,17 @@ public class VectorValueNode extends Node implements Opcodes
     /**
      * The value to insert.
      */
-    CommonVector value;
+    Vector3i value;
 
     /**
      * Creates a new node.
      * 
      * @param v the value to insert
      */
-    public VectorValueNode(CommonVector v)
+    public VectorValueNode(Vector3i v)
     {
         super("Vector Value", "vector");
-        addOutput("value", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), this);
+        addOutput("value", GunsmithTypes.VECTOR3I, this);
         this.value = v;
     }
 
@@ -77,12 +76,12 @@ public class VectorValueNode extends Node implements Opcodes
          
          */
 
-        mv.visitTypeInsn(NEW, "com/voxelplugineering/voxelsniper/common/CommonVector");
+        mv.visitTypeInsn(NEW, GunsmithTypes.VECTOR3I.getInternalName());
         mv.visitInsn(DUP);
         mv.visitLdcInsn(this.value.getX());
         mv.visitLdcInsn(this.value.getY());
         mv.visitLdcInsn(this.value.getZ());
-        mv.visitMethodInsn(INVOKESPECIAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "<init>", "(DDD)V", false);
+        mv.visitMethodInsn(INVOKESPECIAL, GunsmithTypes.VECTOR3I.getInternalName(), "<init>", "(DDD)V", false);
         mv.visitVarInsn(ASTORE, localsIndex);
         setOutput("value", localsIndex);
         return localsIndex + 1;

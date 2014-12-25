@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.nodes.shape;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -31,7 +32,7 @@ import org.objectweb.asm.Opcodes;
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.ExecutableNode;
 import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * Iterates over each block of a shape and executes the body for-each block.
@@ -54,8 +55,8 @@ public class ShapeForEachNode extends ExecutableNode implements Opcodes
     public ShapeForEachNode()
     {
         super("Shape for-each", "shape");
-        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get(), true, null);
-        addOutput("next", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), this);
+        addInput("shape", GunsmithTypes.SHAPE, true, null);
+        addOutput("next", GunsmithTypes.VECTOR3I, this);
         addOutput("index", Type.INTEGER, this);
     }
 
@@ -87,8 +88,8 @@ public class ShapeForEachNode extends ExecutableNode implements Opcodes
         int target = localsIndex++;
         int next = localsIndex++;
         mv.visitVarInsn(ALOAD, shape);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/shape/Shape", "getShape",
-                "()[Lcom/voxelplugineering/voxelsniper/common/CommonVector;", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.SHAPE.getInternalName(), "getShape", "()[L" + GunsmithTypes.VECTOR3I.getInternalName() + ";",
+                false);
         mv.visitInsn(DUP);
         mv.visitVarInsn(ASTORE, array);
         mv.visitInsn(ARRAYLENGTH);

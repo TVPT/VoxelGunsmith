@@ -23,13 +23,13 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.world;
 
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.ExecutableNode;
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * A visual scripting node to set the a shape to a material.
@@ -44,9 +44,9 @@ public class ShapeMaterialSetNode extends ExecutableNode implements Opcodes
     public ShapeMaterialSetNode()
     {
         super("MaterialSet", "world");
-        addInput("material", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), true, null);
-        addInput("target", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), true, null);
-        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get(), true, null);
+        addInput("material", GunsmithTypes.MATERIAL, true, null);
+        addInput("target", GunsmithTypes.LOCATION, true, null);
+        addInput("shape", GunsmithTypes.SHAPE, true, null);
     }
 
     /**
@@ -58,20 +58,20 @@ public class ShapeMaterialSetNode extends ExecutableNode implements Opcodes
         int target = getInput("target").getSource().get();
         int shape = getInput("shape").getSource().get();
         int material = getInput("material").getSource().get();
-        mv.visitTypeInsn(NEW, "com/voxelplugineering/voxelsniper/world/ShapeChangeQueue");
+        mv.visitTypeInsn(NEW, "com/voxelplugineering/voxelsniper/world/queue/ShapeChangeQueue");//TODO add ShapeChangeQueue to GunsmithTypes
         mv.visitInsn(DUP);
         mv.visitVarInsn(ALOAD, 2);
         mv.visitVarInsn(ALOAD, target);
-        mv.visitTypeInsn(NEW, "com/voxelplugineering/voxelsniper/shape/MaterialShape");
+        mv.visitTypeInsn(NEW, GunsmithTypes.MATERIALSHAPE.getInternalName());
         mv.visitInsn(DUP);
         mv.visitVarInsn(ALOAD, shape);
         mv.visitVarInsn(ALOAD, material);
-        mv.visitMethodInsn(INVOKESPECIAL, "com/voxelplugineering/voxelsniper/shape/MaterialShape", "<init>",
-                "(Lcom/voxelplugineering/voxelsniper/shape/Shape;Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;)V", false);
-        mv.visitMethodInsn(INVOKESPECIAL, "com/voxelplugineering/voxelsniper/world/ShapeChangeQueue", "<init>",
-                "(Lcom/voxelplugineering/voxelsniper/api/ISniper;Lcom/voxelplugineering/voxelsniper/common/CommonLocation;"
-                        + "Lcom/voxelplugineering/voxelsniper/shape/MaterialShape;)V", false);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/world/ShapeChangeQueue", "flush", "()V", false);
+        mv.visitMethodInsn(INVOKESPECIAL, GunsmithTypes.MATERIALSHAPE.getInternalName(), "<init>", "(L" + GunsmithTypes.SHAPE.getInternalName()
+                + ";L" + GunsmithTypes.MATERIAL.getInternalName() + ";)V", false);
+        mv.visitMethodInsn(INVOKESPECIAL, "com/voxelplugineering/voxelsniper/world/queue/ShapeChangeQueue", "<init>",
+                "(Lcom/voxelplugineering/voxelsniper/api/entity/living/Player;L" + GunsmithTypes.LOCATION.getInternalName() + ";" + "L"
+                        + GunsmithTypes.MATERIALSHAPE.getInternalName() + ";)V", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/world/queue/ShapeChangeQueue", "flush", "()V", false);
         return localsIndex;
     }
 

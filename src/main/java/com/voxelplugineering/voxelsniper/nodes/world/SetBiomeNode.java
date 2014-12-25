@@ -29,7 +29,7 @@ import org.objectweb.asm.Opcodes;
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.ExecutableNode;
 import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * A node for setting the biome of a world at a location.
@@ -44,7 +44,7 @@ public class SetBiomeNode extends ExecutableNode implements Opcodes
     public SetBiomeNode()
     {
         super("Set biome", "world");
-        addInput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), true, null);
+        addInput("location", GunsmithTypes.LOCATION, true, null);
         addInput("biome", Type.STRING, true, null);
     }
 
@@ -57,14 +57,14 @@ public class SetBiomeNode extends ExecutableNode implements Opcodes
         int location = getInput("location").getSource().get();
         int biome = getInput("biome").getSource().get();
         mv.visitVarInsn(ALOAD, location);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getWorld",
-                "()Lcom/voxelplugineering/voxelsniper/common/CommonWorld;", false);
+        mv.visitMethodInsn(INVOKEINTERFACE, GunsmithTypes.LOCATION.getInternalName(), "getWorld", "()L" + GunsmithTypes.WORLD.getInternalName() + ";",
+                false);
         mv.visitVarInsn(ALOAD, location);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getFlooredX", "()I", false);
+        mv.visitMethodInsn(INVOKEINTERFACE, GunsmithTypes.LOCATION.getInternalName(), "getFlooredX", "()I", false);
         mv.visitVarInsn(ALOAD, location);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getFlooredZ", "()I", false);
+        mv.visitMethodInsn(INVOKEINTERFACE, GunsmithTypes.LOCATION.getInternalName(), "getFlooredZ", "()I", false);
         mv.visitVarInsn(ALOAD, biome);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonWorld", "setBiomeAt", "(IILjava/lang/String;)V", false);
+        mv.visitMethodInsn(INVOKEINTERFACE, GunsmithTypes.WORLD.getInternalName(), "setBiomeAt", "(IILjava/lang/String;)V", false);
         return localsIndex;
     }
 

@@ -28,8 +28,7 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * Takes a world and a vector position and returns the block at that location. Equivalent to
@@ -49,9 +48,9 @@ public class GetBlockFromWorldNode extends Node implements Opcodes
     public GetBlockFromWorldNode()
     {
         super("Block Get From World", "world");
-        addInput("world", Type.getType("COMMONWORLD", TypeDepth.SINGLE).get(), true, null);
-        addInput("vector", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
-        addOutput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE).get(), this);
+        addInput("world", GunsmithTypes.WORLD, true, null);
+        addInput("vector", GunsmithTypes.VECTOR3I, true, null);
+        addOutput("block", GunsmithTypes.BLOCK, this);
     }
 
     /**
@@ -65,16 +64,16 @@ public class GetBlockFromWorldNode extends Node implements Opcodes
 
         mv.visitVarInsn(ALOAD, world);
         mv.visitVarInsn(ALOAD, vector);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getX", "()D", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getX", "()D", false);
         mv.visitInsn(D2I);
         mv.visitVarInsn(ALOAD, vector);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getY", "()D", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getY", "()D", false);
         mv.visitInsn(D2I);
         mv.visitVarInsn(ALOAD, vector);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getZ", "()D", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getZ", "()D", false);
         mv.visitInsn(D2I);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonWorld", "getBlockAt",
-                "(III)Lcom/voxelplugineering/voxelsniper/common/CommonBlock;", false);
+        mv.visitMethodInsn(INVOKEINTERFACE, GunsmithTypes.WORLD.getInternalName(), "getBlockAt",
+                "(III)L" + GunsmithTypes.BLOCK.getInternalName() + ";", false);
         mv.visitVarInsn(ASTORE, localsIndex);
         setOutput("block", localsIndex);
         return localsIndex + 1;

@@ -28,8 +28,7 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.ExecutableNode;
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * A node for flattening a shape into a 1 unit high disc.
@@ -44,7 +43,7 @@ public class FlattenShapeNode extends ExecutableNode implements Opcodes
     public FlattenShapeNode()
     {
         super("Flatten Shape", "shape");
-        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get(), true, null);
+        addInput("shape", GunsmithTypes.SHAPE, true, null);
     }
 
     /**
@@ -55,7 +54,7 @@ public class FlattenShapeNode extends ExecutableNode implements Opcodes
     {
         int shape = getInput("shape").getSource().get();
         mv.visitVarInsn(ALOAD, shape);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/shape/Shape", "flatten", "()V", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.SHAPE.getInternalName(), "flatten", "()V", false);
         return localsIndex;
     }
 

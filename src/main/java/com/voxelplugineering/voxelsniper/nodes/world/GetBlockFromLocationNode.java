@@ -28,8 +28,7 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * A node for retrieving a block from a location. Equivalent to {@code location.getWorld().getBlockAt(location);}
@@ -48,8 +47,8 @@ public class GetBlockFromLocationNode extends Node implements Opcodes
     public GetBlockFromLocationNode()
     {
         super("Block Get From World", "world");
-        addInput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), true, null);
-        addOutput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE).get(), this);
+        addInput("location", GunsmithTypes.LOCATION, true, null);
+        addOutput("block", GunsmithTypes.BLOCK, this);
     }
 
     /**
@@ -61,11 +60,11 @@ public class GetBlockFromLocationNode extends Node implements Opcodes
         int location = getInput("location").getSource().get();
 
         mv.visitVarInsn(ALOAD, location);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonLocation", "getWorld",
-                "()Lcom/voxelplugineering/voxelsniper/common/CommonWorld;", false);
+        mv.visitMethodInsn(INVOKEINTERFACE, GunsmithTypes.LOCATION.getInternalName(), "getWorld", "()L" + GunsmithTypes.WORLD.getInternalName() + ";",
+                false);
         mv.visitVarInsn(ALOAD, location);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonWorld", "getBlockAt",
-                "(Lcom/voxelplugineering/voxelsniper/common/CommonLocation;)Lcom/voxelplugineering/voxelsniper/common/CommonBlock;", false);
+        mv.visitMethodInsn(INVOKEINTERFACE, GunsmithTypes.WORLD.getInternalName(), "getBlockAt", "(L" + GunsmithTypes.LOCATION.getInternalName()
+                + ";)L" + GunsmithTypes.BLOCK.getInternalName() + ";", false);
         mv.visitVarInsn(ASTORE, localsIndex);
         setOutput("block", localsIndex);
         return localsIndex + 1;

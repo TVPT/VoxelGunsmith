@@ -26,7 +26,7 @@ package com.voxelplugineering.voxelsniper.logging;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.voxelplugineering.voxelsniper.api.ILogger;
+import com.voxelplugineering.voxelsniper.api.logging.ILogger;
 
 /**
  * A wrapper for a {@link java.util.logging.Logger} to receive logging messages from gunsmith.

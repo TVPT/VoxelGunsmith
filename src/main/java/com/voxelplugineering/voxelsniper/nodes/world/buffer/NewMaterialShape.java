@@ -27,8 +27,7 @@ import org.objectweb.asm.MethodVisitor;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.ExecutableNode;
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * Creates a new MaterialShape wrapped around the given shape.
@@ -43,9 +42,9 @@ public class NewMaterialShape extends ExecutableNode
     public NewMaterialShape()
     {
         super("NewMaterialShape", "world.buffer");
-        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get(), true, null);
-        addInput("default", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), true, null);
-        addOutput("materialShape", Type.getType("MATERIALSHAPE", TypeDepth.SINGLE).get(), this);
+        addInput("shape", GunsmithTypes.SHAPE, true, null);
+        addInput("default", GunsmithTypes.MATERIAL, true, null);
+        addOutput("materialShape", GunsmithTypes.MATERIALSHAPE, this);
     }
 
     /**

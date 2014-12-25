@@ -28,12 +28,11 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
-import com.voxelplugineering.voxelsniper.common.CommonVector;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
- * Adds two {@link CommonVector}s together and returns the result.
+ * Adds two {@link Vector3i}s together and returns the result.
  */
 public class VectorAdditionNode extends Node implements Opcodes
 {
@@ -49,9 +48,9 @@ public class VectorAdditionNode extends Node implements Opcodes
     public VectorAdditionNode()
     {
         super("Vector Addition", "vector");
-        addInput("a", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
-        addInput("b", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
-        addOutput("result", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), this);
+        addInput("a", GunsmithTypes.VECTOR3I, true, null);
+        addInput("b", GunsmithTypes.VECTOR3I, true, null);
+        addOutput("result", GunsmithTypes.VECTOR3I, this);
     }
 
     /**
@@ -65,8 +64,8 @@ public class VectorAdditionNode extends Node implements Opcodes
 
         mv.visitVarInsn(ALOAD, a);
         mv.visitVarInsn(ALOAD, b);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "add",
-                "(Lcom/voxelplugineering/voxelsniper/common/CommonVector;)Lcom/voxelplugineering/voxelsniper/common/CommonVector;", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "add", "(L" + GunsmithTypes.VECTOR3I.getInternalName() + ";)L"
+                + GunsmithTypes.VECTOR3I.getInternalName() + ";", false);
         mv.visitVarInsn(ASTORE, localsIndex);
         setOutput("result", localsIndex);
         return localsIndex + 1;

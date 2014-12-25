@@ -29,7 +29,7 @@ import org.objectweb.asm.Opcodes;
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * Creates a disc with with a diameter of radius*2+1
@@ -45,7 +45,7 @@ public class DiscShapeNode extends Node
     {
         super("Disc Shape", "shape");
         addInput("radius", Type.FLOAT, true, null);
-        addOutput("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get(), this);
+        addOutput("shape", GunsmithTypes.SHAPE, this);
     }
 
     /**
@@ -64,10 +64,9 @@ public class DiscShapeNode extends Node
 
         int radius = getInput("radius").getSource().get();
         mv.visitVarInsn(Opcodes.DLOAD, radius);
-        mv.visitFieldInsn(Opcodes.GETSTATIC, "com/voxelplugineering/voxelsniper/common/CommonDirection", "UP",
-                "Lcom/voxelplugineering/voxelsniper/common/CommonDirection;");
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/voxelplugineering/voxelsniper/shape/ShapeFactory", "createDisc",
-                "(DLcom/voxelplugineering/voxelsniper/common/CommonDirection;)Lcom/voxelplugineering/voxelsniper/shape/Shape;", false);
+        mv.visitFieldInsn(Opcodes.GETSTATIC, GunsmithTypes.DIRECTION.getInternalName(), "UP", "L" + GunsmithTypes.DIRECTION.getInternalName() + ";");
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, GunsmithTypes.SHAPEFACTORY.getInternalName(), "createDisc",
+                "(DL" + GunsmithTypes.DIRECTION.getInternalName() + ";)L" + GunsmithTypes.SHAPE.getInternalName() + ";", false);
         mv.visitVarInsn(Opcodes.ASTORE, localsIndex);
         setOutput("shape", localsIndex);
         return localsIndex + 1;

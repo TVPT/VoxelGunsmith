@@ -29,7 +29,7 @@ import org.objectweb.asm.Opcodes;
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * Creates a square shape with a side length of radius*2+1.
@@ -49,7 +49,7 @@ public class VoxelShapeNode extends Node
     {
         super("Voxel Shape", "shape");
         addInput("radius", Type.FLOAT, true, null);
-        addOutput("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get(), this);
+        addOutput("shape", GunsmithTypes.SHAPE, this);
     }
 
     /**
@@ -70,8 +70,8 @@ public class VoxelShapeNode extends Node
         int radius = getInput("radius").getSource().get();
         mv.visitVarInsn(Opcodes.DLOAD, radius);
         mv.visitInsn(Opcodes.D2I);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/voxelplugineering/voxelsniper/shape/ShapeFactory", "createVoxel",
-                "(I)Lcom/voxelplugineering/voxelsniper/shape/Shape;", false);
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, GunsmithTypes.SHAPEFACTORY.getInternalName(), "createVoxel",
+                "(I)L" + GunsmithTypes.SHAPE.getInternalName() + ";", false);
         mv.visitVarInsn(Opcodes.ASTORE, localsIndex);
         setOutput("shape", localsIndex);
         return localsIndex + 1;

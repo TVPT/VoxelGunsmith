@@ -26,14 +26,14 @@ package com.voxelplugineering.voxelsniper.util;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.common.CommonBlock;
-import com.voxelplugineering.voxelsniper.common.CommonLocation;
-import com.voxelplugineering.voxelsniper.common.CommonMaterial;
-import com.voxelplugineering.voxelsniper.common.CommonWorld;
+import com.voxelplugineering.voxelsniper.api.world.Block;
+import com.voxelplugineering.voxelsniper.api.world.Location;
+import com.voxelplugineering.voxelsniper.api.world.World;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
 
 /**
  * A utility for performing a ray trace within a world.
@@ -44,25 +44,25 @@ public class RayTrace
     /**
      * The starting point from which the ray is cast.
      */
-    private CommonLocation origin;
+    private Location origin;
     /**
      * The world within the trace is being performed.
      */
-    private CommonWorld<?> world;
+    private World world;
 
     /**
      * A set of materials which are treated as non-solid to the ray (eg. the ray passes through them without stopping)
      */
-    private Set<CommonMaterial<?>> traversalBlocks = Sets.newHashSet();
+    private List<Material> traversalBlocks = Lists.newArrayList();
 
     /**
      * The block targeted by the last trace.
      */
-    private CommonBlock targetBlock = null;
+    private Block targetBlock = null;
     /**
      * The last block targeted before the end of the trace.
      */
-    private CommonBlock lastBlock = null;
+    private Block lastBlock = null;
 
     /*
      * Values used internally for the calculation of the ray trace.
@@ -111,7 +111,7 @@ public class RayTrace
      * @param yaw the yaw
      * @param pitch the pitch
      */
-    public RayTrace(CommonLocation origin, double yaw, double pitch)
+    public RayTrace(Location origin, double yaw, double pitch)
     {
         checkNotNull(origin, "Origin cannot be null");
         this.origin = origin;
@@ -130,7 +130,7 @@ public class RayTrace
      * 
      * @return the origin
      */
-    public CommonLocation getOrigin()
+    public Location getOrigin()
     {
         return this.origin;
     }
@@ -180,7 +180,7 @@ public class RayTrace
      * 
      * @param blocks the traversal blocks
      */
-    public void setTraversalBlocks(CommonMaterial<?>... blocks)
+    public void setTraversalBlocks(Material... blocks)
     {
         checkNotNull(blocks, "Traversal blocks cannot be null");
         this.traversalBlocks.clear();
@@ -192,9 +192,9 @@ public class RayTrace
      * 
      * @return the blocks that may be traversed
      */
-    public Set<CommonMaterial<?>> getTraversalBlocks()
+    public List<Material> getTraversalBlocks()
     {
-        return Collections.unmodifiableSet(this.traversalBlocks);
+        return Collections.unmodifiableList(this.traversalBlocks);
     }
 
     /**
@@ -202,7 +202,7 @@ public class RayTrace
      * 
      * @return the target block
      */
-    public CommonBlock getTargetBlock()
+    public Block getTargetBlock()
     {
         if (this.length > this.range || this.targetBlock.getLocation().getY() < this.minWorldY
                 || this.targetBlock.getLocation().getY() > this.maxWorldY)
@@ -217,7 +217,7 @@ public class RayTrace
      * 
      * @return the last block
      */
-    public CommonBlock getLastBlock()
+    public Block getLastBlock()
     {
         if (this.length > this.range || this.lastBlock.getLocation().getY() < this.minWorldY || this.lastBlock.getLocation().getY() > this.maxWorldY)
         {
@@ -288,8 +288,8 @@ public class RayTrace
         {
             step();
         }
-        this.targetBlock = this.world.getBlockAt(this.targetX, this.targetY, this.targetZ).orNull();
-        this.lastBlock = this.world.getBlockAt(this.lastX, this.lastY, this.lastZ).or(this.targetBlock);
+        this.targetBlock = this.world.getBlock(this.targetX, this.targetY, this.targetZ).orNull();
+        this.lastBlock = this.world.getBlock(this.lastX, this.lastY, this.lastZ).or(this.targetBlock);
     }
 
     /**
@@ -320,7 +320,7 @@ public class RayTrace
         Gunsmith.getLogger().debug(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", 
                 length, range, currentX, currentY, currentZ, 
                 targetX, targetY, targetZ, lastX, lastY, lastZ, rotX, rotY, rotXSin, rotXCos, rotYSin, rotYCos));*/
-        if (!this.traversalBlocks.contains(this.world.getBlockAt(this.targetX, this.targetY, this.targetZ).get().getMaterial()))
+        if (!this.traversalBlocks.contains(this.world.getBlock(this.targetX, this.targetY, this.targetZ).get().getMaterial()))
         {
             //Gunsmith.getLogger().debug("Reached non-traversal block, ending trace. Block reached: " + this.world.getBlockAt(this.targetX, 
             //this.targetY, this.targetZ).getMaterial().toString());

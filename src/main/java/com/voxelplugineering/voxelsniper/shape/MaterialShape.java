@@ -30,8 +30,8 @@ import java.util.Arrays;
 import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.voxelplugineering.voxelsniper.common.CommonMaterial;
-import com.voxelplugineering.voxelsniper.common.CommonVector;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * A {@link MaterialShape} which a material for each point in the shape.
@@ -39,8 +39,8 @@ import com.voxelplugineering.voxelsniper.common.CommonVector;
 public class MaterialShape
 {
     private short nextId = 1;
-    private BiMap<Short, CommonMaterial<?>> materialDictionary;
-    private BiMap<CommonMaterial<?>, Short> inverseDictionary;
+    private BiMap<Short, Material> materialDictionary;
+    private BiMap<Material, Short> inverseDictionary;
     private short[] materials;
     private Shape shape;
 
@@ -50,7 +50,7 @@ public class MaterialShape
      * @param shape the shape
      * @param defaultMaterial the default material for the shape
      */
-    public MaterialShape(Shape shape, CommonMaterial<?> defaultMaterial)
+    public MaterialShape(Shape shape, Material defaultMaterial)
     {
         checkNotNull(defaultMaterial, "Default material cannot be null!");
         this.shape = checkNotNull(shape);
@@ -80,7 +80,7 @@ public class MaterialShape
      * @param relative whether to offset the given position to the origin
      * @return the material, or {@link Optional#absent()} if the point in the shape is not set
      */
-    public Optional<CommonMaterial<?>> get(int x, int y, int z, boolean relative)
+    public Optional<Material> get(int x, int y, int z, boolean relative)
     {
         if (this.getShape().get(x, y, z, relative))
         {
@@ -88,7 +88,7 @@ public class MaterialShape
             {
                 this.materials[getIndex(x, y, z)] = 0; // the default material
             }
-            return Optional.<CommonMaterial<?>>of(this.materialDictionary.get(this.materials[getIndex(x, y, z)]));
+            return Optional.<Material>of(this.materialDictionary.get(this.materials[getIndex(x, y, z)]));
         } else
         {
             return Optional.absent();
@@ -104,7 +104,7 @@ public class MaterialShape
      * @param relative whether to offset the given position to the origin
      * @param material the material to set the given point to
      */
-    public void set(int x, int y, int z, boolean relative, CommonMaterial<?> material)
+    public void set(int x, int y, int z, boolean relative, Material material)
     {
         checkNotNull(material);
         if (relative)
@@ -151,7 +151,7 @@ public class MaterialShape
      * 
      * @param material the material
      */
-    public void flood(CommonMaterial<?> material)
+    public void flood(Material material)
     {
         short id = this.getOrRegisterMaterial(material);
         for (int x = 0; x < getShape().getWidth(); x++)
@@ -179,7 +179,7 @@ public class MaterialShape
      * @param y The starting y layer
      * @param height The height of the area to fill
      */
-    public void setHorizontalLayer(CommonMaterial<?> material, int y, int height)
+    public void setHorizontalLayer(Material material, int y, int height)
     {
         short id = this.getOrRegisterMaterial(material);
         int startIndex = getIndex(0, y, 0);
@@ -194,7 +194,7 @@ public class MaterialShape
      * @param material the material to fetch
      * @return the id for the material
      */
-    private short getOrRegisterMaterial(CommonMaterial<?> material)
+    private short getOrRegisterMaterial(Material material)
     {
         if (this.inverseDictionary.containsKey(material))
         {
@@ -245,7 +245,7 @@ public class MaterialShape
      * 
      * @return the origin
      */
-    public CommonVector getOrigin()
+    public Vector3i getOrigin()
     {
         return this.shape.getOrigin();
     }

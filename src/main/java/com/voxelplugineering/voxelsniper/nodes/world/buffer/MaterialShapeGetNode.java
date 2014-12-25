@@ -28,7 +28,7 @@ import org.objectweb.asm.MethodVisitor;
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
-import com.voxelplugineering.voxelsniper.util.GunsmithTypes;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * Gets the material of a {@link MaterialShape} at the given vector target.
@@ -44,8 +44,8 @@ public class MaterialShapeGetNode extends Node
     {
         super("MaterialShapeSet", "world.buffer");
         addInput("materialShape", GunsmithTypes.MATERIALSHAPE, true, null);
-        addInput("target", GunsmithTypes.COMMONVECTOR, true, null);
-        addOutput("material", GunsmithTypes.COMMONMATERIAL, this);
+        addInput("target", GunsmithTypes.VECTOR3I, true, null);
+        addOutput("material", GunsmithTypes.VECTOR3I, this);
     }
 
     /**

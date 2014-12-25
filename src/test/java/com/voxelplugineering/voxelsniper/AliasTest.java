@@ -28,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.voxelplugineering.voxelsniper.common.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.alias.AliasRegistry;
 
 /**
  * A test suite for the alias system

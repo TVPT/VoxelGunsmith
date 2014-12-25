@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.shape;
 
-import com.voxelplugineering.voxelsniper.common.CommonDirection;
+import com.voxelplugineering.voxelsniper.util.Direction;
 
 /**
  * A Factory for creating standard shapes.
@@ -49,12 +49,12 @@ public class ShapeFactory
      * @param direction the direction
      * @return the new shape
      */
-    public static Shape createVoxelDisc(int radius, CommonDirection direction)
+    public static Shape createVoxelDisc(int radius, Direction direction)
     {
-        if (direction == CommonDirection.EAST || direction == CommonDirection.WEST) // x-axis
+        if (direction == Direction.EAST || direction == Direction.WEST) // x-axis
         {
             return createCuboid(1, radius, radius);
-        } else if (direction == CommonDirection.NORTH || direction == CommonDirection.SOUTH) // z-axis
+        } else if (direction == Direction.NORTH || direction == Direction.SOUTH) // z-axis
         {
             return createCuboid(radius, radius, 1);
         } else
@@ -149,10 +149,10 @@ public class ShapeFactory
      * @param direction the direction axis
      * @return the new shape
      */
-    public static Shape createEllipticalCylinder(double rx, double ry, int height, CommonDirection direction)
+    public static Shape createEllipticalCylinder(double rx, double ry, int height, Direction direction)
     {
         Shape s;
-        if (direction == CommonDirection.EAST || direction == CommonDirection.WEST) // x-axis
+        if (direction == Direction.EAST || direction == Direction.WEST) // x-axis
         {
             s = new Shape(height, (int) rx * 2 + 1, (int) ry * 2 + 1, 0, (int) Math.ceil(rx), (int) Math.ceil(ry));
             s.set((int) Math.ceil(rx), (int) Math.ceil(ry), 0, false);
@@ -179,7 +179,7 @@ public class ShapeFactory
                     }
                 }
             }
-        } else if (direction == CommonDirection.NORTH || direction == CommonDirection.SOUTH) // z-axis
+        } else if (direction == Direction.NORTH || direction == Direction.SOUTH) // z-axis
         {
             s = new Shape((int) rx * 2 + 1, height, (int) ry * 2 + 1, (int) Math.ceil(rx), 0, (int) Math.ceil(ry));
             s.set((int) Math.ceil(rx), 0, (int) Math.ceil(ry), false);
@@ -246,7 +246,7 @@ public class ShapeFactory
      * @param direction the direction
      * @return the new shape
      */
-    public static Shape createCylinder(double radius, int height, CommonDirection direction)
+    public static Shape createCylinder(double radius, int height, Direction direction)
     {
         return createEllipticalCylinder(radius, radius, height, direction);
     }
@@ -258,7 +258,7 @@ public class ShapeFactory
      * @param direction the direction
      * @return the new shape
      */
-    public static Shape createDisc(double radius, CommonDirection direction)
+    public static Shape createDisc(double radius, Direction direction)
     {
         return createEllipticalCylinder(radius, radius, 1, direction);
     }
@@ -273,7 +273,7 @@ public class ShapeFactory
      * @param direction the direction
      * @return the new shape
      */
-    public static Shape createEllipse(double rx, double ry, CommonDirection direction)
+    public static Shape createEllipse(double rx, double ry, Direction direction)
     {
         return createEllipticalCylinder(rx, ry, 1, direction);
     }

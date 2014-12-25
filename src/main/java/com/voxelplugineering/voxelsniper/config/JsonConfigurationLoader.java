@@ -37,7 +37,7 @@ import java.lang.reflect.Field;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.voxelplugineering.voxelsniper.api.IConfiguration;
+import com.voxelplugineering.voxelsniper.api.config.Configuration;
 
 /**
  * A configuration loader for loading and saving configuration containers to json flat files.
@@ -55,7 +55,7 @@ public class JsonConfigurationLoader
      * @throws IOException if there is an issue with loading values from the file
      * @throws IllegalAccessException if there was an issue loading the values from the fields
      */
-    public static void load(File jsonFile, IConfiguration configuration, String containerName) throws IOException, IllegalAccessException
+    public static void load(File jsonFile, Configuration configuration, String containerName) throws IOException, IllegalAccessException
     {
         checkNotNull(jsonFile, "Json File cannot be null!");
         checkNotNull(configuration, "Configuration cannot be null!");
@@ -88,7 +88,7 @@ public class JsonConfigurationLoader
      * @throws InstantiationException if there was a problem creating the writer to save the file
      * @throws IllegalAccessException if there was a problem getting the data from the container
      */
-    public static void save(File output, IConfiguration configuration, String containerName) throws IOException, InstantiationException,
+    public static void save(File output, Configuration configuration, String containerName) throws IOException, InstantiationException,
             IllegalAccessException
     {
         checkNotNull(output, "File output cannot be null!");
@@ -118,7 +118,7 @@ public class JsonConfigurationLoader
      * @throws InstantiationException if there was a problem creating the writer to save the file
      * @throws IllegalAccessException if there was a problem getting the data from the container
      */
-    public static void saveAllContainers(File outputFolder, IConfiguration configuration) throws IOException, InstantiationException,
+    public static void saveAllContainers(File outputFolder, Configuration configuration) throws IOException, InstantiationException,
             IllegalAccessException
     {
         checkNotNull(outputFolder, "Output folder cannot be null!");

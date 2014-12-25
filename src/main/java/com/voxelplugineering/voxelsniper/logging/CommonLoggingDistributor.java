@@ -29,13 +29,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.api.ILogger;
-import com.voxelplugineering.voxelsniper.api.ILoggingDistributor;
+import com.voxelplugineering.voxelsniper.api.logging.ILogger;
+import com.voxelplugineering.voxelsniper.api.logging.LoggingDistributor;
 
 /**
  * A standard logging distributor.
  */
-public class CommonLoggingDistributor implements ILoggingDistributor
+public class CommonLoggingDistributor implements LoggingDistributor
 {
 
     /**

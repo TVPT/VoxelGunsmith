@@ -28,8 +28,7 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * Node to get location and material from block
@@ -47,10 +46,10 @@ public class BlockBreakNode extends Node
      */
     public BlockBreakNode()
     {
-        super("BlockLocation", "block");
-        addInput("block", Type.getType("COMMONBLOCK", TypeDepth.SINGLE).get(), true, null);
-        addOutput("location", Type.getType("COMMONLOCATION", TypeDepth.SINGLE).get(), this);
-        addOutput("material", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), this);
+        super("BreakBlock", "block");
+        addInput("block", GunsmithTypes.BLOCK, true, null);
+        addOutput("location", GunsmithTypes.LOCATION, this);
+        addOutput("material", GunsmithTypes.MATERIAL, this);
     }
 
     /**
@@ -69,16 +68,17 @@ public class BlockBreakNode extends Node
          */
         int block = getInput("block").getSource().get();
         mv.visitVarInsn(Opcodes.ALOAD, block);
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonBlock", "getLocation",
-                "()Lcom/voxelplugineering/voxelsniper/common/CommonLocation;", false);
+        mv.visitTypeInsn(Opcodes.CHECKCAST, GunsmithTypes.BLOCK.getInternalName());
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, GunsmithTypes.BLOCK.getInternalName(), "getLocation",
+                "()L" + GunsmithTypes.LOCATION.getInternalName() + ";", false);
         mv.visitVarInsn(Opcodes.ASTORE, localsIndex);
         setOutput("location", localsIndex);
         mv.visitVarInsn(Opcodes.ALOAD, block);
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonBlock", "getMaterial",
-                "()Lcom/voxelplugineering/voxelsniper/common/CommonMaterial;", false);
+        mv.visitTypeInsn(Opcodes.CHECKCAST, GunsmithTypes.BLOCK.getInternalName());
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, GunsmithTypes.BLOCK.getInternalName(), "getMaterial",
+                "()L" + GunsmithTypes.MATERIAL.getInternalName() + ";", false);
         mv.visitVarInsn(Opcodes.ASTORE, localsIndex + 1);
         setOutput("material", localsIndex + 1);
         return localsIndex + 2;
     }
-
 }

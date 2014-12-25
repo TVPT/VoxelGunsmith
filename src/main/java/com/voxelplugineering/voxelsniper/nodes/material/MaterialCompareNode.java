@@ -29,8 +29,7 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.ExecutableNode;
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * A node for comparing two materials and executing another {@link ExecutableNode} if the comparison is true.
@@ -47,8 +46,8 @@ public class MaterialCompareNode extends ExecutableNode implements Opcodes
     public MaterialCompareNode()
     {
         super("MaterialCompare", "material");
-        addInput("a", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), true, null);
-        addInput("b", Type.getType("COMMONMATERIAL", TypeDepth.SINGLE).get(), true, null);
+        addInput("a", GunsmithTypes.MATERIAL, true, null);
+        addInput("b", GunsmithTypes.MATERIAL, true, null);
     }
 
     /**

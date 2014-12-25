@@ -28,8 +28,7 @@ import org.objectweb.asm.Opcodes;
 
 import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.ExecutableNode;
-import com.thevoxelbox.vsl.type.Type;
-import com.thevoxelbox.vsl.type.TypeDepth;
+import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * A visual scripting node to set the a shape to a material.
@@ -44,8 +43,8 @@ public class ShapeUnsetNode extends ExecutableNode implements Opcodes
     public ShapeUnsetNode()
     {
         super("ShapeUnset", "world");
-        addInput("target", Type.getType("COMMONVECTOR", TypeDepth.SINGLE).get(), true, null);
-        addInput("shape", Type.getType("SHAPE", TypeDepth.SINGLE).get(), true, null);
+        addInput("target", GunsmithTypes.VECTOR3I, true, null);
+        addInput("shape", GunsmithTypes.SHAPE, true, null);
     }
 
     /**
@@ -58,19 +57,19 @@ public class ShapeUnsetNode extends ExecutableNode implements Opcodes
         int shape = getInput("shape").getSource().get();
         mv.visitVarInsn(ALOAD, shape);
         mv.visitVarInsn(ALOAD, target);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getX", "()D", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getX", "()D", false);
         mv.visitMethodInsn(INVOKESTATIC, "java/lang/Math", "floor", "(D)D", false);
         mv.visitInsn(D2I);
         mv.visitVarInsn(ALOAD, target);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getY", "()D", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getY", "()D", false);
         mv.visitMethodInsn(INVOKESTATIC, "java/lang/Math", "floor", "(D)D", false);
         mv.visitInsn(D2I);
         mv.visitVarInsn(ALOAD, target);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/common/CommonVector", "getZ", "()D", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getZ", "()D", false);
         mv.visitMethodInsn(INVOKESTATIC, "java/lang/Math", "floor", "(D)D", false);
         mv.visitInsn(D2I);
         mv.visitInsn(ICONST_1);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/shape/Shape", "unset", "(IIIZ)V", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.SHAPE.getInternalName(), "unset", "(IIIZ)V", false);
         return localsIndex;
     }
 

@@ -28,7 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.voxelplugineering.voxelsniper.common.CommonVector;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * Represent a 3-d voxel shape.
@@ -43,7 +43,7 @@ public class Shape
     /**
      * The origin location of the shape.
      */
-    private CommonVector origin;
+    private Vector3i origin;
     /**
      * The width of the shape (x-axis).
      */
@@ -85,7 +85,7 @@ public class Shape
         this.width = width;
         this.height = height;
         this.length = length;
-        this.origin = new CommonVector(ox, oy, oz);
+        this.origin = new Vector3i(ox, oy, oz);
     }
 
     /**
@@ -96,7 +96,7 @@ public class Shape
      * @param length the length
      * @param origin the origin
      */
-    public Shape(int width, int height, int length, CommonVector origin)
+    public Shape(int width, int height, int length, Vector3i origin)
     {
         this.shape = new byte[width][length][height / 8 + 1];
         this.width = width;
@@ -143,7 +143,7 @@ public class Shape
      * 
      * @param origin the new origin
      */
-    public void setOrigin(CommonVector origin)
+    public void setOrigin(Vector3i origin)
     {
         checkNotNull(origin, "Origin cannot be null");
         this.origin = origin;
@@ -154,7 +154,7 @@ public class Shape
      * 
      * @return the origin
      */
-    public CommonVector getOrigin()
+    public Vector3i getOrigin()
     {
         return this.origin;
     }
@@ -314,7 +314,7 @@ public class Shape
                 }
             }
         }
-        this.origin = new CommonVector(this.origin.getX() + dx, this.origin.getY() + dy, this.origin.getZ() + dz);
+        this.origin = new Vector3i(this.origin.getX() + dx, this.origin.getY() + dy, this.origin.getZ() + dz);
     }
 
     /**
@@ -325,9 +325,9 @@ public class Shape
     protected void matchSize(Shape other)
     {
         checkNotNull(other, "Cannot match size with a null shape.");
-        int dx = (int) (other.origin.getX() - this.origin.getX());
-        int dy = (int) (other.origin.getY() - this.origin.getY());
-        int dz = (int) (other.origin.getZ() - this.origin.getZ());
+        int dx = (other.origin.getX() - this.origin.getX());
+        int dy = (other.origin.getY() - this.origin.getY());
+        int dz = (other.origin.getZ() - this.origin.getZ());
         other.resizeRelative(dx, dy, dz);
         this.resizeRelative(-dx, -dy, -dz);
     }
@@ -436,13 +436,13 @@ public class Shape
     }
 
     /**
-     * Returns an array of {@link CommonVector} these vectors represent all set positions of this shape.
+     * Returns an array of {@link Vector3i} these vectors represent all set positions of this shape.
      * 
      * @return the set positions
      */
-    public CommonVector[] getShape()
+    public Vector3i[] getShape()
     {
-        List<CommonVector> points = new ArrayList<CommonVector>();
+        List<Vector3i> points = new ArrayList<Vector3i>();
         for (int x = 0; x < this.width; x++)
         {
             for (int y = 0; y < this.height; y++)
@@ -451,12 +451,12 @@ public class Shape
                 {
                     if (get(x, y, z, false))
                     {
-                        points.add(new CommonVector(x - this.origin.getX(), y - this.origin.getY(), z - this.origin.getZ()));
+                        points.add(new Vector3i(x - this.origin.getX(), y - this.origin.getY(), z - this.origin.getZ()));
                     }
                 }
             }
         }
-        return points.toArray(new CommonVector[points.size()]);
+        return points.toArray(new Vector3i[points.size()]);
     }
 
     /**
@@ -480,7 +480,7 @@ public class Shape
             }
         }
         resize(this.width, 1, this.length);
-        setOrigin(new CommonVector(this.origin.getX(), 0, this.origin.getZ()));
+        setOrigin(new Vector3i(this.origin.getX(), 0, this.origin.getZ()));
     }
 
     /**
