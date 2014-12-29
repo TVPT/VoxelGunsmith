@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.util.math;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.Serializable;
 
 /**
@@ -193,4 +194,5 @@ public class Vector3i implements Serializable, Cloneable
     {
         return new Vector3i(getX(), getY(), getZ());
     }
+
 }

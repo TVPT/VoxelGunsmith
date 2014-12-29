@@ -21,22 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brushes;
+package com.voxelplugineering.voxelsniper.nodes.world.biome;
 
-import com.thevoxelbox.vsl.node.NodeGraph;
-import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
+import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 
 /**
- * An abstract standard brush loader.
+ * A node for getting a {@link Biome} by name.
  */
-public abstract class CommonBrushLoader implements BrushLoader
+public class GetBiomeNode extends Node
 {
 
-    @Override
-    public NodeGraph loadBrush(byte[] serialized)
+    private final Provider<String> name;
+    private final Provider<Biome> biome;
+    
+    /**
+     * Creates a new node.
+     * 
+     * @param name The name provider
+     */
+    public GetBiomeNode(Provider<String> name)
     {
-        // TODO Auto-generated method stub
-        return null;
+        this.name = name;
+        this.biome = new Provider<Biome>(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void exec(RuntimeState state)
+    {
+        this.biome.set(Gunsmith.getBiomeRegistry().getBiome(this.name.get(state)).get(), state.getUUID());
+    }
+    
+    public Provider<Biome> getBiome()
+    {
+        return this.biome;
+    }
+    
 }

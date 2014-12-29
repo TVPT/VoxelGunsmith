@@ -67,13 +67,6 @@ public interface PlatformProxy
     File getDataFolder();
 
     /**
-     * Returns the ClassLoader used to load Gunsmith and its libraries.
-     *
-     * @return the classloader
-     */
-    ClassLoader getGunsmithClassLoader();
-
-    /**
      * Gets the Configuration file for Metrics to be used.
      *
      * @return The file containing the configuration for Metrics

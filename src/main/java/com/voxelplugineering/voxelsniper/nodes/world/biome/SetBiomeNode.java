@@ -21,22 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brushes;
+package com.voxelplugineering.voxelsniper.nodes.world.biome;
 
-import com.thevoxelbox.vsl.node.NodeGraph;
-import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
+import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.world.Location;
+import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 
 /**
- * An abstract standard brush loader.
+ * A node for setting the biome of a world at a location.
  */
-public abstract class CommonBrushLoader implements BrushLoader
+public class SetBiomeNode extends Node
 {
+    private final Provider<Biome> biome;
+    private final Provider<Location> location;
+
+    /**
+     * Creates a new {@link SetBiomeNode}.
+     */
+    public SetBiomeNode(Provider<Location> location, Provider<Biome> biome)
+    {
+        this.biome = biome;
+        this.location = location;
+    }
 
     @Override
-    public NodeGraph loadBrush(byte[] serialized)
+    public void exec(RuntimeState state)
     {
-        // TODO Auto-generated method stub
-        return null;
+        Location loc = this.location.get(state);
+        loc.getWorld().setBiome(this.biome.get(state), loc);
     }
+
+
 
 }

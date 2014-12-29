@@ -23,54 +23,34 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.shape;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
-import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.ExecutableNode;
-import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
+import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * A visual scripting node to set the a shape to a material.
  */
-public class ShapeUnsetNode extends ExecutableNode implements Opcodes
+public class ShapeUnsetNode extends Node
 {
-    private static final long serialVersionUID = 7186240432579248565L;
+    private final Provider<Shape> shape;
+    private final Provider<Vector3i> target;
 
     /**
      * Constructs a new {@link ShapeUnsetNode}
      */
-    public ShapeUnsetNode()
+    public ShapeUnsetNode(Provider<Shape> shape, Provider<Vector3i> target)
     {
-        super("ShapeUnset", "world");
-        addInput("target", GunsmithTypes.VECTOR3I, true, null);
-        addInput("shape", GunsmithTypes.SHAPE, true, null);
+        this.shape = shape;
+        this.target = target;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    public void exec(RuntimeState state)
     {
-        int target = getInput("target").getSource().get();
-        int shape = getInput("shape").getSource().get();
-        mv.visitVarInsn(ALOAD, shape);
-        mv.visitVarInsn(ALOAD, target);
-        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getX", "()D", false);
-        mv.visitMethodInsn(INVOKESTATIC, "java/lang/Math", "floor", "(D)D", false);
-        mv.visitInsn(D2I);
-        mv.visitVarInsn(ALOAD, target);
-        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getY", "()D", false);
-        mv.visitMethodInsn(INVOKESTATIC, "java/lang/Math", "floor", "(D)D", false);
-        mv.visitInsn(D2I);
-        mv.visitVarInsn(ALOAD, target);
-        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getZ", "()D", false);
-        mv.visitMethodInsn(INVOKESTATIC, "java/lang/Math", "floor", "(D)D", false);
-        mv.visitInsn(D2I);
-        mv.visitInsn(ICONST_1);
-        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.SHAPE.getInternalName(), "unset", "(IIIZ)V", false);
-        return localsIndex;
+        Vector3i t = this.target.get(state);
+        this.shape.get(state).unset(t.getX(), t.getY(), t.getZ(), false);
     }
 
 }

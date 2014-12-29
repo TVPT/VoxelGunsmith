@@ -23,63 +23,44 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.world;
 
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
-import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.ExecutableNode;
-import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
+import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.world.Location;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.shape.MaterialShape;
+import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
 /**
  * A visual scripting node to set the a shape to a material.
  */
-public class ShapeMaterialSetNode extends ExecutableNode implements Opcodes
+public class ShapeMaterialSetNode extends Node
 {
-    private static final long serialVersionUID = 7186240432579248565L;
+    private final Provider<Shape> shape;
+    private final Provider<Material> material;
+    private final Provider<Location> target;
 
     /**
      * Constructs a new ShapeMaterialSetNode
      */
-    public ShapeMaterialSetNode()
+    public ShapeMaterialSetNode(Provider<Shape> shape, Provider<Material> material, Provider<Location> target)
     {
-        super("MaterialSet", "world");
-        addInput("material", GunsmithTypes.MATERIAL, true, null);
-        addInput("target", GunsmithTypes.LOCATION, true, null);
-        addInput("shape", GunsmithTypes.SHAPE, true, null);
+        this.shape = shape;
+        this.material = material;
+        this.target = target;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    public void exec(RuntimeState state)
     {
-        int target = getInput("target").getSource().get();
-        int shape = getInput("shape").getSource().get();
-        int material = getInput("material").getSource().get();
-        mv.visitTypeInsn(NEW, "com/voxelplugineering/voxelsniper/world/queue/ShapeChangeQueue");//TODO add ShapeChangeQueue to GunsmithTypes
-        mv.visitInsn(DUP);
-        mv.visitVarInsn(ALOAD, 2);
-        mv.visitVarInsn(ALOAD, target);
-        mv.visitTypeInsn(NEW, GunsmithTypes.MATERIALSHAPE.getInternalName());
-        mv.visitInsn(DUP);
-        mv.visitVarInsn(ALOAD, shape);
-        mv.visitVarInsn(ALOAD, material);
-        mv.visitMethodInsn(INVOKESPECIAL, GunsmithTypes.MATERIALSHAPE.getInternalName(), "<init>", "(L" + GunsmithTypes.SHAPE.getInternalName()
-                + ";L" + GunsmithTypes.MATERIAL.getInternalName() + ";)V", false);
-        mv.visitMethodInsn(INVOKESPECIAL, "com/voxelplugineering/voxelsniper/world/queue/ShapeChangeQueue", "<init>",
-                "(Lcom/voxelplugineering/voxelsniper/api/entity/living/Player;L" + GunsmithTypes.LOCATION.getInternalName() + ";" + "L"
-                        + GunsmithTypes.MATERIALSHAPE.getInternalName() + ";)V", false);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "com/voxelplugineering/voxelsniper/world/queue/ShapeChangeQueue", "flush", "()V", false);
-        return localsIndex;
+        Shape s = this.shape.get(state);
+        Location l = this.target.get(state);
+        Material m = this.material.get(state);
+        Player p = state.getVars().<Player>get("__PLAYER__", Player.class).get();
+        MaterialShape ms = new MaterialShape(s, m);
+        new ShapeChangeQueue(p, l, ms);
     }
 
-    /*    public void run(IVariableScope vars, ISniper sniper)
-        {
-            CommonLocation target = null;
-            Shape shape = null;
-            CommonMaterial<?> material = null;
-            new ShapeChangeQueue(sniper, target, new MaterialShape(shape, material)).flush();
-        }*/
 }

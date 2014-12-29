@@ -42,6 +42,7 @@ import com.voxelplugineering.voxelsniper.util.RayTrace;
 /**
  * An event handler for the default behavior for events.
  */
+@SuppressWarnings("static-method")
 public class CommonEventHandler
 {
 
@@ -130,10 +131,11 @@ public class CommonEventHandler
             brushVariables.set("targetBlock", ray.getTargetBlock());
             brushVariables.set("lastBlock", ray.getLastBlock());
             brushVariables.set("length", ray.getLength());
+            brushVariables.set("__PLAYER__", sniper);
             Gunsmith.getLogger().info(
                     "Snipe at " + ray.getTargetBlock().getLocation().toString() + " : " + sniper.getCurrentBrush().getClass().getName());
 
-            sniper.getCurrentBrush().run(brushVariables, sniper);
+            sniper.getCurrentBrush().run(brushVariables);
         } catch (Exception e)
         {
             sniper.sendMessage("Error executing brush, see console for more details.");

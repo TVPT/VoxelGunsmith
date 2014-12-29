@@ -21,53 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.util.vsl;
+package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 
-import com.thevoxelbox.vsl.api.INodeGraph;
-import com.thevoxelbox.vsl.node.ChainableNodeGraph;
-import com.voxelplugineering.voxelsniper.util.Pair;
+import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.shape.MaterialShape;
+import com.voxelplugineering.voxelsniper.shape.Shape;
 
 /**
- * A {@link INodeGraph} for visual scripts representing brush parts.
+ * Creates a new MaterialShape wrapped around the given shape.
  */
-public class BrushPartNodeGraph extends ChainableNodeGraph
+public class NewMaterialShapeNode extends Node
 {
-    private static final long serialVersionUID = 1L;
+    private final Provider<MaterialShape> matshape;
+    private final Provider<Shape> shape;
+    private final Provider<Material> defaultMaterial;
 
     /**
-     * The names of special variables which are required by this brush part. TODO change to a {@link Pair}{@literal <String, Type>}.
+     * Creates a {@link NewMaterialShapeNode}.
      */
-    public String[] requiredVars = null;
-
-    /**
-     * Creates a new node graph.
-     * 
-     * @param name the graph name
-     */
-    public BrushPartNodeGraph(String name)
+    public NewMaterialShapeNode(Provider<Shape> shape, Provider<Material> defaultMaterial)
     {
-        super(name);
-        this.requiredVars = new String[0];
+        this.matshape = new Provider<MaterialShape>(this);
+        this.shape = shape;
+        this.defaultMaterial = defaultMaterial;
     }
 
-    /**
-     * Returns variables required by this brush part.
-     * 
-     * @return the required variables
-     */
-    public String[] getRequiredVars()
+    @Override
+    public void exec(RuntimeState state)
     {
-        return this.requiredVars;
+        MaterialShape ms = new MaterialShape(this.shape.get(state), this.defaultMaterial.get(state));
+        this.matshape.set(ms, state.getUUID());
     }
 
-    /**
-     * Sets the required variables.
-     * 
-     * @param vars the required variables
-     */
-    public void setRequiredVars(String... vars)
+    public Provider<MaterialShape> getMaterialShape()
     {
-        this.requiredVars = vars;
+        return this.matshape;
     }
 
 }

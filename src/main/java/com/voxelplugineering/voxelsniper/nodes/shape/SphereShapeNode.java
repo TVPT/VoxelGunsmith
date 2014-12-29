@@ -23,55 +23,29 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.shape;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
-import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.Node;
-import com.thevoxelbox.vsl.type.Type;
-import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.shape.ShapeFactory;
 
 /**
  * Creates a sphere with with a diameter of radius*2+1
  */
-public class SphereShapeNode extends Node
+public class SphereShapeNode extends ShapeNode
 {
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -7263550249408114074L;
+    private final Provider<Double> radius;
 
     /**
      * Creates a new node.
      */
-    public SphereShapeNode()
+    public SphereShapeNode(Provider<Double> radius)
     {
-        super("Sphere Shape", "shape");
-        addInput("radius", Type.FLOAT, true, null);
-        addOutput("shape", GunsmithTypes.SHAPE, this);
+        super();
+        this.radius = radius;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    public void exec(RuntimeState state)
     {
-        /*
-         * ALOAD radius
-         * CHECKCAST java/lang/Double
-         * INVOKEVIRTUAL Double.doubleValue () : double
-         * INVOKESTATIC ShapeFactory.createSphere (double) : Shape
-         * ASTORE shape
-         */
-
-        int radius = getInput("radius").getSource().get();
-        mv.visitVarInsn(Opcodes.DLOAD, radius);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, GunsmithTypes.SHAPEFACTORY.getInternalName(), "createSphere",
-                "(D)L" + GunsmithTypes.SHAPE.getInternalName() + ";", false);
-        mv.visitVarInsn(Opcodes.ASTORE, localsIndex);
-        setOutput("shape", localsIndex);
-        return localsIndex + 1;
+        this.shape.set(ShapeFactory.createSphere(this.radius.get(state)), state.getUUID());
     }
 }

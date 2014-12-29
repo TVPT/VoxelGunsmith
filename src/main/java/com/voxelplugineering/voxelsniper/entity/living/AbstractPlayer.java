@@ -33,10 +33,10 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Queues;
 import com.thevoxelbox.vsl.VariableScope;
 import com.thevoxelbox.vsl.api.IVariableScope;
+import com.thevoxelbox.vsl.node.NodeGraph;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
-import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.brushes.CommonBrushManager;
@@ -57,7 +57,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     /**
      * The currently selected brush.
      */
-    private Brush currentBrush;
+    private NodeGraph currentBrush;
     /**
      * The brush settings specific to this player.
      */
@@ -100,7 +100,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     /**
      * {@inheritDoc}
      */
-    public void setCurrentBrush(Brush brush)
+    public void setCurrentBrush(NodeGraph brush)
     {
         this.currentBrush = brush;
     }
@@ -108,7 +108,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     /**
      * {@inheritDoc}
      */
-    public Brush getCurrentBrush()
+    public NodeGraph getCurrentBrush()
     {
         return this.currentBrush;
     }
@@ -126,11 +126,11 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
      */
     public void resetSettings()
     {
-        Brush start = null;
-        Brush last = null;
+        NodeGraph start = null;
+        NodeGraph last = null;
         for (String brushName : Gunsmith.getConfiguration().get("defaultBrush").get().toString().split(" "))
         {
-            Brush brush = getPersonalBrushManager().getNewBrushInstance(brushName).orNull();
+            NodeGraph brush = getPersonalBrushManager().getNewBrushInstance(brushName).orNull();
             if (brush == null)
             {
                 getPersonalBrushManager().loadBrush(brushName);

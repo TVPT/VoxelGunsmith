@@ -24,11 +24,11 @@
 package com.voxelplugineering.voxelsniper.api.brushes;
 
 import com.google.common.base.Optional;
-import com.thevoxelbox.vsl.classloader.ASMClassLoader;
+import com.thevoxelbox.vsl.node.NodeGraph;
 import com.voxelplugineering.voxelsniper.api.Manager;
 
 /**
- * Handles the registration and instantiation of {@link Brush}s. Also contains an ordered list of loaders which is traversed to load named brushes.
+ * Handles the registration of {@link NodeGraph}s. Also contains an ordered list of loaders which is traversed to load named brushes.
  * Contains a reference to a ClassLoader to be used by all associated loaders. A brush manager may be connected to a particular user in a multi-user
  * environment. Therefore, by connecting the classloader to the brush manager when the manager is garbage collected (eg. when the user disconnects
  * from the environment) the classloader (and by extension all classes loaded explicitly for this manager) are also garbage connected.
@@ -41,9 +41,9 @@ public interface BrushManager extends Manager
      * the higher version is kept loaded.
      * 
      * @param identifier the brush name, cannot be null or empty
-     * @param clazz the brush class, cannot be null
+     * @param graph The node graph
      */
-    void loadBrush(String identifier, Class<? extends Brush> clazz);
+    void loadBrush(String identifier, NodeGraph graph);
 
     /**
      * Walks through registered loaders in order and attempts to load the brush with the given name.
@@ -67,7 +67,7 @@ public interface BrushManager extends Manager
      * @param identifier the brush name to be loaded, cannot be null or empty
      * @return an instance of the brush
      */
-    Optional<Brush> getNewBrushInstance(String identifier);
+    Optional<NodeGraph> getNewBrushInstance(String identifier);
 
     /**
      * Sets the parent brush loader, when a request for a brush instance is made and it is not found within this manager the request is passed up to
@@ -76,13 +76,5 @@ public interface BrushManager extends Manager
      * @param parent the parent brush loader
      */
     void setParent(BrushManager parent);
-
-    /**
-     * Return ths class loader associated with this manager, this class loader is used by brush loaders loading brushes for this manager. The class
-     * loader is attached to the manager so that it may be garbage collected if the manager is dereferenced.
-     * 
-     * @return this manager's class loader
-     */
-    ASMClassLoader getClassLoader();
 
 }

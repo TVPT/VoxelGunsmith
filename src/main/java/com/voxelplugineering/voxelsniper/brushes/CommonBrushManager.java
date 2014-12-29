@@ -33,9 +33,8 @@ import java.util.Map;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.thevoxelbox.vsl.classloader.ASMClassLoader;
+import com.thevoxelbox.vsl.node.NodeGraph;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 
@@ -50,13 +49,9 @@ public class CommonBrushManager implements BrushManager
      */
     private BrushManager parent = null;
     /**
-     * The classloader to be used by loaders associated with this manager.
-     */
-    private ASMClassLoader classLoader = null;
-    /**
      * A map of brushes loaded in this manager.
      */
-    private Map<String, Class<? extends Brush>> brushes = Maps.newHashMap();
+    private Map<String, NodeGraph> brushes = Maps.newHashMap();
     /**
      * An ordered list of loaders used to load brushes by name.
      */
@@ -74,7 +69,6 @@ public class CommonBrushManager implements BrushManager
         {
             Gunsmith.getLogger().warn("Created Brush Manager before default BrushLoader was set.");
         }
-        this.classLoader = new ASMClassLoader(Gunsmith.getPlatformProxy().getGunsmithClassLoader(), Gunsmith.getCompilerFactory());
     }
 
     /**
@@ -124,13 +118,13 @@ public class CommonBrushManager implements BrushManager
     /**
      * {@inheritDoc}
      */
-    public void loadBrush(String identifier, Class<? extends Brush> clazz)
+    public void loadBrush(String identifier, NodeGraph graph)
     {
         checkNotNull(identifier, "Name cannot be null!");
         checkArgument(!identifier.isEmpty(), "Name cannot be empty");
-        checkNotNull(clazz, "Brush class cannot be null!");
+        checkNotNull(graph, "Brush class cannot be null!");
         //TODO: Check version if already loaded
-        this.brushes.put(identifier, clazz);
+        this.brushes.put(identifier, graph);
     }
 
     /**
@@ -140,26 +134,26 @@ public class CommonBrushManager implements BrushManager
     {
         checkNotNull(identifier, "Name cannot be null!");
         checkArgument(!identifier.isEmpty(), "Name cannot be empty");
-        Class<? extends Brush> cls = null;
-        for (Iterator<BrushLoader> iter = this.loaders.iterator(); iter.hasNext() && cls == null;)
+        NodeGraph graph = null;
+        for (Iterator<BrushLoader> iter = this.loaders.iterator(); iter.hasNext() && graph == null;)
         {
             BrushLoader loader = iter.next();
-            cls = loader.loadBrush(this.classLoader, identifier);
+            graph = loader.loadBrush(identifier);
         }
-        if (cls != null)
+        if (graph != null)
         {
-            loadBrush(identifier, cls);
+            loadBrush(identifier, graph);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public Optional<Brush> getNewBrushInstance(String identifier)
+    public Optional<NodeGraph> getNewBrushInstance(String identifier)
     {
         checkNotNull(identifier, "Name cannot be null!");
         checkArgument(!identifier.isEmpty(), "Name cannot be empty");
-        Class<? extends Brush> br = this.brushes.get(identifier);
+        NodeGraph br = this.brushes.get(identifier);
         if (br == null)
         {
             if (this.parent != null)
@@ -168,22 +162,7 @@ public class CommonBrushManager implements BrushManager
             }
             return Optional.absent();
         }
-        System.out.println(identifier + " " + br.getName() + " " + br.getSuperclass().getName());
-        for (Class<?> i : br.getInterfaces())
-        {
-            System.out.println("\t" + i.getName());
-        }
-        try
-        {
-            Brush brush = br.newInstance();
-            return Optional.<Brush>of(brush);
-        } catch (Throwable e)
-        //catching all thrown errors and exceptions as things like a VerifyError are far more likely than in the conventional usage of newInstance
-        // due the the custom bytecode within nodes and should not halt the execution
-        {
-            e.printStackTrace();
-        }
-        return Optional.absent();
+        return Optional.<NodeGraph>of(br);
     }
 
     /**
@@ -192,15 +171,6 @@ public class CommonBrushManager implements BrushManager
     public void setParent(BrushManager parent)
     {
         this.parent = parent;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ASMClassLoader getClassLoader()
-    {
-        return this.classLoader;
     }
 
 }

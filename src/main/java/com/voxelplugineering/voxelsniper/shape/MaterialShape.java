@@ -43,6 +43,7 @@ public class MaterialShape
     private BiMap<Material, Short> inverseDictionary;
     private short[] materials;
     private Shape shape;
+    private Material defaultMaterial;
 
     /**
      * Creates a new {@link MaterialShape}.
@@ -59,6 +60,7 @@ public class MaterialShape
         this.materials = new short[shape.getWidth() * shape.getLength() * shape.getHeight()];
         this.materialDictionary.put((short) 0, defaultMaterial);
         this.flood(defaultMaterial);
+        this.defaultMaterial = defaultMaterial;
     }
 
     /**
@@ -261,6 +263,11 @@ public class MaterialShape
     protected int getIndex(int x, int y, int z)
     {
         return y * (this.shape.getWidth() * this.shape.getLength()) + z * (this.shape.getWidth()) + x;
+    }
+
+    public void reset()
+    {
+       flood(this.defaultMaterial);
     }
 
 }

@@ -21,22 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brushes;
+package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 
-import com.thevoxelbox.vsl.node.NodeGraph;
-import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 
-/**
- * An abstract standard brush loader.
- */
-public abstract class CommonBrushLoader implements BrushLoader
+public class MaterialShapeFloodNode extends MaterialShapeNode
 {
 
-    @Override
-    public NodeGraph loadBrush(byte[] serialized)
+    private final Provider<Material> fill;
+    
+    public MaterialShapeFloodNode(Provider<MaterialShape> shape, Provider<Material> fill)
     {
-        // TODO Auto-generated method stub
-        return null;
+        super(shape);
+        this.fill = fill;
+    }
+    
+    public MaterialShapeFloodNode(Provider<MaterialShape> shape, Material fill)
+    {
+        super(shape);
+        this.fill = new Provider<Material>(fill);
+    }
+
+    @Override
+    public void exec(RuntimeState state)
+    {
+        this.shape.get(state).flood(this.fill.get(state));
     }
 
 }

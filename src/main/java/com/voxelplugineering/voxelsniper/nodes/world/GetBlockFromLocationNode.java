@@ -23,50 +23,43 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.world;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
-import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.world.Block;
+import com.voxelplugineering.voxelsniper.api.world.Location;
 
 /**
  * A node for retrieving a block from a location. Equivalent to {@code location.getWorld().getBlockAt(location);}
  */
-public class GetBlockFromLocationNode extends Node implements Opcodes
+public class GetBlockFromLocationNode extends Node
 {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -2082923297938385218L;
+    private final Provider<Location> input;
+    private final Provider<Block> block;
 
     /**
      * Create a new node.
      */
-    public GetBlockFromLocationNode()
+    public GetBlockFromLocationNode(Provider<Location> input)
     {
-        super("Block Get From World", "world");
-        addInput("location", GunsmithTypes.LOCATION, true, null);
-        addOutput("block", GunsmithTypes.BLOCK, this);
+        this.input = input;
+        this.block = new Provider<Block>(this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    public void exec(RuntimeState state)
     {
-        int location = getInput("location").getSource().get();
-
-        mv.visitVarInsn(ALOAD, location);
-        mv.visitMethodInsn(INVOKEINTERFACE, GunsmithTypes.LOCATION.getInternalName(), "getWorld", "()L" + GunsmithTypes.WORLD.getInternalName() + ";",
-                false);
-        mv.visitVarInsn(ALOAD, location);
-        mv.visitMethodInsn(INVOKEINTERFACE, GunsmithTypes.WORLD.getInternalName(), "getBlockAt", "(L" + GunsmithTypes.LOCATION.getInternalName()
-                + ";)L" + GunsmithTypes.BLOCK.getInternalName() + ";", false);
-        mv.visitVarInsn(ASTORE, localsIndex);
-        setOutput("block", localsIndex);
-        return localsIndex + 1;
+        Location loc = this.input.get(state);
+        this.block.set(loc.getWorld().getBlock(loc).get(), state.getUUID());
     }
+    
+    public Provider<Block> getBlock()
+    {
+        return this.block;
+    }
+
 }

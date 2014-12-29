@@ -26,9 +26,9 @@ package com.voxelplugineering.voxelsniper.commands;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Optional;
+import com.thevoxelbox.vsl.node.NodeGraph;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.alias.AliasRegistry;
-import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.command.Command;
@@ -110,12 +110,12 @@ public class BrushCommand extends Command
             {
                 fullBrush = alias.get().expand(fullBrush);
             }
-            Brush start = null;
-            Brush last = null;
+            NodeGraph start = null;
+            NodeGraph last = null;
             for (String brushName : fullBrush.split(" "))
             {
 
-                Brush brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName).orNull();
+                NodeGraph brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName).orNull();
                 if (brush == null)
                 {
                     sniper.getPersonalBrushManager().loadBrush(brushName);

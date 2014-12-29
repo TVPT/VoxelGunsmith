@@ -30,9 +30,8 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
-import com.thevoxelbox.vsl.classloader.ASMClassLoader;
+import com.thevoxelbox.vsl.node.NodeGraph;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 
 /**
  * A brush loader to load brushes from the filesystem.
@@ -85,9 +84,8 @@ public class FileBrushLoader extends CommonBrushLoader
      * @param data the file to load the brush from
      * @return the brush
      */
-    public Class<? extends Brush> loadBrush(ASMClassLoader classLoader, File data)
+    public NodeGraph loadBrush(File data)
     {
-        checkNotNull(classLoader, "Classloader directory cannot be null");
         checkNotNull(data, "Brush file directory cannot be null");
         try
         {
@@ -112,7 +110,7 @@ public class FileBrushLoader extends CommonBrushLoader
             int length = din.available();
             byte[] brush = new byte[length];
             din.read(brush, 0, length);
-            Class<? extends Brush> loaded = loadBrush(classLoader, brush);
+            NodeGraph loaded = loadBrush(brush);
             din.close();
             return loaded;
         } catch (Exception e)
@@ -135,9 +133,8 @@ public class FileBrushLoader extends CommonBrushLoader
      * @param directory the directory to load the brush from, cannot be null
      * @return the brush
      */
-    public Class<? extends Brush> loadBrush(ASMClassLoader classLoader, String name, File directory)
+    public NodeGraph loadBrush(String name, File directory)
     {
-        checkNotNull(classLoader, "Classloader directory cannot be null");
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         checkNotNull(directory, "Brush directory directory cannot be null");
@@ -158,16 +155,16 @@ public class FileBrushLoader extends CommonBrushLoader
                 return null;
             }
         }
-        return loadBrush(classLoader, data);
+        return loadBrush(data);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Class<? extends Brush> loadBrush(ASMClassLoader classLoader, String ident)
+    public NodeGraph loadBrush(String ident)
     {
-        return loadBrush(classLoader, ident, this.defaultDirectory);
+        return loadBrush(ident, this.defaultDirectory);
     }
 
     /**

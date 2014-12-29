@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.api.brushes;
 
 import com.thevoxelbox.vsl.api.IVariableScope;
+import com.thevoxelbox.vsl.node.NodeGraph;
 
 /**
  * An interface for anything which may have a brush selected.
@@ -43,14 +44,14 @@ public interface BrushHolder
      * 
      * @param brush the new brush, cannot be null
      */
-    void setCurrentBrush(Brush brush);
+    void setCurrentBrush(NodeGraph brush);
 
     /**
      * Returns the currently selected brush of this sniper.
      * 
      * @return the brush
      */
-    Brush getCurrentBrush();
+    NodeGraph getCurrentBrush();
 
     /**
      * Returns this sniper's current brush settings.

@@ -23,12 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.block;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
-import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.world.Block;
+import com.voxelplugineering.voxelsniper.api.world.Location;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
 
 /**
  * Node to get location and material from block
@@ -36,49 +36,51 @@ import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 public class BlockBreakNode extends Node
 {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -3407486022020201155L;
+    private final Provider<Block> block;
+    private final Provider<Location> location;
+    private final Provider<Material> material;
 
     /**
      * Creates a new node.
+     * 
+     * @param block The block provider
      */
-    public BlockBreakNode()
+    public BlockBreakNode(Provider<Block> block)
     {
-        super("BreakBlock", "block");
-        addInput("block", GunsmithTypes.BLOCK, true, null);
-        addOutput("location", GunsmithTypes.LOCATION, this);
-        addOutput("material", GunsmithTypes.MATERIAL, this);
+        this.block = block;
+        this.location = new Provider<Location>(this);
+        this.material = new Provider<Material>(this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    public void exec(RuntimeState state)
     {
-        /*
-         * ALOAD block
-         * INVOKEVIRTUAL CommonBlock.getLocation () : CommonLocation
-         * ASTORE location
-         * ALOAD block
-         * INVOKEVIRTUAL CommonBlock.getMaterial () : CommonMaterial
-         * ASTORE material
-         */
-        int block = getInput("block").getSource().get();
-        mv.visitVarInsn(Opcodes.ALOAD, block);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, GunsmithTypes.BLOCK.getInternalName());
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, GunsmithTypes.BLOCK.getInternalName(), "getLocation",
-                "()L" + GunsmithTypes.LOCATION.getInternalName() + ";", false);
-        mv.visitVarInsn(Opcodes.ASTORE, localsIndex);
-        setOutput("location", localsIndex);
-        mv.visitVarInsn(Opcodes.ALOAD, block);
-        mv.visitTypeInsn(Opcodes.CHECKCAST, GunsmithTypes.BLOCK.getInternalName());
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, GunsmithTypes.BLOCK.getInternalName(), "getMaterial",
-                "()L" + GunsmithTypes.MATERIAL.getInternalName() + ";", false);
-        mv.visitVarInsn(Opcodes.ASTORE, localsIndex + 1);
-        setOutput("material", localsIndex + 1);
-        return localsIndex + 2;
+        Block b = this.block.get(state);
+        this.location.set(b.getLocation(), state.getUUID());
+        this.material.set(b.getMaterial(), state.getUUID());
     }
+
+    /**
+     * Gets the location output;
+     * 
+     * @return The location
+     */
+    public Provider<Location> getLocation()
+    {
+        return this.location;
+    }
+
+    /**
+     * Gets the material output.
+     * 
+     * @return The material
+     */
+    public Provider<Material> getMaterial()
+    {
+        return this.material;
+    }
+    
 }

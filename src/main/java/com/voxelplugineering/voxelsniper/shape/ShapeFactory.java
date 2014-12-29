@@ -37,7 +37,7 @@ public class ShapeFactory
      * @param radius the radius
      * @return the new shape
      */
-    public static Shape createVoxel(int radius)
+    public static Shape createVoxel(double radius)
     {
         return createCuboid(radius, radius, radius);
     }
@@ -49,7 +49,7 @@ public class ShapeFactory
      * @param direction the direction
      * @return the new shape
      */
-    public static Shape createVoxelDisc(int radius, Direction direction)
+    public static Shape createVoxelDisc(double radius, Direction direction)
     {
         if (direction == Direction.EAST || direction == Direction.WEST) // x-axis
         {
@@ -73,9 +73,11 @@ public class ShapeFactory
      * @param rz the z-axis radius
      * @return the new shape
      */
-    public static Shape createCuboid(int rx, int ry, int rz)
+    public static Shape createCuboid(double rx, double ry, double rz)
     {
-        Shape s = new Shape(rx * 2 + 1, ry * 2 + 1, rz * 2 + 1, rx, ry, rz);
+        Shape s =
+                new Shape((int) Math.floor(rx) * 2 + 1, (int) Math.floor(ry) * 2 + 1, (int) Math.floor(rz) * 2 + 1, (int) Math.floor(rx),
+                        (int) Math.floor(ry), (int) Math.floor(rz));
         s.invert();
         return s;
     }

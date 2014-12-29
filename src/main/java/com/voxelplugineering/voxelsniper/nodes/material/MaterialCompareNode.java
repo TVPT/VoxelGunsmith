@@ -23,31 +23,29 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.material;
 
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
-import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.ExecutableNode;
-import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
+import com.thevoxelbox.vsl.api.INode;
+import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
 
 /**
- * A node for comparing two materials and executing another {@link ExecutableNode} if the comparison is true.
+ * A node for comparing two materials and executing another {@link INode} if the comparison is true.
  */
-public class MaterialCompareNode extends ExecutableNode implements Opcodes
+public class MaterialCompareNode extends Node
 {
 
-    private static final long serialVersionUID = -8174504428098635690L;
-    private ExecutableNode body = null;
+    private INode body = null;
+    private final Provider<Material> a;
+    private final Provider<Material> b;
 
     /**
      * Creates a new {@link MaterialCompareNode}.
      */
-    public MaterialCompareNode()
+    public MaterialCompareNode(Provider<Material> a, Provider<Material> b)
     {
-        super("MaterialCompare", "material");
-        addInput("a", GunsmithTypes.MATERIAL, true, null);
-        addInput("b", GunsmithTypes.MATERIAL, true, null);
+        this.a = a;
+        this.b = b;
     }
 
     /**
@@ -55,36 +53,25 @@ public class MaterialCompareNode extends ExecutableNode implements Opcodes
      * 
      * @param body the node to execute if the comparison is true
      */
-    public void setBody(ExecutableNode body)
+    public void setBody(INode body)
     {
         this.body = body;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    public void exec(RuntimeState state)
     {
-        if (this.body == null)
+        if(this.a.get(state).equals(this.b.get(state)))
         {
-            return localsIndex;
+            INode next = this.body;
+            while(next != null)
+            {
+                next.exec(state);
+                next = next.getNext();
+            }
         }
-        int a = getInput("a").getSource().get();
-        int b = getInput("b").getSource().get();
-        mv.visitVarInsn(ALOAD, a);
-        mv.visitVarInsn(ALOAD, b);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Object", "equals", "(Ljava/lang/Object;)Z", false);
-        Label l = new Label();
-        mv.visitJumpInsn(IFEQ, l);
-        ExecutableNode current = this.body;
-        while (current != null)
-        {
-            localsIndex = current.insert(mv, localsIndex);
-            current = current.getNextNode();
-        }
-        mv.visitLabel(l);
-        return localsIndex;
     }
+
+
 
 }

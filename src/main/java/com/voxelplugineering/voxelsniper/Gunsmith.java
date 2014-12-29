@@ -33,10 +33,7 @@ import java.util.concurrent.ExecutorService;
 
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
-import com.thevoxelbox.vsl.api.IGraphCompilerFactory;
-import com.thevoxelbox.vsl.classloader.GraphCompilerFactory;
 import com.voxelplugineering.voxelsniper.alias.AliasHandler;
-import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.config.Configuration;
@@ -58,8 +55,6 @@ import com.voxelplugineering.voxelsniper.config.JsonConfigurationLoader;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.event.handler.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.logging.CommonLoggingDistributor;
-import com.voxelplugineering.voxelsniper.util.vsl.BrushCompiler;
-import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueTask;
 
 /**
@@ -75,7 +70,6 @@ public final class Gunsmith
     private static EventBus eventBus;
     private static Configuration configuration;
     private static LoggingDistributor logDistributor;
-    private static GraphCompilerFactory compilerFactory;
     private static AliasHandler globalAliasRegistries;
     private static ExecutorService eventBusExecutor;
     private static PlatformProxy platformProxy;
@@ -243,16 +237,6 @@ public final class Gunsmith
     }
 
     /**
-     * Returns the compiler factory for compiling VSL scripts.
-     * 
-     * @return the factory
-     */
-    public static IGraphCompilerFactory getCompilerFactory()
-    {
-        return compilerFactory;
-    }
-
-    /**
      * Returns the global alias handler.
      * 
      * @return the global alias handler
@@ -383,10 +367,6 @@ public final class Gunsmith
                 "Starting Gunsmith initialization process. ("
                         + new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z").format(new Date(System.currentTimeMillis())) + ")");
 
-        //Register vsl types for common impl types and set library path
-        provider.registerTypes();
-        GunsmithTypes.init();
-
         //Create the eventBus for all Gunsmith events
         eventBus = new AsyncEventBus(eventBusExecutor = java.util.concurrent.Executors.newCachedThreadPool());
 
@@ -399,10 +379,6 @@ public final class Gunsmith
         configuration.registerContainer(BaseConfiguration.class);
         configuration.registerContainer(VoxelSniperConfiguration.class);
         //configuration is also setup here so that any values can be overwritten from the specific impl
-
-        //Setup the VSL graph compiler
-        compilerFactory = new GraphCompilerFactory();
-        compilerFactory.registerCompiler(Brush.class, new BrushCompiler()); //the compiler for all brushes
 
         globalAliasRegistries = new AliasHandler();
         globalAliasRegistries.registerTarget("brush");
@@ -587,7 +563,6 @@ public final class Gunsmith
             logDistributor.stop();
         }
         logDistributor = null;
-        compilerFactory = null;
         globalAliasRegistries = null;
         platformProxy = null;
         mainThread = null;

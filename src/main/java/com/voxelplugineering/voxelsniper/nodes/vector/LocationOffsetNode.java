@@ -23,55 +23,42 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.vector;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
-import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.world.Location;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * Offsets a location by a given vector offset. Equivalent to {@code location.add(vector.getX(), vector.getY(), vector.getZ());}
  */
-public class LocationOffsetNode extends Node implements Opcodes
+public class LocationOffsetNode extends Node
 {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -5841162432155578520L;
+    private final Provider<Location> input;
+    private final Provider<Vector3i> offset;
+    private final Provider<Location> output;
 
     /**
      * Create a new node.
      */
-    public LocationOffsetNode()
+    public LocationOffsetNode(Provider<Location> input, Provider<Vector3i> offset)
     {
-        super("Location offset", "vector");
-        addInput("location", GunsmithTypes.LOCATION, true, null);
-        addInput("offset", GunsmithTypes.VECTOR3I, true, null);
-        addOutput("result", GunsmithTypes.LOCATION, this);
+        this.input = input;
+        this.output = new Provider<Location>(this);
+        this.offset = offset;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    public void exec(RuntimeState state)
     {
-        int location = getInput("location").getSource().get();
-        int offset = getInput("offset").getSource().get();
-
-        mv.visitVarInsn(ALOAD, location);
-        mv.visitVarInsn(ALOAD, offset);
-        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getX", "()D", false);
-        mv.visitVarInsn(ALOAD, offset);
-        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getY", "()D", false);
-        mv.visitVarInsn(ALOAD, offset);
-        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getZ", "()D", false);
-        mv.visitMethodInsn(INVOKEINTERFACE, GunsmithTypes.LOCATION.getInternalName(), "add", "(DDD)L" + GunsmithTypes.LOCATION.getInternalName()
-                + ";", false);
-        mv.visitVarInsn(ASTORE, localsIndex);
-        setOutput("result", localsIndex);
-        return localsIndex + 1;
+        Location loc = this.input.get(state);
+        this.output.set(loc.add(this.offset.get(state)), state.getUUID());
     }
+    
+    public Provider<Location> getOffsetLocation()
+    {
+        return this.output;
+    }
+
 }

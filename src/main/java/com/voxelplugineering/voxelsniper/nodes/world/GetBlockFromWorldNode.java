@@ -23,59 +23,43 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.world;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
-import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
-import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.world.Block;
+import com.voxelplugineering.voxelsniper.api.world.World;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * Takes a world and a vector position and returns the block at that location. Equivalent to
  * {@code world.getBlockAt(vector.getX(), vector.getY(), vector.getZ());}
  */
-public class GetBlockFromWorldNode extends Node implements Opcodes
+public class GetBlockFromWorldNode extends Node
 {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -5847496393651127838L;
+    private final Provider<World> world;
+    private final Provider<Vector3i> vector;
+    private final Provider<Block> block;
 
     /**
      * Creates a new node.
      */
-    public GetBlockFromWorldNode()
+    public GetBlockFromWorldNode(Provider<World> world, Provider<Vector3i> vector)
     {
-        super("Block Get From World", "world");
-        addInput("world", GunsmithTypes.WORLD, true, null);
-        addInput("vector", GunsmithTypes.VECTOR3I, true, null);
-        addOutput("block", GunsmithTypes.BLOCK, this);
+        this.world = world;
+        this.vector = vector;
+        this.block = new Provider<Block>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    public void exec(RuntimeState state)
     {
-        int world = getInput("world").getSource().get();
-        int vector = getInput("vector").getSource().get();
-
-        mv.visitVarInsn(ALOAD, world);
-        mv.visitVarInsn(ALOAD, vector);
-        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getX", "()D", false);
-        mv.visitInsn(D2I);
-        mv.visitVarInsn(ALOAD, vector);
-        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getY", "()D", false);
-        mv.visitInsn(D2I);
-        mv.visitVarInsn(ALOAD, vector);
-        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "getZ", "()D", false);
-        mv.visitInsn(D2I);
-        mv.visitMethodInsn(INVOKEINTERFACE, GunsmithTypes.WORLD.getInternalName(), "getBlockAt",
-                "(III)L" + GunsmithTypes.BLOCK.getInternalName() + ";", false);
-        mv.visitVarInsn(ASTORE, localsIndex);
-        setOutput("block", localsIndex);
-        return localsIndex + 1;
+        this.block.set(this.world.get(state).getBlock(this.vector.get(state)).get(), state.getUUID());
     }
+
+    public Provider<Block> getBlock()
+    {
+        return this.block;
+    }
+
 }

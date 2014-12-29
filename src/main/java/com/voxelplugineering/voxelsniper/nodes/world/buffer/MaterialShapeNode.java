@@ -21,34 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api.brushes;
+package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 
-import com.thevoxelbox.vsl.api.IChainedRunnableGraph;
-import com.thevoxelbox.vsl.api.IVariableHolder;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
-import com.voxelplugineering.voxelsniper.util.vsl.BrushCompiler;
+import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.util.Provider;
+import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 
-/**
- * The Gunsmith version of {@link com.thevoxelbox.vsl.api.IRunnableGraph}. This contains the actual logic for the brush compiled from the visual
- * scripting language graphs.
- * <p>
- * Changes to this interface MUST be replicated in {@link BrushCompiler}!!!
- */
-public interface Brush extends IChainedRunnableGraph
+public abstract class MaterialShapeNode extends Node
 {
+    protected final Provider<MaterialShape> shape;
 
-    /**
-     * Specialized run method for Gunsmith, adds a reference to the player executing the brush.
-     * 
-     * @param vars the execution variables, cannot be null
-     * @param player the player, cannot be null
-     */
-    void run(IVariableHolder vars, Player player);
-
-    /**
-     * Returns an array of variables that are required by this brush part.
-     * 
-     * @return the variables
-     */
-    String[] getRequiredVars();
+    public MaterialShapeNode(Provider<MaterialShape> shape)
+    {
+        this.shape = shape;
+    }
 }

@@ -31,17 +31,15 @@ import java.io.ObjectOutputStream;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.thevoxelbox.vsl.api.IChainableNodeGraph;
-import com.thevoxelbox.vsl.api.IGraphCompiler;
-import com.thevoxelbox.vsl.classloader.ASMClassLoader;
-import com.thevoxelbox.vsl.node.variables.ChainedInputNode;
-import com.thevoxelbox.vsl.node.variables.ChainedOutputNode;
-import com.thevoxelbox.vsl.node.variables.FloatValueNode;
-import com.thevoxelbox.vsl.node.variables.VariableGetNode;
-import com.thevoxelbox.vsl.type.Type;
+import com.thevoxelbox.vsl.node.NodeGraph;
+import com.thevoxelbox.vsl.nodes.StaticValueNode;
+import com.thevoxelbox.vsl.nodes.vars.ChainedInputNode;
+import com.thevoxelbox.vsl.nodes.vars.ChainedOutputNode;
+import com.thevoxelbox.vsl.nodes.vars.VariableGetNode;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
+import com.voxelplugineering.voxelsniper.api.world.Block;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.nodes.block.BlockBreakNode;
 import com.voxelplugineering.voxelsniper.nodes.material.MaterialCompareNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.DiscShapeNode;
@@ -53,8 +51,10 @@ import com.voxelplugineering.voxelsniper.nodes.shape.SphereShapeNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.VoxelShapeNode;
 import com.voxelplugineering.voxelsniper.nodes.vector.LocationOffsetNode;
 import com.voxelplugineering.voxelsniper.nodes.world.GetBlockFromLocationNode;
-import com.voxelplugineering.voxelsniper.nodes.world.SetBiomeNode;
 import com.voxelplugineering.voxelsniper.nodes.world.ShapeMaterialSetNode;
+import com.voxelplugineering.voxelsniper.nodes.world.biome.GetBiomeNode;
+import com.voxelplugineering.voxelsniper.nodes.world.biome.SetBiomeNode;
+import com.voxelplugineering.voxelsniper.shape.Shape;
 
 /**
  * In lieu of having flat file brushes this will temporarily serve as a builder for brushes at runtime for debugging during development.
@@ -65,7 +65,7 @@ public class TemporaryBrushBuilder
     /**
      * A map of all graphs created from this temporary utility.
      */
-    private static final Map<String, IChainableNodeGraph> graphs = Maps.newHashMap();
+    private static final Map<String, NodeGraph> graphs = Maps.newHashMap();
 
     /**
      * Loads all the graphs from this utility into the global brush manager.
@@ -73,22 +73,12 @@ public class TemporaryBrushBuilder
      * @param classloader the classloader to use to load the brushes
      * @param manager the brush manager to load the brushes into
      */
-    public static void loadAll(ASMClassLoader classloader, BrushManager manager)
+    public static void loadAll(BrushManager manager)
     {
         for (String name : graphs.keySet())
         {
-            try
-            {
-                IChainableNodeGraph brush = graphs.get(name);
-                IGraphCompiler compiler = classloader.getCompiler(Brush.class);
-                @SuppressWarnings("unchecked")
-                Class<? extends Brush> compiled = (Class<? extends Brush>) compiler.compile(classloader, brush);
-                manager.loadBrush(name, compiled);
-            } catch (Exception e)
-            {
-                Gunsmith.getLogger().error(e, "Error while compiling brush " + name + ": " + e.getClass().getName() + " " + e.getMessage());
-                continue;
-            }
+            NodeGraph brush = graphs.get(name);
+            manager.loadBrush(name, brush);
         }
     }
 
@@ -108,7 +98,7 @@ public class TemporaryBrushBuilder
             DataOutputStream output = null;
             try
             {
-                IChainableNodeGraph brush = graphs.get(name);
+                NodeGraph brush = graphs.get(name);
                 File f = new File(directory, brush.getName() + ".br");
                 if (f.exists())
                 {
@@ -151,14 +141,12 @@ public class TemporaryBrushBuilder
 
         try
         { //ball
-            VariableGetNode radius = new VariableGetNode("brushSize", Type.FLOAT);
-            SphereShapeNode shape = new SphereShapeNode();
-            shape.mapInput("radius", radius.getOutput("value"));
-            ChainedOutputNode shapeOut = new ChainedOutputNode("shape", GunsmithTypes.SHAPE);
-            shapeOut.mapInput("value", shape.getOutput("shape"));
+            VariableGetNode<Double> radius = new VariableGetNode<Double>("brushSize");
+            SphereShapeNode shape = new SphereShapeNode(radius.getValue());
+            ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
 
-            IChainableNodeGraph brush = new BrushPartNodeGraph("ball");
-            brush.setStartNode(shapeOut);
+            NodeGraph brush = new NodeGraph("ball");
+            brush.setNext(shapeOut);
             graphs.put("ball", brush);
         } catch (Exception e)
         {
@@ -167,30 +155,21 @@ public class TemporaryBrushBuilder
 
         try
         { //TODO biome
-            VariableGetNode biome = new VariableGetNode("biome", Type.STRING);
-            ChainedInputNode shapeIn = new ChainedInputNode("shape", GunsmithTypes.SHAPE);
-            VariableGetNode target = new VariableGetNode("targetBlock", GunsmithTypes.BLOCK);
-            FlattenShapeNode flatten = new FlattenShapeNode();
-            flatten.mapInput("shape", shapeIn.getOutput("value"));
+            VariableGetNode<String> biomeName = new VariableGetNode<String>("biome");
+            GetBiomeNode biome = new GetBiomeNode(biomeName.getValue());
+            ChainedInputNode<Shape> shapeIn = new ChainedInputNode<Shape>("shape");
+            VariableGetNode<Block> target = new VariableGetNode<Block>("targetBlock");
+            FlattenShapeNode flatten = new FlattenShapeNode(shapeIn.getValue());
+            BlockBreakNode blockBreak = new BlockBreakNode(target.getValue());
+            ShapeForEachNode forEach = new ShapeForEachNode(flatten.getFlattenedShape());
+                LocationOffsetNode offset = new LocationOffsetNode(blockBreak.getLocation(), forEach.getNextValue());
+                SetBiomeNode setBiome = new SetBiomeNode(offset.getOffsetLocation(), biome.getBiome());
+            forEach.setBody(offset);
+            flatten.setNext(forEach);
+            offset.setNext(setBiome);
 
-            ShapeForEachNode forEach = new ShapeForEachNode();
-            flatten.setNextNode(forEach);
-
-            BlockBreakNode blockBreak = new BlockBreakNode();
-            blockBreak.mapInput("block", target.getOutput("value"));
-
-            LocationOffsetNode offset = new LocationOffsetNode();
-            offset.mapInput("location", blockBreak.getOutput("location"));
-            offset.mapInput("offset", forEach.getOutput("next"));
-
-            SetBiomeNode setBiome = new SetBiomeNode();
-            forEach.setBody(setBiome);
-            setBiome.mapInput("location", offset.getOutput("result"));
-            setBiome.mapInput("biome", biome.getOutput("value"));
-
-            BrushPartNodeGraph brush = new BrushPartNodeGraph("biome");
-            brush.setStartNode(flatten);
-            brush.setRequiredVars("biome");
+            NodeGraph brush = new NodeGraph("biome");
+            brush.setNext(flatten);
             graphs.put("biome", brush);
         } catch (Exception e)
         {
@@ -199,14 +178,12 @@ public class TemporaryBrushBuilder
 
         try
         { //disc
-            VariableGetNode radius = new VariableGetNode("brushSize", Type.FLOAT);
-            DiscShapeNode shape = new DiscShapeNode();
-            shape.mapInput("radius", radius.getOutput("value"));
-            ChainedOutputNode shapeOut = new ChainedOutputNode("shape", GunsmithTypes.SHAPE);
-            shapeOut.mapInput("value", shape.getOutput("shape"));
+            VariableGetNode<Double> radius = new VariableGetNode<Double>("brushSize");
+            DiscShapeNode shape = new DiscShapeNode(radius.getValue());
+            ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
 
-            IChainableNodeGraph brush = new BrushPartNodeGraph("disc");
-            brush.setStartNode(shapeOut);
+            NodeGraph brush = new NodeGraph("disc");
+            brush.setNext(shapeOut);
             graphs.put("disc", brush);
         } catch (Exception e)
         {
@@ -215,14 +192,12 @@ public class TemporaryBrushBuilder
 
         try
         { //Snipe brush
-            FloatValueNode radius = new FloatValueNode(0.5);
-            VoxelShapeNode shape = new VoxelShapeNode();
-            shape.mapInput("radius", radius.getOutput("value"));
-            ChainedOutputNode shapeOut = new ChainedOutputNode("shape", GunsmithTypes.SHAPE);
-            shapeOut.mapInput("value", shape.getOutput("shape"));
+            StaticValueNode<Double> radius = new StaticValueNode<Double>(0.0);
+            VoxelShapeNode shape = new VoxelShapeNode(radius.getValue());
+            ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
 
-            IChainableNodeGraph brush = new BrushPartNodeGraph("snipe");
-            brush.setStartNode(shapeOut);
+            NodeGraph brush = new NodeGraph("snipe");
+            brush.setNext(shapeOut);
             graphs.put("snipe", brush);
         } catch (Exception e)
         {
@@ -231,14 +206,12 @@ public class TemporaryBrushBuilder
 
         try
         { //Voxel shape brush part
-            VariableGetNode radius = new VariableGetNode("brushSize", Type.FLOAT);
-            VoxelShapeNode shape = new VoxelShapeNode();
-            shape.mapInput("radius", radius.getOutput("value"));
-            ChainedOutputNode shapeOut = new ChainedOutputNode("shape", GunsmithTypes.SHAPE);
-            shapeOut.mapInput("value", shape.getOutput("shape"));
+            VariableGetNode<Double> radius = new VariableGetNode<Double>("brushSize");
+            VoxelShapeNode shape = new VoxelShapeNode(radius.getValue());
+            ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
 
-            IChainableNodeGraph brush = new BrushPartNodeGraph("voxel");
-            brush.setStartNode(shapeOut);
+            NodeGraph brush = new NodeGraph("voxel");
+            brush.setNext(shapeOut);
             graphs.put("voxel", brush);
         } catch (Exception e)
         {
@@ -247,20 +220,16 @@ public class TemporaryBrushBuilder
 
         try
         { //material set
-            ChainedInputNode shapeIn = new ChainedInputNode("shape", GunsmithTypes.SHAPE);
-            VariableGetNode getMaterial = new VariableGetNode("setMaterial", GunsmithTypes.MATERIAL);
-            VariableGetNode target = new VariableGetNode("targetBlock", GunsmithTypes.BLOCK);
+            ChainedInputNode<Shape> shapeIn = new ChainedInputNode<Shape>("shape");
+            VariableGetNode<Material> getMaterial = new VariableGetNode<Material>("setMaterial");
+            VariableGetNode<Block> target = new VariableGetNode<Block>("targetBlock");
 
-            BlockBreakNode blockBreak = new BlockBreakNode();
-            blockBreak.mapInput("block", target.getOutput("value"));
+            BlockBreakNode blockBreak = new BlockBreakNode(target.getValue());
 
-            ShapeMaterialSetNode setMaterial = new ShapeMaterialSetNode();
-            setMaterial.mapInput("target", blockBreak.getOutput("location"));
-            setMaterial.mapInput("material", getMaterial.getOutput("value"));
-            setMaterial.mapInput("shape", shapeIn.getOutput("value"));
+            ShapeMaterialSetNode setMaterial = new ShapeMaterialSetNode(shapeIn.getValue(), getMaterial.getValue(), blockBreak.getLocation());
 
-            IChainableNodeGraph brush = new BrushPartNodeGraph("material");
-            brush.setStartNode(setMaterial);
+            NodeGraph brush = new NodeGraph("material");
+            brush.setNext(setMaterial);
             graphs.put("material", brush);
         } catch (Exception e)
         {
@@ -269,47 +238,21 @@ public class TemporaryBrushBuilder
 
         try
         { //material mask
-            ChainedInputNode shapeIn = new ChainedInputNode("shape", GunsmithTypes.SHAPE);
-            VariableGetNode maskMaterial = new VariableGetNode("maskMaterial", GunsmithTypes.MATERIAL);
-            VariableGetNode target = new VariableGetNode("targetBlock", GunsmithTypes.BLOCK);
+            ChainedInputNode<Shape> shapeIn = new ChainedInputNode<Shape>("shape");
+            VariableGetNode<Material> maskMaterial = new VariableGetNode<Material>("maskMaterial");
+            VariableGetNode<Block> target = new VariableGetNode<Block>("targetBlock");
+            BlockBreakNode blockBreak = new BlockBreakNode(target.getValue());
+            ShapeForEachNode forEach = new ShapeForEachNode(shapeIn.getValue());
+                ShapeUnsetNode unset = new ShapeUnsetNode(shapeIn.getValue(), forEach.getNextValue()); forEach.setBody(unset);
+                LocationOffsetNode offset = new LocationOffsetNode(blockBreak.getLocation(), forEach.getNextValue());unset.setNext(offset);
+                GetBlockFromLocationNode getBlock = new GetBlockFromLocationNode(offset.getOffsetLocation());offset.setNext(getBlock);
+                BlockBreakNode blockBreak2 = new BlockBreakNode(getBlock.getBlock());getBlock.setNext(blockBreak2);
+                MaterialCompareNode compare = new MaterialCompareNode(maskMaterial.getValue(), blockBreak2.getMaterial()); blockBreak2.setNext(compare);
+                    ShapeSetNode set = new ShapeSetNode(shapeIn.getValue(), forEach.getNextValue());compare.setBody(set);
+            ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shapeIn.getValue());forEach.setNext(shapeOut);
 
-            ShapeForEachNode foreach = new ShapeForEachNode();
-            foreach.mapInput("shape", shapeIn.getOutput("value"));
-
-            ShapeUnsetNode unset = new ShapeUnsetNode();
-            foreach.setBody(unset);
-            unset.mapInput("shape", shapeIn.getOutput("value"));
-            unset.mapInput("target", foreach.getOutput("next"));
-
-            BlockBreakNode blockBreak = new BlockBreakNode();
-            blockBreak.mapInput("block", target.getOutput("value"));
-
-            LocationOffsetNode offset = new LocationOffsetNode();
-            offset.mapInput("location", blockBreak.getOutput("location"));
-            offset.mapInput("offset", foreach.getOutput("next"));
-
-            GetBlockFromLocationNode getBlock = new GetBlockFromLocationNode();
-            getBlock.mapInput("location", offset.getOutput("result"));
-
-            BlockBreakNode blockBreak2 = new BlockBreakNode();
-            blockBreak2.mapInput("block", getBlock.getOutput("block"));
-
-            MaterialCompareNode compare = new MaterialCompareNode();
-            compare.mapInput("a", maskMaterial.getOutput("value"));
-            compare.mapInput("b", blockBreak2.getOutput("material"));
-            unset.setNextNode(compare);
-
-            ShapeSetNode set = new ShapeSetNode();
-            set.mapInput("shape", shapeIn.getOutput("value"));
-            set.mapInput("target", foreach.getOutput("next"));
-            compare.setBody(set);
-
-            ChainedOutputNode shapeOut = new ChainedOutputNode("shape", GunsmithTypes.SHAPE);
-            shapeOut.mapInput("value", shapeIn.getOutput("value"));
-            foreach.setNextNode(shapeOut);
-
-            IChainableNodeGraph brush = new BrushPartNodeGraph("materialmask");
-            brush.setStartNode(foreach);
+            NodeGraph brush = new NodeGraph("materialmask");
+            brush.setNext(forEach);
             graphs.put("materialmask", brush);
         } catch (Exception e)
         {

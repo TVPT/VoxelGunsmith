@@ -23,39 +23,37 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 
-import org.objectweb.asm.MethodVisitor;
-
-import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.ExecutableNode;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
-import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * Sets the material of a {@link MaterialShape} at the given vector target.
  */
-public class MaterialShapeSetNode extends ExecutableNode
+public class MaterialShapeSetNode extends MaterialShapeNode
 {
-    private static final long serialVersionUID = -4941853046402524582L;
+    private final Provider<Vector3i> target;
+    private final Provider<Material> material;
 
     /**
-     * Creates a {@link MaterialShapeSetNode}.
+     * Creates a {@link MaterialShapeGetNode}.
      */
-    public MaterialShapeSetNode()
+    public MaterialShapeSetNode(Provider<MaterialShape> shape, Provider<Vector3i> target, Provider<Material> material)
     {
-        super("MaterialShapeSet", "world.buffer");
-        addInput("materialShape", GunsmithTypes.MATERIALSHAPE, true, null);
-        addInput("target", GunsmithTypes.VECTOR3I, true, null);
-        addInput("material", GunsmithTypes.MATERIAL, true, null);
+        super(shape);
+        this.target = target;
+        this.material = material;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    public void exec(RuntimeState state)
     {
-        //TODO
-        return localsIndex;
+        Vector3i target = this.target.get(state);
+        this.shape.get(state).set(target.getX(), target.getY(), target.getZ(), false, this.material.get(state));
     }
+
+
 
 }

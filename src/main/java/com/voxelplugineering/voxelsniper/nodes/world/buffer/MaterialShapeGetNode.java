@@ -23,39 +23,40 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 
-import org.objectweb.asm.MethodVisitor;
-
-import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
-import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * Gets the material of a {@link MaterialShape} at the given vector target.
  */
-public class MaterialShapeGetNode extends Node
+public class MaterialShapeGetNode extends MaterialShapeNode
 {
-    private static final long serialVersionUID = -4941853046402524582L;
+    private final Provider<Vector3i> target;
+    private final Provider<Material> material;
 
     /**
      * Creates a {@link MaterialShapeGetNode}.
      */
-    public MaterialShapeGetNode()
+    public MaterialShapeGetNode(Provider<MaterialShape> shape, Provider<Vector3i> target)
     {
-        super("MaterialShapeSet", "world.buffer");
-        addInput("materialShape", GunsmithTypes.MATERIALSHAPE, true, null);
-        addInput("target", GunsmithTypes.VECTOR3I, true, null);
-        addOutput("material", GunsmithTypes.VECTOR3I, this);
+        super(shape);
+        this.target = target;
+        this.material = new Provider<Material>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    public void exec(RuntimeState state)
     {
-        //TODO
-        return localsIndex;
+        Vector3i target = this.target.get(state);
+        this.material.set(this.shape.get(state).get(target.getX(), target.getY(), target.getZ(), false).get(), state.getUUID());
+    }
+
+    public Provider<Material> getMaterial()
+    {
+        return this.material;
     }
 
 }

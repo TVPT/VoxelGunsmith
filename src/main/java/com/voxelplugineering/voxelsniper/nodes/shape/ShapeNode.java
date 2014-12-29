@@ -21,40 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes.world.buffer;
+package com.voxelplugineering.voxelsniper.nodes.shape;
 
-import org.objectweb.asm.MethodVisitor;
+import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.util.Provider;
+import com.voxelplugineering.voxelsniper.shape.Shape;
 
-import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.ExecutableNode;
-import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
-
-/**
- * Creates a new MaterialShape wrapped around the given shape.
- */
-public class NewMaterialShape extends ExecutableNode
+public abstract class ShapeNode extends Node
 {
-    private static final long serialVersionUID = 3254355895746699212L;
 
-    /**
-     * Creates a {@link NewMaterialShape}.
-     */
-    public NewMaterialShape()
+    protected final Provider<Shape> shape;
+    
+    public ShapeNode()
     {
-        super("NewMaterialShape", "world.buffer");
-        addInput("shape", GunsmithTypes.SHAPE, true, null);
-        addInput("default", GunsmithTypes.MATERIAL, true, null);
-        addOutput("materialShape", GunsmithTypes.MATERIALSHAPE, this);
+        this.shape = new Provider<Shape>(this);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    
+    public Provider<Shape> getShape()
     {
-        // TODO
-        return localsIndex;
+        return this.shape;
     }
 
 }

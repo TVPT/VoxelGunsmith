@@ -23,51 +23,40 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.vector;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
-import com.thevoxelbox.vsl.error.GraphCompilationException;
 import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
-import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
 
 /**
  * Adds two {@link Vector3i}s together and returns the result.
  */
-public class VectorAdditionNode extends Node implements Opcodes
+public class VectorAdditionNode extends Node
 {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 8532132984520786760L;
+    private final Provider<Vector3i> a;
+    private final Provider<Vector3i> b;
+    private final Provider<Vector3i> r;
 
     /**
      * Create a new node.
      */
-    public VectorAdditionNode()
+    public VectorAdditionNode(Provider<Vector3i> a, Provider<Vector3i> b)
     {
-        super("Vector Addition", "vector");
-        addInput("a", GunsmithTypes.VECTOR3I, true, null);
-        addInput("b", GunsmithTypes.VECTOR3I, true, null);
-        addOutput("result", GunsmithTypes.VECTOR3I, this);
+        this.a = a;
+        this.b = b;
+        this.r = new Provider<Vector3i>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    public void exec(RuntimeState state)
     {
-        int a = getInput("a").getSource().get();
-        int b = getInput("b").getSource().get();
-
-        mv.visitVarInsn(ALOAD, a);
-        mv.visitVarInsn(ALOAD, b);
-        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.VECTOR3I.getInternalName(), "add", "(L" + GunsmithTypes.VECTOR3I.getInternalName() + ";)L"
-                + GunsmithTypes.VECTOR3I.getInternalName() + ";", false);
-        mv.visitVarInsn(ASTORE, localsIndex);
-        setOutput("result", localsIndex);
-        return localsIndex + 1;
+        this.r.set(this.a.get(state).add(this.b.get(state)), state.getUUID());
     }
+    
+    public Provider<Vector3i> getResult()
+    {
+        return this.r;
+    }
+    
 }

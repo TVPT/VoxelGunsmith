@@ -23,39 +23,49 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.shape;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
-import com.thevoxelbox.vsl.error.GraphCompilationException;
-import com.thevoxelbox.vsl.node.ExecutableNode;
-import com.voxelplugineering.voxelsniper.util.vsl.GunsmithTypes;
+import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.shape.Shape;
 
 /**
  * A node for flattening a shape into a 1 unit high disc.
  */
-public class FlattenShapeNode extends ExecutableNode implements Opcodes
+public class FlattenShapeNode extends Node
 {
-    private static final long serialVersionUID = 1L;
+    private final Provider<Shape> shapeIn;
+    private final Provider<Shape> shapeOut;
 
     /**
      * Creates a new node.
+     * 
+     * @param shape The shape provider
      */
-    public FlattenShapeNode()
+    public FlattenShapeNode(Provider<Shape> shape)
     {
-        super("Flatten Shape", "shape");
-        addInput("shape", GunsmithTypes.SHAPE, true, null);
+        this.shapeIn = shape;
+        this.shapeOut = new Provider<Shape>(this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected int insertLocal(MethodVisitor mv, int localsIndex) throws GraphCompilationException
+    public void exec(RuntimeState state)
     {
-        int shape = getInput("shape").getSource().get();
-        mv.visitVarInsn(ALOAD, shape);
-        mv.visitMethodInsn(INVOKEVIRTUAL, GunsmithTypes.SHAPE.getInternalName(), "flatten", "()V", false);
-        return localsIndex;
+        Shape s = this.shapeIn.get(state);
+        s.flatten();
+        this.shapeOut.set(s, state.getUUID());
+    }
+    
+    /**
+     * Gets the flattened shape
+     * 
+     * @return The shape
+     */
+    public Provider<Shape> getFlattenedShape()
+    {
+        return this.shapeOut;
     }
 
 }
