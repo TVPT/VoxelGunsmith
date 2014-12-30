@@ -83,6 +83,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
         //TODO: have player inherit brushes from group rather than the global brush manager always.
         this.personalBrushManager = new CommonBrushManager(Gunsmith.getGlobalBrushManager());
         this.brushVariables = new VariableScope();
+        this.brushVariables.setCaseSensitive(false);
         resetSettings();
         this.history = Queues.newArrayDeque();
         this.pending = new LinkedList<ChangeQueue>();
@@ -130,11 +131,11 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
         NodeGraph last = null;
         for (String brushName : Gunsmith.getConfiguration().get("defaultBrush").get().toString().split(" "))
         {
-            NodeGraph brush = getPersonalBrushManager().getNewBrushInstance(brushName).orNull();
+            NodeGraph brush = getPersonalBrushManager().getBrush(brushName).orNull();
             if (brush == null)
             {
                 getPersonalBrushManager().loadBrush(brushName);
-                brush = getPersonalBrushManager().getNewBrushInstance(brushName).orNull();
+                brush = getPersonalBrushManager().getBrush(brushName).orNull();
                 if (brush == null)
                 {
                     sendMessage("Could not find a brush part named " + brushName);

@@ -26,6 +26,7 @@ package com.voxelplugineering.voxelsniper.api.brushes;
 import java.io.ObjectOutputStream;
 
 import com.thevoxelbox.vsl.node.NodeGraph;
+import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 
 /**
  * Handles the loading of {@link NodeGraph}s from various sources.
@@ -40,7 +41,7 @@ public interface BrushLoader
      * @param serialized the serialized version of the brush, cannot be null
      * @return the compiled class
      */
-    NodeGraph loadBrush(byte[] serialized);
+    BrushNodeGraph loadBrush(byte[] serialized);
 
     /**
      * Loads the specified brush from the default source for this brush loader. The class is loaded by the given class loader.
@@ -48,6 +49,6 @@ public interface BrushLoader
      * @param identifier the identifier of the brush to search the default source for, cannot be null
      * @return the compiled class
      */
-    NodeGraph loadBrush(String identifier);
+    BrushNodeGraph loadBrush(String identifier);
 
 }

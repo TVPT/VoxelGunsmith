@@ -30,7 +30,6 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
-import com.thevoxelbox.vsl.node.NodeGraph;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 
 /**
@@ -83,7 +82,7 @@ public class FileBrushLoader extends CommonBrushLoader
      * @param data the file to load the brush from
      * @return the brush
      */
-    public NodeGraph loadBrush(File data)
+    public BrushNodeGraph loadBrush(File data)
     {
         checkNotNull(data, "Brush file directory cannot be null");
         try
@@ -109,7 +108,7 @@ public class FileBrushLoader extends CommonBrushLoader
             int length = din.available();
             byte[] brush = new byte[length];
             din.read(brush, 0, length);
-            NodeGraph loaded = loadBrush(brush);
+            BrushNodeGraph loaded = loadBrush(brush);
             din.close();
             return loaded;
         } catch (Exception e)
@@ -131,7 +130,7 @@ public class FileBrushLoader extends CommonBrushLoader
      * @param directory the directory to load the brush from, cannot be null
      * @return the brush
      */
-    public NodeGraph loadBrush(String name, File directory)
+    public BrushNodeGraph loadBrush(String name, File directory)
     {
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
@@ -160,7 +159,7 @@ public class FileBrushLoader extends CommonBrushLoader
      * {@inheritDoc}
      */
     @Override
-    public NodeGraph loadBrush(String ident)
+    public BrushNodeGraph loadBrush(String ident)
     {
         return loadBrush(ident, this.defaultDirectory);
     }

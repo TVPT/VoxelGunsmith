@@ -115,11 +115,11 @@ public class BrushCommand extends Command
             for (String brushName : fullBrush.split(" "))
             {
 
-                NodeGraph brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName).orNull();
+                NodeGraph brush = sniper.getPersonalBrushManager().getBrush(brushName).orNull();
                 if (brush == null)
                 {
                     sniper.getPersonalBrushManager().loadBrush(brushName);
-                    brush = sniper.getPersonalBrushManager().getNewBrushInstance(brushName).orNull();
+                    brush = sniper.getPersonalBrushManager().getBrush(brushName).orNull();
                     if (brush == null)
                     {
                         sniper.sendMessage(this.brushNotFoundMessage, brushName);

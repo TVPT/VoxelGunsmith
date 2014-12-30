@@ -31,7 +31,6 @@ import java.io.ObjectOutputStream;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.thevoxelbox.vsl.node.NodeGraph;
 import com.thevoxelbox.vsl.nodes.StaticValueNode;
 import com.thevoxelbox.vsl.nodes.vars.ChainedInputNode;
 import com.thevoxelbox.vsl.nodes.vars.ChainedOutputNode;
@@ -40,6 +39,7 @@ import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 import com.voxelplugineering.voxelsniper.nodes.block.BlockBreakNode;
 import com.voxelplugineering.voxelsniper.nodes.material.MaterialCompareNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.DiscShapeNode;
@@ -65,7 +65,7 @@ public class TemporaryBrushBuilder
     /**
      * A map of all graphs created from this temporary utility.
      */
-    private static final Map<String, NodeGraph> graphs = Maps.newHashMap();
+    private static final Map<String, BrushNodeGraph> graphs = Maps.newHashMap();
 
     /**
      * Loads all the graphs from this utility into the global brush manager.
@@ -76,7 +76,7 @@ public class TemporaryBrushBuilder
     {
         for (String name : graphs.keySet())
         {
-            NodeGraph brush = graphs.get(name);
+            BrushNodeGraph brush = graphs.get(name);
             manager.loadBrush(name, brush);
         }
     }
@@ -97,7 +97,7 @@ public class TemporaryBrushBuilder
             DataOutputStream output = null;
             try
             {
-                NodeGraph brush = graphs.get(name);
+                BrushNodeGraph brush = graphs.get(name);
                 File f = new File(directory, brush.getName() + ".br");
                 if (f.exists())
                 {
@@ -140,11 +140,11 @@ public class TemporaryBrushBuilder
 
         try
         { //ball
-            VariableGetNode<Double> radius = new VariableGetNode<Double>("brushSize");
+            VariableGetNode<Double> radius = new VariableGetNode<Double>("brushsize");
             SphereShapeNode shape = new SphereShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
 
-            NodeGraph brush = new NodeGraph("ball");
+            BrushNodeGraph brush = new BrushNodeGraph("ball");
             brush.setNext(shapeOut);
             graphs.put("ball", brush);
         } catch (Exception e)
@@ -168,7 +168,7 @@ public class TemporaryBrushBuilder
             forEach.setBody(offset);
             offset.setNext(setBiome);
 
-            NodeGraph brush = new NodeGraph("biome");
+            BrushNodeGraph brush = new BrushNodeGraph("biome");
             brush.setNext(flatten);
             graphs.put("biome", brush);
         } catch (Exception e)
@@ -178,11 +178,11 @@ public class TemporaryBrushBuilder
 
         try
         { //disc
-            VariableGetNode<Double> radius = new VariableGetNode<Double>("brushSize");
+            VariableGetNode<Double> radius = new VariableGetNode<Double>("brushsize");
             DiscShapeNode shape = new DiscShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
 
-            NodeGraph brush = new NodeGraph("disc");
+            BrushNodeGraph brush = new BrushNodeGraph("disc");
             brush.setNext(shapeOut);
             graphs.put("disc", brush);
         } catch (Exception e)
@@ -196,7 +196,7 @@ public class TemporaryBrushBuilder
             VoxelShapeNode shape = new VoxelShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
 
-            NodeGraph brush = new NodeGraph("snipe");
+            BrushNodeGraph brush = new BrushNodeGraph("snipe");
             brush.setNext(shapeOut);
             graphs.put("snipe", brush);
         } catch (Exception e)
@@ -206,11 +206,11 @@ public class TemporaryBrushBuilder
 
         try
         { //Voxel shape brush part
-            VariableGetNode<Double> radius = new VariableGetNode<Double>("brushSize");
+            VariableGetNode<Double> radius = new VariableGetNode<Double>("brushsize");
             VoxelShapeNode shape = new VoxelShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
 
-            NodeGraph brush = new NodeGraph("voxel");
+            BrushNodeGraph brush = new BrushNodeGraph("voxel");
             brush.setNext(shapeOut);
             graphs.put("voxel", brush);
         } catch (Exception e)
@@ -221,14 +221,14 @@ public class TemporaryBrushBuilder
         try
         { //material set
             ChainedInputNode<Shape> shapeIn = new ChainedInputNode<Shape>("shape");
-            VariableGetNode<Material> getMaterial = new VariableGetNode<Material>("setMaterial");
-            VariableGetNode<Block> target = new VariableGetNode<Block>("targetBlock");
+            VariableGetNode<Material> getMaterial = new VariableGetNode<Material>("setmaterial");
+            VariableGetNode<Block> target = new VariableGetNode<Block>("targetblock");
 
             BlockBreakNode blockBreak = new BlockBreakNode(target.getValue());
 
             ShapeMaterialSetNode setMaterial = new ShapeMaterialSetNode(shapeIn.getValue(), getMaterial.getValue(), blockBreak.getLocation());
 
-            NodeGraph brush = new NodeGraph("material");
+            BrushNodeGraph brush = new BrushNodeGraph("material");
             brush.setNext(setMaterial);
             graphs.put("material", brush);
         } catch (Exception e)
@@ -239,8 +239,8 @@ public class TemporaryBrushBuilder
         try
         { //material mask
             ChainedInputNode<Shape> shapeIn = new ChainedInputNode<Shape>("shape");
-            VariableGetNode<Material> maskMaterial = new VariableGetNode<Material>("maskMaterial");
-            VariableGetNode<Block> target = new VariableGetNode<Block>("targetBlock");
+            VariableGetNode<Material> maskMaterial = new VariableGetNode<Material>("maskmaterial");
+            VariableGetNode<Block> target = new VariableGetNode<Block>("targetblock");
             BlockBreakNode blockBreak = new BlockBreakNode(target.getValue());
             ShapeForEachNode forEach = new ShapeForEachNode(shapeIn.getValue());
             ShapeUnsetNode unset = new ShapeUnsetNode(shapeIn.getValue(), forEach.getNextValue());
@@ -259,7 +259,7 @@ public class TemporaryBrushBuilder
             compare.setBody(set);
             forEach.setNext(shapeOut);
 
-            NodeGraph brush = new NodeGraph("materialmask");
+            BrushNodeGraph brush = new BrushNodeGraph("materialmask");
             brush.setNext(forEach);
             graphs.put("materialmask", brush);
         } catch (Exception e)

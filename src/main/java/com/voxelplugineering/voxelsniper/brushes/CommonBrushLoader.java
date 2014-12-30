@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.brushes;
 
-import com.thevoxelbox.vsl.node.NodeGraph;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
 
 /**
@@ -33,7 +32,7 @@ public abstract class CommonBrushLoader implements BrushLoader
 {
 
     @Override
-    public NodeGraph loadBrush(byte[] serialized)
+    public BrushNodeGraph loadBrush(byte[] serialized)
     {
         // TODO Auto-generated method stub
         return null;
