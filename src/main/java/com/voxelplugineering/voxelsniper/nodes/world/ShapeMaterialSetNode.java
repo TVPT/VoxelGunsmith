@@ -44,6 +44,10 @@ public class ShapeMaterialSetNode extends Node
 
     /**
      * Constructs a new ShapeMaterialSetNode
+     * 
+     * @param shape The shape
+     * @param material The material
+     * @param target The target
      */
     public ShapeMaterialSetNode(Provider<Shape> shape, Provider<Material> material, Provider<Location> target)
     {
@@ -60,7 +64,7 @@ public class ShapeMaterialSetNode extends Node
         Material m = this.material.get(state);
         Player p = state.getVars().<Player>get("__PLAYER__", Player.class).get();
         MaterialShape ms = new MaterialShape(s, m);
-        new ShapeChangeQueue(p, l, ms);
+        new ShapeChangeQueue(p, l, ms).flush();
     }
 
 }

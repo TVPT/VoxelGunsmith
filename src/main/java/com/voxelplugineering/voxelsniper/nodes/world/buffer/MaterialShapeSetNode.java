@@ -39,6 +39,10 @@ public class MaterialShapeSetNode extends MaterialShapeNode
 
     /**
      * Creates a {@link MaterialShapeGetNode}.
+     * 
+     * @param shape The shape
+     * @param target The target, relative to the bottom courner of the shape
+     * @param material The material
      */
     public MaterialShapeSetNode(Provider<MaterialShape> shape, Provider<Vector3i> target, Provider<Material> material)
     {
@@ -47,13 +51,14 @@ public class MaterialShapeSetNode extends MaterialShapeNode
         this.material = material;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {
         Vector3i target = this.target.get(state);
         this.shape.get(state).set(target.getX(), target.getY(), target.getZ(), false, this.material.get(state));
     }
-
-
 
 }

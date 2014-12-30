@@ -38,6 +38,8 @@ public class VoxelDiscShapeNode extends ShapeNode
 
     /**
      * Creates a new node.
+     * 
+     * @param radius The radius of the voxelDisc
      */
     public VoxelDiscShapeNode(Provider<Double> radius)
     {
@@ -45,6 +47,9 @@ public class VoxelDiscShapeNode extends ShapeNode
         this.radius = radius;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {

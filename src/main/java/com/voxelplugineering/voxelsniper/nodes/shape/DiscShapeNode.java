@@ -37,6 +37,8 @@ public class DiscShapeNode extends ShapeNode
 
     /**
      * Creates a new node.
+     * 
+     * @param radius The radius of the disc
      */
     public DiscShapeNode(Provider<Double> radius)
     {
@@ -44,6 +46,9 @@ public class DiscShapeNode extends ShapeNode
         this.radius = radius;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {

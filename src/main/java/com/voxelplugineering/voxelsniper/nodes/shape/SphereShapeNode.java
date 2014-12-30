@@ -36,6 +36,8 @@ public class SphereShapeNode extends ShapeNode
 
     /**
      * Creates a new node.
+     * 
+     * @param radius The radius of the sphere
      */
     public SphereShapeNode(Provider<Double> radius)
     {
@@ -43,6 +45,9 @@ public class SphereShapeNode extends ShapeNode
         this.radius = radius;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {

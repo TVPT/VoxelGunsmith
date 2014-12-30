@@ -40,10 +40,12 @@ public class GetBlockFromLocationNode extends Node
 
     /**
      * Create a new node.
+     * 
+     * @param location The location
      */
-    public GetBlockFromLocationNode(Provider<Location> input)
+    public GetBlockFromLocationNode(Provider<Location> location)
     {
-        this.input = input;
+        this.input = location;
         this.block = new Provider<Block>(this);
     }
 
@@ -56,7 +58,12 @@ public class GetBlockFromLocationNode extends Node
         Location loc = this.input.get(state);
         this.block.set(loc.getWorld().getBlock(loc).get(), state.getUUID());
     }
-    
+
+    /**
+     * Gets the block provider.
+     * 
+     * @return The block
+     */
     public Provider<Block> getBlock()
     {
         return this.block;

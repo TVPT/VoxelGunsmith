@@ -44,6 +44,7 @@ public class CommonMaterialRegistry<T> implements MaterialRegistry<T>
     public CommonMaterialRegistry()
     {
         this.registry = new WeakRegistry<T, Material>();
+        this.registry.setCaseSensitiveKeys(false);
     }
 
     /**

@@ -28,10 +28,10 @@ import com.thevoxelbox.vsl.node.NodeGraph;
 import com.voxelplugineering.voxelsniper.api.Manager;
 
 /**
- * Handles the registration of {@link NodeGraph}s. Also contains an ordered list of loaders which is traversed to load named brushes.
- * Contains a reference to a ClassLoader to be used by all associated loaders. A brush manager may be connected to a particular user in a multi-user
- * environment. Therefore, by connecting the classloader to the brush manager when the manager is garbage collected (eg. when the user disconnects
- * from the environment) the classloader (and by extension all classes loaded explicitly for this manager) are also garbage connected.
+ * Handles the registration of {@link NodeGraph}s. Also contains an ordered list of loaders which is traversed to load named brushes. Contains a
+ * reference to a ClassLoader to be used by all associated loaders. A brush manager may be connected to a particular user in a multi-user environment.
+ * Therefore, by connecting the classloader to the brush manager when the manager is garbage collected (eg. when the user disconnects from the
+ * environment) the classloader (and by extension all classes loaded explicitly for this manager) are also garbage connected.
  */
 public interface BrushManager extends Manager
 {

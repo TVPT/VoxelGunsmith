@@ -39,6 +39,9 @@ public class ShapeSetNode extends Node
 
     /**
      * Constructs a new {@link ShapeUnsetNode}
+     * 
+     * @param shape The shape
+     * @param target The target position
      */
     public ShapeSetNode(Provider<Shape> shape, Provider<Vector3i> target)
     {
@@ -46,6 +49,9 @@ public class ShapeSetNode extends Node
         this.target = target;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {

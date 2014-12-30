@@ -40,6 +40,9 @@ public class VectorAdditionNode extends Node
 
     /**
      * Create a new node.
+     * 
+     * @param a The first vector
+     * @param b The second vector
      */
     public VectorAdditionNode(Provider<Vector3i> a, Provider<Vector3i> b)
     {
@@ -48,15 +51,23 @@ public class VectorAdditionNode extends Node
         this.r = new Provider<Vector3i>(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {
         this.r.set(this.a.get(state).add(this.b.get(state)), state.getUUID());
     }
-    
+
+    /**
+     * Gets the result of the operation.
+     * 
+     * @return The result
+     */
     public Provider<Vector3i> getResult()
     {
         return this.r;
     }
-    
+
 }

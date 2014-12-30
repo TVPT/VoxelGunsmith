@@ -39,6 +39,9 @@ public class MaterialShapeGetNode extends MaterialShapeNode
 
     /**
      * Creates a {@link MaterialShapeGetNode}.
+     * 
+     * @param shape The shape
+     * @param target The position to fetch
      */
     public MaterialShapeGetNode(Provider<MaterialShape> shape, Provider<Vector3i> target)
     {
@@ -54,6 +57,11 @@ public class MaterialShapeGetNode extends MaterialShapeNode
         this.material.set(this.shape.get(state).get(target.getX(), target.getY(), target.getZ(), false).get(), state.getUUID());
     }
 
+    /**
+     * Gets the material provider.
+     * 
+     * @return The material
+     */
     public Provider<Material> getMaterial()
     {
         return this.material;

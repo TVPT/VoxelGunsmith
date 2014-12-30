@@ -70,7 +70,6 @@ public class TemporaryBrushBuilder
     /**
      * Loads all the graphs from this utility into the global brush manager.
      * 
-     * @param classloader the classloader to use to load the brushes
      * @param manager the brush manager to load the brushes into
      */
     public static void loadAll(BrushManager manager)
@@ -154,7 +153,7 @@ public class TemporaryBrushBuilder
         }
 
         try
-        { //TODO biome
+        { //biome
             VariableGetNode<String> biomeName = new VariableGetNode<String>("biome");
             GetBiomeNode biome = new GetBiomeNode(biomeName.getValue());
             ChainedInputNode<Shape> shapeIn = new ChainedInputNode<Shape>("shape");
@@ -162,10 +161,11 @@ public class TemporaryBrushBuilder
             FlattenShapeNode flatten = new FlattenShapeNode(shapeIn.getValue());
             BlockBreakNode blockBreak = new BlockBreakNode(target.getValue());
             ShapeForEachNode forEach = new ShapeForEachNode(flatten.getFlattenedShape());
-                LocationOffsetNode offset = new LocationOffsetNode(blockBreak.getLocation(), forEach.getNextValue());
-                SetBiomeNode setBiome = new SetBiomeNode(offset.getOffsetLocation(), biome.getBiome());
-            forEach.setBody(offset);
+            LocationOffsetNode offset = new LocationOffsetNode(blockBreak.getLocation(), forEach.getNextValue());
+            SetBiomeNode setBiome = new SetBiomeNode(offset.getOffsetLocation(), biome.getBiome());
+
             flatten.setNext(forEach);
+            forEach.setBody(offset);
             offset.setNext(setBiome);
 
             NodeGraph brush = new NodeGraph("biome");
@@ -243,13 +243,21 @@ public class TemporaryBrushBuilder
             VariableGetNode<Block> target = new VariableGetNode<Block>("targetBlock");
             BlockBreakNode blockBreak = new BlockBreakNode(target.getValue());
             ShapeForEachNode forEach = new ShapeForEachNode(shapeIn.getValue());
-                ShapeUnsetNode unset = new ShapeUnsetNode(shapeIn.getValue(), forEach.getNextValue()); forEach.setBody(unset);
-                LocationOffsetNode offset = new LocationOffsetNode(blockBreak.getLocation(), forEach.getNextValue());unset.setNext(offset);
-                GetBlockFromLocationNode getBlock = new GetBlockFromLocationNode(offset.getOffsetLocation());offset.setNext(getBlock);
-                BlockBreakNode blockBreak2 = new BlockBreakNode(getBlock.getBlock());getBlock.setNext(blockBreak2);
-                MaterialCompareNode compare = new MaterialCompareNode(maskMaterial.getValue(), blockBreak2.getMaterial()); blockBreak2.setNext(compare);
-                    ShapeSetNode set = new ShapeSetNode(shapeIn.getValue(), forEach.getNextValue());compare.setBody(set);
-            ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shapeIn.getValue());forEach.setNext(shapeOut);
+            ShapeUnsetNode unset = new ShapeUnsetNode(shapeIn.getValue(), forEach.getNextValue());
+            LocationOffsetNode offset = new LocationOffsetNode(blockBreak.getLocation(), forEach.getNextValue());
+            GetBlockFromLocationNode getBlock = new GetBlockFromLocationNode(offset.getOffsetLocation());
+            BlockBreakNode blockBreak2 = new BlockBreakNode(getBlock.getBlock());
+            MaterialCompareNode compare = new MaterialCompareNode(maskMaterial.getValue(), blockBreak2.getMaterial());
+            ShapeSetNode set = new ShapeSetNode(shapeIn.getValue(), forEach.getNextValue());
+            ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shapeIn.getValue());
+
+            forEach.setBody(unset);
+            unset.setNext(offset);
+            offset.setNext(getBlock);
+            getBlock.setNext(blockBreak2);
+            blockBreak2.setNext(compare);
+            compare.setBody(set);
+            forEach.setNext(shapeOut);
 
             NodeGraph brush = new NodeGraph("materialmask");
             brush.setNext(forEach);

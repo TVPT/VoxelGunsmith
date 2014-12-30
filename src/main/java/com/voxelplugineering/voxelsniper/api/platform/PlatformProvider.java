@@ -134,9 +134,4 @@ public interface PlatformProvider
      */
     BiomeRegistry<?> getBiomeRegistry();
 
-    /**
-     * Registers any VSL types.
-     */
-    void registerTypes();
-
 }

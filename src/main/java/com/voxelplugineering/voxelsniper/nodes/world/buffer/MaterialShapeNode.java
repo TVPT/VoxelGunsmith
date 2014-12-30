@@ -27,10 +27,18 @@ import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.util.Provider;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 
+/**
+ * An abstract node for a node which takes a {@link MaterialShape} as input.
+ */
 public abstract class MaterialShapeNode extends Node
 {
     protected final Provider<MaterialShape> shape;
 
+    /**
+     * Setup the {@link MaterialShape} input
+     * 
+     * @param shape The shape
+     */
     public MaterialShapeNode(Provider<MaterialShape> shape)
     {
         this.shape = shape;

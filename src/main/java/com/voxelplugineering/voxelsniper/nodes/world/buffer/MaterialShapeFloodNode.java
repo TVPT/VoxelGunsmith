@@ -28,23 +28,41 @@ import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 
+/**
+ * A node for flooding a materialshape with a material.
+ */
 public class MaterialShapeFloodNode extends MaterialShapeNode
 {
 
     private final Provider<Material> fill;
-    
+
+    /**
+     * Creates a new {@link MaterialShapeFloodNode}
+     * 
+     * @param shape The shape to flood
+     * @param fill The material to flood it with
+     */
     public MaterialShapeFloodNode(Provider<MaterialShape> shape, Provider<Material> fill)
     {
         super(shape);
         this.fill = fill;
     }
-    
+
+    /**
+     * Creates a new {@link MaterialShapeFloodNode}
+     * 
+     * @param shape The shape to flood
+     * @param fill The material to flood it with
+     */
     public MaterialShapeFloodNode(Provider<MaterialShape> shape, Material fill)
     {
         super(shape);
         this.fill = new Provider<Material>(fill);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {

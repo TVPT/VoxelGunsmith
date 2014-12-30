@@ -82,7 +82,7 @@ public final class Gunsmith
     private static Scheduler schedulerProxy;
     private static BiomeRegistry<?> biomeRegistry;
     private static File dataFolder;
-    
+
     /**
      * The initialization state of Gunsmith.
      */

@@ -41,6 +41,9 @@ public class NewMaterialShapeNode extends Node
 
     /**
      * Creates a {@link NewMaterialShapeNode}.
+     * 
+     * @param shape The shape
+     * @param defaultMaterial The default material
      */
     public NewMaterialShapeNode(Provider<Shape> shape, Provider<Material> defaultMaterial)
     {
@@ -48,7 +51,10 @@ public class NewMaterialShapeNode extends Node
         this.shape = shape;
         this.defaultMaterial = defaultMaterial;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {
@@ -56,6 +62,11 @@ public class NewMaterialShapeNode extends Node
         this.matshape.set(ms, state.getUUID());
     }
 
+    /**
+     * Gets the new material shape provider.
+     * 
+     * @return The material shape
+     */
     public Provider<MaterialShape> getMaterialShape()
     {
         return this.matshape;

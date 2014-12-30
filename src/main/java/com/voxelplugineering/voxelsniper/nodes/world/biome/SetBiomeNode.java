@@ -39,6 +39,9 @@ public class SetBiomeNode extends Node
 
     /**
      * Creates a new {@link SetBiomeNode}.
+     * 
+     * @param location The location to set
+     * @param biome The biome to set the location to
      */
     public SetBiomeNode(Provider<Location> location, Provider<Biome> biome)
     {
@@ -46,13 +49,14 @@ public class SetBiomeNode extends Node
         this.location = location;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {
         Location loc = this.location.get(state);
         loc.getWorld().setBiome(this.biome.get(state), loc);
     }
-
-
 
 }

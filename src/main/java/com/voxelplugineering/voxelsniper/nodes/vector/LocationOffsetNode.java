@@ -41,6 +41,9 @@ public class LocationOffsetNode extends Node
 
     /**
      * Create a new node.
+     * 
+     * @param input The input location
+     * @param offset The offset vector
      */
     public LocationOffsetNode(Provider<Location> input, Provider<Vector3i> offset)
     {
@@ -55,7 +58,12 @@ public class LocationOffsetNode extends Node
         Location loc = this.input.get(state);
         this.output.set(loc.add(this.offset.get(state)), state.getUUID());
     }
-    
+
+    /**
+     * Gets the offset location provider.
+     * 
+     * @return The offset location
+     */
     public Provider<Location> getOffsetLocation()
     {
         return this.output;

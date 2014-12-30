@@ -57,7 +57,7 @@ public class FlattenShapeNode extends Node
         s.flatten();
         this.shapeOut.set(s, state.getUUID());
     }
-    
+
     /**
      * Gets the flattened shape
      * 

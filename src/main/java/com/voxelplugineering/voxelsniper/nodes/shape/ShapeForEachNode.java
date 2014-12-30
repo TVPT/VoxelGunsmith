@@ -30,40 +30,56 @@ import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
+/**
+ * Iterates over every point in a shape and executes a node pathway.
+ */
 public class ShapeForEachNode extends Node
 {
 
     private final Provider<Shape> shape;
     private final Provider<Vector3i> nextValue;
     private Node next;
-    
+
+    /**
+     * Creates a new {@link ShapeForEachNode}.
+     * 
+     * @param shape The shape to iterate over
+     */
     public ShapeForEachNode(Provider<Shape> shape)
     {
-        this.shape  = shape;
+        this.shape = shape;
         this.nextValue = new Provider<Vector3i>(this);
     }
-    
-    public void setBody(Node n)
+
+    /**
+     * Sets the body of the loop.
+     * 
+     * @param node The node to call
+     */
+    public void setBody(Node node)
     {
-        this.next = n;
+        this.next = node;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {
         Shape s = this.shape.get(state);
         Vector3i o = s.getOrigin();
-        for(int x = 0; x < s.getWidth(); x++)
+        for (int x = 0; x < s.getWidth(); x++)
         {
-            for(int y = 0; y < s.getHeight(); y++)
+            for (int y = 0; y < s.getHeight(); y++)
             {
-                for(int z = 0; z < s.getLength(); z++)
+                for (int z = 0; z < s.getLength(); z++)
                 {
-                    if(s.get(x, y, z, false))
+                    if (s.get(x, y, z, false))
                     {
-                        this.nextValue.set(new Vector3i(x+o.getX(), y+o.getY(), z+o.getZ()), state.getUUID());
+                        this.nextValue.set(new Vector3i(x + o.getX(), y + o.getY(), z + o.getZ()), state.getUUID());
                         INode n = this.next;
-                        while(n != null)
+                        while (n != null)
                         {
                             n.exec(state);
                             n = n.getNext();
@@ -73,7 +89,12 @@ public class ShapeForEachNode extends Node
             }
         }
     }
-    
+
+    /**
+     * Gets the provider for the next position in the shape.
+     * 
+     * @return The next position
+     */
     public Provider<Vector3i> getNextValue()
     {
         return this.nextValue;

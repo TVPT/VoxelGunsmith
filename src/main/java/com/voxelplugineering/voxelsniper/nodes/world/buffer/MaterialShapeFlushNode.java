@@ -30,22 +30,33 @@ import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
+/**
+ * Flushes a {@link MaterialShape} to the world at the given location.
+ */
 public class MaterialShapeFlushNode extends MaterialShapeNode
 {
     private final Provider<Location> target;
-    
+
+    /**
+     * Creates a new {@link MaterialShapeFlushNode}
+     * 
+     * @param shape The shape to flush
+     * @param target The target location
+     */
     public MaterialShapeFlushNode(Provider<MaterialShape> shape, Provider<Location> target)
     {
         super(shape);
         this.target = target;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {
         MaterialShape s = this.shape.get(state);
-        new ShapeChangeQueue(state.getVars().<Player>get("__PLAYER__", Player.class).get(),  this.target.get(state), s);
+        new ShapeChangeQueue(state.getVars().<Player>get("__PLAYER__", Player.class).get(), this.target.get(state), s);
     }
-
 
 }

@@ -80,7 +80,6 @@ public class FileBrushLoader extends CommonBrushLoader
     /**
      * Loads the brush stored in the given file. The brush is loaded with the given ClassLoader.
      * 
-     * @param classLoader the classloader to load the brush with
      * @param data the file to load the brush from
      * @return the brush
      */
@@ -128,7 +127,6 @@ public class FileBrushLoader extends CommonBrushLoader
      * <p>
      * TODO: add a boolean to ignore file extension and load as if it was a .brush file.
      * 
-     * @param classLoader the class loader to load the brush with, cannot be null
      * @param name the name of the brush to load, cannot be null or empty
      * @param directory the directory to load the brush from, cannot be null
      * @return the brush

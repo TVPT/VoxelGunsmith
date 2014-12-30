@@ -82,5 +82,5 @@ public class BlockBreakNode extends Node
     {
         return this.material;
     }
-    
+
 }

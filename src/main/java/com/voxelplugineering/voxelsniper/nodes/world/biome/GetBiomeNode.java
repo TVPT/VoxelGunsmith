@@ -37,7 +37,7 @@ public class GetBiomeNode extends Node
 
     private final Provider<String> name;
     private final Provider<Biome> biome;
-    
+
     /**
      * Creates a new node.
      * 
@@ -57,10 +57,15 @@ public class GetBiomeNode extends Node
     {
         this.biome.set(Gunsmith.getBiomeRegistry().getBiome(this.name.get(state)).get(), state.getUUID());
     }
-    
+
+    /**
+     * Gets biome provider.
+     * 
+     * @return The biome
+     */
     public Provider<Biome> getBiome()
     {
         return this.biome;
     }
-    
+
 }

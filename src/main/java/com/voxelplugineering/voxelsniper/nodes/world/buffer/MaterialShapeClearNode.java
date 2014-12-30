@@ -27,14 +27,25 @@ import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 
+/**
+ * A node to reset a material shape to its default material.
+ */
 public class MaterialShapeClearNode extends MaterialShapeNode
 {
 
+    /**
+     * Creates a new {@link MaterialShapeClearNode}.
+     * 
+     * @param shape The shape to reset
+     */
     public MaterialShapeClearNode(Provider<MaterialShape> shape)
     {
         super(shape);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {

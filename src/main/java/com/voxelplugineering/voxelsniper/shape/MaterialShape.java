@@ -265,9 +265,12 @@ public class MaterialShape
         return y * (this.shape.getWidth() * this.shape.getLength()) + z * (this.shape.getWidth()) + x;
     }
 
+    /**
+     * Floods the shape with the default material, effectively resetting it to initial conditions.
+     */
     public void reset()
     {
-       flood(this.defaultMaterial);
+        flood(this.defaultMaterial);
     }
 
 }

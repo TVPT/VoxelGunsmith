@@ -43,6 +43,9 @@ public class GetBlockFromWorldNode extends Node
 
     /**
      * Creates a new node.
+     * 
+     * @param world The world
+     * @param vector The position
      */
     public GetBlockFromWorldNode(Provider<World> world, Provider<Vector3i> vector)
     {
@@ -57,6 +60,11 @@ public class GetBlockFromWorldNode extends Node
         this.block.set(this.world.get(state).getBlock(this.vector.get(state)).get(), state.getUUID());
     }
 
+    /**
+     * Gets the block provider
+     * 
+     * @return The block
+     */
     public Provider<Block> getBlock()
     {
         return this.block;

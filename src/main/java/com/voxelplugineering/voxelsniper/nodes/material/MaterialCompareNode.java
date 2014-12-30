@@ -41,6 +41,9 @@ public class MaterialCompareNode extends Node
 
     /**
      * Creates a new {@link MaterialCompareNode}.
+     * 
+     * @param a The first material
+     * @param b The second material
      */
     public MaterialCompareNode(Provider<Material> a, Provider<Material> b)
     {
@@ -58,20 +61,21 @@ public class MaterialCompareNode extends Node
         this.body = body;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {
-        if(this.a.get(state).equals(this.b.get(state)))
+        if (this.a.get(state).equals(this.b.get(state)))
         {
             INode next = this.body;
-            while(next != null)
+            while (next != null)
             {
                 next.exec(state);
                 next = next.getNext();
             }
         }
     }
-
-
 
 }

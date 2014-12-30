@@ -27,16 +27,27 @@ import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.util.Provider;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 
+/**
+ * An abstract node for any node returning a shape.
+ */
 public abstract class ShapeNode extends Node
 {
 
     protected final Provider<Shape> shape;
-    
+
+    /**
+     * Sets up the shape provider.
+     */
     public ShapeNode()
     {
         this.shape = new Provider<Shape>(this);
     }
-    
+
+    /**
+     * Gets the shape.
+     * 
+     * @return The shape
+     */
     public Provider<Shape> getShape()
     {
         return this.shape;
