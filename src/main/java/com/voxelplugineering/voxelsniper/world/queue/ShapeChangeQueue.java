@@ -109,25 +109,36 @@ public class ShapeChangeQueue extends ChangeQueue
         int count = 0;
         if (this.state == ExecutionState.UNSTARTED)
         {
-            for (int x = 0; x < this.shape.getWidth(); x++)
+            this.position = this.shape.getHeight();
+            this.state = ExecutionState.BREAKABLE;
+        }
+        if (this.state == ExecutionState.BREAKABLE)
+        {
+            for (; this.position >= 0 && count < next; this.position--)
             {
-                for (int y = 0; y < this.shape.getHeight(); y++)
+                for (int x = 0; x < this.shape.getWidth(); x++)
                 {
                     for (int z = 0; z < this.shape.getLength(); z++)
                     {
                         Material existingMaterial =
-                                getWorld().getBlock(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ())
-                                        .get().getMaterial();
-                        Optional<Material> newMaterial = this.shape.get(x, y, z, false);
+                                getWorld()
+                                        .getBlock(x + this.origin.getFlooredX(), (int) this.position + this.origin.getFlooredY(),
+                                                z + this.origin.getFlooredZ()).get().getMaterial();
+                        Optional<Material> newMaterial = this.shape.get(x, (int) this.position, z, false);
                         if (newMaterial.isPresent() && (existingMaterial.isLiquid() || existingMaterial.isReliantOnEnvironment()))
                         {
-                            getWorld().setBlock(newMaterial.get(), x + this.origin.getFlooredX(), y + this.origin.getFlooredY(),
+                            getWorld().setBlock(newMaterial.get(), x + this.origin.getFlooredX(), (int) this.position + this.origin.getFlooredY(),
                                     z + this.origin.getFlooredZ());
+                            count++;
                         }
                     }
                 }
             }
-            this.state = ExecutionState.INCREMENTAL;
+            if (this.position < 0)
+            {
+                this.position = 0;
+                this.state = ExecutionState.INCREMENTAL;
+            }
         } else if (this.state == ExecutionState.INCREMENTAL)
         {
             //Gunsmith.getLogger().info("Position at " + this.position);
@@ -168,5 +179,5 @@ public class ShapeChangeQueue extends ChangeQueue
  */
 enum ExecutionState
 {
-    UNSTARTED, INCREMENTAL, DONE;
+    UNSTARTED, BREAKABLE, INCREMENTAL, DONE;
 }
