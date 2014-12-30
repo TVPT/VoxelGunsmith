@@ -28,12 +28,20 @@ import com.thevoxelbox.vsl.node.NodeGraph;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 
+/**
+ * The Gunsmith specific {@link NodeGraph}.
+ */
 public class BrushNodeGraph extends NodeGraph
 {
 
     String help = "No help is provided for this brush part.";
     String[] requiredVars = new String[0];
 
+    /**
+     * Creates a new {@link BrushNodeGraph}.
+     * 
+     * @param name The brush name
+     */
     public BrushNodeGraph(String name)
     {
         super(name);
@@ -64,17 +72,32 @@ public class BrushNodeGraph extends NodeGraph
         RuntimeState state = new RuntimeState(vars);
         exec(state);
     }
-    
+
+    /**
+     * Sets the variables required to be set for this brush to function.
+     * 
+     * @param req The required variables
+     */
     public void setRequiredVars(String... req)
     {
         this.requiredVars = req;
     }
-    
+
+    /**
+     * Sets the help message for this brush.
+     * 
+     * @param help The help message
+     */
     public void setHelp(String help)
     {
         this.help = help;
     }
-    
+
+    /**
+     * Gets the help message for this brush.
+     * 
+     * @return The help message
+     */
     public String getHelp()
     {
         return this.help;

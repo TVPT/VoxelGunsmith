@@ -51,7 +51,7 @@ public class NewMaterialShapeNode extends Node
         this.shape = shape;
         this.defaultMaterial = defaultMaterial;
     }
-    
+
     /**
      * {@inheritDoc}
      */

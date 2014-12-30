@@ -29,9 +29,15 @@ import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 import com.voxelplugineering.voxelsniper.command.Command;
 
+/**
+ * A command get fetching the help information for a brush.
+ */
 public class HelpCommand extends Command
 {
 
+    /**
+     * Creates a new Command instance.
+     */
     public HelpCommand()
     {
         super("voxelhelp", "Provides help information for brush parts: /help <brushName>");
@@ -42,18 +48,17 @@ public class HelpCommand extends Command
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {
-        if(args.length > 0)
+        if (args.length > 0)
         {
             BrushNodeGraph brush;
-            if(sender instanceof Player)
+            if (sender instanceof Player)
             {
                 brush = ((Player) sender).getPersonalBrushManager().getBrush(args[0]).orNull();
-            }
-            else
+            } else
             {
                 brush = Gunsmith.getGlobalBrushManager().getBrush(args[0]).orNull();
             }
-            if(brush == null)
+            if (brush == null)
             {
                 sender.sendMessage("Sorry the brush " + args[0] + " could not be found.");
                 return true;

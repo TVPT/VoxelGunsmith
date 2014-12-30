@@ -169,6 +169,7 @@ public class TemporaryBrushBuilder
             offset.setNext(setBiome);
 
             BrushNodeGraph brush = new BrushNodeGraph("biome");
+            brush.setRequiredVars("biome");
             brush.setNext(flatten);
             graphs.put("biome", brush);
         } catch (Exception e)
