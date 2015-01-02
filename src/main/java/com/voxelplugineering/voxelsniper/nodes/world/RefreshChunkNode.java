@@ -52,7 +52,6 @@ public class RefreshChunkNode extends Node
     @Override
     public void exec(RuntimeState state)
     {
-        System.out.println("Refreshing chunk " + this.chunk.get(state));
         this.chunk.get(state).refreshChunk();
     }
 

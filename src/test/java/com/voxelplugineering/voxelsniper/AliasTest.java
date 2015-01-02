@@ -25,6 +25,9 @@ package com.voxelplugineering.voxelsniper;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -156,6 +159,93 @@ public class AliasTest
         assertEquals("test absd def", child.expand(init));
 
         this.alias.clear();
+    }
+
+    /**
+     * Tests that aliases found inside arguments are not expanded
+     */
+    @Test
+    public void testNonExpansionOfArgs()
+    {
+        this.alias.register("abc", "abc def");
+
+        String init = "hello { abc }";
+
+        assertEquals("hello {abc}", this.alias.expand(init));
+    }
+
+    /**
+     * Tests that aliases directly next to args are expanded.
+     */
+    @Test
+    public void testIgnoringArgs()
+    {
+
+        this.alias.register("hello", "hello {world}");
+
+        String init = "hello{abc}";
+
+        assertEquals("hello {world} {abc}", this.alias.expand(init));
+    }
+
+    /**
+     * Tests the normalize method
+     */
+    @Test
+    public void testNormalize()
+    {
+        assertEquals("{hello}", normalize("{ hello }"));
+        assertEquals("{hello}", normalize("{hello }"));
+        assertEquals("{hello}", normalize("{ hello}"));
+        assertEquals("{hello}", normalize("{hello}"));
+        assertEquals("{hello,world}", normalize("{hello world}"));
+        assertEquals("{hel,lo,world}", normalize("{hel lo} {world}"));
+    }
+
+    /**
+     * Tests that expansion without any aliases has no effect (other than normalization).
+     */
+    @Test
+    public void testNonAction()
+    {
+        this.alias.clear();
+
+        assertEquals("hello {world}", this.alias.expand("hello {world}"));
+        assertEquals("hello {world}", this.alias.expand("hello{world}"));
+        assertEquals("hello {world} ape", this.alias.expand("hello {world} ape"));
+        assertEquals("hello {world} ape orange banana", this.alias.expand("hello {world} ape orange banana"));
+        assertEquals("hello {wor,ld} ape", this.alias.expand("hello {wor ld} ape"));
+        assertEquals("hello {world} ape or$$$$ange {tst,tsj,;;2*$29f,fsff} banana*@(#%",
+                this.alias.expand("hello {world} ape or$$$$ange {tst tsj ;;2*$29f fsff} banana*@(#%"));
+        assertEquals("hello {wor,ld,other} ape", this.alias.expand("hello {wor ld}{other} ape"));
+        assertEquals("hello {wor,ld,other} ape", this.alias.expand("hello {wor ld} {other} ape"));
+        assertEquals("hello {wor,ld}", this.alias.expand("{ignored} hello {wor ld}"));
+        assertEquals("", this.alias.expand("invalid {wor ld"));
+        assertEquals("", this.alias.expand("invalid {wor ld {embedded} oh dear}"));
+    }
+
+    private String normalize(String s)
+    {
+        System.out.println("norn: " + s);
+        Pattern p = Pattern.compile("(\\{[^\\}]*\\})[\\s]*");
+        Matcher match = p.matcher(s);
+        String f = "";
+        while (match.find())
+        {
+            String m = match.group(1);
+            System.out.println("match: " + m);
+            m = m.trim().replace(" ", ",");
+            m = m.replace("{,", "{");
+            m = m.replace(",}", "}");
+            while (m.contains(",,"))
+            {
+                m = m.replace(",,", ",");
+            }
+            f += m + " ";
+        }
+        f = f.replaceAll("\\}[\\s]*\\{", ",");
+        f = f.trim();
+        return f;
     }
 
 }

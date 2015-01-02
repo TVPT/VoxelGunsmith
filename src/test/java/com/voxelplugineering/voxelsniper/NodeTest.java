@@ -45,7 +45,7 @@ import com.voxelplugineering.voxelsniper.nodes.block.BlockBreakNode;
 public class NodeTest
 {
     RuntimeState state;
-    
+
     /**
      * Test setup.
      */
@@ -53,8 +53,8 @@ public class NodeTest
     public void setupTests()
     {
         UUID uuid = UUID.randomUUID();
-        state = mock(RuntimeState.class);
-        when(state.getUUID()).thenReturn(uuid);
+        this.state = mock(RuntimeState.class);
+        when(this.state.getUUID()).thenReturn(uuid);
     }
 
     /**
@@ -68,12 +68,12 @@ public class NodeTest
         Block block = mock(Block.class);
         when(block.getMaterial()).thenReturn(material);
         when(block.getLocation()).thenReturn(location);
-        
+
         BlockBreakNode node = new BlockBreakNode(new Provider<Block>(block));
-        node.exec(state);
-        
-        assertEquals(node.getLocation().get(state), location);
-        assertEquals(node.getMaterial().get(state), material);
+        node.exec(this.state);
+
+        assertEquals(node.getLocation().get(this.state), location);
+        assertEquals(node.getMaterial().get(this.state), material);
     }
 
 }

@@ -33,6 +33,7 @@ import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 import com.voxelplugineering.voxelsniper.command.Command;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
@@ -109,13 +110,17 @@ public class BrushCommand extends Command
 
             Optional<AliasRegistry> alias = sniper.getPersonalAliasHandler().getRegistry("brush");
             String fullBrush = StringUtilities.getSection(args, 0, args.length - 1);
+            if (!validate(fullBrush))
+            {
+                sender.sendMessage(TextFormat.DARK_RED + "Sorry, your brush contained unbalanced or embedded braces.");
+            }
             if (alias.isPresent())
             {
                 fullBrush = alias.get().expand(fullBrush);
             }
             BrushNodeGraph start = null;
             BrushNodeGraph last = null;
-            Pattern pattern = Pattern.compile("([\\S&&[^\\{]]+) ?(?:(\\{[^\\}]*\\}))?");
+            Pattern pattern = Pattern.compile("([\\S&&[^\\{]]+)[\\s]*(?:((?:\\{[^\\}]*\\}[\\s]*)+))?");
             Matcher match = pattern.matcher(prep(fullBrush));
             while (match.find())
             {
@@ -140,13 +145,65 @@ public class BrushCommand extends Command
                     last.chain(brush);
                     last = brush;
                 }
-                sniper.setBrushArgument(brushName, match.group(2));
+                sniper.setBrushArgument(brushName, normalize(match.group(2)));
             }
             sniper.setCurrentBrush(start);
             sniper.sendMessage(this.brushSetMessage, fullBrush);
             return true;
         }
         return false;
+    }
+
+    private boolean validate(String fullBrush)
+    {
+        int co = 0;
+        for (char c : fullBrush.toCharArray())
+        {
+            if (c == '{')
+            {
+                if (co > 0)
+                {
+                    return false;
+                }
+                co++;
+            }
+            if (c == '}')
+            {
+                if (co < 0)
+                {
+                    return false;
+                }
+                co--;
+            }
+        }
+        return co == 0;
+    }
+
+    private String normalize(String s)
+    {
+        if(s == null)
+        {
+            return null;
+        }
+        Pattern p = Pattern.compile("(\\{[^\\}]*\\})[\\s]*");
+        Matcher match = p.matcher(s);
+        String f = "";
+        while (match.find())
+        {
+            String m = match.group(1);
+            System.out.println("match: " + m);
+            m = m.trim().replace(" ", ",");
+            m = m.replace("{,", "{");
+            m = m.replace(",}", "}");
+            while (m.contains(",,"))
+            {
+                m = m.replace(",,", ",");
+            }
+            f += m + " ";
+        }
+        f = f.replaceAll("\\}[\\s]*\\{", ",");
+        f = f.trim();
+        return f;
     }
 
     private String prep(String s)

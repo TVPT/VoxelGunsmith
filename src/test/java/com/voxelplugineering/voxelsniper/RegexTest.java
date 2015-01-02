@@ -32,7 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Regex tests
+ * Regex tests TODO: The layout of this test is bad, as is the coverage
  */
 public class RegexTest
 {
@@ -45,7 +45,7 @@ public class RegexTest
     @Before
     public void setup()
     {
-        this.pattern = Pattern.compile("([\\S&&[^\\{]]+)[\\s]*(?:((?:\\{[^\\}]*\\}[\\s]*)*))?");
+        this.pattern = Pattern.compile("([\\S&&[^\\{]]+)[\\s]*(?:((?:\\{[^\\}]*\\}[\\s]*)+))?");
     }
 
     /**

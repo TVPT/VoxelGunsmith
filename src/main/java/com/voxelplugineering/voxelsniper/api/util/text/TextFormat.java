@@ -51,7 +51,7 @@ public enum TextFormat
     UNDERLINE,
     ITALIC,
     RESET;
-    
+
     /**
      * Returns the platform specific string representation of this text format.
      * 

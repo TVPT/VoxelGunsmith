@@ -69,7 +69,6 @@ public class GetOverlappingChunksNode extends Node
         {
             for (int z = (int) offsetTarget.getZ(); z < offsetTarget.getZ() + shape.getLength(); z++)
             {
-                System.out.println("Checking for chunk at " + x + " " + z + " or " + (x < 0 ? x - 16 : x) / 16 + " " + (z < 0 ? z - 16 : z) / 16);
                 Optional<Chunk> c = this.target.get(state).getWorld().getChunk((x < 0 ? x - 16 : x) / 16, 0, (z < 0 ? z - 16 : z) / 16);
                 if (c.isPresent())
                 {

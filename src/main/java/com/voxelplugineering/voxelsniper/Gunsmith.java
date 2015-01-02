@@ -359,7 +359,7 @@ public final class Gunsmith
     {
         return aliasTask;
     }
-    
+
     /**
      * Gets the text format proxy.
      * 
@@ -400,6 +400,8 @@ public final class Gunsmith
         eventBus.register(defaultEventHandler);
         //default event handler is registered here so that if a plugin wishes it can unregister the
         //event handler and register its own in its place
+
+        formatProxy = provider.getFormatProxy();
 
         configuration = new ConfigurationManager();
         configuration.registerContainer(BaseConfiguration.class);
@@ -448,8 +450,6 @@ public final class Gunsmith
         checkRef(schedulerProxy);
 
         biomeRegistry = provider.getBiomeRegistry();
-        
-        formatProxy = provider.getFormatProxy();
 
         ArgumentParsers.init();
 

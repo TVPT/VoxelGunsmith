@@ -134,7 +134,7 @@ public interface PlatformProvider
      * @return The biome registry
      */
     BiomeRegistry<?> getBiomeRegistry();
-    
+
     /**
      * Gets the text format proxy.
      * 

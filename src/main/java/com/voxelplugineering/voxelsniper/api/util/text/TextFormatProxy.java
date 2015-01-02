@@ -36,5 +36,5 @@ public interface TextFormatProxy
      * @return The platform format code
      */
     String getFormat(TextFormat format);
-    
+
 }

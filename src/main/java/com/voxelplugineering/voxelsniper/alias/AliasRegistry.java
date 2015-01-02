@@ -34,6 +34,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Set;
 
 import com.google.common.base.Optional;
@@ -161,6 +163,70 @@ public class AliasRegistry
      */
     public String expand(String string)
     {
+        if (!validate(string))
+        {
+            return "";
+        }
+        Pattern pattern = Pattern.compile("([\\S&&[^\\{]]+)[\\s]*(?:((?:\\{[^\\}]*\\}[\\s]*)+))?");
+        String finalBrush = "";
+        Matcher match = pattern.matcher(prep(string));
+        while (match.find())
+        {
+            finalBrush += match.group(1) + " " + (match.group(2) == null ? "" : normalize(match.group(2)) + " ");
+        }
+        return expand_(finalBrush);
+    }
+
+    private boolean validate(String fullBrush)
+    {
+        int co = 0;
+        for (char c : fullBrush.toCharArray())
+        {
+            if (c == '{')
+            {
+                if (co > 0)
+                {
+                    return false;
+                }
+                co++;
+            }
+            if (c == '}')
+            {
+                if (co < 0)
+                {
+                    return false;
+                }
+                co--;
+            }
+        }
+        return co == 0;
+    }
+
+    private String normalize(String s)
+    {
+        Pattern p = Pattern.compile("(\\{[^\\}]*\\})[\\s]*");
+        Matcher match = p.matcher(s);
+        String f = "";
+        while (match.find())
+        {
+            String m = match.group(1);
+            System.out.println("match: " + m);
+            m = m.trim().replace(" ", ",");
+            m = m.replace("{,", "{");
+            m = m.replace(",}", "}");
+            while (m.contains(",,"))
+            {
+                m = m.replace(",,", ",");
+            }
+            f += m + " ";
+        }
+        f = f.replaceAll("\\}[\\s]*\\{", ",");
+        f = f.trim();
+        return f;
+    }
+
+    private String expand_(String string)
+    {
         String[] split = string.split(" ");
         int i = 0;
         List<String> alreadyUsedAliases = new ArrayList<String>();
@@ -170,6 +236,11 @@ public class AliasRegistry
             outer: for (int j = i; j < split.length; j++)
             {
                 String section = StringUtilities.getSection(split, i, j);
+                if (section.contains("{") || section.contains("}"))
+                {
+                    found = false;
+                    break outer;
+                }
                 for (String alias : this.getKeys(true))
                 {
                     if (alias.equalsIgnoreCase(section) && !alreadyUsedAliases.contains(alias))
@@ -188,6 +259,21 @@ public class AliasRegistry
             }
         }
         return StringUtilities.getSection(split, 0, split.length - 1);
+    }
+
+    private String prep(String s)
+    {
+        s = s.trim();
+        while (s.startsWith("{"))
+        {
+            int index = s.indexOf("}");
+            if (index == -1)
+            {
+                s = s.substring(1);
+            }
+            s = s.substring(index + 1).trim();
+        }
+        return s;
     }
 
     /**

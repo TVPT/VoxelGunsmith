@@ -194,7 +194,7 @@ public class Vector3i implements Serializable, Cloneable
     {
         return new Vector3i(getX(), getY(), getZ());
     }
-    
+
     /**
      * Returns a string representation of this vector.
      * 
