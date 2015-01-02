@@ -34,14 +34,23 @@ public interface Scheduler
     /**
      * Starts a new task synchronized to the main thread of the underlying platform.
      * 
-     * @param runnable the task runnable, cannot be null
-     * @param interval the interval, in milliseconds
-     * @return the new task
+     * @param runnable The task runnable, cannot be null
+     * @param interval The interval, in milliseconds
+     * @return The new task
      */
     Task startSynchronousTask(Runnable runnable, int interval);
+    
+    /**
+     * Starts a new task asynchronously.
+     * 
+     * @param runnable The task runnable
+     * @param interval The interval, in milliseconds
+     * @return The new task
+     */
+    Task startAsynchronousTask(Runnable runnable, int interval);
 
     /**
-     * Halts all running tasks.
+     * Halts all the currently running tasks.
      */
     void stopAllTasks();
 
