@@ -36,6 +36,7 @@ public class CommonBiomeRegistry<T> implements BiomeRegistry<T>
 {
 
     private final WeakRegistry<T, Biome> registry;
+    Biome defaultBiome = null;
 
     /**
      * Creates a new {@link CommonBiomeRegistry}.
@@ -43,6 +44,7 @@ public class CommonBiomeRegistry<T> implements BiomeRegistry<T>
     public CommonBiomeRegistry()
     {
         this.registry = new WeakRegistry<T, Biome>();
+        this.registry.setCaseSensitiveKeys(false);
     }
 
     /**
@@ -70,6 +72,10 @@ public class CommonBiomeRegistry<T> implements BiomeRegistry<T>
     public void registerBiome(String name, T object, Biome biome)
     {
         this.registry.register(name, object, biome);
+        if (name.equalsIgnoreCase("plains"))
+        {
+            this.defaultBiome = biome;
+        }
     }
 
     /**
@@ -79,6 +85,12 @@ public class CommonBiomeRegistry<T> implements BiomeRegistry<T>
     public Iterable<Biome> getBiomes()
     {
         return this.registry.getRegisteredValues();
+    }
+
+    @Override
+    public Biome getDefaultBiome()
+    {
+        return this.defaultBiome;
     }
 
 }

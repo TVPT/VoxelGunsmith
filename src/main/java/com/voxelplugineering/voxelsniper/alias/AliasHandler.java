@@ -40,6 +40,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonReader;
+import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
 
 /**
  * A handler for targeted {@link AliasRegistry}s.
@@ -49,24 +50,29 @@ public class AliasHandler
 
     private AliasHandler parent;
     private Map<String, AliasRegistry> aliasTargets;
+    private AliasOwner owner;
 
     /**
      * Creates a new {@link AliasHandler}.
+     * 
+     * @param owner The owner
      */
-    public AliasHandler()
+    public AliasHandler(AliasOwner owner)
     {
-        this(null);
+        this(owner, null);
     }
 
     /**
      * Sets the parent alias handler.
      * 
      * @param parent the new parent
+     * @param owner The owner
      */
-    public AliasHandler(AliasHandler parent)
+    public AliasHandler(AliasOwner owner, AliasHandler parent)
     {
         this.parent = parent;
         this.aliasTargets = Maps.newHashMap();
+        this.owner = owner;
         if (parent != null)
         {
             for (String target : this.parent.getValidTargets())
@@ -124,6 +130,16 @@ public class AliasHandler
     public boolean hasTarget(String target)
     {
         return this.aliasTargets.containsKey(target);
+    }
+
+    /**
+     * Gets Gets the owner of this alias handler.
+     * 
+     * @return The owner
+     */
+    public AliasOwner getOwner()
+    {
+        return this.owner;
     }
 
     /**

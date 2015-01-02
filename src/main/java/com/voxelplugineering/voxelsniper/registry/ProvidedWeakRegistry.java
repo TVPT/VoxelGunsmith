@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.registry;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.api.registry.RegistryProvider;
 import com.voxelplugineering.voxelsniper.util.Pair;
 
 /**

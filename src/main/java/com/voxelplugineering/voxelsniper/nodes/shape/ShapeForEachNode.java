@@ -39,16 +39,19 @@ public class ShapeForEachNode extends Node
     private final Provider<Shape> shape;
     private final Provider<Vector3i> nextValue;
     private Node next;
+    private final boolean offset;
 
     /**
      * Creates a new {@link ShapeForEachNode}.
      * 
      * @param shape The shape to iterate over
+     * @param offset Whether to offset by origin
      */
-    public ShapeForEachNode(Provider<Shape> shape)
+    public ShapeForEachNode(Provider<Shape> shape, boolean offset)
     {
         this.shape = shape;
         this.nextValue = new Provider<Vector3i>(this);
+        this.offset = offset;
     }
 
     /**
@@ -77,7 +80,13 @@ public class ShapeForEachNode extends Node
                 {
                     if (s.get(x, y, z, false))
                     {
-                        this.nextValue.set(new Vector3i(x + o.getX(), y + o.getY(), z + o.getZ()), state.getUUID());
+                        if (offset)
+                        {
+                            this.nextValue.set(new Vector3i(x - o.getX(), y - o.getY(), z - o.getZ()), state.getUUID());
+                        } else
+                        {
+                            this.nextValue.set(new Vector3i(x, y, z), state.getUUID());
+                        }
                         INode n = this.next;
                         while (n != null)
                         {

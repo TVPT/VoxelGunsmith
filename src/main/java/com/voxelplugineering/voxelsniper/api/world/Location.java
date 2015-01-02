@@ -123,4 +123,11 @@ public interface Location
      */
     Location clone();
 
+    /**
+     * Returns the vector part of this location.
+     * 
+     * @return The vector
+     */
+    Vector3d toVector();
+
 }

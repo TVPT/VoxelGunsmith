@@ -21,61 +21,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes.world.biome;
+package com.voxelplugineering.voxelsniper.nodes.shape;
 
-import com.google.common.base.Optional;
 import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
-import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
+import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
- * A node for getting a {@link Biome} by name.
+ * Gets the origin of a shape.
  */
-public class GetBiomeNode extends Node
+public class ShapeGetOriginNode extends Node
 {
 
-    private final Provider<String> name;
-    private final Provider<Biome> biome;
+    private final Provider<Shape> shape;
+    private final Provider<Vector3i> origin;
 
     /**
-     * Creates a new node.
+     * Creates a new {@link ShapeGetOriginNode}.
      * 
-     * @param name The name provider
+     * @param shape The shape
      */
-    public GetBiomeNode(Provider<String> name)
+    public ShapeGetOriginNode(Provider<Shape> shape)
     {
-        this.name = name;
-        this.biome = new Provider<Biome>(this);
+        this.shape = shape;
+        this.origin = new Provider<Vector3i>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {
-        Optional<Biome> b = Gunsmith.getBiomeRegistry().getBiome(this.name.get(state));
-        if (b.isPresent())
-        {
-            System.out.println("GetBiome: " + b.get());
-            this.biome.set(b.get(), state.getUUID());
-        } else
-        {
-            state.getVars().<Player>get("__PLAYER__", Player.class).get().sendMessage("Unknown biome: " + this.name.get(state));
-        }
+        this.origin.set(this.shape.get(state).getOrigin(), state.getUUID());
     }
 
     /**
-     * Gets biome provider.
+     * Gets the origin provider.
      * 
-     * @return The biome
+     * @return The origin
      */
-    public Provider<Biome> getBiome()
+    public Provider<Vector3i> getOrigin()
     {
-        return this.biome;
+        return this.origin;
     }
 
 }

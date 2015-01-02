@@ -23,8 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.api.brushes;
 
+import java.util.Map;
+
 import com.thevoxelbox.vsl.api.IVariableScope;
-import com.thevoxelbox.vsl.node.NodeGraph;
+import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 
 /**
  * An interface for anything which may have a brush selected.
@@ -44,14 +46,14 @@ public interface BrushHolder
      * 
      * @param brush the new brush, cannot be null
      */
-    void setCurrentBrush(NodeGraph brush);
+    void setCurrentBrush(BrushNodeGraph brush);
 
     /**
      * Returns the currently selected brush of this sniper.
      * 
      * @return the brush
      */
-    NodeGraph getCurrentBrush();
+    BrushNodeGraph getCurrentBrush();
 
     /**
      * Returns this sniper's current brush settings.
@@ -64,5 +66,20 @@ public interface BrushHolder
      * Resets the settings of this player to their default configuration.
      */
     void resetSettings();
+
+    /**
+     * Gets the player's brush arguments.
+     * 
+     * @return The arguments
+     */
+    Map<String, String> getBrushArguments();
+
+    /**
+     * Sets a specific brush's argument.
+     * 
+     * @param brush The brush
+     * @param arg The argument
+     */
+    void setBrushArgument(String brush, String arg);
 
 }

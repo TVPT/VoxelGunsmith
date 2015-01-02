@@ -29,6 +29,7 @@ import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.command.Command;
 
 /**
@@ -81,13 +82,13 @@ public class MaterialCommand extends Command
         if (args.length >= 1)
         {
             materialName = args[0];
-            Optional<?> material = sniper.getWorld().getMaterialRegistry().getMaterial(materialName);
+            Optional<Material> material = sniper.getWorld().getMaterialRegistry().getMaterial(materialName);
             if (!material.isPresent())
             {
                 sniper.sendMessage(this.materialNotFoundMessage);
                 return false;
             }
-            sniper.sendMessage(this.materialSetMessage, material.get().toString());
+            sniper.sendMessage(this.materialSetMessage, material.get().getName());
             sniper.getBrushSettings().set("setMaterial", material.get());
         } else
         {

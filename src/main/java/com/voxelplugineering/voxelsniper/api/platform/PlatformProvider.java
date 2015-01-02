@@ -31,7 +31,7 @@ import com.voxelplugineering.voxelsniper.api.registry.BiomeRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.PlayerRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.WorldRegistry;
-import com.voxelplugineering.voxelsniper.api.scheduler.Scheduler;
+import com.voxelplugineering.voxelsniper.api.service.scheduler.Scheduler;
 import com.voxelplugineering.voxelsniper.command.CommandHandler;
 
 /**

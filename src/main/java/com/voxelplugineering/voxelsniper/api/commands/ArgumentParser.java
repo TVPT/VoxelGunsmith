@@ -21,56 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api.registry;
+package com.voxelplugineering.voxelsniper.api.commands;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 
 /**
- * A registry for biome type.s
+ * An argument parser, converts a string argument into a specific type.
  * 
- * @param <T> The biome type
+ * @param <T> The type
  */
-public interface BiomeRegistry<T>
+public interface ArgumentParser<T>
 {
 
     /**
-     * Gets the {@link Biome} with the given name.
+     * Attempts to convert the given argument.
      * 
-     * @param name The name
-     * @return The biome
+     * @param arg The argument
+     * @return The value, if conversion was successful
      */
-    Optional<Biome> getBiome(String name);
+    Optional<T> get(String arg);
 
     /**
-     * Gets the {@link Biome} which represents the given underlying type.
-     * 
-     * @param biome The underlying biome
-     * @return The gunsmith biome
+     * A parser that directly returns the string argument.
      */
-    Optional<Biome> getBiome(T biome);
+    public static class RawParser implements ArgumentParser<String>
+    {
 
-    /**
-     * Registers a biome type.
-     * 
-     * @param name The name
-     * @param object The underlying biome object
-     * @param biome The gunsmith biome object
-     */
-    void registerBiome(String name, T object, Biome biome);
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Optional<String> get(String arg)
+        {
+            return Optional.of(arg);
+        }
 
-    /**
-     * Gets a collection of all registered biomes.
-     * 
-     * @return The biomes
-     */
-    Iterable<Biome> getBiomes();
-
-    /**
-     * Gets the default biome.
-     * 
-     * @return The default biome
-     */
-    Biome getDefaultBiome();
+    }
 
 }

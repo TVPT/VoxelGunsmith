@@ -21,61 +21,62 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes.world.biome;
+package com.voxelplugineering.voxelsniper.alias;
 
-import com.google.common.base.Optional;
-import com.thevoxelbox.vsl.node.Node;
-import com.thevoxelbox.vsl.util.Provider;
-import com.thevoxelbox.vsl.util.RuntimeState;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
+import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
-import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 
 /**
- * A node for getting a {@link Biome} by name.
+ * A task for saving aliases.
  */
-public class GetBiomeNode extends Node
+public class AliasSaveTask implements Runnable
 {
 
-    private final Provider<String> name;
-    private final Provider<Biome> biome;
+    private List<AliasHandler> dirty;
 
     /**
-     * Creates a new node.
-     * 
-     * @param name The name provider
+     * Creates a new {@link AliasSaveTask}.
      */
-    public GetBiomeNode(Provider<String> name)
+    public AliasSaveTask()
     {
-        this.name = name;
-        this.biome = new Provider<Biome>(this);
+        this.dirty = Lists.newArrayList();
+    }
+
+    /**
+     * Queues the given {@link AliasHandler} to be saved in the next pass.
+     * 
+     * @param alias The alias handler to queue
+     */
+    public synchronized void addDirty(AliasHandler alias)
+    {
+        if (!this.dirty.contains(alias))
+        {
+            this.dirty.add(alias);
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void exec(RuntimeState state)
+    public synchronized void run()
     {
-        Optional<Biome> b = Gunsmith.getBiomeRegistry().getBiome(this.name.get(state));
-        if (b.isPresent())
+        for (Iterator<AliasHandler> it = this.dirty.iterator(); it.hasNext();)
         {
-            System.out.println("GetBiome: " + b.get());
-            this.biome.set(b.get(), state.getUUID());
-        } else
-        {
-            state.getVars().<Player>get("__PLAYER__", Player.class).get().sendMessage("Unknown biome: " + this.name.get(state));
+            AliasHandler alias = it.next();
+            try
+            {
+                alias.save(alias.getOwner().getAliasFile());
+            } catch (IOException e)
+            {
+                Gunsmith.getLogger().error(e, "Error saving aliases");
+            }
+            it.remove();
         }
-    }
-
-    /**
-     * Gets biome provider.
-     * 
-     * @return The biome
-     */
-    public Provider<Biome> getBiome()
-    {
-        return this.biome;
     }
 
 }

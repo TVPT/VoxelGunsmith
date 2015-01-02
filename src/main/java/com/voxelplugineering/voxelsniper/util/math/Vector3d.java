@@ -181,4 +181,14 @@ public class Vector3d implements Serializable, Cloneable
     {
         return new Vector3d(getX(), getY(), getZ());
     }
+
+    /**
+     * Returns a string representation of this vector.
+     * 
+     * @return The string
+     */
+    public String toString()
+    {
+        return "Vector3d: (" + this.vec[0] + ", " + this.vec[1] + ", " + this.vec[2] + ")";
+    }
 }

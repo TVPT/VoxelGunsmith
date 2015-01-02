@@ -21,56 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api.registry;
+package com.voxelplugineering.voxelsniper.api.service.scheduler;
 
-import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
+import com.voxelplugineering.voxelsniper.scheduler.Task;
 
 /**
- * A registry for biome type.s
- * 
- * @param <T> The biome type
+ * A proxy for a specific implementations scheduler.
  */
-public interface BiomeRegistry<T>
+public interface Scheduler
 {
 
     /**
-     * Gets the {@link Biome} with the given name.
+     * Starts a new task synchronized to the main thread of the underlying platform.
      * 
-     * @param name The name
-     * @return The biome
+     * @param runnable the task runnable, cannot be null
+     * @param interval the interval, in milliseconds
+     * @return the new task
      */
-    Optional<Biome> getBiome(String name);
+    Task startSynchronousTask(Runnable runnable, int interval);
 
     /**
-     * Gets the {@link Biome} which represents the given underlying type.
-     * 
-     * @param biome The underlying biome
-     * @return The gunsmith biome
+     * Halts all running tasks.
      */
-    Optional<Biome> getBiome(T biome);
-
-    /**
-     * Registers a biome type.
-     * 
-     * @param name The name
-     * @param object The underlying biome object
-     * @param biome The gunsmith biome object
-     */
-    void registerBiome(String name, T object, Biome biome);
-
-    /**
-     * Gets a collection of all registered biomes.
-     * 
-     * @return The biomes
-     */
-    Iterable<Biome> getBiomes();
-
-    /**
-     * Gets the default biome.
-     * 
-     * @return The default biome
-     */
-    Biome getDefaultBiome();
+    void stopAllTasks();
 
 }

@@ -125,6 +125,7 @@ public class CommonEventHandler
             ray.trace();
 
             IVariableScope brushVariables = new VariableScope(sniper.getBrushSettings());
+            brushVariables.setCaseSensitive(false);
             brushVariables.set("origin", location);
             brushVariables.set("yaw", yaw);
             brushVariables.set("pitch", pitch);
@@ -132,7 +133,7 @@ public class CommonEventHandler
             brushVariables.set("lastBlock", ray.getLastBlock());
             brushVariables.set("length", ray.getLength());
             brushVariables.set("__PLAYER__", sniper);
-            sniper.getCurrentBrush().run(brushVariables);
+            sniper.getCurrentBrush().run(brushVariables, sniper.getBrushArguments());
         } catch (Exception e)
         {
             sniper.sendMessage("Error executing brush, see console for more details.");

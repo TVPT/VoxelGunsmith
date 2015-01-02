@@ -23,9 +23,14 @@
  */
 package com.voxelplugineering.voxelsniper.brushes;
 
+import java.util.Collections;
+import java.util.Map;
+
+import com.google.common.collect.Maps;
 import com.thevoxelbox.vsl.api.IVariableHolder;
 import com.thevoxelbox.vsl.node.NodeGraph;
 import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 
 /**
@@ -35,7 +40,9 @@ public class BrushNodeGraph extends NodeGraph
 {
 
     String help = "No help is provided for this brush part.";
-    String[] requiredVars = new String[0];
+    Map<String, ArgumentParser<?>> arguments;
+    Map<String, String> argDefaults;
+    String primary = null;
 
     /**
      * Creates a new {@link BrushNodeGraph}.
@@ -45,22 +52,52 @@ public class BrushNodeGraph extends NodeGraph
     public BrushNodeGraph(String name)
     {
         super(name);
-
+        this.arguments = Maps.newHashMap();
+        this.argDefaults = Maps.newHashMap();
     }
 
     @Override
     public void run(IVariableHolder vars)
     {
+        run(vars, null);
+    }
+
+    /**
+     * Executes this graph with the given arguments.
+     * 
+     * @param vars The variables
+     * @param map The arguments
+     */
+    public void run(IVariableHolder vars, Map<String, String> map)
+    {
+        RuntimeState state = new RuntimeState(vars);
+        BrushNodeGraph ng = this;
+        while (ng != null && map != null)
+        {
+            String inv = ng.parseArguments(map.get(ng.getName()), state.getVars(), vars.<Player>get("__PLAYER__", Player.class).get());
+            if (!inv.isEmpty())
+            {
+                vars.<Player>get("__PLAYER__", Player.class).get().sendMessage("Invalid arguments: " + inv);
+                return;
+            }
+            ng = (BrushNodeGraph) ng.getNextGraph();
+        }
         String missing = "";
-        for (String s : requiredVars)
+        for (String s : this.arguments.keySet())
         {
             if (!vars.hasValue(s))
             {
-                if (!missing.isEmpty())
+                if (this.argDefaults.containsKey(s))
                 {
-                    missing += " ";
+                    vars.set(s, this.arguments.get(s).get(this.argDefaults.get(s)));
+                } else
+                {
+                    if (!missing.isEmpty())
+                    {
+                        missing += " ";
+                    }
+                    missing += s;
                 }
-                missing += s;
             }
         }
         if (!missing.isEmpty())
@@ -69,18 +106,7 @@ public class BrushNodeGraph extends NodeGraph
                     .sendMessage("Missing required variable" + (missing.indexOf(" ") != -1 ? "s" : " ") + ": " + missing);
             return;
         }
-        RuntimeState state = new RuntimeState(vars);
         exec(state);
-    }
-
-    /**
-     * Sets the variables required to be set for this brush to function.
-     * 
-     * @param req The required variables
-     */
-    public void setRequiredVars(String... req)
-    {
-        this.requiredVars = req;
     }
 
     /**
@@ -101,6 +127,107 @@ public class BrushNodeGraph extends NodeGraph
     public String getHelp()
     {
         return this.help;
+    }
+
+    /**
+     * Adds an argument.
+     * 
+     * @param name The name
+     * @param parser The argument parser
+     * @param defaultValue The default value, or null
+     * @param aliases Any aliases, optional
+     */
+    public void addArgument(String name, ArgumentParser<?> parser, String defaultValue, String... aliases)
+    {
+        if (defaultValue != null && !defaultValue.isEmpty())
+        {
+            this.argDefaults.put(name, defaultValue);
+        }
+        System.out.println("Added arg " + name + ": " + parser);
+        this.arguments.put(name, parser);
+        for (String alias : aliases)
+        {
+            System.out.println("Added arg " + alias + ": " + parser);
+            this.arguments.put(alias, parser);
+        }
+    }
+
+    /**
+     * Sets a certain argument as the primary argument. The argument specific must have already been added with
+     * {@link #addArgument(String, ArgumentParser, String, String...)}.
+     * 
+     * @param arg The new primary argument
+     */
+    public void setArgumentAsPrimary(String arg)
+    {
+        if (!this.arguments.containsKey(arg))
+        {
+            this.primary = null;
+            return;
+        }
+        this.primary = arg;
+    }
+
+    private String parseArguments(String group, IVariableHolder vars, Player player)
+    {
+        //System.out.println("Parsing arguments for " + this.getName() + ": " + group);
+        if (group == null)
+        {
+            return "";
+        }
+        String arg = group.replaceAll("[\\{\\}]", " ").trim();
+        String[] args = arg.split(" ");
+        if (args.length == 1 && this.primary != null)
+        {
+            //System.out.println(this.primary + " " + this.arguments.get(this.primary));
+            System.out.println("Set " + this.primary + " to " + this.arguments.get(this.primary).get(arg).get());
+            vars.set(this.primary, this.arguments.get(this.primary).get(arg).get());
+        } else
+        {
+            String invalid = "";
+            for (String s : args)
+            {
+                if (!s.contains("="))
+                {
+                    invalid += s + " ";
+                    continue;
+                }
+                String[] kv = s.split("=");
+                if (this.arguments.containsKey(kv[0]))
+                {
+                    System.out.println("Set " + kv[0] + " to " + this.arguments.get(kv[0]).get(kv[1]));
+                    vars.set(kv[0], this.arguments.get(kv[0]).get(kv[1]));
+                } else
+                {
+                    invalid += kv[0] + " ";
+                }
+            }
+            if (!invalid.isEmpty())
+            {
+                return invalid;
+            }
+        }
+        return "";
+    }
+
+    /**
+     * Gets the primary argument name.
+     * 
+     * @return The primary argument
+     */
+    public String getPrimaryArgument()
+    {
+        return this.primary;
+    }
+
+    /**
+     * Gets all arguments.
+     * 
+     * @return The arguments
+     */
+    public Map<String, ArgumentParser<?>> getArguments()
+    {
+        return Collections.unmodifiableMap(this.arguments);
     }
 
 }

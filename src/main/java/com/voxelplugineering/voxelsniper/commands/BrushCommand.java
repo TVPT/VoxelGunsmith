@@ -25,12 +25,15 @@ package com.voxelplugineering.voxelsniper.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.google.common.base.Optional;
-import com.thevoxelbox.vsl.node.NodeGraph;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 import com.voxelplugineering.voxelsniper.command.Command;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
@@ -110,12 +113,14 @@ public class BrushCommand extends Command
             {
                 fullBrush = alias.get().expand(fullBrush);
             }
-            NodeGraph start = null;
-            NodeGraph last = null;
-            for (String brushName : fullBrush.split(" "))
+            BrushNodeGraph start = null;
+            BrushNodeGraph last = null;
+            Pattern pattern = Pattern.compile("([\\S&&[^\\{]]+) ?(?:(\\{[^\\}]*\\}))?");
+            Matcher match = pattern.matcher(prep(fullBrush));
+            while (match.find())
             {
-
-                NodeGraph brush = sniper.getPersonalBrushManager().getBrush(brushName).orNull();
+                String brushName = match.group(1);
+                BrushNodeGraph brush = sniper.getPersonalBrushManager().getBrush(brushName).orNull();
                 if (brush == null)
                 {
                     sniper.getPersonalBrushManager().loadBrush(brushName);
@@ -135,7 +140,7 @@ public class BrushCommand extends Command
                     last.chain(brush);
                     last = brush;
                 }
-
+                sniper.setBrushArgument(brushName, match.group(2));
             }
             sniper.setCurrentBrush(start);
             sniper.sendMessage(this.brushSetMessage, fullBrush);
@@ -144,4 +149,18 @@ public class BrushCommand extends Command
         return false;
     }
 
+    private String prep(String s)
+    {
+        s = s.trim();
+        while (s.startsWith("{"))
+        {
+            int index = s.indexOf("}");
+            if (index == -1)
+            {
+                s = s.substring(1);
+            }
+            s = s.substring(index + 1).trim();
+        }
+        return s;
+    }
 }

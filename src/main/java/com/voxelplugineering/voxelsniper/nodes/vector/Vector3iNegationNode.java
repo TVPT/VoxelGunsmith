@@ -21,61 +21,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes.world.biome;
+package com.voxelplugineering.voxelsniper.nodes.vector;
 
-import com.google.common.base.Optional;
 import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
-import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
- * A node for getting a {@link Biome} by name.
+ * Returns the negative of the given vector.
  */
-public class GetBiomeNode extends Node
+public class Vector3iNegationNode extends Node
 {
 
-    private final Provider<String> name;
-    private final Provider<Biome> biome;
+    private Provider<Vector3i> vecIn;
+    private Provider<Vector3i> vecOut;
 
     /**
-     * Creates a new node.
+     * Creates a new {@link Vector3iNegationNode}.
      * 
-     * @param name The name provider
+     * @param vec The vector to negate
      */
-    public GetBiomeNode(Provider<String> name)
+    public Vector3iNegationNode(Provider<Vector3i> vec)
     {
-        this.name = name;
-        this.biome = new Provider<Biome>(this);
+        this.vecIn = vec;
+        this.vecOut = new Provider<Vector3i>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {
-        Optional<Biome> b = Gunsmith.getBiomeRegistry().getBiome(this.name.get(state));
-        if (b.isPresent())
-        {
-            System.out.println("GetBiome: " + b.get());
-            this.biome.set(b.get(), state.getUUID());
-        } else
-        {
-            state.getVars().<Player>get("__PLAYER__", Player.class).get().sendMessage("Unknown biome: " + this.name.get(state));
-        }
+        this.vecOut.set(this.vecIn.get(state).multipy(-1), state.getUUID());
     }
 
     /**
-     * Gets biome provider.
+     * Gets the negative vector provider.
      * 
-     * @return The biome
+     * @return The vector
      */
-    public Provider<Biome> getBiome()
+    public Provider<Vector3i> getNegativeVector()
     {
-        return this.biome;
+        return this.vecOut;
     }
 
 }

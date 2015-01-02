@@ -21,34 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes.world.biome;
+package com.voxelplugineering.voxelsniper.nodes.material;
 
-import com.google.common.base.Optional;
 import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
-import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
 
 /**
- * A node for getting a {@link Biome} by name.
+ * Checks if a material is a liquid.
  */
-public class GetBiomeNode extends Node
+public class IsLiquidNode extends Node
 {
 
-    private final Provider<String> name;
-    private final Provider<Biome> biome;
+    private final Provider<Material> material;
+    private final Provider<Boolean> bool;
 
     /**
-     * Creates a new node.
+     * Creates a new {@link IsLiquidNode}.
      * 
-     * @param name The name provider
+     * @param material The material to check
      */
-    public GetBiomeNode(Provider<String> name)
+    public IsLiquidNode(Provider<Material> material)
     {
-        this.name = name;
-        this.biome = new Provider<Biome>(this);
+        this.material = material;
+        this.bool = new Provider<Boolean>(this);
     }
 
     /**
@@ -57,25 +54,17 @@ public class GetBiomeNode extends Node
     @Override
     public void exec(RuntimeState state)
     {
-        Optional<Biome> b = Gunsmith.getBiomeRegistry().getBiome(this.name.get(state));
-        if (b.isPresent())
-        {
-            System.out.println("GetBiome: " + b.get());
-            this.biome.set(b.get(), state.getUUID());
-        } else
-        {
-            state.getVars().<Player>get("__PLAYER__", Player.class).get().sendMessage("Unknown biome: " + this.name.get(state));
-        }
+        this.bool.set(this.material.get(state).isLiquid(), state.getUUID());
     }
 
     /**
-     * Gets biome provider.
+     * Gets if the material is a liquid.
      * 
-     * @return The biome
+     * @return The boolean provider
      */
-    public Provider<Biome> getBiome()
+    public Provider<Boolean> isLiquid()
     {
-        return this.biome;
+        return this.bool;
     }
 
 }

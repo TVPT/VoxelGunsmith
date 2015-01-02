@@ -47,4 +47,9 @@ public interface Chunk extends BlockVolume
      */
     Iterable<Entity> getLoadedEntities();
 
+    /**
+     * Refreshes this chunk.
+     */
+    void refreshChunk();
+
 }

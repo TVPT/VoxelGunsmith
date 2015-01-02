@@ -21,56 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api.registry;
+package com.voxelplugineering.voxelsniper.api.alias;
 
-import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
+import java.io.File;
+
+import com.voxelplugineering.voxelsniper.Gunsmith;
 
 /**
- * A registry for biome type.s
- * 
- * @param <T> The biome type
+ * An owner of an alias handler.
  */
-public interface BiomeRegistry<T>
+public interface AliasOwner
 {
 
     /**
-     * Gets the {@link Biome} with the given name.
+     * Gets the data file for alias storage.
      * 
-     * @param name The name
-     * @return The biome
+     * @return The data folder
      */
-    Optional<Biome> getBiome(String name);
+    public File getAliasFile();
 
     /**
-     * Gets the {@link Biome} which represents the given underlying type.
-     * 
-     * @param biome The underlying biome
-     * @return The gunsmith biome
+     * The alias owner for gunsmith's global alias handler.
      */
-    Optional<Biome> getBiome(T biome);
+    public static class GunsmithAliasOwner implements AliasOwner
+    {
 
-    /**
-     * Registers a biome type.
-     * 
-     * @param name The name
-     * @param object The underlying biome object
-     * @param biome The gunsmith biome object
-     */
-    void registerBiome(String name, T object, Biome biome);
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public File getAliasFile()
+        {
+            return new File(Gunsmith.getDataFolder(), "aliases.json");
+        }
 
-    /**
-     * Gets a collection of all registered biomes.
-     * 
-     * @return The biomes
-     */
-    Iterable<Biome> getBiomes();
-
-    /**
-     * Gets the default biome.
-     * 
-     * @return The default biome
-     */
-    Biome getDefaultBiome();
+    }
 
 }

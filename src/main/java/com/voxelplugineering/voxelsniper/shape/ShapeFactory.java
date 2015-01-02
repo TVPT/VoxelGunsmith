@@ -65,8 +65,8 @@ public class ShapeFactory
     }
 
     /**
-     * Creates a rectangular area shape. the 3 radii are for each of the axes with each side equal to the radius*2+1 where radius is the radius for
-     * that specific axis.
+     * Creates a rectangular volume. the 3 radii are for each of the axes with each side equal to the radius*2+1 where radius is the radius for that
+     * specific axis.
      * 
      * @param rx the x-axis radius
      * @param ry the y-axis radius
@@ -156,7 +156,7 @@ public class ShapeFactory
         Shape s;
         if (direction == Direction.EAST || direction == Direction.WEST) // x-axis
         {
-            s = new Shape(height, (int) rx * 2 + 1, (int) ry * 2 + 1, 0, (int) Math.ceil(rx), (int) Math.ceil(ry));
+            s = new Shape(height, (int) Math.ceil(rx) * 2 + 1, (int) Math.ceil(ry) * 2 + 1, 0, (int) Math.ceil(rx), (int) Math.ceil(ry));
             s.set((int) Math.ceil(rx), (int) Math.ceil(ry), 0, false);
             for (double x = 0; x <= rx; x++)
             {
@@ -168,7 +168,7 @@ public class ShapeFactory
 
                     final double zSquared = (y / (ry)) * (y / (ry));
 
-                    for (int z = 0; z <= height; z++)
+                    for (int z = 0; z < height; z++)
                     {
                         if (xSquared + zSquared <= 1)
                         {
@@ -183,7 +183,7 @@ public class ShapeFactory
             }
         } else if (direction == Direction.NORTH || direction == Direction.SOUTH) // z-axis
         {
-            s = new Shape((int) rx * 2 + 1, height, (int) ry * 2 + 1, (int) Math.ceil(rx), 0, (int) Math.ceil(ry));
+            s = new Shape((int) Math.ceil(rx) * 2 + 1, (int) Math.ceil(ry) * 2 + 1, height, (int) Math.ceil(rx), (int) Math.ceil(ry), 0);
             s.set((int) Math.ceil(rx), 0, (int) Math.ceil(ry), false);
             for (double x = 0; x <= rx; x++)
             {
@@ -195,7 +195,7 @@ public class ShapeFactory
 
                     final double zSquared = (y / (ry)) * (y / (ry));
 
-                    for (int z = 0; z <= height; z++)
+                    for (int z = 0; z < height; z++)
                     {
                         if (xSquared + zSquared <= 1)
                         {
@@ -211,7 +211,7 @@ public class ShapeFactory
         } else
         // y-axis default
         {
-            s = new Shape((int) rx * 2 + 1, height, (int) ry * 2 + 1, (int) Math.ceil(rx), 0, (int) Math.ceil(ry));
+            s = new Shape((int) Math.ceil(rx) * 2 + 1, height, (int) Math.ceil(ry) * 2 + 1, (int) Math.ceil(rx), 0, (int) Math.ceil(ry));
             s.set((int) Math.ceil(rx), 0, (int) Math.ceil(ry), false);
             for (double x = 0; x <= rx; x++)
             {
@@ -223,7 +223,7 @@ public class ShapeFactory
 
                     final double zSquared = (y / (ry)) * (y / (ry));
 
-                    for (int z = 0; z <= height; z++)
+                    for (int z = 0; z < height; z++)
                     {
                         if (xSquared + zSquared <= 1)
                         {

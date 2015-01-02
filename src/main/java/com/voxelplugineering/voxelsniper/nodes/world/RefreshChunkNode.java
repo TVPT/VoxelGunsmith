@@ -21,34 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes.world.biome;
+package com.voxelplugineering.voxelsniper.nodes.world;
 
-import com.google.common.base.Optional;
 import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
-import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
+import com.voxelplugineering.voxelsniper.api.world.Chunk;
 
 /**
- * A node for getting a {@link Biome} by name.
+ * Refreshes a chunk.
  */
-public class GetBiomeNode extends Node
+public class RefreshChunkNode extends Node
 {
 
-    private final Provider<String> name;
-    private final Provider<Biome> biome;
+    private final Provider<Chunk> chunk;
 
     /**
-     * Creates a new node.
+     * Creates a new {@link RefreshChunkNode}.
      * 
-     * @param name The name provider
+     * @param chunk The chunk to refresh
      */
-    public GetBiomeNode(Provider<String> name)
+    public RefreshChunkNode(Provider<Chunk> chunk)
     {
-        this.name = name;
-        this.biome = new Provider<Biome>(this);
+        this.chunk = chunk;
     }
 
     /**
@@ -57,25 +52,8 @@ public class GetBiomeNode extends Node
     @Override
     public void exec(RuntimeState state)
     {
-        Optional<Biome> b = Gunsmith.getBiomeRegistry().getBiome(this.name.get(state));
-        if (b.isPresent())
-        {
-            System.out.println("GetBiome: " + b.get());
-            this.biome.set(b.get(), state.getUUID());
-        } else
-        {
-            state.getVars().<Player>get("__PLAYER__", Player.class).get().sendMessage("Unknown biome: " + this.name.get(state));
-        }
-    }
-
-    /**
-     * Gets biome provider.
-     * 
-     * @return The biome
-     */
-    public Provider<Biome> getBiome()
-    {
-        return this.biome;
+        System.out.println("Refreshing chunk " + this.chunk.get(state));
+        this.chunk.get(state).refreshChunk();
     }
 
 }

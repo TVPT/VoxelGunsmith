@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.api.entity.living;
 
 import com.voxelplugineering.voxelsniper.alias.AliasHandler;
+import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushHolder;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.world.queue.ChangeQueueOwner;
@@ -31,7 +32,7 @@ import com.voxelplugineering.voxelsniper.api.world.queue.ChangeQueueOwner;
 /**
  * Representation of a user within Gunsmith. Holds all state information relevant to the user.
  */
-public interface Player extends CommandSender, Living, BrushHolder, ChangeQueueOwner
+public interface Player extends CommandSender, Living, BrushHolder, ChangeQueueOwner, AliasOwner
 {
 
     /**

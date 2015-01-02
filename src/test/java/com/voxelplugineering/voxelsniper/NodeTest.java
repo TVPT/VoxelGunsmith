@@ -24,6 +24,9 @@
 package com.voxelplugineering.voxelsniper;
 
 import org.junit.Test;
+import org.mockito.Mockito;
+
+import com.voxelplugineering.voxelsniper.api.world.Block;
 
 /**
  * Standard node test class. TODO Actually write some tests!
@@ -31,12 +34,11 @@ import org.junit.Test;
 public class NodeTest
 {
 
-    /**
-     * The first test that isn't written....
-     */
     @Test
-    public void testAddingOperatorNode()
+    public void testBlockBreakNode()
     {
-
+        Block block = Mockito.mock(Block.class);
+        
     }
+
 }

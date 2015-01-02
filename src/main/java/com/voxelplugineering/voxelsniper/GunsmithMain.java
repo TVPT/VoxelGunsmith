@@ -21,56 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api.registry;
+package com.voxelplugineering.voxelsniper;
 
-import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
+import java.io.File;
+
+import com.voxelplugineering.voxelsniper.util.vsl.DefaultBrushBuilder;
 
 /**
- * A registry for biome type.s
- * 
- * @param <T> The biome type
+ * The main class for utility operations.
  */
-public interface BiomeRegistry<T>
+public class GunsmithMain
 {
 
     /**
-     * Gets the {@link Biome} with the given name.
+     * The main method.
      * 
-     * @param name The name
-     * @return The biome
+     * @param args The program arguments.
      */
-    Optional<Biome> getBiome(String name);
-
-    /**
-     * Gets the {@link Biome} which represents the given underlying type.
-     * 
-     * @param biome The underlying biome
-     * @return The gunsmith biome
-     */
-    Optional<Biome> getBiome(T biome);
-
-    /**
-     * Registers a biome type.
-     * 
-     * @param name The name
-     * @param object The underlying biome object
-     * @param biome The gunsmith biome object
-     */
-    void registerBiome(String name, T object, Biome biome);
-
-    /**
-     * Gets a collection of all registered biomes.
-     * 
-     * @return The biomes
-     */
-    Iterable<Biome> getBiomes();
-
-    /**
-     * Gets the default biome.
-     * 
-     * @return The default biome
-     */
-    Biome getDefaultBiome();
+    public static void main(String[] args)
+    {
+        if (args.length == 2 && args[0].equalsIgnoreCase("--generate"))
+        {
+            DefaultBrushBuilder.buildBrushes();
+            DefaultBrushBuilder.saveAll(new File(args[1]));
+        } else
+        {
+            System.out.println("Usage:\n\t--generate <directory>\t: Generates all default brushes into the given directory.");
+        }
+    }
 
 }

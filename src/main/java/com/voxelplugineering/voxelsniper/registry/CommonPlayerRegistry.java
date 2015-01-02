@@ -27,6 +27,7 @@ import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.registry.PlayerRegistry;
+import com.voxelplugineering.voxelsniper.api.registry.RegistryProvider;
 
 /**
  * A standard player registry for players.

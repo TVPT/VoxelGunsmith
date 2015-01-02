@@ -34,6 +34,8 @@ import java.util.concurrent.ExecutorService;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.voxelplugineering.voxelsniper.alias.AliasHandler;
+import com.voxelplugineering.voxelsniper.alias.AliasSaveTask;
+import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.config.Configuration;
@@ -47,7 +49,7 @@ import com.voxelplugineering.voxelsniper.api.registry.BiomeRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.PlayerRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.WorldRegistry;
-import com.voxelplugineering.voxelsniper.api.scheduler.Scheduler;
+import com.voxelplugineering.voxelsniper.api.service.scheduler.Scheduler;
 import com.voxelplugineering.voxelsniper.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
 import com.voxelplugineering.voxelsniper.config.ConfigurationManager;
@@ -55,6 +57,7 @@ import com.voxelplugineering.voxelsniper.config.JsonConfigurationLoader;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.event.handler.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.logging.CommonLoggingDistributor;
+import com.voxelplugineering.voxelsniper.registry.vsl.ArgumentParsers;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueTask;
 
 /**
@@ -82,6 +85,7 @@ public final class Gunsmith
     private static Scheduler schedulerProxy;
     private static BiomeRegistry<?> biomeRegistry;
     private static File dataFolder;
+    private static AliasSaveTask aliasTask;
 
     /**
      * The initialization state of Gunsmith.
@@ -345,6 +349,16 @@ public final class Gunsmith
     }
 
     /**
+     * Gets the alias save handler.
+     * 
+     * @return The alias save handler
+     */
+    public static AliasSaveTask getAliasSaveHandler()
+    {
+        return aliasTask;
+    }
+
+    /**
      * Should be called at the start of the initialization process. Sets up default states before the specific implementation registers its overrides.
      * 
      * @param base The root data folder for Gunsmith's data
@@ -380,7 +394,7 @@ public final class Gunsmith
         configuration.registerContainer(VoxelSniperConfiguration.class);
         //configuration is also setup here so that any values can be overwritten from the specific impl
 
-        globalAliasRegistries = new AliasHandler();
+        globalAliasRegistries = new AliasHandler(new AliasOwner.GunsmithAliasOwner());
         globalAliasRegistries.registerTarget("brush");
 
         mainThread = Thread.currentThread();
@@ -422,6 +436,8 @@ public final class Gunsmith
         checkRef(schedulerProxy);
 
         biomeRegistry = provider.getBiomeRegistry();
+
+        ArgumentParsers.init();
 
         File config = new File(platformProxy.getDataFolder(), "VoxelSniperConfiguration.json");
         if (config.exists())
@@ -467,6 +483,8 @@ public final class Gunsmith
         }
 
         schedulerProxy.startSynchronousTask(new ChangeQueueTask(), 100);
+        aliasTask = new AliasSaveTask();
+        schedulerProxy.startSynchronousTask(aliasTask, 30000);
 
         getLogger().info("Gunsmith initialization finalized.");
         isPluginEnabled = true;

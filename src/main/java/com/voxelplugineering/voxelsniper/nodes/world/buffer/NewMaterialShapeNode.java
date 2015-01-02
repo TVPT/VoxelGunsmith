@@ -53,6 +53,19 @@ public class NewMaterialShapeNode extends Node
     }
 
     /**
+     * Creates a {@link NewMaterialShapeNode}.
+     * 
+     * @param shape The shape
+     * @param defaultMaterial The default material
+     */
+    public NewMaterialShapeNode(Provider<Shape> shape, Material defaultMaterial)
+    {
+        this.matshape = new Provider<MaterialShape>(this);
+        this.shape = shape;
+        this.defaultMaterial = new Provider<Material>(defaultMaterial);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

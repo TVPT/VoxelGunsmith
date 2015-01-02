@@ -21,61 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes.world.biome;
+package com.voxelplugineering.voxelsniper.registry.vsl;
 
 import com.google.common.base.Optional;
-import com.thevoxelbox.vsl.node.Node;
-import com.thevoxelbox.vsl.util.Provider;
-import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 
 /**
- * A node for getting a {@link Biome} by name.
+ * A static library of standard argument parsers.
  */
-public class GetBiomeNode extends Node
+@SuppressWarnings("javadoc")
+public class ArgumentParsers
 {
 
-    private final Provider<String> name;
-    private final Provider<Biome> biome;
+    public static ArgumentParser<Biome> BIOME_PARSER = null;
+    public static ArgumentParser<String> STRING_PARSER = null;
 
     /**
-     * Creates a new node.
-     * 
-     * @param name The name provider
+     * Initialize
      */
-    public GetBiomeNode(Provider<String> name)
+    public static void init()
     {
-        this.name = name;
-        this.biome = new Provider<Biome>(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void exec(RuntimeState state)
-    {
-        Optional<Biome> b = Gunsmith.getBiomeRegistry().getBiome(this.name.get(state));
-        if (b.isPresent())
+        STRING_PARSER = new ArgumentParser.RawParser();
+        BIOME_PARSER = new ArgumentParser<Biome>()
         {
-            System.out.println("GetBiome: " + b.get());
-            this.biome.set(b.get(), state.getUUID());
-        } else
-        {
-            state.getVars().<Player>get("__PLAYER__", Player.class).get().sendMessage("Unknown biome: " + this.name.get(state));
-        }
-    }
 
-    /**
-     * Gets biome provider.
-     * 
-     * @return The biome
-     */
-    public Provider<Biome> getBiome()
-    {
-        return this.biome;
-    }
+            @Override
+            public Optional<Biome> get(String arg)
+            {
+                return Gunsmith.getBiomeRegistry().getBiome(arg);
+            }
 
+        };
+    }
 }

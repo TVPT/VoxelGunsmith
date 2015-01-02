@@ -41,7 +41,7 @@ public class HelpCommand extends Command
     public HelpCommand()
     {
         super("voxelhelp", "Provides help information for brush parts: /help <brushName>");
-        setAliases("vhelp");
+        setAliases("vhelp", "man");
         setPermissions("voxelsniper.command.help");
     }
 

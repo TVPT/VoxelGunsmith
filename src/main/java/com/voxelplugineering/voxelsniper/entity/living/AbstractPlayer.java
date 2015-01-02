@@ -25,20 +25,26 @@ package com.voxelplugineering.voxelsniper.entity.living;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.File;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
 import com.thevoxelbox.vsl.VariableScope;
 import com.thevoxelbox.vsl.api.IVariableScope;
-import com.thevoxelbox.vsl.node.NodeGraph;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 import com.voxelplugineering.voxelsniper.brushes.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.registry.WeakWrapper;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueue;
@@ -57,7 +63,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     /**
      * The currently selected brush.
      */
-    private NodeGraph currentBrush;
+    private BrushNodeGraph currentBrush;
     /**
      * The brush settings specific to this player.
      */
@@ -71,6 +77,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
      */
     private Queue<ChangeQueue> pending;
     private AliasHandler personalAliasHandler;
+    private Map<String, String> arguments;
 
     /**
      * Creates a new CommonPlayer with a weak reference to the player. TODO add constructor for receiving custom parent brush manager
@@ -84,10 +91,11 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
         this.personalBrushManager = new CommonBrushManager(Gunsmith.getGlobalBrushManager());
         this.brushVariables = new VariableScope();
         this.brushVariables.setCaseSensitive(false);
-        resetSettings();
+        this.arguments = Maps.newHashMap();
         this.history = Queues.newArrayDeque();
         this.pending = new LinkedList<ChangeQueue>();
-        this.personalAliasHandler = new AliasHandler(Gunsmith.getGlobalAliasHandler());
+        this.personalAliasHandler = new AliasHandler(this, Gunsmith.getGlobalAliasHandler());
+        resetSettings();
     }
 
     /**
@@ -101,7 +109,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     /**
      * {@inheritDoc}
      */
-    public void setCurrentBrush(NodeGraph brush)
+    public void setCurrentBrush(BrushNodeGraph brush)
     {
         this.currentBrush = brush;
     }
@@ -109,7 +117,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     /**
      * {@inheritDoc}
      */
-    public NodeGraph getCurrentBrush()
+    public BrushNodeGraph getCurrentBrush()
     {
         return this.currentBrush;
     }
@@ -127,11 +135,15 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
      */
     public void resetSettings()
     {
-        NodeGraph start = null;
-        NodeGraph last = null;
-        for (String brushName : Gunsmith.getConfiguration().get("defaultBrush").get().toString().split(" "))
+        this.arguments.clear();
+        BrushNodeGraph start = null;
+        BrushNodeGraph last = null;
+        Pattern pattern = Pattern.compile("([\\S&&[^\\{]]+) ?(?:(\\{[^\\}]*\\}))?");
+        Matcher match = pattern.matcher(prep(Gunsmith.getConfiguration().get("defaultBrush").get().toString()));
+        while (match.find())
         {
-            NodeGraph brush = getPersonalBrushManager().getBrush(brushName).orNull();
+            String brushName = match.group(1);
+            BrushNodeGraph brush = getPersonalBrushManager().getBrush(brushName).orNull();
             if (brush == null)
             {
                 getPersonalBrushManager().loadBrush(brushName);
@@ -151,7 +163,6 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
                 last.chain(brush);
                 last = brush;
             }
-
         }
         setCurrentBrush(start);
         sendMessage("Brush set to " + Gunsmith.getConfiguration().get("defaultBrush").get().toString());
@@ -163,8 +174,23 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
                         .getMaterial(
                                 Gunsmith.getConfiguration().get("defaultBrushMaterial").or(getWorld().getMaterialRegistry().getAirMaterial())
                                         .toString()).get();
-        sendMessage("Set material to " + material.toString());
+        sendMessage("Set material to " + material.getName());
         getBrushSettings().set("setMaterial", material);
+    }
+
+    private String prep(String s)
+    {
+        s = s.trim();
+        while (s.startsWith("{"))
+        {
+            int index = s.indexOf("}");
+            if (index == -1)
+            {
+                s = s.substring(1);
+            }
+            s = s.substring(index + 1).trim();
+        }
+        return s;
     }
 
     /**
@@ -240,4 +266,35 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     {
         return this.personalAliasHandler;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> getBrushArguments()
+    {
+        return Collections.unmodifiableMap(this.arguments);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setBrushArgument(String brush, String arg)
+    {
+        System.out.println("Setting brush argument " + brush + ": " + arg);
+        if (arg == null || arg.isEmpty())
+        {
+            return;//Note: no illegal argument exception as arg is allowed to be null
+        }
+        this.arguments.put(brush, arg);
+    }
+
+    @Override
+    public File getAliasFile()
+    {
+        File aliases = new File(Gunsmith.getDataFolder(), "players/" + getName() + "/aliases.json");
+        return aliases;
+    }
+
 }
