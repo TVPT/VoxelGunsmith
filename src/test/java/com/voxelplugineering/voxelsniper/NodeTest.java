@@ -23,22 +23,57 @@
  */
 package com.voxelplugineering.voxelsniper;
 
-import org.junit.Test;
-import org.mockito.Mockito;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.util.UUID;
+
+import org.junit.Test;
+import org.junit.Before;
+
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.Block;
+import com.voxelplugineering.voxelsniper.api.world.Location;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.nodes.block.BlockBreakNode;
 
 /**
  * Standard node test class. TODO Actually write some tests!
  */
 public class NodeTest
 {
+    RuntimeState state;
+    
+    /**
+     * Test setup.
+     */
+    @Before
+    public void setupTests()
+    {
+        UUID uuid = UUID.randomUUID();
+        state = mock(RuntimeState.class);
+        when(state.getUUID()).thenReturn(uuid);
+    }
 
+    /**
+     * Tests the {@link BlockBreakNode}.
+     */
     @Test
     public void testBlockBreakNode()
     {
-        Block block = Mockito.mock(Block.class);
+        Material material = mock(Material.class);
+        Location location = mock(Location.class);
+        Block block = mock(Block.class);
+        when(block.getMaterial()).thenReturn(material);
+        when(block.getLocation()).thenReturn(location);
         
+        BlockBreakNode node = new BlockBreakNode(new Provider<Block>(block));
+        node.exec(state);
+        
+        assertEquals(node.getLocation().get(state), location);
+        assertEquals(node.getMaterial().get(state), material);
     }
 
 }
