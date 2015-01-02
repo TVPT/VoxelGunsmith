@@ -52,6 +52,11 @@ public enum TextFormat
     ITALIC,
     RESET;
     
+    /**
+     * Returns the platform specific string representation of this text format.
+     * 
+     * @return The format code
+     */
     public String toString()
     {
         return Gunsmith.getTextFormatProxy().getFormat(this);

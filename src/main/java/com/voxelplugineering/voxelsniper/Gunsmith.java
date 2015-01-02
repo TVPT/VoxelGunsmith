@@ -360,6 +360,11 @@ public final class Gunsmith
         return aliasTask;
     }
     
+    /**
+     * Gets the text format proxy.
+     * 
+     * @return The format proxy
+     */
     public static TextFormatProxy getTextFormatProxy()
     {
         return formatProxy;

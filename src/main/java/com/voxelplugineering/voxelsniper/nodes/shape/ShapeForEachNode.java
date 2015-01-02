@@ -80,7 +80,7 @@ public class ShapeForEachNode extends Node
                 {
                     if (s.get(x, y, z, false))
                     {
-                        if (offset)
+                        if (this.offset)
                         {
                             this.nextValue.set(new Vector3i(x - o.getX(), y - o.getY(), z - o.getZ()), state.getUUID());
                         } else
