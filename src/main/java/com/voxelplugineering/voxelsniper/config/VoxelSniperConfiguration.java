@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.config;
 
+import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
+
 /**
  * A configuration container which is exposed for user settings.
  */
@@ -39,12 +41,12 @@ public class VoxelSniperConfiguration
     String defaultBrushMaterial = "AIR";
 
     //Default messages
-    String permissionsRequiredMessage = "You require more permissions in order to perform this action.";
-    String defaultHelpMessage = "No help is provided for this command.";
-    String brushSizeChangedMessage = "Your brush size was changed to %.1f";
-    String brushNotFoundMessage = "Could not find a brush part named %s";
-    String brushSetMessage = "Your brush has been set to %s";
-    String materialNotFoundMessage = "Could not find that material.";
-    String materialSetMessage = "Set material to %s";
-    String materialMaskSetMessage = "Set secondary material to %s";
+    String permissionsRequiredMessage = TextFormat.DARK_RED + "You require more permissions in order to perform this action.";
+    String defaultHelpMessage = TextFormat.RED + "No help is provided for this command.";
+    String brushSizeChangedMessage = TextFormat.GREEN + "Your brush size was changed to " + TextFormat.GOLD + "%.1f";
+    String brushNotFoundMessage = TextFormat.RED + "Could not find a brush part named " + TextFormat.GOLD + "%s";
+    String brushSetMessage = TextFormat.GREEN + "Your brush has been set to " + TextFormat.GOLD + "%s";
+    String materialNotFoundMessage = TextFormat.RED + "Could not find that material.";
+    String materialSetMessage = TextFormat.GREEN + "Set material to " + TextFormat.GOLD + "%s";
+    String materialMaskSetMessage = TextFormat.GREEN + "Set secondary material to " + TextFormat.GOLD + "%s";
 }

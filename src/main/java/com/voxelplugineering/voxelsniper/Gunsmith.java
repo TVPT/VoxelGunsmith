@@ -50,6 +50,7 @@ import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.PlayerRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.WorldRegistry;
 import com.voxelplugineering.voxelsniper.api.service.scheduler.Scheduler;
+import com.voxelplugineering.voxelsniper.api.util.text.TextFormatProxy;
 import com.voxelplugineering.voxelsniper.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
 import com.voxelplugineering.voxelsniper.config.ConfigurationManager;
@@ -86,6 +87,7 @@ public final class Gunsmith
     private static BiomeRegistry<?> biomeRegistry;
     private static File dataFolder;
     private static AliasSaveTask aliasTask;
+    private static TextFormatProxy formatProxy;
 
     /**
      * The initialization state of Gunsmith.
@@ -357,6 +359,11 @@ public final class Gunsmith
     {
         return aliasTask;
     }
+    
+    public static TextFormatProxy getTextFormatProxy()
+    {
+        return formatProxy;
+    }
 
     /**
      * Should be called at the start of the initialization process. Sets up default states before the specific implementation registers its overrides.
@@ -436,6 +443,8 @@ public final class Gunsmith
         checkRef(schedulerProxy);
 
         biomeRegistry = provider.getBiomeRegistry();
+        
+        formatProxy = provider.getFormatProxy();
 
         ArgumentParsers.init();
 
@@ -594,5 +603,7 @@ public final class Gunsmith
             schedulerProxy.stopAllTasks();
         }
         schedulerProxy = null;
+        aliasTask = null;
+        formatProxy = null;
     }
 }

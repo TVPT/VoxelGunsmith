@@ -32,6 +32,7 @@ import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.PlayerRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.WorldRegistry;
 import com.voxelplugineering.voxelsniper.api.service.scheduler.Scheduler;
+import com.voxelplugineering.voxelsniper.api.util.text.TextFormatProxy;
 import com.voxelplugineering.voxelsniper.command.CommandHandler;
 
 /**
@@ -133,5 +134,11 @@ public interface PlatformProvider
      * @return The biome registry
      */
     BiomeRegistry<?> getBiomeRegistry();
-
+    
+    /**
+     * Gets the text format proxy.
+     * 
+     * @return The format proxy
+     */
+    TextFormatProxy getFormatProxy();
 }
