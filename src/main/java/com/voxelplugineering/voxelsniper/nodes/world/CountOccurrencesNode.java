@@ -51,6 +51,11 @@ public class CountOccurrencesNode extends Node
         this.integerProvider = new Provider<Integer>(this);
     }
 
+    public Provider<Integer> getCount()
+    {
+        return this.integerProvider;
+    }
+
     @Override
     public void exec(RuntimeState state)
     {

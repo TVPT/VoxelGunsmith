@@ -33,6 +33,8 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.thevoxelbox.vsl.nodes.StaticValueNode;
 import com.thevoxelbox.vsl.nodes.control.ForEachNode;
+import com.thevoxelbox.vsl.nodes.control.IfStatement;
+import com.thevoxelbox.vsl.nodes.math.compare.NumberEqualsNode;
 import com.thevoxelbox.vsl.nodes.vars.ChainedInputNode;
 import com.thevoxelbox.vsl.nodes.vars.ChainedOutputNode;
 import com.thevoxelbox.vsl.nodes.vars.VariableGetNode;
@@ -343,7 +345,10 @@ public class DefaultBrushBuilder
                 GetBlockFromLocationNode getBlock = new GetBlockFromLocationNode(offset2.getOffsetLocation());
                 BlockNeighboursNode neighboursNode = new BlockNeighboursNode(getBlock.getBlock());
                 CountOccurrencesNode countNode = new CountOccurrencesNode(maskMaterial.getValue(), neighboursNode.getNeighbours());
-            // TODO Deamon finish this
+                StaticValueNode<Integer> valueNode = new StaticValueNode<Integer>(0);
+                NumberEqualsNode numberNode = new NumberEqualsNode(valueNode.getValue(), countNode.getCount(), false);
+                IfStatement ifStatement = new IfStatement(numberNode.getComparisonResult());
+
                 ShapeSetNode set = new ShapeSetNode(shapeIn.getValue(), forEach.getNextValue());
                 ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shapeIn.getValue());
             //@formatter:on
@@ -353,16 +358,15 @@ public class DefaultBrushBuilder
             offset2.setNext(getBlock);
             getBlock.setNext(neighboursNode);
             neighboursNode.setNext(countNode);
-            /* TODO DEAMON!!! WHY AREN'T YOU FINISHING THIS????
-            countNode.setNext(comparisonNode);
+            countNode.setNext(numberNode);
+            numberNode.setNext(ifStatement);
+            ifStatement.setBody(set);
             forEach.setNext(shapeOut);
 
 
             BrushNodeGraph brush = new BrushNodeGraph("shell");
-            brush.setNext(setMaterial);
+            brush.setNext(forEach);
             graphs.put("shell", brush);
-            */
-
         }
     }
 
