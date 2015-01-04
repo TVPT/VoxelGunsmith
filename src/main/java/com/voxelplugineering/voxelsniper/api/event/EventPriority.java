@@ -21,55 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api.logging;
+package com.voxelplugineering.voxelsniper.api.event;
 
 /**
- * Interface for a log message output.
+ * Possible EventPriority levels.
+ * <p>
+ * The ordering of these should remain constant, and in particular the priorities should be ordered in descending order of priority.
+ * </p>
  */
-public interface ILogger
+@SuppressWarnings("javadoc")
+public enum EventPriority
 {
-
-    /**
-     * Logs a debug message to the output. Will not be displayed unless the output's logging level is set to debug.
-     * 
-     * @param msg the debug message, cannot be null or empty
-     */
-    void debug(String msg);
-
-    /**
-     * Logs an info message to the output.
-     * 
-     * @param msg the info message, cannot be null or empty
-     */
-    void info(String msg);
-
-    /**
-     * Logs a warning to the output.
-     * 
-     * @param msg the warning, cannot be null or empty
-     */
-    void warn(String msg);
-
-    /**
-     * Logs an error to the output.
-     * 
-     * @param msg the error message, cannot be null or empty
-     */
-    void error(String msg);
-
-    /**
-     * Logs an error to the output.
-     * 
-     * @param e the exception, cannot be null
-     */
-    void error(Exception e);
-
-    /**
-     * Logs an error to the output.
-     * 
-     * @param e the exception, cannot be null
-     * @param msg an included message, cannot be null or empty
-     */
-    void error(Exception e, String msg);
-
+    HIGHEST, HIGH, STANDARD, LOW, LOWEST
 }

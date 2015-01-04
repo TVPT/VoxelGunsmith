@@ -151,6 +151,7 @@ public class BrushCommand extends Command
             sniper.sendMessage(this.brushSetMessage, fullBrush);
             return true;
         }
+        sender.sendMessage(this.getHelpMsg());
         return false;
     }
 

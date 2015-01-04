@@ -166,6 +166,9 @@ public class ShapeChangeQueue extends ChangeQueue
         return count;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void reset()
     {

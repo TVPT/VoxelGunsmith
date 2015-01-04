@@ -29,7 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.api.logging.ILogger;
+import com.voxelplugineering.voxelsniper.api.logging.Logger;
 import com.voxelplugineering.voxelsniper.api.logging.LoggingDistributor;
 
 /**
@@ -41,7 +41,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
     /**
      * The collection of loggers to distribute the logging messages to.
      */
-    private Map<String, ILogger> loggers = null;
+    private Map<String, Logger> loggers = null;
 
     /**
      * Creates a new logging distributor.
@@ -91,7 +91,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
         }
         for (String n : this.loggers.keySet())
         {
-            ILogger l = this.loggers.get(n);
+            Logger l = this.loggers.get(n);
             l.debug(msg);
         }
     }
@@ -112,7 +112,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
         }
         for (String n : this.loggers.keySet())
         {
-            ILogger l = this.loggers.get(n);
+            Logger l = this.loggers.get(n);
             l.info(msg);
         }
     }
@@ -133,7 +133,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
         }
         for (String n : this.loggers.keySet())
         {
-            ILogger l = this.loggers.get(n);
+            Logger l = this.loggers.get(n);
             l.warn(msg);
         }
     }
@@ -154,7 +154,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
         }
         for (String n : this.loggers.keySet())
         {
-            ILogger l = this.loggers.get(n);
+            Logger l = this.loggers.get(n);
             l.error(msg);
         }
     }
@@ -175,7 +175,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
         }
         for (String n : this.loggers.keySet())
         {
-            ILogger l = this.loggers.get(n);
+            Logger l = this.loggers.get(n);
             l.error(e);
         }
     }
@@ -197,7 +197,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
         }
         for (String n : this.loggers.keySet())
         {
-            ILogger l = this.loggers.get(n);
+            Logger l = this.loggers.get(n);
             l.error(e, msg);
         }
     }
@@ -206,7 +206,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
      * {@inheritDoc}
      */
     @Override
-    public void registerLogger(ILogger logger, String name)
+    public void registerLogger(Logger logger, String name)
     {
         checkNotNull(logger, "Logger cannot be null!");
         checkNotNull(name, "Name cannot be null!");

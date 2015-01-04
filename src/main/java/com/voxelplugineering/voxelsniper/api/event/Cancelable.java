@@ -21,45 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api.util.text;
+package com.voxelplugineering.voxelsniper.api.event;
 
-import com.voxelplugineering.voxelsniper.Gunsmith;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
 /**
- * Format codes for text formatting.
+ * An annotation for if an event may be canceled.
  */
-@SuppressWarnings("javadoc")
-public enum TextFormat
+@Retention(RUNTIME)
+@Target(TYPE)
+public @interface Cancelable
 {
-    BLACK,
-    DARK_BLUE,
-    DARK_GREEN,
-    DARK_AQUA,
-    DARK_RED,
-    DARK_PURPLE,
-    GOLD,
-    GRAY,
-    DARK_GRAY,
-    BLUE,
-    GREEN,
-    AQUA,
-    RED,
-    LIGHT_PURPLE,
-    YELLOW,
-    WHITE,
-    BOLD,
-    STRIKETHROUGH,
-    UNDERLINE,
-    ITALIC,
-    RESET;
 
-    /**
-     * Returns the platform specific string representation of this text format.
-     * 
-     * @return The format code
-     */
-    public String toString()
-    {
-        return Gunsmith.getTextFormatProxy().getFormat(this);
-    }
 }

@@ -31,6 +31,9 @@ import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
 public abstract class CommonBrushLoader implements BrushLoader
 {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BrushNodeGraph loadBrush(byte[] serialized)
     {

@@ -56,6 +56,9 @@ public class BrushNodeGraph extends NodeGraph
         this.argDefaults = Maps.newHashMap();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void run(IVariableHolder vars)
     {

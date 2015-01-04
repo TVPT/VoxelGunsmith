@@ -181,6 +181,9 @@ public final class CommonLocation implements Cloneable, Location
         return "CommonLocation (" + this.world.getName() + ": " + this.x + ", " + this.y + ", " + this.z + ")";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Vector3d toVector()
     {

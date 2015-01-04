@@ -35,8 +35,9 @@ import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.event.SnipeEvent;
-import com.voxelplugineering.voxelsniper.event.SniperCreateEvent;
-import com.voxelplugineering.voxelsniper.event.SniperDestroyEvent;
+import com.voxelplugineering.voxelsniper.event.SniperEvent;
+import com.voxelplugineering.voxelsniper.event.SniperEvent.SniperCreateEvent;
+import com.voxelplugineering.voxelsniper.event.SniperEvent.SniperDestroyEvent;
 import com.voxelplugineering.voxelsniper.util.RayTrace;
 
 /**
@@ -62,7 +63,7 @@ public class CommonEventHandler
      */
     @Subscribe
     @AllowConcurrentEvents
-    public void onPlayerJoin(SniperCreateEvent event)
+    public void onPlayerJoin(SniperEvent.SniperCreateEvent event)
     {
         Player player = event.getSniper();
         //TODO use UUID for directory name
@@ -86,7 +87,7 @@ public class CommonEventHandler
      * 
      * @param event the event
      */
-    public void onPlayerLeave(SniperDestroyEvent event)
+    public void onPlayerLeave(SniperEvent.SniperDestroyEvent event)
     {
         Player player = event.getSniper();
         File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), "players/" + player.getName());

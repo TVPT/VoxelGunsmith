@@ -26,9 +26,9 @@ package com.voxelplugineering.voxelsniper.api.logging;
 import com.voxelplugineering.voxelsniper.api.Manager;
 
 /**
- * A distributor for logging messages to a collection of {@link ILogger}s.
+ * A distributor for logging messages to a collection of {@link Logger}s.
  */
-public interface LoggingDistributor extends ILogger, Manager
+public interface LoggingDistributor extends Logger, Manager
 {
 
     /**
@@ -37,7 +37,7 @@ public interface LoggingDistributor extends ILogger, Manager
      * @param logger the new logger, cannot be null
      * @param name a name to register this logger under, cannot be null or empty
      */
-    void registerLogger(ILogger logger, String name);
+    void registerLogger(Logger logger, String name);
 
     /**
      * Removes a logger from the distribution collection by-name.

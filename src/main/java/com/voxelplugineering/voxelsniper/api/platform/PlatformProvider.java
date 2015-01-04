@@ -25,7 +25,7 @@ package com.voxelplugineering.voxelsniper.api.platform;
 
 import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
-import com.voxelplugineering.voxelsniper.api.logging.ILogger;
+import com.voxelplugineering.voxelsniper.api.logging.Logger;
 import com.voxelplugineering.voxelsniper.api.permissions.PermissionProxy;
 import com.voxelplugineering.voxelsniper.api.registry.BiomeRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
@@ -46,7 +46,7 @@ public interface PlatformProvider
      * 
      * @return The logger
      */
-    ILogger getLogger();
+    Logger getLogger();
 
     /**
      * Gets the name of the platforms logger.

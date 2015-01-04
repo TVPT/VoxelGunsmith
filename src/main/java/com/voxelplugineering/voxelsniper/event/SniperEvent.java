@@ -23,25 +23,25 @@
  */
 package com.voxelplugineering.voxelsniper.event;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy.ASYNCHRONOUS;
+
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy;
 
 /**
  * An abstract event for any event focused on a particular player.
  */
-public abstract class SniperEvent extends CommonEvent
+public abstract class SniperEvent extends Event
 {
     /**
      * The sniper.
      */
-    private Player sniper;
+    private final Player sniper;
 
-    /**
-     * Sets the sniper.
-     * 
-     * @param sniper the sniper
-     */
-    protected void setSniper(Player sniper)
+    protected SniperEvent(Player sniper)
     {
+        checkNotNull(sniper, "Sniper cannot be null!");
         this.sniper = sniper;
     }
 
@@ -53,5 +53,43 @@ public abstract class SniperEvent extends CommonEvent
     public Player getSniper()
     {
         return this.sniper;
+    }
+
+    /**
+     * An event for handling the creation of new players.
+     */
+    @EventThreadingPolicy(ASYNCHRONOUS)
+    public static class SniperCreateEvent extends SniperEvent
+    {
+
+        /**
+         * Creates a new {@link SniperCreateEvent}.
+         * 
+         * @param sniper The player
+         */
+        public SniperCreateEvent(Player sniper)
+        {
+            super(sniper);
+        }
+
+    }
+
+    /**
+     * An event to handle the removal of a player.
+     */
+    @EventThreadingPolicy(ASYNCHRONOUS)
+    public static class SniperDestroyEvent extends SniperEvent
+    {
+
+        /**
+         * Creates a new {@link SniperDestroyEvent}
+         * 
+         * @param sniper The player
+         */
+        public SniperDestroyEvent(Player sniper)
+        {
+            super(sniper);
+        }
+
     }
 }

@@ -87,6 +87,9 @@ public class CommonBiomeRegistry<T> implements BiomeRegistry<T>
         return this.registry.getRegisteredValues();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Biome getDefaultBiome()
     {

@@ -39,7 +39,7 @@ public interface Scheduler
      * @return The new task
      */
     Task startSynchronousTask(Runnable runnable, int interval);
-    
+
     /**
      * Starts a new task asynchronously.
      * 

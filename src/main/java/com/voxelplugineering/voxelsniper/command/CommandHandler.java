@@ -159,4 +159,14 @@ public class CommandHandler
         onCommand(player, s[0], Arrays.copyOfRange(s, 1, s.length));
     }
 
+    /**
+     * Gets the registrar for this command handler.
+     * 
+     * @return The registrar
+     */
+    public CommandRegistrar getRegistrar()
+    {
+        return this.registrar;
+    }
+
 }

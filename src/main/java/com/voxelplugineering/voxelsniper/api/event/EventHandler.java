@@ -21,12 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.event;
+package com.voxelplugineering.voxelsniper.api.event;
+
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
 /**
- * The base event class.
+ * Annotates a method as being an event handler.
+ * <p>
+ * The annotated method must be public and take a single parameter, which is the event type being registered.
+ * </p>
+ * <p>
+ * It is good practice for methods annotated by this annotation to not throw exceptions.
+ * </p>
  */
-public class CommonEvent
+@Retention(RUNTIME)
+@Target(METHOD)
+public @interface EventHandler
 {
+
+    /**
+     * Gets the priority for this {@link EventHandler}.
+     * 
+     * @return The priority
+     */
+    EventPriority value() default EventPriority.STANDARD;
 
 }

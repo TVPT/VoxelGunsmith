@@ -56,6 +56,9 @@ public class ShapeMaterialSetNode extends Node
         this.target = target;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {

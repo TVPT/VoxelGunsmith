@@ -777,12 +777,18 @@ public abstract class Metrics
             return Collections.unmodifiableSet(this.plotters);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int hashCode()
         {
             return this.name.hashCode();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean equals(final Object object)
         {
@@ -858,12 +864,18 @@ public abstract class Metrics
         {
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int hashCode()
         {
             return getColumnName().hashCode();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean equals(final Object object)
         {

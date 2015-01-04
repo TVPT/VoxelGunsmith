@@ -54,6 +54,9 @@ public class GetBlockFromWorldNode extends Node
         this.block = new Provider<Block>(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {

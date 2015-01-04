@@ -290,6 +290,9 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
         this.arguments.put(brush, arg);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public File getAliasFile()
     {

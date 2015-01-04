@@ -25,11 +25,11 @@ package com.voxelplugineering.voxelsniper.registry;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.WeakHashMap;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.MapMaker;
 import com.voxelplugineering.voxelsniper.api.Registry;
 
 /**
@@ -62,7 +62,7 @@ public class WeakRegistry<K, V> implements Registry<K, V>
      */
     public WeakRegistry()
     {
-        this.registry = new WeakHashMap<K, V>();
+        this.registry = new MapMaker().weakKeys().weakValues().makeMap();
         this.nameRegistry = HashBiMap.create();
         this.inverseNameRegistry = this.nameRegistry.inverse();
     }

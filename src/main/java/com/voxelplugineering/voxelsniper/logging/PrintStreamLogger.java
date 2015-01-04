@@ -23,24 +23,24 @@
  */
 package com.voxelplugineering.voxelsniper.logging;
 
-import org.apache.logging.log4j.Logger;
+import java.io.PrintStream;
 
 /**
- * A wrapper for a {@link org.apache.logging.log4j.Logger}.
+ * A logger wrapping a {@link PrintStream}. Designed for use for logging to consoles such as standard out.
  */
-public class Log4jLogger implements com.voxelplugineering.voxelsniper.api.logging.Logger
+public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.logging.Logger
 {
 
-    private final Logger logger;
+    private final PrintStream stream;
 
     /**
-     * Creates a new {@link Log4jLogger}.
+     * Creates a new {@link PrintStreamLogger}.
      * 
-     * @param logger the logger to wrap
+     * @param stream The print stream to wrap
      */
-    public Log4jLogger(Logger logger)
+    public PrintStreamLogger(PrintStream stream)
     {
-        this.logger = logger;
+        this.stream = stream;
     }
 
     /**
@@ -49,7 +49,7 @@ public class Log4jLogger implements com.voxelplugineering.voxelsniper.api.loggin
     @Override
     public void debug(String msg)
     {
-        this.logger.debug(msg);
+        printWithPrefix("[DEBUG]", msg);
     }
 
     /**
@@ -58,7 +58,7 @@ public class Log4jLogger implements com.voxelplugineering.voxelsniper.api.loggin
     @Override
     public void info(String msg)
     {
-        this.logger.info(msg);
+        printWithPrefix("[INFO]", msg);
     }
 
     /**
@@ -67,7 +67,7 @@ public class Log4jLogger implements com.voxelplugineering.voxelsniper.api.loggin
     @Override
     public void warn(String msg)
     {
-        this.logger.warn(msg);
+        printWithPrefix("[WARNING]", msg);
     }
 
     /**
@@ -76,7 +76,7 @@ public class Log4jLogger implements com.voxelplugineering.voxelsniper.api.loggin
     @Override
     public void error(String msg)
     {
-        this.logger.error(msg);
+        printWithPrefix("[ERROR]", msg);
     }
 
     /**
@@ -85,7 +85,7 @@ public class Log4jLogger implements com.voxelplugineering.voxelsniper.api.loggin
     @Override
     public void error(Exception e)
     {
-        this.logger.error("", e);
+        e.printStackTrace();
     }
 
     /**
@@ -94,6 +94,17 @@ public class Log4jLogger implements com.voxelplugineering.voxelsniper.api.loggin
     @Override
     public void error(Exception e, String msg)
     {
-        this.logger.error(msg, e);
+        printWithPrefix("[ERROR]", msg);
+        e.printStackTrace();
     }
+
+    private void printWithPrefix(String prefix, String msg)
+    {
+        String[] lines = msg.split("\n");
+        for (String l : lines)
+        {
+            this.stream.println(prefix + " " + l);
+        }
+    }
+
 }

@@ -50,6 +50,9 @@ public class MaterialShapeGetNode extends MaterialShapeNode
         this.material = new Provider<Material>(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {

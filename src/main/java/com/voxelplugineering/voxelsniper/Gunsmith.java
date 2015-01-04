@@ -31,8 +31,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 
-import com.google.common.eventbus.AsyncEventBus;
-import com.google.common.eventbus.EventBus;
 import com.voxelplugineering.voxelsniper.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.alias.AliasSaveTask;
 import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
@@ -40,7 +38,8 @@ import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.config.Configuration;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
-import com.voxelplugineering.voxelsniper.api.logging.ILogger;
+import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
+import com.voxelplugineering.voxelsniper.api.logging.Logger;
 import com.voxelplugineering.voxelsniper.api.logging.LoggingDistributor;
 import com.voxelplugineering.voxelsniper.api.permissions.PermissionProxy;
 import com.voxelplugineering.voxelsniper.api.platform.PlatformProvider;
@@ -56,9 +55,11 @@ import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
 import com.voxelplugineering.voxelsniper.config.ConfigurationManager;
 import com.voxelplugineering.voxelsniper.config.JsonConfigurationLoader;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
+import com.voxelplugineering.voxelsniper.event.bus.AsyncEventBus;
 import com.voxelplugineering.voxelsniper.event.handler.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.logging.CommonLoggingDistributor;
 import com.voxelplugineering.voxelsniper.registry.vsl.ArgumentParsers;
+import com.voxelplugineering.voxelsniper.util.AnnotationHelper;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueTask;
 
 /**
@@ -227,7 +228,7 @@ public final class Gunsmith
      * 
      * @return the logger
      */
-    public static ILogger getLogger()
+    public static Logger getLogger()
     {
         return logDistributor;
     }
@@ -610,5 +611,6 @@ public final class Gunsmith
         schedulerProxy = null;
         aliasTask = null;
         formatProxy = null;
+        AnnotationHelper.clean();
     }
 }

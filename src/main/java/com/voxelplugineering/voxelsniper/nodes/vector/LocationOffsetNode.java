@@ -52,6 +52,9 @@ public class LocationOffsetNode extends Node
         this.offset = offset;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {

@@ -23,13 +23,15 @@
  */
 package com.voxelplugineering.voxelsniper.event;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy.ASYNCHRONOUS;
 
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy;
 
 /**
  * The event for a sniper action.
  */
+@EventThreadingPolicy(ASYNCHRONOUS)
 public class SnipeEvent extends SniperEvent
 {
     private final double yaw;
@@ -44,8 +46,7 @@ public class SnipeEvent extends SniperEvent
      */
     public SnipeEvent(Player sniper, double y, double p)
     {
-        checkNotNull(sniper, "Sniper cannot be null!");
-        setSniper(sniper);
+        super(sniper);
         this.yaw = y;
         this.pitch = p;
     }

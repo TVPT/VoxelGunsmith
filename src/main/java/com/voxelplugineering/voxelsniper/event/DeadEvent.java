@@ -23,23 +23,40 @@
  */
 package com.voxelplugineering.voxelsniper.event;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
 
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy;
+import static com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy.ASYNCHRONOUS;
 
 /**
- * An event for when a sniper leaves the system under Gunsmith.
+ * An event which wraps another event to indicate that it was 'dead'. An event being dead means that it was posted but no handlers for it were
+ * registered.
  */
-public class SniperDestroyEvent extends SniperEvent
+@EventThreadingPolicy(ASYNCHRONOUS)
+public class DeadEvent extends Event
 {
+
+    private final Event event;
+
     /**
-     * Creates a new SniperCreateEvent
-     *
-     * @param sniper the sniper newly created
+     * Creates a new {@link DeadEvent} wrapping the given event.
+     * 
+     * @param event The event to wrap
      */
-    public SniperDestroyEvent(Player sniper)
+    public DeadEvent(Event event)
     {
-        checkNotNull(sniper, "Sniper cannot be null!");
-        setSniper(sniper);
+        checkArgument(!event.getClass().equals(DeadEvent.class));
+        this.event = event;
     }
+
+    /**
+     * Gets the dead event.
+     * 
+     * @return The event
+     */
+    public Event getDeadEvent()
+    {
+        return this.event;
+    }
+
 }
