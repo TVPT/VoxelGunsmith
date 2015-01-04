@@ -181,7 +181,7 @@ public class BrushCommand extends Command
 
     private String normalize(String s)
     {
-        if(s == null)
+        if (s == null)
         {
             return null;
         }

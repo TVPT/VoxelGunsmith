@@ -56,6 +56,8 @@ import com.voxelplugineering.voxelsniper.nodes.shape.VoxelDiscShapeNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.VoxelShapeNode;
 import com.voxelplugineering.voxelsniper.nodes.vector.LocationOffsetNode;
 import com.voxelplugineering.voxelsniper.nodes.vector.Vector3iNegationNode;
+import com.voxelplugineering.voxelsniper.nodes.world.BlockNeighboursNode;
+import com.voxelplugineering.voxelsniper.nodes.world.CountOccurrencesNode;
 import com.voxelplugineering.voxelsniper.nodes.world.GetBlockFromLocationNode;
 import com.voxelplugineering.voxelsniper.nodes.world.GetOverlappingChunksNode;
 import com.voxelplugineering.voxelsniper.nodes.world.RefreshChunkNode;
@@ -313,6 +315,54 @@ public class DefaultBrushBuilder
             BrushNodeGraph brush = new BrushNodeGraph("materialmask");
             brush.setNext(forEach);
             graphs.put("materialmask", brush);
+        }
+
+        { // voxel disk
+            VariableGetNode<Double> radius = new VariableGetNode<Double>("brushsize");
+            VoxelDiscShapeNode shape = new VoxelDiscShapeNode(radius.getValue());
+            ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
+
+            BrushNodeGraph brush = new BrushNodeGraph("voxeldisk");
+            brush.setNext(shapeOut);
+            graphs.put("voxeldisk", brush);
+        }
+
+        { // shell
+            //@formatter:off
+            ChainedInputNode<Shape> shapeIn = new ChainedInputNode<Shape>("shape");
+            ShapeGetOriginNode origin = new ShapeGetOriginNode(shapeIn.getValue());
+            Vector3iNegationNode negorigin = new Vector3iNegationNode(origin.getOrigin());
+            VariableGetNode<Material> maskMaterial = new VariableGetNode<Material>("maskmaterial");
+            VariableGetNode<Block> target = new VariableGetNode<Block>("targetblock");
+            BlockBreakNode blockBreak = new BlockBreakNode(target.getValue());
+            ShapeForEachNode forEach = new ShapeForEachNode(shapeIn.getValue(), false);
+                ShapeUnsetNode unset = new ShapeUnsetNode(shapeIn.getValue(), forEach.getNextValue());
+                LocationOffsetNode offset = new LocationOffsetNode(blockBreak.getLocation(), forEach.getNextValue());
+                LocationOffsetNode offset2 = new LocationOffsetNode(offset.getOffsetLocation(), negorigin
+                             .getNegativeVector());
+                GetBlockFromLocationNode getBlock = new GetBlockFromLocationNode(offset2.getOffsetLocation());
+                BlockNeighboursNode neighboursNode = new BlockNeighboursNode(getBlock.getBlock());
+                CountOccurrencesNode countNode = new CountOccurrencesNode(maskMaterial.getValue(), neighboursNode.getNeighbours());
+            // TODO Deamon finish this
+                ShapeSetNode set = new ShapeSetNode(shapeIn.getValue(), forEach.getNextValue());
+                ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shapeIn.getValue());
+            //@formatter:on
+            forEach.setBody(unset);
+            unset.setNext(offset);
+            offset.setNext(offset2);
+            offset2.setNext(getBlock);
+            getBlock.setNext(neighboursNode);
+            neighboursNode.setNext(countNode);
+            /* TODO DEAMON!!! WHY AREN'T YOU FINISHING THIS????
+            countNode.setNext(comparisonNode);
+            forEach.setNext(shapeOut);
+
+
+            BrushNodeGraph brush = new BrushNodeGraph("shell");
+            brush.setNext(setMaterial);
+            graphs.put("shell", brush);
+            */
+
         }
     }
 

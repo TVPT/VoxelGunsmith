@@ -59,6 +59,16 @@ public enum Direction
     private final int modY;
     private final int modZ;
 
+    /**
+     * Gets an array of cardinal directions including up and down.
+     *
+     * @return An array of cardinal directions
+     */
+    public static Direction[] getCardinals()
+    {
+        return new Direction[] { NORTH, SOUTH, EAST, WEST, UP, DOWN };
+    }
+
     private Direction(final int modX, final int modY, final int modZ)
     {
         this.modX = modX;
