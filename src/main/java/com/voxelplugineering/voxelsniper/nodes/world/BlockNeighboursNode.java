@@ -64,6 +64,9 @@ public class BlockNeighboursNode extends Node
         return this.blockArrayProvider;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void exec(RuntimeState state)
     {

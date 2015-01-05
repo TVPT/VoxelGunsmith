@@ -45,8 +45,6 @@ public @interface EventHandler
 
     /**
      * Gets the priority for this {@link EventHandler}.
-     * 
-     * @return The priority
      */
     EventPriority value() default EventPriority.STANDARD;
 

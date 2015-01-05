@@ -26,13 +26,12 @@ package com.voxelplugineering.voxelsniper.event.handler;
 import java.io.File;
 import java.io.IOException;
 
-import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.DeadEvent;
-import com.google.common.eventbus.Subscribe;
 import com.thevoxelbox.vsl.VariableScope;
 import com.thevoxelbox.vsl.api.IVariableScope;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.event.EventHandler;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.event.SnipeEvent;
 import com.voxelplugineering.voxelsniper.event.SniperEvent;
@@ -61,8 +60,7 @@ public class CommonEventHandler
      * 
      * @param event the event
      */
-    @Subscribe
-    @AllowConcurrentEvents
+    @EventHandler
     public void onPlayerJoin(SniperEvent.SniperCreateEvent event)
     {
         Player player = event.getSniper();
@@ -87,6 +85,7 @@ public class CommonEventHandler
      * 
      * @param event the event
      */
+    @EventHandler
     public void onPlayerLeave(SniperEvent.SniperDestroyEvent event)
     {
         Player player = event.getSniper();
@@ -112,8 +111,7 @@ public class CommonEventHandler
      *
      * @param event the snipe event to perform
      */
-    @Subscribe
-    @AllowConcurrentEvents
+    @EventHandler
     public void onSnipe(SnipeEvent event)
     {
         Player sniper = event.getSniper();
@@ -147,8 +145,7 @@ public class CommonEventHandler
      * 
      * @param deadEvent the dead event
      */
-    @Subscribe
-    @AllowConcurrentEvents
+    @EventHandler
     public void handleDeadEvent(DeadEvent deadEvent)
     {
         Object event = deadEvent.getEvent();

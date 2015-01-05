@@ -24,16 +24,20 @@
 package com.voxelplugineering.voxelsniper.event.bus;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.Futures;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.event.EventHandler;
 import com.voxelplugineering.voxelsniper.api.event.EventPriority;
@@ -107,7 +111,8 @@ public class AsyncEventBus implements EventBus
     {
         SubscriberList list = getListForEventType(s.getEventType());
         list.register(s);
-        //System.out.println("Registered " + s.getMethod().getName() + " for " + s.getEventType().getName() + " with priority " + s.getPriority().name());
+        //System.out.println("Registered " + s.getMethod().getName() + " for " + s.getEventType().getName() + " with priority "
+        //        + s.getPriority().name());
     }
 
     private SubscriberList getListForEventType(Class<? extends Event> event)
@@ -173,28 +178,29 @@ public class AsyncEventBus implements EventBus
      * {@inheritDoc}
      */
     @Override
-    public void post(Event event)
+    public Future<Event> post(Event event)
     {
+        //System.out.println("Posting " + event.getClass().getName() + " (" + event.getThreadingPolicy().name() + ")");
         if (event.getThreadingPolicy() == ThreadingPolicy.ASYNCHRONOUS)
         {
-            postAsync(event);
+            return postAsync(event);
         } else if (event.getThreadingPolicy() == ThreadingPolicy.SYNCHRONIZED)
         {
-            postSync(event);
+            return postSync(event);
         } else
         {
-            postAsyncSeq(event);
+            return postAsyncSeq(event);
         }
 
     }
 
-    private void postSync(Event event)
+    private Future<Event> postSync(Event event)
     {
         List<Subscriber> subs = getListForEventType(event.getClass()).getOrderedSubscribers();
         if (subs.isEmpty() && !event.getClass().equals(DeadEvent.class))
         {
             post(new DeadEvent(event));
-            return;
+            return Futures.immediateFuture(event);
         }
         for (Subscriber s : subs)
         {
@@ -208,20 +214,22 @@ public class AsyncEventBus implements EventBus
                 continue;
             }
         }
+        return Futures.immediateFuture(event);
     }
 
-    private void postAsyncSeq(Event event)
+    private Future<Event> postAsyncSeq(Event event)
     {
         List<Subscriber> subs = getListForEventType(event.getClass()).getOrderedSubscribers();
         if (subs.isEmpty() && !event.getClass().equals(DeadEvent.class))
         {
             post(new DeadEvent(event));
-            return;
+            return Futures.immediateFuture(event);
         }
         for (Subscriber s : subs)
         {
             try
             {
+                //System.out.println("Executing sync " + s.getMethod().getName() + " " + event.getClass().getName());
                 this.executor.submit(new EventCallable(event, s)).get();
             } catch (InterruptedException e)
             {
@@ -235,20 +243,57 @@ public class AsyncEventBus implements EventBus
                 continue;
             }
         }
+        return Futures.immediateFuture(event);
     }
 
-    private void postAsync(Event event)
+    private Future<Event> postAsync(Event event)
     {
         List<Subscriber> subs = getListForEventType(event.getClass()).getOrderedSubscribers();
         if (subs.isEmpty() && !event.getClass().equals(DeadEvent.class))
         {
             post(new DeadEvent(event));
-            return;
+            return Futures.immediateFuture(event);
         }
+        List<Future<Event>> futures = Lists.newArrayList();
         for (Subscriber s : subs)
         {
-            this.executor.submit(new EventCallable(event, s));
+            futures.add(this.executor.submit(new EventCallable(event, s)));
         }
+        return this.executor.submit(new FutureFutureCallable(futures, event));
+    }
+
+}
+
+class FutureFutureCallable implements Callable<Event>
+{
+
+    private final Collection<Future<Event>> watchList;
+    private final Event returnValue;
+
+    public FutureFutureCallable(Collection<Future<Event>> w, Event r)
+    {
+        this.watchList = w;
+        this.returnValue = r;
+    }
+
+    @Override
+    public Event call() throws Exception
+    {
+        for (Iterator<Future<Event>> it = this.watchList.iterator(); it.hasNext();)
+        {
+            Future<Event> next = it.next();
+            try
+            {
+                next.get();
+            } catch (Exception ignored)
+            {
+                assert true;
+            } finally
+            {
+                it.remove();
+            }
+        }
+        return this.returnValue;
     }
 
 }
@@ -267,6 +312,7 @@ class EventCallable implements Callable<Event>
     @Override
     public Event call() throws Exception
     {
+        //System.out.println("Executing async " + this.sub.getMethod().getName() + " " + this.event.getClass().getName());
         this.sub.getMethod().invoke(this.sub.getContainer(), this.event);
         return this.event;
     }

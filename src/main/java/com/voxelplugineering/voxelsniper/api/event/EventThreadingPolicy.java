@@ -42,8 +42,6 @@ public @interface EventThreadingPolicy
 
     /**
      * Gets the threading policy for the event.
-     * 
-     * @return The threading policy
      */
     ThreadingPolicy value() default ThreadingPolicy.ASYNCHRONOUS_SEQUENTIAL;
 

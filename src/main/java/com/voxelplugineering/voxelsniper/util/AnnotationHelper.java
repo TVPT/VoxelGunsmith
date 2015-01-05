@@ -80,6 +80,8 @@ public class AnnotationHelper
      * @param cls The class to check
      * @param annotation The annotation type
      * @return The annotation value
+     * 
+     * @param <T> The annotation type
      */
     @SuppressWarnings("unchecked")
     public static <T extends Annotation> Optional<T> getSuperAnnotation(Class<?> cls, Class<T> annotation)

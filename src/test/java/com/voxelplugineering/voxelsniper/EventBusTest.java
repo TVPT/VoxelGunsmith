@@ -26,7 +26,6 @@ package com.voxelplugineering.voxelsniper;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,8 +52,6 @@ import com.voxelplugineering.voxelsniper.logging.PrintStreamLogger;
 public class EventBusTest
 {
 
-    private EventBus bus;
-
     /**
      * 
      */
@@ -69,23 +66,15 @@ public class EventBusTest
     /**
      * 
      */
-    @Before
-    public void setup()
-    {
-        this.bus = new AsyncEventBus();
-    }
-
-    /**
-     * 
-     */
     @Test
     public void basicTest()
     {
+        EventBus bus = new AsyncEventBus();
         TestHandler handler = new TestHandler();
-        this.bus.register(handler);
-        this.bus.post(new TestEvent());
+        bus.register(handler);
+        bus.post(new TestEvent());
         assertEquals(true, handler.found);
-        this.bus.unregister(handler);
+        bus.unregister(handler);
     }
 
     /**
@@ -94,11 +83,12 @@ public class EventBusTest
     @Test
     public void priorityTest()
     {
+        EventBus bus = new AsyncEventBus();
         PriorityHandler handler = new PriorityHandler();
-        this.bus.register(handler);
-        this.bus.post(new TestEvent());
+        bus.register(handler);
+        bus.post(new TestEvent());
         assertEquals("abcde", handler.order);
-        this.bus.unregister(handler);
+        bus.unregister(handler);
     }
 
     /**
@@ -107,11 +97,12 @@ public class EventBusTest
     @Test
     public void superEventhandling()
     {
+        EventBus bus = new AsyncEventBus();
         SuperHandler handler = new SuperHandler();
-        this.bus.register(handler);
-        this.bus.post(new SubEvent());
+        bus.register(handler);
+        bus.post(new SubEvent());
         assertEquals(3, handler.count);
-        this.bus.unregister(handler);
+        bus.unregister(handler);
     }
 
     /**
@@ -120,11 +111,12 @@ public class EventBusTest
     @Test
     public void superEventhandling2()
     {
+        EventBus bus = new AsyncEventBus();
         SuperHandler handler = new SuperHandler();
-        this.bus.register(handler);
-        this.bus.post(new TestEvent());
+        bus.register(handler);
+        bus.post(new TestEvent());
         assertEquals(2, handler.count);
-        this.bus.unregister(handler);
+        bus.unregister(handler);
     }
 
     /**
@@ -133,11 +125,12 @@ public class EventBusTest
     @Test
     public void testDeadEvent()
     {
+        EventBus bus = new AsyncEventBus();
         DeadEventHandler handler = new DeadEventHandler();
-        this.bus.register(handler);
-        this.bus.post(new TestEvent());
+        bus.register(handler);
+        bus.post(new TestEvent());
         assertEquals(true, handler.dead);
-        this.bus.unregister(handler);
+        bus.unregister(handler);
     }
 
     /**
@@ -146,12 +139,13 @@ public class EventBusTest
     @Test
     public void testNotAsync()
     {
+        EventBus bus = new AsyncEventBus();
         SyncHandler handler = new SyncHandler();
-        this.bus.register(handler);
+        bus.register(handler);
         SyncEvent e = new SyncEvent();
-        this.bus.post(e);
+        bus.post(e);
         assertEquals(Thread.currentThread(), handler.thread);
-        this.bus.unregister(handler);
+        bus.unregister(handler);
     }
 
     /**
@@ -160,11 +154,12 @@ public class EventBusTest
     @Test
     public void testAsync()
     {
+        EventBus bus = new AsyncEventBus();
         AsyncHandler handler = new AsyncHandler();
-        this.bus.register(handler);
-        this.bus.post(new AsyncEvent());
+        bus.register(handler);
+        bus.post(new AsyncEvent());
         assertNotEquals(Thread.currentThread(), handler.thread);
-        this.bus.unregister(handler);
+        bus.unregister(handler);
     }
 
     //=======================================================================
@@ -178,7 +173,7 @@ public class EventBusTest
         protected boolean found = false;
 
         /**
-         * @param event
+         * @param event The event
          */
         @EventHandler
         public void onTestEvent(TestEvent event)
@@ -197,7 +192,7 @@ public class EventBusTest
         protected Thread thread = null;
 
         /**
-         * @param event
+         * @param event The event
          */
         @EventHandler
         public void onTestEvent(AsyncEvent event)
@@ -216,7 +211,7 @@ public class EventBusTest
         protected Thread thread = null;
 
         /**
-         * @param event
+         * @param event The event
          */
         @EventHandler
         public void onTestEvent(SyncEvent event)
@@ -234,7 +229,7 @@ public class EventBusTest
         protected String order = "";
 
         /**
-         * @param event
+         * @param event The event
          */
         @EventHandler(EventPriority.HIGHEST)
         public void onTestEventa(TestEvent event)
@@ -243,7 +238,7 @@ public class EventBusTest
         }
 
         /**
-         * @param event
+         * @param event The event
          */
         @EventHandler(EventPriority.HIGH)
         public void onTestEventb(TestEvent event)
@@ -252,7 +247,7 @@ public class EventBusTest
         }
 
         /**
-         * @param event
+         * @param event The event
          */
         @EventHandler
         public void onTestEventc(TestEvent event)
@@ -261,7 +256,7 @@ public class EventBusTest
         }
 
         /**
-         * @param event
+         * @param event The event
          */
         @EventHandler(EventPriority.LOW)
         public void onTestEventd(TestEvent event)
@@ -270,7 +265,7 @@ public class EventBusTest
         }
 
         /**
-         * @param event
+         * @param event The event
          */
         @EventHandler(EventPriority.LOWEST)
         public void onTestEvente(TestEvent event)
@@ -287,7 +282,7 @@ public class EventBusTest
         protected int count = 0;
 
         /**
-         * @param event
+         * @param event The event
          */
         @EventHandler
         public void onTestEvent(SubEvent event)
@@ -296,7 +291,7 @@ public class EventBusTest
         }
 
         /**
-         * @param event
+         * @param event The event
          */
         @EventHandler
         public void onTestEvent(TestEvent event)
@@ -305,7 +300,7 @@ public class EventBusTest
         }
 
         /**
-         * @param event
+         * @param event The event
          */
         @EventHandler
         public void onTestEvent(Event event)
@@ -323,7 +318,7 @@ public class EventBusTest
         protected boolean dead = false;
 
         /**
-         * @param event
+         * @param event The event
          */
         @EventHandler
         public void onDeadEvent(DeadEvent event)

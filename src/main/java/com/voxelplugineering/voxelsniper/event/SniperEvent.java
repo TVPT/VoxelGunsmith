@@ -39,6 +39,11 @@ public abstract class SniperEvent extends Event
      */
     private final Player sniper;
 
+    /**
+     * Sets up a {@link SniperEvent}.
+     * 
+     * @param sniper The sniper involved with the event
+     */
     protected SniperEvent(Player sniper)
     {
         checkNotNull(sniper, "Sniper cannot be null!");

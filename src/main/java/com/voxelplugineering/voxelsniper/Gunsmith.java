@@ -576,7 +576,7 @@ public final class Gunsmith
 
         if (eventBusExecutor != null)
         {
-            eventBusExecutor.shutdown();
+            eventBusExecutor.shutdownNow();
             eventBusExecutor = null;
         }
 
