@@ -69,7 +69,14 @@ public class ChangeQueueTask implements Runnable
             int actual = 0;
             while (p.hasPendingChanges() && actual < allocation)
             {
-                actual += p.getNextPendingChange().get().perform(allocation);
+                try
+                {
+                    actual += p.getNextPendingChange().get().perform(allocation);
+                } catch (Exception e)
+                {
+                    Gunsmith.getLogger().error(e, "Error while performing change operation!");
+                    p.clearNextPending();
+                }
                 if (p.getNextPendingChange().get().isFinished())
                 {
                     p.clearNextPending();

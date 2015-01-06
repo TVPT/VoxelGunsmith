@@ -87,17 +87,12 @@ public class ShapeChangeQueue extends ChangeQueue
     public void flush()
     {
         reset();
+        this.getOwner().addHistory(
+                new ShapeChangeQueue(getOwner(), this.origin.add(this.shape.getOrigin().getX(), this.shape.getOrigin().getY(), this.shape.getOrigin()
+                        .getZ()), this.origin.getWorld().getShapeFromWorld(
+                        this.origin.add(this.shape.getOrigin().getX(), this.shape.getOrigin().getY(), this.shape.getOrigin().getZ()),
+                        this.shape.getShape())));
         this.getOwner().addPending(this);
-        this.getOwner().addHistory(this.invert());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ChangeQueue invert()
-    {
-        return null;
     }
 
     /**

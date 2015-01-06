@@ -90,13 +90,6 @@ public abstract class ChangeQueue
     public abstract void flush();
 
     /**
-     * Inverts the changes in this queue to create a new queue which would undo this queue's changes.
-     * 
-     * @return the inverse queue
-     */
-    public abstract ChangeQueue invert();
-
-    /**
      * Applies the next n changes to the world.
      * 
      * @param next the number of changes to apply

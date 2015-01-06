@@ -27,6 +27,8 @@ import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.entity.Entity;
 import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
+import com.voxelplugineering.voxelsniper.shape.MaterialShape;
+import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
@@ -125,5 +127,14 @@ public interface World extends BlockVolume
      * @param vector The vector position
      */
     void setBiome(Biome biome, Vector3i vector);
+
+    /**
+     * Creates a new {@link MaterialShape} and populates it with the current contents of the world.
+     * 
+     * @param origin The origin
+     * @param shape The shape
+     * @return The new material shape
+     */
+    MaterialShape getShapeFromWorld(Location origin, Shape shape);
 
 }

@@ -75,8 +75,7 @@ public class BlockNeighboursNode extends Node
         int count = 0;
         for (Direction direction : Direction.getCardinals())
         {
-            Location newLocation = block.getLocation()
-                    .add(direction.getModX(), direction.getModY(), direction.getModZ());
+            Location newLocation = block.getLocation().add(direction.getModX(), direction.getModY(), direction.getModZ());
             Optional<Block> newBlock = block.getWorld().getBlock(newLocation);
             if (newBlock.isPresent())
             {

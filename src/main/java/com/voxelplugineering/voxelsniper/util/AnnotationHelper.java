@@ -80,7 +80,6 @@ public class AnnotationHelper
      * @param cls The class to check
      * @param annotation The annotation type
      * @return The annotation value
-     * 
      * @param <T> The annotation type
      */
     @SuppressWarnings("unchecked")

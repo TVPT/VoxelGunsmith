@@ -53,14 +53,14 @@ public class ShapeFactory
     {
         if (direction == Direction.EAST || direction == Direction.WEST) // x-axis
         {
-            return createCuboid(1, radius, radius);
+            return createCuboid(0, radius, radius);
         } else if (direction == Direction.NORTH || direction == Direction.SOUTH) // z-axis
         {
-            return createCuboid(radius, radius, 1);
+            return createCuboid(radius, radius, 0);
         } else
         // y-axis default
         {
-            return createCuboid(radius, 1, radius);
+            return createCuboid(radius, 0, radius);
         }
     }
 

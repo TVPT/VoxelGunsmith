@@ -72,7 +72,8 @@ public class CountOccurrencesNode extends Node
         int count = 0;
         for (Block block : blocks)
         {
-            if (block != null && block.getMaterial().equals(material)) {
+            if (block != null && block.getMaterial().equals(material))
+            {
                 count++;
             }
         }

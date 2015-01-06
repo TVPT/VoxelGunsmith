@@ -198,12 +198,12 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
      */
     public void addHistory(ChangeQueue changeQueue)
     {
-        /*checkNotNull(changeQueue, "ChangeQueue cannot be null");
+        checkNotNull(changeQueue, "ChangeQueue cannot be null");
         this.history.addFirst(changeQueue);
         while (this.history.size() > 20)
         {
             this.history.removeLast();
-        }*/
+        }
     }
 
     /**
@@ -213,6 +213,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     {
         while (n > 0 && !this.history.isEmpty())
         {
+            n--;
             ChangeQueue next = this.history.removeFirst();
             this.pending.add(next);
         }

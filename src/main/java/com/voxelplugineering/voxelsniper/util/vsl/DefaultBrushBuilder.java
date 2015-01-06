@@ -363,7 +363,6 @@ public class DefaultBrushBuilder
             ifStatement.setBody(set);
             forEach.setNext(shapeOut);
 
-
             BrushNodeGraph brush = new BrushNodeGraph("shell");
             brush.setNext(forEach);
             graphs.put("shell", brush);
