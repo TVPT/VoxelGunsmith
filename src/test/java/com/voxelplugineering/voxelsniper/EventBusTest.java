@@ -120,15 +120,21 @@ public class EventBusTest
     }
 
     /**
-     * 
+     * @throws InterruptedException
      */
     @Test
-    public void testDeadEvent()
+    public void testDeadEvent() throws InterruptedException
     {
         EventBus bus = new AsyncEventBus();
         DeadEventHandler handler = new DeadEventHandler();
         bus.register(handler);
         bus.post(new TestEvent());
+        long timeout = 1000;
+        while(timeout > 0 && !handler.dead)
+        {
+            Thread.sleep(100);
+            timeout -= 100;
+        }
         assertEquals(true, handler.dead);
         bus.unregister(handler);
     }
