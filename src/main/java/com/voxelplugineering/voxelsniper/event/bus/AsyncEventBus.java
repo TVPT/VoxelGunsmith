@@ -111,8 +111,6 @@ public class AsyncEventBus implements EventBus
     {
         SubscriberList list = getListForEventType(s.getEventType());
         list.register(s);
-        //System.out.println("Registered " + s.getMethod().getName() + " for " + s.getEventType().getName() + " with priority "
-        //        + s.getPriority().name());
     }
 
     private SubscriberList getListForEventType(Class<? extends Event> event)
@@ -180,7 +178,6 @@ public class AsyncEventBus implements EventBus
     @Override
     public Future<Event> post(Event event)
     {
-        //System.out.println("Posting " + event.getClass().getName() + " (" + event.getThreadingPolicy().name() + ")");
         if (event.getThreadingPolicy() == ThreadingPolicy.ASYNCHRONOUS)
         {
             return postAsync(event);
@@ -229,7 +226,6 @@ public class AsyncEventBus implements EventBus
         {
             try
             {
-                //System.out.println("Executing sync " + s.getMethod().getName() + " " + event.getClass().getName());
                 this.executor.submit(new EventCallable(event, s)).get();
             } catch (InterruptedException e)
             {
@@ -312,7 +308,6 @@ class EventCallable implements Callable<Event>
     @Override
     public Event call() throws Exception
     {
-        //System.out.println("Executing async " + this.sub.getMethod().getName() + " " + this.event.getClass().getName());
         this.sub.getMethod().invoke(this.sub.getContainer(), this.event);
         return this.event;
     }
@@ -354,6 +349,11 @@ class Subscriber
     public EventPriority getPriority()
     {
         return this.priority;
+    }
+    
+    public String toString()
+    {
+        return "Subscriber " + exec.getName() + " (" + eventType.getName() + " - " + priority.name() + ")";
     }
 }
 

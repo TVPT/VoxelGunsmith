@@ -210,7 +210,6 @@ public class AliasRegistry
         while (match.find())
         {
             String m = match.group(1);
-            System.out.println("match: " + m);
             m = m.trim().replace(" ", ",");
             m = m.replace("{,", "{");
             m = m.replace(",}", "}");

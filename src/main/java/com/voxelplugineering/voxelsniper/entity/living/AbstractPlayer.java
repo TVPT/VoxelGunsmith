@@ -283,7 +283,6 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     @Override
     public void setBrushArgument(String brush, String arg)
     {
-        System.out.println("Setting brush argument " + brush + ": " + arg);
         if (arg == null || arg.isEmpty())
         {
             return;//Note: no illegal argument exception as arg is allowed to be null

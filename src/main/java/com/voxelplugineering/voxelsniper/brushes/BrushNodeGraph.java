@@ -146,11 +146,9 @@ public class BrushNodeGraph extends NodeGraph
         {
             this.argDefaults.put(name, defaultValue);
         }
-        System.out.println("Added arg " + name + ": " + parser);
         this.arguments.put(name, parser);
         for (String alias : aliases)
         {
-            System.out.println("Added arg " + alias + ": " + parser);
             this.arguments.put(alias, parser);
         }
     }
@@ -173,7 +171,6 @@ public class BrushNodeGraph extends NodeGraph
 
     private String parseArguments(String group, IVariableHolder vars, Player player)
     {
-        //System.out.println("Parsing arguments for " + this.getName() + ": " + group);
         if (group == null)
         {
             return "";
@@ -182,8 +179,6 @@ public class BrushNodeGraph extends NodeGraph
         String[] args = arg.split(" ");
         if (args.length == 1 && this.primary != null)
         {
-            //System.out.println(this.primary + " " + this.arguments.get(this.primary));
-            System.out.println("Set " + this.primary + " to " + this.arguments.get(this.primary).get(arg).get());
             vars.set(this.primary, this.arguments.get(this.primary).get(arg).get());
         } else
         {
@@ -198,7 +193,6 @@ public class BrushNodeGraph extends NodeGraph
                 String[] kv = s.split("=");
                 if (this.arguments.containsKey(kv[0]))
                 {
-                    System.out.println("Set " + kv[0] + " to " + this.arguments.get(kv[0]).get(kv[1]));
                     vars.set(kv[0], this.arguments.get(kv[0]).get(kv[1]));
                 } else
                 {

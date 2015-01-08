@@ -60,7 +60,6 @@ public class GetBiomeNode extends Node
         Optional<Biome> b = Gunsmith.getBiomeRegistry().getBiome(this.name.get(state));
         if (b.isPresent())
         {
-            System.out.println("GetBiome: " + b.get());
             this.biome.set(b.get(), state.getUUID());
         } else
         {

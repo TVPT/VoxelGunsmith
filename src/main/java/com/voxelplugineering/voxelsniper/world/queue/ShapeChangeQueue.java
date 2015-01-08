@@ -42,6 +42,7 @@ public class ShapeChangeQueue extends ChangeQueue
     /**
      * The origin to set the shape relative to.
      */
+    private Location originOffset;
     private Location origin;
     /**
      * The current execution state of this change queue.
@@ -62,7 +63,8 @@ public class ShapeChangeQueue extends ChangeQueue
     public ShapeChangeQueue(Player sniper, Location origin, MaterialShape shape)
     {
         super(sniper, origin.getWorld());
-        this.origin = origin.add(-shape.getOrigin().getX(), -shape.getOrigin().getY(), -shape.getOrigin().getZ());
+        this.originOffset = origin.add(-shape.getOrigin().getX(), -shape.getOrigin().getY(), -shape.getOrigin().getZ());
+        this.origin = origin;
         this.state = ExecutionState.UNSTARTED;
         this.shape = shape;
     }
@@ -88,10 +90,7 @@ public class ShapeChangeQueue extends ChangeQueue
     {
         reset();
         this.getOwner().addHistory(
-                new ShapeChangeQueue(getOwner(), this.origin.add(this.shape.getOrigin().getX(), this.shape.getOrigin().getY(), this.shape.getOrigin()
-                        .getZ()), this.origin.getWorld().getShapeFromWorld(
-                        this.origin.add(this.shape.getOrigin().getX(), this.shape.getOrigin().getY(), this.shape.getOrigin().getZ()),
-                        this.shape.getShape())));
+                new ShapeChangeQueue(getOwner(), this.origin, this.originOffset.getWorld().getShapeFromWorld(this.origin, this.shape.getShape())));
         this.getOwner().addPending(this);
     }
 
@@ -104,7 +103,7 @@ public class ShapeChangeQueue extends ChangeQueue
         int count = 0;
         if (this.state == ExecutionState.UNSTARTED)
         {
-            this.position = this.shape.getHeight();
+            this.position = this.shape.getHeight() - 1;
             this.state = ExecutionState.BREAKABLE;
         }
         if (this.state == ExecutionState.BREAKABLE)
@@ -117,13 +116,13 @@ public class ShapeChangeQueue extends ChangeQueue
                     {
                         Material existingMaterial =
                                 getWorld()
-                                        .getBlock(x + this.origin.getFlooredX(), (int) this.position + this.origin.getFlooredY(),
-                                                z + this.origin.getFlooredZ()).get().getMaterial();
+                                        .getBlock(x + this.originOffset.getFlooredX(), (int) this.position + this.originOffset.getFlooredY(),
+                                                z + this.originOffset.getFlooredZ()).get().getMaterial();
                         Optional<Material> newMaterial = this.shape.get(x, (int) this.position, z, false);
                         if (newMaterial.isPresent() && (existingMaterial.isLiquid() || existingMaterial.isReliantOnEnvironment()))
                         {
-                            getWorld().setBlock(newMaterial.get(), x + this.origin.getFlooredX(), (int) this.position + this.origin.getFlooredY(),
-                                    z + this.origin.getFlooredZ());
+                            getWorld().setBlock(newMaterial.get(), x + this.originOffset.getFlooredX(),
+                                    (int) this.position + this.originOffset.getFlooredY(), z + this.originOffset.getFlooredZ());
                             count++;
                         }
                     }
@@ -143,14 +142,15 @@ public class ShapeChangeQueue extends ChangeQueue
                 int y = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) / this.shape.getWidth());
                 int x = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) % this.shape.getWidth());
                 Material existingMaterial =
-                        getWorld().getBlock(x + this.origin.getFlooredX(), y + this.origin.getFlooredY(), z + this.origin.getFlooredZ()).get()
-                                .getMaterial();
+                        getWorld()
+                                .getBlock(x + this.originOffset.getFlooredX(), y + this.originOffset.getFlooredY(),
+                                        z + this.originOffset.getFlooredZ()).get().getMaterial();
                 Optional<Material> newMaterial = this.shape.get(x, y, z, false);
                 if (newMaterial.isPresent() && !(existingMaterial.isLiquid() || existingMaterial.isReliantOnEnvironment()))
                 {
                     count++;
-                    getWorld().setBlock(newMaterial.get(), x + this.origin.getFlooredX(), y + this.origin.getFlooredY(),
-                            z + this.origin.getFlooredZ());
+                    getWorld().setBlock(newMaterial.get(), x + this.originOffset.getFlooredX(), y + this.originOffset.getFlooredY(),
+                            z + this.originOffset.getFlooredZ());
                 }
             }
             if (this.position == this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength())

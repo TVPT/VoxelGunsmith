@@ -224,7 +224,7 @@ public class Shape
         }
         if (x >= this.width || x < 0 || y >= this.height || y < 0 || z >= this.length || z < 0)
         {
-            return false; //ArrayIndexOutOfBounds exception is good for a set operation, but for a get it should just fail silently and return false
+            throw new ArrayIndexOutOfBoundsException("Tried to get point outside of the shape. (" + x + ", " + y + ", " + z + ")");
         }
         return ((this.shape[x][z][y / 8] >> y % 8) & 1) == 1;
     }
@@ -506,5 +506,14 @@ public class Shape
             }
         }
         return newShape;
+    }
+
+    /**
+     * Gets a String representation of this shape's size and origin.
+     */
+    @Override
+    public String toString()
+    {
+        return "Shape (" + getWidth() + "x" + getHeight() + "x" + getLength() + ") origin: " + this.origin.toString();
     }
 }

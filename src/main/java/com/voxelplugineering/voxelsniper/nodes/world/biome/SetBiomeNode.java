@@ -57,8 +57,6 @@ public class SetBiomeNode extends Node
     {
         Location loc = this.location.get(state);
         loc.getWorld().setBiome(this.biome.get(state), loc);
-
-        System.out.println("SetBiome: " + this.biome.get(state) + " " + loc.getWorld() + " " + loc.toVector().toString());
     }
 
 }

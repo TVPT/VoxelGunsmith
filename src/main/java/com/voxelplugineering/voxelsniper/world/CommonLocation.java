@@ -170,11 +170,7 @@ public final class CommonLocation implements Cloneable, Location
     }
 
     /**
-     * Returns a String representation of this location. The format is as follows:
-     * <p>
-     * CommonLocation ({this.world.getName()}: {this.x}, {this.y}, {this.z})
-     * 
-     * @return the string representation
+     * {@inheritDoc}
      */
     public String toString()
     {

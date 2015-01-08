@@ -130,4 +130,11 @@ public interface Location
      */
     Vector3d toVector();
 
+    /**
+     * Gets a String representation of this location.
+     * 
+     * @return The string
+     */
+    String toString();
+
 }

@@ -132,6 +132,7 @@ public class CommonEventHandler
             brushVariables.set("lastBlock", ray.getLastBlock());
             brushVariables.set("length", ray.getLength());
             brushVariables.set("__PLAYER__", sniper);
+            Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());
             sniper.getCurrentBrush().run(brushVariables, sniper.getBrushArguments());
         } catch (Exception e)
         {
