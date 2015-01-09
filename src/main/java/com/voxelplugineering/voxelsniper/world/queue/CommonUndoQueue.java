@@ -40,8 +40,7 @@ public class CommonUndoQueue implements UndoQueue
     private Entry first = null;
 
     /**
-     * Creates a new {@link CommonUndoQueue} associated with the given
-     * {@link ChangeQueueOwner}.
+     * Creates a new {@link CommonUndoQueue} associated with the given {@link ChangeQueueOwner}.
      * 
      * @param owner The owner
      */
@@ -113,6 +112,7 @@ public class CommonUndoQueue implements UndoQueue
         }
         while (this.pointer.next != null && n > 0)
         {
+            System.out.println("reset");
             this.pointer = this.pointer.next;
             this.owner.addPending(this.pointer.redo);
             n--;

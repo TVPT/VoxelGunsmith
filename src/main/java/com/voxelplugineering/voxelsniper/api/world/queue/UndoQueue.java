@@ -32,21 +32,17 @@ public interface UndoQueue
 {
 
     /**
-     * Adds the given change pair to the buffer. All history to the right of the
-     * current pointer (eg. any previously undone changes) will be cleared.
+     * Adds the given change pair to the buffer. All history to the right of the current pointer (eg. any previously undone changes) will be cleared.
      * 
-     * @param change
-     *            The change
-     * @param reverse
-     *            The reverse change
+     * @param change The change
+     * @param reverse The reverse change
      */
     void addHistory(ChangeQueue change, ChangeQueue reverse);
 
     /**
      * Attempts to undo the last n changes.
      * 
-     * @param n
-     *            The number of changes to undo
+     * @param n The number of changes to undo
      * @return The actual number of changes undone
      */
     int undo(int n);
@@ -54,8 +50,7 @@ public interface UndoQueue
     /**
      * Attempts to redo the last n undone changes.
      * 
-     * @param n
-     *            The number of changes to redo
+     * @param n The number of changes to redo
      * @return The actual number of changes redone
      */
     int redo(int n);
@@ -75,11 +70,9 @@ public interface UndoQueue
     int getMaxBufferSize();
 
     /**
-     * Sets a new capacity for the number of undos and redos that will be
-     * stored.
+     * Sets a new capacity for the number of undos and redos that will be stored.
      * 
-     * @param n
-     *            The new capacity
+     * @param n The new capacity
      */
     void setMaxBufferSize(int n);
 
@@ -91,8 +84,7 @@ public interface UndoQueue
     /**
      * Moves the pointer forward or backwards in history by the given offset.
      * 
-     * @param n
-     *            The offset
+     * @param n The offset
      */
     void movePointer(int n);
 

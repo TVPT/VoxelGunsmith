@@ -102,7 +102,7 @@ public class UndoQueueTest
         ChangeQueueOwner owner = Mockito.mock(ChangeQueueOwner.class);
         UndoQueue queue = new CommonUndoQueue(owner);
         queue.setMaxBufferSize(3);
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             ChangeQueue change = Mockito.mock(ChangeQueue.class);
             ChangeQueue reverse = Mockito.mock(ChangeQueue.class);
@@ -221,5 +221,5 @@ public class UndoQueueTest
         Mockito.verify(owner, Mockito.times(1)).addPending(change2);
         Mockito.verify(owner, Mockito.times(0)).addPending(change);
     }
-    
+
 }

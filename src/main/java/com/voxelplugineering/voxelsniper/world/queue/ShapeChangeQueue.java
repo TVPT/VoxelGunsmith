@@ -56,12 +56,9 @@ public class ShapeChangeQueue extends ChangeQueue
     /**
      * Creates a new {@link ShapeChangeQueue}.
      * 
-     * @param sniper
-     *            the owner
-     * @param origin
-     *            the origin of the shape in the world
-     * @param shape
-     *            the shape
+     * @param sniper the owner
+     * @param origin the origin of the shape in the world
+     * @param shape the shape
      */
     public ShapeChangeQueue(Player sniper, Location origin, MaterialShape shape)
     {

@@ -201,7 +201,8 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     @Override
     public void undoHistory(int n)
     {
-    	this.history.undo(n);
+        int c = this.history.undo(n);
+        this.sendMessage("%d changes undone.", c);
     }
 
     /**
@@ -210,7 +211,8 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     @Override
     public void redoHistory(int n)
     {
-        this.history.redo(n);
+        int c = this.history.redo(n);
+        this.sendMessage("%d changes re-applied.", c);
     }
 
     /**
@@ -238,6 +240,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     public void addPending(ChangeQueue queue)
     {
         checkNotNull(queue, "ChangeQueue cannot be null");
+        queue.reset();
         this.pending.add(queue);
     }
 
@@ -293,14 +296,14 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
         File aliases = new File(Gunsmith.getDataFolder(), "players/" + getName() + "/aliases.json");
         return aliases;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public UndoQueue getUndoHistory()
     {
-    	return this.history;
+        return this.history;
     }
 
 }

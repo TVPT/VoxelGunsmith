@@ -38,7 +38,7 @@ public interface ChangeQueueOwner
      * @param n the number of past changes to undo, cannot be negative
      */
     void undoHistory(int n);
-    
+
     /**
      * Redoes the last n undone changes to the world.
      * 
@@ -71,7 +71,7 @@ public interface ChangeQueueOwner
      * Removes the next pending change if it has finished.
      */
     void clearNextPending();
-    
+
     /**
      * Gets the undo history manager.
      * 

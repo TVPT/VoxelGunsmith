@@ -120,7 +120,7 @@ public class EventBusTest
     }
 
     /**
-     * @throws InterruptedException
+     * @throws InterruptedException if error
      */
     @Test
     public void testDeadEvent() throws InterruptedException

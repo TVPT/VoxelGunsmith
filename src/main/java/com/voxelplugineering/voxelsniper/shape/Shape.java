@@ -510,6 +510,8 @@ public class Shape
 
     /**
      * Gets a String representation of this shape's size and origin.
+     * 
+     * @return The string
      */
     @Override
     public String toString()

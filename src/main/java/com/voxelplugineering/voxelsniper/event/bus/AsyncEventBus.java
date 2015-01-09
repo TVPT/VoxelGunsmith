@@ -350,10 +350,10 @@ class Subscriber
     {
         return this.priority;
     }
-    
+
     public String toString()
     {
-        return "Subscriber " + exec.getName() + " (" + eventType.getName() + " - " + priority.name() + ")";
+        return "Subscriber " + this.exec.getName() + " (" + this.eventType.getName() + " - " + this.priority.name() + ")";
     }
 }
 
