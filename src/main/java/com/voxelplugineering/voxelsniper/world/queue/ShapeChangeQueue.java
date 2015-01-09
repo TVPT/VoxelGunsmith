@@ -56,9 +56,12 @@ public class ShapeChangeQueue extends ChangeQueue
     /**
      * Creates a new {@link ShapeChangeQueue}.
      * 
-     * @param sniper the owner
-     * @param origin the origin of the shape in the world
-     * @param shape the shape
+     * @param sniper
+     *            the owner
+     * @param origin
+     *            the origin of the shape in the world
+     * @param shape
+     *            the shape
      */
     public ShapeChangeQueue(Player sniper, Location origin, MaterialShape shape)
     {
@@ -89,8 +92,12 @@ public class ShapeChangeQueue extends ChangeQueue
     public void flush()
     {
         reset();
-        this.getOwner().addHistory(
-                new ShapeChangeQueue(getOwner(), this.origin, this.originOffset.getWorld().getShapeFromWorld(this.origin, this.shape.getShape())));
+        this.getOwner()
+                .getUndoHistory()
+                .addHistory(
+                        this,
+                        new ShapeChangeQueue(getOwner(), this.origin, this.originOffset.getWorld().getShapeFromWorld(this.origin,
+                                this.shape.getShape())));
         this.getOwner().addPending(this);
     }
 
@@ -135,7 +142,7 @@ public class ShapeChangeQueue extends ChangeQueue
             }
         } else if (this.state == ExecutionState.INCREMENTAL)
         {
-            //Gunsmith.getLogger().info("Position at " + this.position);
+            // Gunsmith.getLogger().info("Position at " + this.position);
             for (; this.position < this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength() && count < next; this.position++)
             {
                 int z = (int) (this.position / (this.shape.getWidth() * this.shape.getHeight()));

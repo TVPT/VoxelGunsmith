@@ -27,7 +27,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
@@ -36,7 +35,6 @@ import java.util.regex.Pattern;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Queues;
 import com.thevoxelbox.vsl.VariableScope;
 import com.thevoxelbox.vsl.api.IVariableScope;
 import com.voxelplugineering.voxelsniper.Gunsmith;
@@ -44,10 +42,12 @@ import com.voxelplugineering.voxelsniper.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
 import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 import com.voxelplugineering.voxelsniper.brushes.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.registry.WeakWrapper;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueue;
+import com.voxelplugineering.voxelsniper.world.queue.CommonUndoQueue;
 
 /**
  * An abstract player.
@@ -69,15 +69,12 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
      */
     private IVariableScope brushVariables;
     /**
-     * The history buffer for this player. Contains an ordered stack of inverse change queues.
-     */
-    private Deque<ChangeQueue> history;
-    /**
      * The queue of pending {@link ChangeQueue}s waiting to be processed.
      */
     private Queue<ChangeQueue> pending;
     private AliasHandler personalAliasHandler;
     private Map<String, String> arguments;
+    private UndoQueue history;
 
     /**
      * Creates a new CommonPlayer with a weak reference to the player. TODO add constructor for receiving custom parent brush manager
@@ -92,15 +89,16 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
         this.brushVariables = new VariableScope();
         this.brushVariables.setCaseSensitive(false);
         this.arguments = Maps.newHashMap();
-        this.history = Queues.newArrayDeque();
         this.pending = new LinkedList<ChangeQueue>();
         this.personalAliasHandler = new AliasHandler(this, Gunsmith.getGlobalAliasHandler());
+        this.history = new CommonUndoQueue(this);
         resetSettings();
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public BrushManager getPersonalBrushManager()
     {
         return this.personalBrushManager;
@@ -109,6 +107,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCurrentBrush(BrushNodeGraph brush)
     {
         this.currentBrush = brush;
@@ -117,6 +116,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     /**
      * {@inheritDoc}
      */
+    @Override
     public BrushNodeGraph getCurrentBrush()
     {
         return this.currentBrush;
@@ -125,6 +125,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     /**
      * {@inheritDoc}
      */
+    @Override
     public IVariableScope getBrushSettings()
     {
         return this.brushVariables;
@@ -133,6 +134,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     /**
      * {@inheritDoc}
      */
+    @Override
     public void resetSettings()
     {
         this.arguments.clear();
@@ -196,27 +198,19 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     /**
      * {@inheritDoc}
      */
-    public void addHistory(ChangeQueue changeQueue)
+    @Override
+    public void undoHistory(int n)
     {
-        checkNotNull(changeQueue, "ChangeQueue cannot be null");
-        this.history.addFirst(changeQueue);
-        while (this.history.size() > 20)
-        {
-            this.history.removeLast();
-        }
+    	this.history.undo(n);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void undoHistory(int n)
+    @Override
+    public void redoHistory(int n)
     {
-        while (n > 0 && !this.history.isEmpty())
-        {
-            n--;
-            ChangeQueue next = this.history.removeFirst();
-            this.pending.add(next);
-        }
+        this.history.redo(n);
     }
 
     /**
@@ -298,6 +292,15 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     {
         File aliases = new File(Gunsmith.getDataFolder(), "players/" + getName() + "/aliases.json");
         return aliases;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UndoQueue getUndoHistory()
+    {
+    	return this.history;
     }
 
 }

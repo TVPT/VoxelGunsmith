@@ -33,19 +33,18 @@ public interface ChangeQueueOwner
 {
 
     /**
-     * Adds a queue to the history buffer for this player. If the size of the history buffer is greater than the maximum allowed size then the oldest
-     * stored queues are dropped.
-     * 
-     * @param invert the new queue for the buffer, this queue is assumed to be an inverse queue to an operation performed in the world, cannot be null
-     */
-    void addHistory(ChangeQueue invert);
-
-    /**
-     * Pushes the top n inverse change queues from the history buffer to the world, effectively undoing previous changes.
+     * Undoes the last n changes to the world.
      * 
      * @param n the number of past changes to undo, cannot be negative
      */
     void undoHistory(int n);
+    
+    /**
+     * Redoes the last n undone changes to the world.
+     * 
+     * @param n The number of changes to redo, cannot be negative
+     */
+    void redoHistory(int n);
 
     /**
      * Returns whether this sniper has pending change queues which have not yet been handled.
@@ -72,4 +71,11 @@ public interface ChangeQueueOwner
      * Removes the next pending change if it has finished.
      */
     void clearNextPending();
+    
+    /**
+     * Gets the undo history manager.
+     * 
+     * @return The undo history manager
+     */
+    UndoQueue getUndoHistory();
 }
