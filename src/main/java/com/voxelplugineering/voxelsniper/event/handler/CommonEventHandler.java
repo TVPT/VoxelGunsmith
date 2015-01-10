@@ -121,6 +121,18 @@ public class CommonEventHandler
             double yaw = event.getYaw();
             double pitch = event.getPitch();
             RayTrace ray = new RayTrace(location, yaw, pitch);
+            double range = (Double) Gunsmith.getConfiguration().get("rayTraceRange").get();
+            try
+            {
+                if (sniper.getBrushSettings().hasValue("range"))
+                {
+                    range = Double.parseDouble(sniper.getBrushSettings().get("range", String.class).get());
+                }
+            } catch (NumberFormatException ignored)
+            {
+                assert true;
+            }
+            ray.setRange(range);
             ray.trace();
 
             IVariableScope brushVariables = new VariableScope(sniper.getBrushSettings());
