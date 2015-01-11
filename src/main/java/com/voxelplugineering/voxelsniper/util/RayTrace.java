@@ -276,12 +276,15 @@ public class RayTrace
     {
         init();
         checkOutOfWorld();
+        System.out.println("range " + this.range);
         if (this.length <= this.range)
         {
             step();
         }
+        System.out.println(String.format("target %d %d %d", this.targetX, this.targetY, this.targetZ));
         this.targetBlock = this.world.getBlock(this.targetX, this.targetY, this.targetZ).orNull();
         this.lastBlock = this.world.getBlock(this.lastX, this.lastY, this.lastZ).or(this.targetBlock);
+        System.out.println(this.targetBlock);
     }
 
     /**
@@ -325,10 +328,12 @@ public class RayTrace
 
         if (this.length > this.range || this.targetY > this.maxWorldY || this.targetY < this.minWorldY)
         {
+            System.out.println("End of range");
             //Abort - Out of bounds
             this.targetX = this.lastX;
             this.targetY = this.lastY;
             this.targetZ = this.lastZ;
+            this.length = this.range;
         } else
         {
             //continue

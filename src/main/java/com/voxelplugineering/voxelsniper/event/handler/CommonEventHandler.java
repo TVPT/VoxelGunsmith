@@ -126,7 +126,7 @@ public class CommonEventHandler
             {
                 if (sniper.getBrushSettings().hasValue("range"))
                 {
-                    range = Double.parseDouble(sniper.getBrushSettings().get("range", String.class).get());
+                    range = sniper.getBrushSettings().get("range", Double.class).get();
                 }
             } catch (NumberFormatException ignored)
             {
@@ -144,6 +144,10 @@ public class CommonEventHandler
             brushVariables.set("lastBlock", ray.getLastBlock());
             brushVariables.set("length", ray.getLength());
             brushVariables.set("__PLAYER__", sniper);
+            System.out.println("post: " + ray);
+            System.out.println(ray.getTargetBlock());
+            System.out.println(ray.getTargetBlock().getLocation());
+            System.out.println(ray.getTargetBlock().getLocation().toString());
             Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());
             sniper.getCurrentBrush().run(brushVariables, sniper.getBrushArguments());
         } catch (Exception e)

@@ -25,15 +25,23 @@ package com.voxelplugineering.voxelsniper.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Arrays;
+import java.util.Map;
+
+import com.google.common.collect.Maps;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.command.Command;
+import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.
  */
 public class VSCommand extends Command
 {
+
+    Map<String, Special> special;
 
     /**
      * Constructs a new BrushCommand
@@ -43,6 +51,8 @@ public class VSCommand extends Command
         super("vs", "Sets your current brush");
         setAliases("voxelsniper");
         setPermissions("voxelsniper.command.vs");
+        this.special = Maps.newHashMap();
+        setupSpecial();
     }
 
     /**
@@ -52,6 +62,18 @@ public class VSCommand extends Command
     public boolean execute(CommandSender sender, String[] args)
     {
         checkNotNull(sender, "Cannot have a null sniper!");
+
+        if (args.length >= 1)
+        {
+            if (this.special.containsKey(args[0]))
+            {
+                boolean s = this.special.get(args[0]).execute(sender, Arrays.copyOfRange(args, 1, args.length));
+                if (s)
+                {
+                    return true;
+                }
+            }
+        }
 
         if (!sender.isPlayer())
         {
@@ -74,7 +96,82 @@ public class VSCommand extends Command
             sniper.sendMessage("Set " + key + " to " + value);
             return true;
         }
+        sender.sendMessage("VoxelSniper meta commands, Usage: \'/vs key=value\' or one of:");
+        for (String spec : this.special.keySet())
+        {
+            sender.sendMessage(this.special.get(spec).getHelp());
+        }
         return false;
     }
+
+    private void setupSpecial()
+    {
+        this.special.put("version", new Special()
+        {
+
+            @Override
+            boolean execute(CommandSender sender, String[] args)
+            {
+                sender.sendMessage("VoxelSniper version " + Gunsmith.getPlatformProxy().getFullVersion());
+                return true;
+            }
+
+            @Override
+            String getHelp()
+            {
+                return "  /vs version -- displays version info";
+            }
+
+        });
+        this.special.put("range", new Special()
+        {
+
+            @Override
+            boolean execute(CommandSender sender, String[] args)
+            {
+                if (!sender.isPlayer())
+                {
+                    return false;
+                }
+                Player player = (Player) sender;
+                if (args.length >= 1)
+                {
+                    if (args[0].equalsIgnoreCase("reset"))
+                    {
+                        double range = (Double) Gunsmith.getConfiguration().get("rayTraceRange").get();
+                        player.getBrushSettings().set("range", range);
+                        sender.sendMessage("Reset your maximum range to %d", range);
+                    }
+                    try
+                    {
+                        double range = Double.parseDouble(args[0]);
+                        player.getBrushSettings().set("range", range);
+                        sender.sendMessage("Set your maximum range to %d", Integer.parseInt(args[0]));
+                    } catch (NumberFormatException e)
+                    {
+                        sender.sendMessage("Usage: /vs range #");
+                    }
+                    return true;
+                }
+                sender.sendMessage("Usage: /vs range #");
+                return true;
+            }
+
+            @Override
+            String getHelp()
+            {
+                return "  /vs range # -- sets maximum range";
+            }
+
+        });
+    }
+}
+
+abstract class Special
+{
+
+    abstract boolean execute(CommandSender sender, String[] args);
+
+    abstract String getHelp();
 
 }
