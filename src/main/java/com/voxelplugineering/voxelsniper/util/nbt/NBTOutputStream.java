@@ -78,19 +78,19 @@ public final class NBTOutputStream implements Closeable
 {
 
     /**
-     * The output stream.
+     * The this.output stream.
      */
-    private final DataOutputStream os;
+    private final DataOutputStream output;
 
     /**
-     * Creates a new <code>NBTOutputStream</code>, which will write data to the specified underlying output stream.
+     * Creates a new <code>NBTOutputStream</code>, which will write data to the specified underlying this.output stream.
      * 
-     * @param os The output stream.
+     * @param os The this.output stream.
      * @throws IOException if an I/O error occurs.
      */
     public NBTOutputStream(OutputStream os) throws IOException
     {
-        this.os = new DataOutputStream(new GZIPOutputStream(os));
+        this.output = new DataOutputStream(new GZIPOutputStream(os));
     }
 
     /**
@@ -105,9 +105,9 @@ public final class NBTOutputStream implements Closeable
         String name = tag.getName();
         byte[] nameBytes = name.getBytes(NBTConstants.CHARSET);
 
-        os.writeByte(type);
-        os.writeShort(nameBytes.length);
-        os.write(nameBytes);
+        this.output.writeByte(type);
+        this.output.writeShort(nameBytes.length);
+        this.output.write(nameBytes);
 
         if (type == NBTConstants.TYPE_END)
         {
@@ -177,7 +177,7 @@ public final class NBTOutputStream implements Closeable
      */
     private void writeByteTagPayload(ByteTag tag) throws IOException
     {
-        os.writeByte(tag.getValue());
+        this.output.writeByte(tag.getValue());
     }
 
     /**
@@ -189,8 +189,8 @@ public final class NBTOutputStream implements Closeable
     private void writeByteArrayTagPayload(ByteArrayTag tag) throws IOException
     {
         byte[] bytes = tag.getValue();
-        os.writeInt(bytes.length);
-        os.write(bytes);
+        this.output.writeInt(bytes.length);
+        this.output.write(bytes);
     }
 
     /**
@@ -205,7 +205,7 @@ public final class NBTOutputStream implements Closeable
         {
             writeTag(childTag);
         }
-        os.writeByte((byte) 0); // end tag - better way?
+        this.output.writeByte((byte) 0); // end tag - better way?
     }
 
     /**
@@ -220,8 +220,8 @@ public final class NBTOutputStream implements Closeable
         List<Tag> tags = tag.getValue();
         int size = tags.size();
 
-        os.writeByte(NBTUtils.getTypeCode(clazz));
-        os.writeInt(size);
+        this.output.writeByte(NBTUtils.getTypeCode(clazz));
+        this.output.writeInt(size);
         for (int i = 0; i < size; ++i)
         {
             writeTagPayload(tags.get(i));
@@ -237,8 +237,8 @@ public final class NBTOutputStream implements Closeable
     private void writeStringTagPayload(StringTag tag) throws IOException
     {
         byte[] bytes = tag.getValue().getBytes(NBTConstants.CHARSET);
-        os.writeShort(bytes.length);
-        os.write(bytes);
+        this.output.writeShort(bytes.length);
+        this.output.write(bytes);
     }
 
     /**
@@ -249,7 +249,7 @@ public final class NBTOutputStream implements Closeable
      */
     private void writeDoubleTagPayload(DoubleTag tag) throws IOException
     {
-        os.writeDouble(tag.getValue());
+        this.output.writeDouble(tag.getValue());
     }
 
     /**
@@ -260,7 +260,7 @@ public final class NBTOutputStream implements Closeable
      */
     private void writeFloatTagPayload(FloatTag tag) throws IOException
     {
-        os.writeFloat(tag.getValue());
+        this.output.writeFloat(tag.getValue());
     }
 
     /**
@@ -271,7 +271,7 @@ public final class NBTOutputStream implements Closeable
      */
     private void writeLongTagPayload(LongTag tag) throws IOException
     {
-        os.writeLong(tag.getValue());
+        this.output.writeLong(tag.getValue());
     }
 
     /**
@@ -282,7 +282,7 @@ public final class NBTOutputStream implements Closeable
      */
     private void writeIntTagPayload(IntTag tag) throws IOException
     {
-        os.writeInt(tag.getValue());
+        this.output.writeInt(tag.getValue());
     }
 
     /**
@@ -293,7 +293,7 @@ public final class NBTOutputStream implements Closeable
      */
     private void writeShortTagPayload(ShortTag tag) throws IOException
     {
-        os.writeShort(tag.getValue());
+        this.output.writeShort(tag.getValue());
     }
 
     /**
@@ -310,10 +310,10 @@ public final class NBTOutputStream implements Closeable
     private void writeIntArrayTagPayload(IntArrayTag tag) throws IOException
     {
         int[] data = tag.getValue();
-        os.writeInt(data.length);
+        this.output.writeInt(data.length);
         for (int i = 0; i < data.length; i++)
         {
-            os.writeInt(data[i]);
+            this.output.writeInt(data[i]);
         }
     }
 
@@ -323,7 +323,7 @@ public final class NBTOutputStream implements Closeable
     @Override
     public void close() throws IOException
     {
-        os.close();
+        this.output.close();
     }
 
 }

@@ -100,6 +100,7 @@ public final class CompoundTag extends Tag
      * 
      * @param key The key to retrieve
      * @param expected The expected Tag type
+     * @param <T> The tag type
      * @return The tag
      */
     public <T extends Tag> Optional<T> getChildTag(String key, Class<T> expected)
@@ -129,8 +130,8 @@ public final class CompoundTag extends Tag
             append = "(\"" + this.getName() + "\")";
         }
         StringBuilder bldr = new StringBuilder();
-        bldr.append("TAG_Compound" + append + ": " + value.size() + " entries\r\n{\r\n");
-        for (Map.Entry<String, Tag> entry : value.entrySet())
+        bldr.append("TAG_Compound" + append + ": " + this.value.size() + " entries\r\n{\r\n");
+        for (Map.Entry<String, Tag> entry : this.value.entrySet())
         {
             bldr.append("   " + entry.getValue().toString().replaceAll("\r\n", "\r\n   ") + "\r\n");
         }

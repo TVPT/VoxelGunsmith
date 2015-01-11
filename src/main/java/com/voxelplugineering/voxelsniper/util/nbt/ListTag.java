@@ -98,7 +98,7 @@ public final class ListTag extends Tag
      */
     public Class<? extends Tag> getType()
     {
-        return type;
+        return this.type;
     }
 
     /**
@@ -123,7 +123,7 @@ public final class ListTag extends Tag
             append = "(\"" + this.getName() + "\")";
         }
         StringBuilder bldr = new StringBuilder();
-        bldr.append("TAG_List" + append + ": " + this.value.size() + " entries of type " + NBTUtils.getTypeName(type) + "\r\n{\r\n");
+        bldr.append("TAG_List" + append + ": " + this.value.size() + " entries of type " + NBTUtils.getTypeName(this.type) + "\r\n{\r\n");
         for (Tag t : this.value)
         {
             bldr.append("   " + t.toString().replaceAll("\r\n", "\r\n   ") + "\r\n");

@@ -28,14 +28,23 @@ import java.io.File;
 import com.voxelplugineering.voxelsniper.api.util.schematic.SchematicLoader;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 
+/**
+ * A {@link SchematicLoader} for NBT stored schematics
+ */
 public class NBTSchematicLoader implements SchematicLoader
 {
-    
+
+    /**
+     * Creates a new {@link NBTSchematicLoader}.
+     */
     public NBTSchematicLoader()
     {
-        
+
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MaterialShape load(File f)
     {
@@ -43,11 +52,14 @@ public class NBTSchematicLoader implements SchematicLoader
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void save(File f, MaterialShape shape)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

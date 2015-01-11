@@ -86,7 +86,7 @@ public abstract class Tag
      */
     public final String getName()
     {
-        return name;
+        return this.name;
     }
 
     /**

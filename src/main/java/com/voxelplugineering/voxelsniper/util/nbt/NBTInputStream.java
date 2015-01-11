@@ -83,7 +83,7 @@ public final class NBTInputStream implements Closeable
     /**
      * The data input stream.
      */
-    private final DataInputStream is;
+    private final DataInputStream input;
 
     /**
      * Creates a new <code>NBTInputStream</code>, which will source its data from the specified input stream.
@@ -93,7 +93,7 @@ public final class NBTInputStream implements Closeable
      */
     public NBTInputStream(InputStream is) throws IOException
     {
-        this.is = new DataInputStream(is);
+        this.input = new DataInputStream(is);
     }
 
     /**
@@ -116,14 +116,14 @@ public final class NBTInputStream implements Closeable
      */
     private Tag readTag(int depth) throws IOException
     {
-        int type = is.readByte() & 0xFF;
+        int type = this.input.readByte() & 0xFF;
 
         String name;
         if (type != NBTConstants.TYPE_END)
         {
-            int nameLength = is.readShort() & 0xFFFF;
+            int nameLength = this.input.readShort() & 0xFFFF;
             byte[] nameBytes = new byte[nameLength];
-            is.readFully(nameBytes);
+            this.input.readFully(nameBytes);
             name = new String(nameBytes, NBTConstants.CHARSET);
         } else
         {
@@ -155,30 +155,30 @@ public final class NBTInputStream implements Closeable
                 return new EndTag();
             }
         case NBTConstants.TYPE_BYTE:
-            return new ByteTag(name, is.readByte());
+            return new ByteTag(name, this.input.readByte());
         case NBTConstants.TYPE_SHORT:
-            return new ShortTag(name, is.readShort());
+            return new ShortTag(name, this.input.readShort());
         case NBTConstants.TYPE_INT:
-            return new IntTag(name, is.readInt());
+            return new IntTag(name, this.input.readInt());
         case NBTConstants.TYPE_LONG:
-            return new LongTag(name, is.readLong());
+            return new LongTag(name, this.input.readLong());
         case NBTConstants.TYPE_FLOAT:
-            return new FloatTag(name, is.readFloat());
+            return new FloatTag(name, this.input.readFloat());
         case NBTConstants.TYPE_DOUBLE:
-            return new DoubleTag(name, is.readDouble());
+            return new DoubleTag(name, this.input.readDouble());
         case NBTConstants.TYPE_BYTE_ARRAY:
-            int length = is.readInt();
+            int length = this.input.readInt();
             byte[] bytes = new byte[length];
-            is.readFully(bytes);
+            this.input.readFully(bytes);
             return new ByteArrayTag(name, bytes);
         case NBTConstants.TYPE_STRING:
-            length = is.readShort();
+            length = this.input.readShort();
             bytes = new byte[length];
-            is.readFully(bytes);
+            this.input.readFully(bytes);
             return new StringTag(name, new String(bytes, NBTConstants.CHARSET));
         case NBTConstants.TYPE_LIST:
-            int childType = is.readByte();
-            length = is.readInt();
+            int childType = this.input.readByte();
+            length = this.input.readInt();
 
             List<Tag> tagList = new ArrayList<Tag>();
             for (int i = 0; i < length; ++i)
@@ -208,11 +208,11 @@ public final class NBTInputStream implements Closeable
 
             return new CompoundTag(name, tagMap);
         case NBTConstants.TYPE_INT_ARRAY:
-            length = is.readInt();
+            length = this.input.readInt();
             int[] data = new int[length];
             for (int i = 0; i < length; i++)
             {
-                data[i] = is.readInt();
+                data[i] = this.input.readInt();
             }
             return new IntArrayTag(name, data);
         default:
@@ -226,7 +226,7 @@ public final class NBTInputStream implements Closeable
     @Override
     public void close() throws IOException
     {
-        is.close();
+        this.input.close();
     }
 
 }
