@@ -33,6 +33,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
@@ -75,7 +76,22 @@ public class AsyncEventBus implements EventBus
      */
     public AsyncEventBus()
     {
-        this(Executors.newCachedThreadPool());
+        this(Executors.newCachedThreadPool(new ThreadFactory()
+        {
+            private final ThreadGroup group;
+            private int count = 0;
+            
+            {
+                this.group = Thread.currentThread().getThreadGroup();
+            }
+            
+            @Override
+            public Thread newThread(Runnable r)
+            {
+                Thread thr = new Thread(this.group, r, "AsyncEventBus-executor-" + this.count++);
+                return thr;
+            }
+        }));
     }
 
     /**

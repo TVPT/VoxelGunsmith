@@ -395,7 +395,7 @@ public final class Gunsmith
                         + new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z").format(new Date(System.currentTimeMillis())) + ")");
 
         //Create the eventBus for all Gunsmith events
-        eventBus = new AsyncEventBus(eventBusExecutor = java.util.concurrent.Executors.newCachedThreadPool());
+        eventBus = new AsyncEventBus();
 
         defaultEventHandler = new CommonEventHandler();
         eventBus.register(defaultEventHandler);
