@@ -21,39 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes.shape;
+package com.voxelplugineering.voxelsniper.shape.csg;
 
-import com.thevoxelbox.vsl.util.Provider;
-import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
+import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
- * Creates a square disc with with a side length of radius*2+1
+ * An abstract CSG shape.
  */
-public class VoxelDiscShapeNode extends ShapeNode
+public interface CSGShape extends Shape
 {
 
-    private final Provider<Double> radius;
-
     /**
-     * Creates a new node.
+     * Offsets this shape by the given vector.
      * 
-     * @param radius The radius of the voxelDisc
+     * @param offset The offset
      */
-    public VoxelDiscShapeNode(Provider<Double> radius)
-    {
-        super();
-        this.radius = radius;
-    }
+    void offset(Vector3i offset);
 
     /**
-     * {@inheritDoc}
+     * Creates an identical copy of this shape.
+     * 
+     * @return The copy
      */
-    @Override
-    public void exec(RuntimeState state)
-    {
-        int rad = (int) Math.floor(this.radius.get(state));
-        this.shape.set(new CuboidShape(rad * 2 + 1, 1, rad * 2 + 1, new Vector3i(rad, 0, rad)), state.getUUID());
-    }
+    CSGShape clone();
+
 }

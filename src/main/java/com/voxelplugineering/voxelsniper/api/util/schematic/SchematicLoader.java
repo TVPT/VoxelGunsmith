@@ -25,7 +25,7 @@ package com.voxelplugineering.voxelsniper.api.util.schematic;
 
 import java.io.File;
 
-import com.voxelplugineering.voxelsniper.shape.MaterialShape;
+import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 
 /**
  * A schematic loader is an interface for loading or saving regions of the world to a persistent storage. TODO: better persistence abstraction TODO:

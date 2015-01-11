@@ -40,6 +40,7 @@ import com.thevoxelbox.vsl.nodes.vars.ChainedOutputNode;
 import com.thevoxelbox.vsl.nodes.vars.VariableGetNode;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
+import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Chunk;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
@@ -66,7 +67,6 @@ import com.voxelplugineering.voxelsniper.nodes.world.RefreshChunkNode;
 import com.voxelplugineering.voxelsniper.nodes.world.ShapeMaterialSetNode;
 import com.voxelplugineering.voxelsniper.nodes.world.biome.SetBiomeNode;
 import com.voxelplugineering.voxelsniper.registry.vsl.ArgumentParsers;
-import com.voxelplugineering.voxelsniper.shape.Shape;
 
 /**
  * In lieu of having flat file brushes this will temporarily serve as a builder for brushes at runtime for debugging during development.

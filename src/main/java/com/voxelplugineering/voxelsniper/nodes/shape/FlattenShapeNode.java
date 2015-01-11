@@ -26,7 +26,8 @@ package com.voxelplugineering.voxelsniper.nodes.shape;
 import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.api.shape.Shape;
+import com.voxelplugineering.voxelsniper.shape.ComplexShape;
 
 /**
  * A node for flattening a shape into a 1 unit high disc.
@@ -54,8 +55,17 @@ public class FlattenShapeNode extends Node
     public void exec(RuntimeState state)
     {
         Shape s = this.shapeIn.get(state);
-        s.flatten();
-        this.shapeOut.set(s, state.getUUID());
+        ComplexShape cs;
+        if (s instanceof ComplexShape)
+        {
+            cs = (ComplexShape) s;
+            cs.flatten();
+        } else
+        {
+            cs = new ComplexShape(s);
+            cs.flatten();
+        }
+        this.shapeOut.set(cs, state.getUUID());
     }
 
     /**

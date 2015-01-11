@@ -25,7 +25,7 @@ package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.shape.MaterialShape;
+import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 
 /**
  * A node to reset a material shape to its default material.

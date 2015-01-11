@@ -25,8 +25,8 @@ package com.voxelplugineering.voxelsniper.nodes.shape;
 
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.shape.ShapeFactory;
-import com.voxelplugineering.voxelsniper.util.Direction;
+import com.voxelplugineering.voxelsniper.shape.csg.CylinderShape;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * Creates a disc with with a diameter of radius*2+1
@@ -52,7 +52,8 @@ public class DiscShapeNode extends ShapeNode
     @Override
     public void exec(RuntimeState state)
     {
-        this.shape.set(ShapeFactory.createDisc(this.radius.get(state), Direction.UP), state.getUUID());
+        double rad = this.radius.get(state);
+        this.shape.set(new CylinderShape(rad, 1, rad, new Vector3i(rad, 0, rad)), state.getUUID());
     }
 
 }

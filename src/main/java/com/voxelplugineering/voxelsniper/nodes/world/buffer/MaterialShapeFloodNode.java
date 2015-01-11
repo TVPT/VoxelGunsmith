@@ -25,8 +25,8 @@ package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 
 /**
  * A node for flooding a materialshape with a material.

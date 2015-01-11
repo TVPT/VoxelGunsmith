@@ -21,45 +21,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.util.schematic;
+package com.voxelplugineering.voxelsniper.api.shape;
 
-import java.io.File;
-
-import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
-import com.voxelplugineering.voxelsniper.api.util.schematic.SchematicLoader;
+import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
 
 /**
- * A {@link SchematicLoader} for NBT stored schematics
+ * Represents a material mask and shape combined.
  */
-public class NBTSchematicLoader implements SchematicLoader
+public interface MaterialShape extends Shape
 {
 
     /**
-     * Creates a new {@link NBTSchematicLoader}.
+     * Gets the underlying shape.
+     * 
+     * @return The shape
      */
-    public NBTSchematicLoader()
-    {
-
-    }
+    Shape getShape();
 
     /**
-     * {@inheritDoc}
+     * Gets the material for the given location.
+     * 
+     * @param x The X position
+     * @param y The y position
+     * @param z The Z position
+     * @param relative Whether to offset by the origin
+     * @return The material
      */
-    @Override
-    public MaterialShape load(File f)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    Optional<Material> getMaterial(int x, int y, int z, boolean relative);
 
     /**
-     * {@inheritDoc}
+     * Sets the material at the given location.
+     * 
+     * @param x The X position
+     * @param y The Y position
+     * @param z The Z position
+     * @param relative Whether to offset by the origin
+     * @param material The new material
      */
-    @Override
-    public void save(File f, MaterialShape shape)
-    {
-        // TODO Auto-generated method stub
+    void setMaterial(int x, int y, int z, boolean relative, Material material);
 
-    }
+    /**
+     * Floods the shape with the given material
+     * 
+     * @param material The new material
+     */
+    void flood(Material material);
+
+    /**
+     * Resets the shape to the default material.
+     */
+    void reset();
 
 }

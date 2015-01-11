@@ -25,7 +25,7 @@ package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 
 import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.util.Provider;
-import com.voxelplugineering.voxelsniper.shape.MaterialShape;
+import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 
 /**
  * An abstract node for a node which takes a {@link MaterialShape} as input.

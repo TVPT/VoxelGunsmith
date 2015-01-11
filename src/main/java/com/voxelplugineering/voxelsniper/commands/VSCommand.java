@@ -33,7 +33,6 @@ import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.command.Command;
-import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.

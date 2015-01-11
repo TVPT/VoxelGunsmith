@@ -34,6 +34,7 @@ public class VoxelSniperConfiguration
     double rayTraceRange = 250;
     int blockChangesPerSecond = 80000;
     int undoHistorySize = 20;
+    int statusMessageThreshold = 80000;
 
     //Default brush settings
     String defaultBrush = "voxel material";

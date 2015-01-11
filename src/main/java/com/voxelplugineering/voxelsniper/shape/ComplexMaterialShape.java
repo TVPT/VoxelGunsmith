@@ -30,13 +30,15 @@ import java.util.Arrays;
 import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
+import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * A {@link MaterialShape} which a material for each point in the shape.
  */
-public class MaterialShape
+public class ComplexMaterialShape implements MaterialShape
 {
     private short nextId = 1;
     private BiMap<Short, Material> materialDictionary;
@@ -51,10 +53,10 @@ public class MaterialShape
      * @param shape the shape
      * @param defaultMaterial the default material for the shape
      */
-    public MaterialShape(Shape shape, Material defaultMaterial)
+    public ComplexMaterialShape(Shape shape, Material defaultMaterial)
     {
         checkNotNull(defaultMaterial, "Default material cannot be null!");
-        this.shape = checkNotNull(shape);
+        this.shape = new ComplexShape(shape);
         this.materialDictionary = HashBiMap.create();
         this.inverseDictionary = this.materialDictionary.inverse();
         this.materials = new short[shape.getWidth() * shape.getLength() * shape.getHeight()];
@@ -82,7 +84,7 @@ public class MaterialShape
      * @param relative whether to offset the given position to the origin
      * @return the material, or {@link Optional#absent()} if the point in the shape is not set
      */
-    public Optional<Material> get(int x, int y, int z, boolean relative)
+    public Optional<Material> getMaterial(int x, int y, int z, boolean relative)
     {
         if (this.getShape().get(x, y, z, relative))
         {
@@ -106,7 +108,7 @@ public class MaterialShape
      * @param relative whether to offset the given position to the origin
      * @param material the material to set the given point to
      */
-    public void set(int x, int y, int z, boolean relative, Material material)
+    public void setMaterial(int x, int y, int z, boolean relative, Material material)
     {
         checkNotNull(material);
         if (relative)
@@ -132,7 +134,7 @@ public class MaterialShape
      * @param z the z position
      * @param relative whether to offset the given position to the origin
      */
-    public void unset(int x, int y, int z, boolean relative)
+    public void unsetMaterial(int x, int y, int z, boolean relative)
     {
         if (relative)
         {
@@ -271,6 +273,43 @@ public class MaterialShape
     public void reset()
     {
         flood(this.defaultMaterial);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean get(int x, int y, int z, boolean relative)
+    {
+        return this.shape.get(x, y, z, relative);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void set(int x, int y, int z, boolean relative)
+    {
+        this.shape.set(x, y, z, relative);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MaterialShape clone()
+    {
+        //TODO
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void unset(int x, int y, int z, boolean relative)
+    {
+        this.shape.unset(x, y, z, relative);
     }
 
 }

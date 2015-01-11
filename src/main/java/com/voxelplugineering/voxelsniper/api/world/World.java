@@ -26,9 +26,9 @@ package com.voxelplugineering.voxelsniper.api.world;
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.entity.Entity;
 import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
+import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
+import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
-import com.voxelplugineering.voxelsniper.shape.MaterialShape;
-import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**

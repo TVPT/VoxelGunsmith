@@ -26,9 +26,10 @@ package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
+import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.shape.MaterialShape;
-import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.shape.SingleMaterialShape;
 
 /**
  * Creates a new MaterialShape wrapped around the given shape.
@@ -71,7 +72,7 @@ public class NewMaterialShapeNode extends Node
     @Override
     public void exec(RuntimeState state)
     {
-        MaterialShape ms = new MaterialShape(this.shape.get(state), this.defaultMaterial.get(state));
+        MaterialShape ms = new SingleMaterialShape(this.shape.get(state), this.defaultMaterial.get(state));
         this.matshape.set(ms, state.getUUID());
     }
 

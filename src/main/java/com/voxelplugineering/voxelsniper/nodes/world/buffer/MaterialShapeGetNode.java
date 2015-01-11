@@ -25,8 +25,8 @@ package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
@@ -57,7 +57,7 @@ public class MaterialShapeGetNode extends MaterialShapeNode
     public void exec(RuntimeState state)
     {
         Vector3i target = this.target.get(state);
-        this.material.set(this.shape.get(state).get(target.getX(), target.getY(), target.getZ(), false).get(), state.getUUID());
+        this.material.set(this.shape.get(state).getMaterial(target.getX(), target.getY(), target.getZ(), false).get(), state.getUUID());
     }
 
     /**

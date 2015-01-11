@@ -21,39 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes.shape;
-
-import com.thevoxelbox.vsl.util.Provider;
-import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
-import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+package com.voxelplugineering.voxelsniper.shape.csg;
 
 /**
- * Creates a square disc with with a side length of radius*2+1
+ * Possible CSG operations.
  */
-public class VoxelDiscShapeNode extends ShapeNode
+@SuppressWarnings("javadoc")
+public enum CSGOperation
 {
-
-    private final Provider<Double> radius;
-
-    /**
-     * Creates a new node.
-     * 
-     * @param radius The radius of the voxelDisc
-     */
-    public VoxelDiscShapeNode(Provider<Double> radius)
-    {
-        super();
-        this.radius = radius;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void exec(RuntimeState state)
-    {
-        int rad = (int) Math.floor(this.radius.get(state));
-        this.shape.set(new CuboidShape(rad * 2 + 1, 1, rad * 2 + 1, new Vector3i(rad, 0, rad)), state.getUUID());
-    }
+    ADD, SUBTRACT, XOR
 }

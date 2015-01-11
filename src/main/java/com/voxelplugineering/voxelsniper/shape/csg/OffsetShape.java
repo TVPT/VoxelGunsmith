@@ -21,39 +21,60 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes.shape;
+package com.voxelplugineering.voxelsniper.shape.csg;
 
-import com.thevoxelbox.vsl.util.Provider;
-import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
+import com.voxelplugineering.voxelsniper.shape.SingleMaterialShape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
- * Creates a square disc with with a side length of radius*2+1
+ * A CSG shape offset by a vector.
  */
-public class VoxelDiscShapeNode extends ShapeNode
+public abstract class OffsetShape implements CSGShape
 {
 
-    private final Provider<Double> radius;
+    private Vector3i origin;
 
     /**
-     * Creates a new node.
+     * Creates a {@link OffsetShape}.
      * 
-     * @param radius The radius of the voxelDisc
+     * @param origin The offset
      */
-    public VoxelDiscShapeNode(Provider<Double> radius)
+    public OffsetShape(Vector3i origin)
     {
-        super();
-        this.radius = radius;
+        this.origin = origin;
+    }
+
+    /**
+     * Creates a default {@link OffsetShape}, offset by {0, 0, 0}.
+     */
+    public OffsetShape()
+    {
+        this(new Vector3i(0, 0, 0));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void exec(RuntimeState state)
+    public Vector3i getOrigin()
     {
-        int rad = (int) Math.floor(this.radius.get(state));
-        this.shape.set(new CuboidShape(rad * 2 + 1, 1, rad * 2 + 1, new Vector3i(rad, 0, rad)), state.getUUID());
+        return this.origin;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void offset(Vector3i offset)
+    {
+        this.origin = this.origin.add(offset);
+    }
+
+    /**
+     * Creates a copy of this {@link OffsetShape}.
+     * 
+     * @return The copy
+     */
+    public abstract CSGShape clone();
+
 }

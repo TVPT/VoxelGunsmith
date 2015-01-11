@@ -25,7 +25,8 @@ package com.voxelplugineering.voxelsniper.nodes.shape;
 
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.shape.ShapeFactory;
+import com.voxelplugineering.voxelsniper.shape.csg.EllipsoidShape;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * Creates a sphere with with a diameter of radius*2+1
@@ -51,6 +52,7 @@ public class SphereShapeNode extends ShapeNode
     @Override
     public void exec(RuntimeState state)
     {
-        this.shape.set(ShapeFactory.createSphere(this.radius.get(state)), state.getUUID());
+        double rad = this.radius.get(state);
+        this.shape.set(new EllipsoidShape(rad, rad, rad, new Vector3i(rad, rad, rad)), state.getUUID());
     }
 }

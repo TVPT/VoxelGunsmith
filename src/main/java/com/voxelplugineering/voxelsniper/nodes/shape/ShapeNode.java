@@ -25,7 +25,7 @@ package com.voxelplugineering.voxelsniper.nodes.shape;
 
 import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.util.Provider;
-import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.api.shape.Shape;
 
 /**
  * An abstract node for any node returning a shape.

@@ -80,11 +80,11 @@ public class AsyncEventBus implements EventBus
         {
             private final ThreadGroup group;
             private int count = 0;
-            
+
             {
                 this.group = Thread.currentThread().getThreadGroup();
             }
-            
+
             @Override
             public Thread newThread(Runnable r)
             {

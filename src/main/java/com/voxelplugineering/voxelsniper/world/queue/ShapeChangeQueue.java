@@ -25,10 +25,10 @@ package com.voxelplugineering.voxelsniper.world.queue;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 
 /**
  * A special change queue for setting all of a shape to a single material.
@@ -53,6 +53,7 @@ public class ShapeChangeQueue extends ChangeQueue
      * The position of this queue's execution.
      */
     private long position = 0;
+    private int ticks = 0;
 
     /**
      * Creates a new {@link ShapeChangeQueue}.
@@ -90,12 +91,18 @@ public class ShapeChangeQueue extends ChangeQueue
     public void flush()
     {
         reset();
-        this.getOwner()
-                .getUndoHistory()
-                .addHistory(
-                        this,
-                        new ShapeChangeQueue(getOwner(), this.origin, this.originOffset.getWorld().getShapeFromWorld(this.origin,
-                                this.shape.getShape())));
+        if (this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength() > 2000000)
+        {
+            getOwner().sendMessage("Shape too large, skipping undo storage.");
+        } else
+        {
+            this.getOwner()
+                    .getUndoHistory()
+                    .addHistory(
+                            this,
+                            new ShapeChangeQueue(getOwner(), this.origin, this.originOffset.getWorld().getShapeFromWorld(this.origin,
+                                    this.shape.getShape())));
+        }
         this.getOwner().addPending(this);
     }
 
@@ -110,11 +117,13 @@ public class ShapeChangeQueue extends ChangeQueue
         {
             this.position = this.shape.getHeight() - 1;
             this.state = ExecutionState.BREAKABLE;
+            this.ticks = 0;
         }
         if (this.state == ExecutionState.BREAKABLE)
         {
             for (; this.position >= 0 && count < next; this.position--)
             {
+                int subcount = 0;
                 int oy = (int) this.position + this.originOffset.getFlooredY();
                 for (int x = 0; x < this.shape.getWidth(); x++)
                 {
@@ -128,23 +137,28 @@ public class ShapeChangeQueue extends ChangeQueue
                             continue;
                         }
                         Material existingMaterial = block.get().getMaterial();
-                        Optional<Material> newMaterial = this.shape.get(x, (int) this.position, z, false);
+                        Optional<Material> newMaterial = this.shape.getMaterial(x, (int) this.position, z, false);
                         if (newMaterial.isPresent() && (existingMaterial.isLiquid() || existingMaterial.isReliantOnEnvironment()))
                         {
                             getWorld().setBlock(newMaterial.get(), x + this.originOffset.getFlooredX(),
                                     (int) this.position + this.originOffset.getFlooredY(), z + this.originOffset.getFlooredZ());
-                            count++;
+                            subcount++;
                         }
                     }
+                    count += Math.max(next / 10, subcount);
                 }
+                System.out.println(String.format("Operating on breakable blocks %d out of %d", this.shape.getHeight() - 1 - this.position,
+                        this.shape.getHeight() - 1));
             }
             if (this.position < 0)
             {
+                this.ticks = 0;
                 this.position = 0;
                 this.state = ExecutionState.INCREMENTAL;
             }
         } else if (this.state == ExecutionState.INCREMENTAL)
         {
+            this.ticks++;
             // Gunsmith.getLogger().info("Position at " + this.position);
             for (; this.position < this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength() && count < next; this.position++)
             {
@@ -159,7 +173,7 @@ public class ShapeChangeQueue extends ChangeQueue
                     continue;
                 }
                 Material existingMaterial = block.get().getMaterial();
-                Optional<Material> newMaterial = this.shape.get(x, y, z, false);
+                Optional<Material> newMaterial = this.shape.getMaterial(x, y, z, false);
                 if (newMaterial.isPresent() && !(existingMaterial.isLiquid() || existingMaterial.isReliantOnEnvironment()))
                 {
                     count++;
@@ -169,7 +183,13 @@ public class ShapeChangeQueue extends ChangeQueue
             }
             if (this.position == this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength())
             {
+                getOwner().sendMessage("Finished %d changes.", this.position);
                 this.state = ExecutionState.DONE;
+            } else if (this.ticks > 10)
+            {
+                this.ticks = 0;
+                getOwner().sendMessage("Performed %d out of %d changes.", this.position,
+                        this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength());
             }
         }
         return count;

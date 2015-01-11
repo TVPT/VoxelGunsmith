@@ -27,10 +27,11 @@ import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
+import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.shape.MaterialShape;
-import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.shape.SingleMaterialShape;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
 /**
@@ -66,7 +67,7 @@ public class ShapeMaterialSetNode extends Node
         Location l = this.target.get(state);
         Material m = this.material.get(state);
         Player p = state.getVars().<Player>get("__PLAYER__", Player.class).get();
-        MaterialShape ms = new MaterialShape(s, m);
+        MaterialShape ms = new SingleMaterialShape(s, m);
         new ShapeChangeQueue(p, l, ms).flush();
     }
 

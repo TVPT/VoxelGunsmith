@@ -30,9 +30,9 @@ import com.google.common.collect.Lists;
 import com.thevoxelbox.vsl.node.Node;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.api.world.Chunk;
 import com.voxelplugineering.voxelsniper.api.world.Location;
-import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3d;
 
 /**

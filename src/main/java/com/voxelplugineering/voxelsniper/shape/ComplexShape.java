@@ -28,12 +28,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * Represent a 3-d voxel shape.
  */
-public class Shape
+public class ComplexShape implements Shape
 {
 
     /**
@@ -64,7 +65,7 @@ public class Shape
      * @param height the height
      * @param length the length
      */
-    public Shape(int width, int height, int length)
+    public ComplexShape(int width, int height, int length)
     {
         this(width, height, length, 0, 0, 0);
     }
@@ -79,7 +80,7 @@ public class Shape
      * @param oy the origin y position
      * @param oz the origin z position
      */
-    public Shape(int width, int height, int length, int ox, int oy, int oz)
+    public ComplexShape(int width, int height, int length, int ox, int oy, int oz)
     {
         this.shape = new byte[width][length][height / 8 + 1];
         this.width = width;
@@ -96,13 +97,40 @@ public class Shape
      * @param length the length
      * @param origin the origin
      */
-    public Shape(int width, int height, int length, Vector3i origin)
+    public ComplexShape(int width, int height, int length, Vector3i origin)
     {
         this.shape = new byte[width][length][height / 8 + 1];
         this.width = width;
         this.height = height;
         this.length = length;
         this.origin = origin;
+    }
+
+    /**
+     * Creates a new {@link ComplexShape} initialized with the given shape.
+     * 
+     * @param shape The shape to mirror
+     */
+    public ComplexShape(Shape shape)
+    {
+        this.shape = new byte[shape.getWidth()][shape.getLength()][shape.getHeight() / 8 + 1];
+        this.width = shape.getWidth();
+        this.height = shape.getHeight();
+        this.length = shape.getLength();
+        this.origin = shape.getOrigin();
+        for (int x = 0; x < shape.getWidth(); x++)
+        {
+            for (int y = 0; y < shape.getHeight(); y++)
+            {
+                for (int z = 0; z < shape.getLength(); z++)
+                {
+                    if (shape.get(x, y, z, false))
+                    {
+                        set(x, y, z, false);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -322,7 +350,7 @@ public class Shape
      * 
      * @param other the shape to match with
      */
-    protected void matchSize(Shape other)
+    protected void matchSize(ComplexShape other)
     {
         checkNotNull(other, "Cannot match size with a null shape.");
         int dx = (other.origin.getX() - this.origin.getX());
@@ -337,7 +365,7 @@ public class Shape
      * 
      * @param s the shape to add
      */
-    public void add(Shape s)
+    public void add(ComplexShape s)
     {
         checkNotNull(s, "Cannot operate with a null shape.");
         matchSize(s);
@@ -359,7 +387,7 @@ public class Shape
      * 
      * @param s the shape to subtract from this shape
      */
-    public void subtract(Shape s)
+    public void subtract(ComplexShape s)
     {
         checkNotNull(s, "Cannot operate with a null shape.");
         matchSize(s);
@@ -381,7 +409,7 @@ public class Shape
      * 
      * @param s the shape to intersect with
      */
-    public void intersect(Shape s)
+    public void intersect(ComplexShape s)
     {
         checkNotNull(s, "Cannot operate with a null shape.");
         matchSize(s);
@@ -402,7 +430,7 @@ public class Shape
      * 
      * @param s the shape to xor against
      */
-    public void xor(Shape s)
+    public void xor(ComplexShape s)
     {
         checkNotNull(s, "Cannot operate with a null shape.");
         matchSize(s);
@@ -489,9 +517,9 @@ public class Shape
      * @return the duplicate shape
      */
     @Override
-    public Shape clone()
+    public ComplexShape clone()
     {
-        Shape newShape = new Shape(this.width, this.height, this.length, this.origin);
+        ComplexShape newShape = new ComplexShape(this.width, this.height, this.length, this.origin);
         for (int x = 0; x < this.width; x++)
         {
             for (int y = 0; y < this.height; y++)

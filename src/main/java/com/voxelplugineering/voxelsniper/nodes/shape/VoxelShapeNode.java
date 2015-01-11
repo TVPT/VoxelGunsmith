@@ -25,7 +25,8 @@ package com.voxelplugineering.voxelsniper.nodes.shape;
 
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.shape.ShapeFactory;
+import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * Creates a square shape with a side length of radius*2+1.
@@ -52,6 +53,7 @@ public class VoxelShapeNode extends ShapeNode
     @Override
     public void exec(RuntimeState state)
     {
-        this.shape.set(ShapeFactory.createVoxel(this.radius.get(state)), state.getUUID());
+        int rad = (int) Math.floor(this.radius.get(state));
+        this.shape.set(new CuboidShape(rad * 2 + 1, rad * 2 + 1, rad * 2 + 1, new Vector3i(rad, rad, rad)), state.getUUID());
     }
 }

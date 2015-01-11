@@ -28,7 +28,7 @@ import com.voxelplugineering.voxelsniper.util.Direction;
 /**
  * A Factory for creating standard shapes.
  */
-public class ShapeFactory
+public class PrimativeComplexShapeFactory
 {
 
     /**
@@ -37,7 +37,7 @@ public class ShapeFactory
      * @param radius the radius
      * @return the new shape
      */
-    public static Shape createVoxel(double radius)
+    public static ComplexShape createVoxel(double radius)
     {
         return createCuboid(radius, radius, radius);
     }
@@ -49,7 +49,7 @@ public class ShapeFactory
      * @param direction the direction
      * @return the new shape
      */
-    public static Shape createVoxelDisc(double radius, Direction direction)
+    public static ComplexShape createVoxelDisc(double radius, Direction direction)
     {
         if (direction == Direction.EAST || direction == Direction.WEST) // x-axis
         {
@@ -73,10 +73,10 @@ public class ShapeFactory
      * @param rz the z-axis radius
      * @return the new shape
      */
-    public static Shape createCuboid(double rx, double ry, double rz)
+    public static ComplexShape createCuboid(double rx, double ry, double rz)
     {
-        Shape s =
-                new Shape((int) Math.floor(rx) * 2 + 1, (int) Math.floor(ry) * 2 + 1, (int) Math.floor(rz) * 2 + 1, (int) Math.floor(rx),
+        ComplexShape s =
+                new ComplexShape((int) Math.floor(rx) * 2 + 1, (int) Math.floor(ry) * 2 + 1, (int) Math.floor(rz) * 2 + 1, (int) Math.floor(rx),
                         (int) Math.floor(ry), (int) Math.floor(rz));
         s.invert();
         return s;
@@ -90,10 +90,10 @@ public class ShapeFactory
      * @param rz the z-axis radius
      * @return the new shape
      */
-    public static Shape createEllipsoid(double rx, double ry, double rz)
+    public static ComplexShape createEllipsoid(double rx, double ry, double rz)
     {
-        Shape s =
-                new Shape((int) Math.ceil(rx) * 2 + 1, (int) Math.ceil(ry) * 2 + 1, (int) Math.ceil(rz) * 2 + 1, (int) Math.ceil(rx),
+        ComplexShape s =
+                new ComplexShape((int) Math.ceil(rx) * 2 + 1, (int) Math.ceil(ry) * 2 + 1, (int) Math.ceil(rz) * 2 + 1, (int) Math.ceil(rx),
                         (int) Math.ceil(ry), (int) Math.ceil(rz));
         s.set((int) Math.ceil(rx), (int) Math.ceil(ry), (int) Math.ceil(rz), false);
         for (double x = 0; x <= rx; x++)
@@ -135,7 +135,7 @@ public class ShapeFactory
      * @param r the radius
      * @return the new shape
      */
-    public static Shape createSphere(double r)
+    public static ComplexShape createSphere(double r)
     {
         return createEllipsoid(r, r, r);
     }
@@ -151,12 +151,12 @@ public class ShapeFactory
      * @param direction the direction axis
      * @return the new shape
      */
-    public static Shape createEllipticalCylinder(double rx, double ry, int height, Direction direction)
+    public static ComplexShape createEllipticalCylinder(double rx, double ry, int height, Direction direction)
     {
-        Shape s;
+        ComplexShape s;
         if (direction == Direction.EAST || direction == Direction.WEST) // x-axis
         {
-            s = new Shape(height, (int) Math.ceil(rx) * 2 + 1, (int) Math.ceil(ry) * 2 + 1, 0, (int) Math.ceil(rx), (int) Math.ceil(ry));
+            s = new ComplexShape(height, (int) Math.ceil(rx) * 2 + 1, (int) Math.ceil(ry) * 2 + 1, 0, (int) Math.ceil(rx), (int) Math.ceil(ry));
             s.set((int) Math.ceil(rx), (int) Math.ceil(ry), 0, false);
             for (double x = 0; x <= rx; x++)
             {
@@ -183,7 +183,7 @@ public class ShapeFactory
             }
         } else if (direction == Direction.NORTH || direction == Direction.SOUTH) // z-axis
         {
-            s = new Shape((int) Math.ceil(rx) * 2 + 1, (int) Math.ceil(ry) * 2 + 1, height, (int) Math.ceil(rx), (int) Math.ceil(ry), 0);
+            s = new ComplexShape((int) Math.ceil(rx) * 2 + 1, (int) Math.ceil(ry) * 2 + 1, height, (int) Math.ceil(rx), (int) Math.ceil(ry), 0);
             s.set((int) Math.ceil(rx), 0, (int) Math.ceil(ry), false);
             for (double x = 0; x <= rx; x++)
             {
@@ -211,7 +211,7 @@ public class ShapeFactory
         } else
         // y-axis default
         {
-            s = new Shape((int) Math.ceil(rx) * 2 + 1, height, (int) Math.ceil(ry) * 2 + 1, (int) Math.ceil(rx), 0, (int) Math.ceil(ry));
+            s = new ComplexShape((int) Math.ceil(rx) * 2 + 1, height, (int) Math.ceil(ry) * 2 + 1, (int) Math.ceil(rx), 0, (int) Math.ceil(ry));
             s.set((int) Math.ceil(rx), 0, (int) Math.ceil(ry), false);
             for (double x = 0; x <= rx; x++)
             {
@@ -248,7 +248,7 @@ public class ShapeFactory
      * @param direction the direction
      * @return the new shape
      */
-    public static Shape createCylinder(double radius, int height, Direction direction)
+    public static ComplexShape createCylinder(double radius, int height, Direction direction)
     {
         return createEllipticalCylinder(radius, radius, height, direction);
     }
@@ -260,7 +260,7 @@ public class ShapeFactory
      * @param direction the direction
      * @return the new shape
      */
-    public static Shape createDisc(double radius, Direction direction)
+    public static ComplexShape createDisc(double radius, Direction direction)
     {
         return createEllipticalCylinder(radius, radius, 1, direction);
     }
@@ -275,7 +275,7 @@ public class ShapeFactory
      * @param direction the direction
      * @return the new shape
      */
-    public static Shape createEllipse(double rx, double ry, Direction direction)
+    public static ComplexShape createEllipse(double rx, double ry, Direction direction)
     {
         return createEllipticalCylinder(rx, ry, 1, direction);
     }

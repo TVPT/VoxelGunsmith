@@ -26,8 +26,8 @@ package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.world.Location;
-import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
 /**
