@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper.world.queue;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
@@ -114,14 +115,19 @@ public class ShapeChangeQueue extends ChangeQueue
         {
             for (; this.position >= 0 && count < next; this.position--)
             {
+                int oy = (int) this.position + this.originOffset.getFlooredY();
                 for (int x = 0; x < this.shape.getWidth(); x++)
                 {
+                    int ox = x + this.originOffset.getFlooredX();
                     for (int z = 0; z < this.shape.getLength(); z++)
                     {
-                        Material existingMaterial =
-                                getWorld()
-                                        .getBlock(x + this.originOffset.getFlooredX(), (int) this.position + this.originOffset.getFlooredY(),
-                                                z + this.originOffset.getFlooredZ()).get().getMaterial();
+                        int oz = z + this.originOffset.getFlooredZ();
+                        Optional<Block> block = getWorld().getBlock(ox, oy, oz);
+                        if (!block.isPresent())
+                        {
+                            continue;
+                        }
+                        Material existingMaterial = block.get().getMaterial();
                         Optional<Material> newMaterial = this.shape.get(x, (int) this.position, z, false);
                         if (newMaterial.isPresent() && (existingMaterial.isLiquid() || existingMaterial.isReliantOnEnvironment()))
                         {
@@ -145,10 +151,14 @@ public class ShapeChangeQueue extends ChangeQueue
                 int z = (int) (this.position / (this.shape.getWidth() * this.shape.getHeight()));
                 int y = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) / this.shape.getWidth());
                 int x = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) % this.shape.getWidth());
-                Material existingMaterial =
-                        getWorld()
-                                .getBlock(x + this.originOffset.getFlooredX(), y + this.originOffset.getFlooredY(),
-                                        z + this.originOffset.getFlooredZ()).get().getMaterial();
+                Optional<Block> block =
+                        getWorld().getBlock(x + this.originOffset.getFlooredX(), y + this.originOffset.getFlooredY(),
+                                z + this.originOffset.getFlooredZ());
+                if (!block.isPresent())
+                {
+                    continue;
+                }
+                Material existingMaterial = block.get().getMaterial();
                 Optional<Material> newMaterial = this.shape.get(x, y, z, false);
                 if (newMaterial.isPresent() && !(existingMaterial.isLiquid() || existingMaterial.isReliantOnEnvironment()))
                 {

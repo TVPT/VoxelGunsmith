@@ -28,6 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.world.Block;
@@ -266,15 +267,6 @@ public class RayTrace
         this.rotYSin = Math.sin(Math.toRadians(this.rotY));
         this.rotXCos = Math.cos(Math.toRadians(this.rotX));
         this.rotXSin = Math.sin(Math.toRadians(this.rotX));
-        /*Gunsmith.getLogger().debug("RayTrace init:");
-        Gunsmith.getLogger().debug(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", 
-                length, range, currentX, currentY, currentZ, 
-                targetX, targetY, targetZ, lastX, lastY, lastZ, rotX, rotY, rotXSin, rotXCos, rotYSin, rotYCos));
-        Gunsmith.getLogger().debug("Traversal Blocks: ");
-        for(CommonMaterial<?> t: this.traversalBlocks)
-        {
-            Gunsmith.getLogger().debug(t.toString() + " ");
-        }*/
     }
 
     /**
@@ -301,7 +293,7 @@ public class RayTrace
         this.lastX = this.targetX;
         this.lastY = this.targetY;
         this.lastZ = this.targetZ;
-
+        //step until we find a new block in the line
         do
         {
             this.length += this.step;
@@ -316,25 +308,30 @@ public class RayTrace
 
         } while ((this.length <= this.range) && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
 
-        /*Gunsmith.getLogger().debug("RayTrace step:");
-        Gunsmith.getLogger().debug(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", 
-                length, range, currentX, currentY, currentZ, 
-                targetX, targetY, targetZ, lastX, lastY, lastZ, rotX, rotY, rotXSin, rotXCos, rotYSin, rotYCos));*/
-        if (!this.traversalBlocks.contains(this.world.getBlock(this.targetX, this.targetY, this.targetZ).get().getMaterial()))
+        Optional<Block> next = this.world.getBlock(this.targetX, this.targetY, this.targetZ);
+        if (!next.isPresent())
         {
-            //Gunsmith.getLogger().debug("Reached non-traversal block, ending trace. Block reached: " + this.world.getBlockAt(this.targetX, 
-            //this.targetY, this.targetZ).getMaterial().toString());
+            //Abort out of bounds, or something wrong with area of world
+            this.targetX = this.lastX;
+            this.targetY = this.lastY;
+            this.targetZ = this.lastZ;
+            return;
+        }
+        if (!this.traversalBlocks.contains(next.get().getMaterial()))
+        {
+            //Abort - found non-traversal block
             return;
         }
 
         if (this.length > this.range || this.targetY > this.maxWorldY || this.targetY < this.minWorldY)
         {
-            //Gunsmith.getLogger().debug("Trace passed out of bounds. Setting target to last");
+            //Abort - Out of bounds
             this.targetX = this.lastX;
             this.targetY = this.lastY;
             this.targetZ = this.lastZ;
         } else
         {
+            //continue
             step();
         }
     }
@@ -391,9 +388,5 @@ public class RayTrace
                         && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
             }
         }
-        /*Gunsmith.getLogger().debug("RayTrace OutOfWorld:");
-        Gunsmith.getLogger().debug(String.format("%3.2f %3.2f c(%3.2f %3.2f %3.2f) l(%d %d %d) t(%d %d %d) %3.2f %3.2f %3.2f %3.2f %3.2f %3.2f", 
-                length, range, currentX, currentY, currentZ, 
-                targetX, targetY, targetZ, lastX, lastY, lastZ, rotX, rotY, rotXSin, rotXCos, rotYSin, rotYCos));*/
     }
 }
