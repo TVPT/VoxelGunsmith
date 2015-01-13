@@ -25,8 +25,6 @@ package com.voxelplugineering.voxelsniper.shape;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Arrays;
-
 import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -38,7 +36,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * A {@link MaterialShape} which a material for each point in the shape.
  */
-public class ComplexMaterialShape implements MaterialShape
+public class MaskedMaterialShape implements MaterialShape
 {
     private short nextId = 1;
     private BiMap<Short, Material> materialDictionary;
@@ -53,7 +51,7 @@ public class ComplexMaterialShape implements MaterialShape
      * @param shape the shape
      * @param defaultMaterial the default material for the shape
      */
-    public ComplexMaterialShape(Shape shape, Material defaultMaterial)
+    public MaskedMaterialShape(Shape shape, Material defaultMaterial)
     {
         checkNotNull(defaultMaterial, "Default material cannot be null!");
         this.shape = new ComplexShape(shape);
@@ -86,17 +84,11 @@ public class ComplexMaterialShape implements MaterialShape
      */
     public Optional<Material> getMaterial(int x, int y, int z, boolean relative)
     {
-        if (this.getShape().get(x, y, z, relative))
+        if (this.materials[getIndex(x, y, z)] <= -1)
         {
-            if (this.materials[getIndex(x, y, z)] == -1)
-            {
-                this.materials[getIndex(x, y, z)] = 0; // the default material
-            }
-            return Optional.<Material>of(this.materialDictionary.get(this.materials[getIndex(x, y, z)]));
-        } else
-        {
-            return Optional.absent();
+            this.materials[getIndex(x, y, z)] = 0; // the default material
         }
+        return Optional.<Material>of(this.materialDictionary.get(this.materials[getIndex(x, y, z)]));
     }
 
     /**
@@ -116,6 +108,10 @@ public class ComplexMaterialShape implements MaterialShape
             x += getShape().getOrigin().getX();
             y += getShape().getOrigin().getY();
             z += getShape().getOrigin().getZ();
+        }
+        if(!this.shape.get(x, y, z, false))
+        {
+            return;
         }
         if (x >= getShape().getWidth() || x < 0 || y >= getShape().getHeight() || y < 0 || z >= getShape().getLength() || z < 0)
         {
@@ -142,6 +138,10 @@ public class ComplexMaterialShape implements MaterialShape
             y += getShape().getOrigin().getY();
             z += getShape().getOrigin().getZ();
         }
+        if(!this.shape.get(x, y, z, false))
+        {
+            return;
+        }
         if (x >= getShape().getWidth() || x < 0 || y >= getShape().getHeight() || y < 0 || z >= getShape().getLength() || z < 0)
         {
             throw new ArrayIndexOutOfBoundsException("Tried to unset material outside of the shape. (" + x + ", " + y + ", " + z + ")");
@@ -167,28 +167,10 @@ public class ComplexMaterialShape implements MaterialShape
                     if (this.getShape().get(x, y, z, false))
                     {
                         this.materials[getIndex(x, y, z)] = id;
-                    } else
-                    {
-                        this.materials[getIndex(x, y, z)] = -1;
                     }
                 }
             }
         }
-    }
-
-    /**
-     * Fills the entire horizontal layers between y and height with the given material.
-     * 
-     * @param material The material
-     * @param y The starting y layer
-     * @param height The height of the area to fill
-     */
-    public void setHorizontalLayer(Material material, int y, int height)
-    {
-        short id = this.getOrRegisterMaterial(material);
-        int startIndex = getIndex(0, y, 0);
-        int endIndex = getIndex(this.shape.getWidth() - 1, y + height - 1, this.shape.getLength() - 1) + 1;
-        Arrays.fill(this.materials, startIndex, endIndex, id);
     }
 
     /**

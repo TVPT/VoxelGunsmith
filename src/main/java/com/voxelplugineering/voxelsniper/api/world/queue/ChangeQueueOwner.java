@@ -24,12 +24,12 @@
 package com.voxelplugineering.voxelsniper.api.world.queue;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.world.queue.ChangeQueue;
+import com.voxelplugineering.voxelsniper.api.entity.MessageReceiver;
 
 /**
  * An interface for anything which may be the owner of a change queue.
  */
-public interface ChangeQueueOwner
+public interface ChangeQueueOwner extends MessageReceiver
 {
 
     /**
@@ -54,18 +54,18 @@ public interface ChangeQueueOwner
     boolean hasPendingChanges();
 
     /**
-     * Returns the next pending {@link ChangeQueue}.
+     * Returns the next pending {@link WorldChange}.
      * 
      * @return the next change queue
      */
-    Optional<ChangeQueue> getNextPendingChange();
+    Optional<WorldChange> getNextPendingChange();
 
     /**
      * Adds the given change queue to the pending changes queue.
      * 
-     * @param blockChangeQueue the new {@link ChangeQueue}, cannot be null
+     * @param blockChangeQueue the new {@link WorldChange}, cannot be null
      */
-    void addPending(ChangeQueue blockChangeQueue);
+    void addPending(WorldChange blockChangeQueue);
 
     /**
      * Removes the next pending change if it has finished.
@@ -78,4 +78,12 @@ public interface ChangeQueueOwner
      * @return The undo history manager
      */
     UndoQueue getUndoHistory();
+
+    /**
+     * Adds the given pending change to the queue. And the inverse to the history buffer.
+     * 
+     * @param change The change
+     * @param undo The undo
+     */
+    void buildChange(WorldChange change, WorldChange undo);
 }

@@ -21,39 +21,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.nodes.shape;
+package com.voxelplugineering.voxelsniper.api.world.queue;
 
-import com.thevoxelbox.vsl.util.Provider;
-import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
-import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.api.shape.Shape;
+import com.voxelplugineering.voxelsniper.api.world.Location;
 
 /**
- * Creates a square disc with with a side length of radius*2+1
+ * A change against a world.
  */
-public class VoxelDiscShapeNode extends ShapeNode
+public interface WorldChange
 {
 
-    private final Provider<Double> radius;
-
     /**
-     * Creates a new node.
+     * Gets if the change is finished.
      * 
-     * @param radius The radius of the voxelDisc
+     * @return Is finished
      */
-    public VoxelDiscShapeNode(Provider<Double> radius)
-    {
-        super();
-        this.radius = radius;
-    }
+    boolean isFinished();
 
     /**
-     * {@inheritDoc}
+     * Performs the next {@code allocation} changes.
+     * 
+     * @param allocation The allocation of changes to perform
+     * @return The actual number of changes performed
      */
-    @Override
-    public void exec(RuntimeState state)
-    {
-        int rad = (int) Math.floor(this.radius.get(state));
-        this.shape.set(new CuboidShape(rad * 2 + 1, 1, rad * 2 + 1, new Vector3i(rad, 0, rad)), state.getUUID());
-    }
+    int perform(int allocation);
+
+    /**
+     * Resets the progress of this change queue.
+     */
+    void reset();
+
+    /**
+     * Gets the origin of this change.
+     * 
+     * @return The origin
+     */
+    Location getOrigin();
+
+    /**
+     * Gets the shape of this change.
+     * 
+     * @return The shape
+     */
+    Shape getShape();
+
 }

@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper.world.queue;
 
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.world.queue.WorldChange;
 
 /**
  * A task for executing pending change queues.
@@ -69,15 +70,16 @@ public class ChangeQueueTask implements Runnable
             int actual = 0;
             while (p.hasPendingChanges() && actual < allocation)
             {
+                WorldChange change = p.getNextPendingChange().get();
                 try
                 {
-                    actual += p.getNextPendingChange().get().perform(allocation);
+                    actual += change.perform(allocation);
                 } catch (Exception e)
                 {
                     Gunsmith.getLogger().error(e, "Error while performing change operation!");
                     p.clearNextPending();
                 }
-                if (p.getNextPendingChange().get().isFinished())
+                if (change.isFinished())
                 {
                     p.clearNextPending();
                 }

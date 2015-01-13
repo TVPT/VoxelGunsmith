@@ -38,7 +38,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * A {@link MaterialShape} which a material for each point in the shape.
  */
-public class ComplexMaterialShape implements MaterialShape
+public class HybridMaterialShape implements MaterialShape
 {
     private short nextId = 1;
     private BiMap<Short, Material> materialDictionary;
@@ -46,6 +46,8 @@ public class ComplexMaterialShape implements MaterialShape
     private short[] materials;
     private Shape shape;
     private Material defaultMaterial;
+    private short simpleMaterial;
+    private boolean isComplex = false;
 
     /**
      * Creates a new {@link MaterialShape}.
@@ -53,13 +55,13 @@ public class ComplexMaterialShape implements MaterialShape
      * @param shape the shape
      * @param defaultMaterial the default material for the shape
      */
-    public ComplexMaterialShape(Shape shape, Material defaultMaterial)
+    public HybridMaterialShape(Shape shape, Material defaultMaterial)
     {
         checkNotNull(defaultMaterial, "Default material cannot be null!");
         this.shape = new ComplexShape(shape);
         this.materialDictionary = HashBiMap.create();
         this.inverseDictionary = this.materialDictionary.inverse();
-        this.materials = new short[shape.getWidth() * shape.getLength() * shape.getHeight()];
+        this.materials = null;
         this.materialDictionary.put((short) 0, defaultMaterial);
         this.flood(defaultMaterial);
         this.defaultMaterial = defaultMaterial;
@@ -88,6 +90,10 @@ public class ComplexMaterialShape implements MaterialShape
     {
         if (this.getShape().get(x, y, z, relative))
         {
+            if (!this.isComplex || this.materials == null)
+            {
+                return Optional.<Material>of(this.materialDictionary.get(this.simpleMaterial));
+            }
             if (this.materials[getIndex(x, y, z)] == -1)
             {
                 this.materials[getIndex(x, y, z)] = 0; // the default material
@@ -121,6 +127,7 @@ public class ComplexMaterialShape implements MaterialShape
         {
             throw new ArrayIndexOutOfBoundsException("Tried to set material outside of the shape. (" + x + ", " + y + ", " + z + ")");
         }
+        complexify();
         short id = this.getOrRegisterMaterial(material);
         this.materials[getIndex(x, y, z)] = id;
         getShape().set(x, y, z, false);
@@ -146,6 +153,7 @@ public class ComplexMaterialShape implements MaterialShape
         {
             throw new ArrayIndexOutOfBoundsException("Tried to unset material outside of the shape. (" + x + ", " + y + ", " + z + ")");
         }
+        complexify();
         this.materials[getIndex(x, y, z)] = -1;
         getShape().unset(x, y, z, false);
     }
@@ -158,22 +166,9 @@ public class ComplexMaterialShape implements MaterialShape
     public void flood(Material material)
     {
         short id = this.getOrRegisterMaterial(material);
-        for (int x = 0; x < getShape().getWidth(); x++)
-        {
-            for (int y = 0; y < getShape().getHeight(); y++)
-            {
-                for (int z = 0; z < getShape().getLength(); z++)
-                {
-                    if (this.getShape().get(x, y, z, false))
-                    {
-                        this.materials[getIndex(x, y, z)] = id;
-                    } else
-                    {
-                        this.materials[getIndex(x, y, z)] = -1;
-                    }
-                }
-            }
-        }
+        this.isComplex = false;
+        this.materials = null;
+        this.simpleMaterial = id;
     }
 
     /**
@@ -185,6 +180,7 @@ public class ComplexMaterialShape implements MaterialShape
      */
     public void setHorizontalLayer(Material material, int y, int height)
     {
+        complexify();
         short id = this.getOrRegisterMaterial(material);
         int startIndex = getIndex(0, y, 0);
         int endIndex = getIndex(this.shape.getWidth() - 1, y + height - 1, this.shape.getLength() - 1) + 1;
@@ -290,6 +286,7 @@ public class ComplexMaterialShape implements MaterialShape
     @Override
     public void set(int x, int y, int z, boolean relative)
     {
+        complexify();
         this.shape.set(x, y, z, relative);
     }
 
@@ -309,6 +306,7 @@ public class ComplexMaterialShape implements MaterialShape
     @Override
     public void unset(int x, int y, int z, boolean relative)
     {
+        complexify();
         this.shape.unset(x, y, z, relative);
     }
 
@@ -319,6 +317,23 @@ public class ComplexMaterialShape implements MaterialShape
     public int getVolume()
     {
         return this.shape.getVolume();
+    }
+
+    private void complexify()
+    {
+        if (this.isComplex)
+        {
+            return;
+        }
+        this.isComplex = true;
+        if (this.materials != null)
+        {
+            this.materials = new short[this.shape.getVolume()];
+        }
+        if (!(this.shape instanceof ComplexShape))
+        {
+            this.shape = new ComplexShape(this.shape);
+        }
     }
 
 }

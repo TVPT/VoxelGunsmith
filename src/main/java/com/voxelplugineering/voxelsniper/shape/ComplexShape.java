@@ -546,4 +546,13 @@ public class ComplexShape implements Shape
     {
         return "Shape (" + getWidth() + "x" + getHeight() + "x" + getLength() + ") origin: " + this.origin.toString();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getVolume()
+    {
+        return this.width * this.height * this.length;
+    }
 }

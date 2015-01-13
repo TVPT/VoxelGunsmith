@@ -97,4 +97,11 @@ public interface Shape
      */
     Shape clone();
 
+    /**
+     * Gets the volume of the shape.
+     * 
+     * @return The volume
+     */
+    int getVolume();
+
 }

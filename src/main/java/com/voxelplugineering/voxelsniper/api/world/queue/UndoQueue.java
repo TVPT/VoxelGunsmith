@@ -23,8 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.api.world.queue;
 
-import com.voxelplugineering.voxelsniper.world.queue.ChangeQueue;
-
 /**
  * A manager for the undo history of a {@link ChangeQueueOwner}.
  */
@@ -37,7 +35,7 @@ public interface UndoQueue
      * @param change The change
      * @param reverse The reverse change
      */
-    void addHistory(ChangeQueue change, ChangeQueue reverse);
+    void addHistory(WorldChange change, WorldChange reverse);
 
     /**
      * Attempts to undo the last n changes.

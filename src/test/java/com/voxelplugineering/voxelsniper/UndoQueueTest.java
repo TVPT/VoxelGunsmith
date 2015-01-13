@@ -23,15 +23,15 @@
  */
 package com.voxelplugineering.voxelsniper;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.voxelplugineering.voxelsniper.api.world.queue.ChangeQueueOwner;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
-import com.voxelplugineering.voxelsniper.world.queue.ChangeQueue;
+import com.voxelplugineering.voxelsniper.api.world.queue.WorldChange;
 import com.voxelplugineering.voxelsniper.world.queue.CommonUndoQueue;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * A set of tests for the {@link CommonUndoQueue}.
@@ -46,8 +46,8 @@ public class UndoQueueTest
     public void testUndo()
     {
         ChangeQueueOwner owner = Mockito.mock(ChangeQueueOwner.class);
-        ChangeQueue change = Mockito.mock(ChangeQueue.class);
-        ChangeQueue reverse = Mockito.mock(ChangeQueue.class);
+        WorldChange change = Mockito.mock(WorldChange.class);
+        WorldChange reverse = Mockito.mock(WorldChange.class);
         UndoQueue queue = new CommonUndoQueue(owner);
         queue.addHistory(change, reverse);
         assertEquals(1, queue.undo(1));
@@ -61,10 +61,10 @@ public class UndoQueueTest
     public void testMultiUndo()
     {
         ChangeQueueOwner owner = Mockito.mock(ChangeQueueOwner.class);
-        ChangeQueue change = Mockito.mock(ChangeQueue.class);
-        ChangeQueue reverse = Mockito.mock(ChangeQueue.class);
-        ChangeQueue change2 = Mockito.mock(ChangeQueue.class);
-        ChangeQueue reverse2 = Mockito.mock(ChangeQueue.class);
+        WorldChange change = Mockito.mock(WorldChange.class);
+        WorldChange reverse = Mockito.mock(WorldChange.class);
+        WorldChange change2 = Mockito.mock(WorldChange.class);
+        WorldChange reverse2 = Mockito.mock(WorldChange.class);
         UndoQueue queue = new CommonUndoQueue(owner);
         queue.addHistory(change, reverse);
         queue.addHistory(change2, reverse2);
@@ -80,10 +80,10 @@ public class UndoQueueTest
     public void testUndoRedo()
     {
         ChangeQueueOwner owner = Mockito.mock(ChangeQueueOwner.class);
-        ChangeQueue change = Mockito.mock(ChangeQueue.class);
-        ChangeQueue reverse = Mockito.mock(ChangeQueue.class);
-        ChangeQueue change2 = Mockito.mock(ChangeQueue.class);
-        ChangeQueue reverse2 = Mockito.mock(ChangeQueue.class);
+        WorldChange change = Mockito.mock(WorldChange.class);
+        WorldChange reverse = Mockito.mock(WorldChange.class);
+        WorldChange change2 = Mockito.mock(WorldChange.class);
+        WorldChange reverse2 = Mockito.mock(WorldChange.class);
         UndoQueue queue = new CommonUndoQueue(owner);
         queue.addHistory(change, reverse);
         queue.addHistory(change2, reverse2);
@@ -104,8 +104,8 @@ public class UndoQueueTest
         queue.setMaxBufferSize(3);
         for (int i = 0; i < 4; i++)
         {
-            ChangeQueue change = Mockito.mock(ChangeQueue.class);
-            ChangeQueue reverse = Mockito.mock(ChangeQueue.class);
+            WorldChange change = Mockito.mock(WorldChange.class);
+            WorldChange reverse = Mockito.mock(WorldChange.class);
             queue.addHistory(change, reverse);
         }
         assertEquals(3, queue.size());
@@ -118,8 +118,8 @@ public class UndoQueueTest
     public void testTooManyUndos()
     {
         ChangeQueueOwner owner = Mockito.mock(ChangeQueueOwner.class);
-        ChangeQueue change = Mockito.mock(ChangeQueue.class);
-        ChangeQueue reverse = Mockito.mock(ChangeQueue.class);
+        WorldChange change = Mockito.mock(WorldChange.class);
+        WorldChange reverse = Mockito.mock(WorldChange.class);
         UndoQueue queue = new CommonUndoQueue(owner);
         queue.addHistory(change, reverse);
         assertEquals(1, queue.undo(1613));
@@ -133,10 +133,10 @@ public class UndoQueueTest
     public void testTooManyRedos()
     {
         ChangeQueueOwner owner = Mockito.mock(ChangeQueueOwner.class);
-        ChangeQueue change = Mockito.mock(ChangeQueue.class);
-        ChangeQueue reverse = Mockito.mock(ChangeQueue.class);
-        ChangeQueue change2 = Mockito.mock(ChangeQueue.class);
-        ChangeQueue reverse2 = Mockito.mock(ChangeQueue.class);
+        WorldChange change = Mockito.mock(WorldChange.class);
+        WorldChange reverse = Mockito.mock(WorldChange.class);
+        WorldChange change2 = Mockito.mock(WorldChange.class);
+        WorldChange reverse2 = Mockito.mock(WorldChange.class);
         UndoQueue queue = new CommonUndoQueue(owner);
         queue.addHistory(change, reverse);
         queue.addHistory(change2, reverse2);
@@ -153,8 +153,8 @@ public class UndoQueueTest
     public void testClear()
     {
         ChangeQueueOwner owner = Mockito.mock(ChangeQueueOwner.class);
-        ChangeQueue change = Mockito.mock(ChangeQueue.class);
-        ChangeQueue reverse = Mockito.mock(ChangeQueue.class);
+        WorldChange change = Mockito.mock(WorldChange.class);
+        WorldChange reverse = Mockito.mock(WorldChange.class);
         UndoQueue queue = new CommonUndoQueue(owner);
         queue.addHistory(change, reverse);
         assertEquals(1, queue.size());
@@ -169,8 +169,8 @@ public class UndoQueueTest
     public void testMovePointerNegative()
     {
         ChangeQueueOwner owner = Mockito.mock(ChangeQueueOwner.class);
-        ChangeQueue change = Mockito.mock(ChangeQueue.class);
-        ChangeQueue reverse = Mockito.mock(ChangeQueue.class);
+        WorldChange change = Mockito.mock(WorldChange.class);
+        WorldChange reverse = Mockito.mock(WorldChange.class);
         UndoQueue queue = new CommonUndoQueue(owner);
         queue.addHistory(change, reverse);
         queue.movePointer(-1);
@@ -185,10 +185,10 @@ public class UndoQueueTest
     public void testMovePointerPositive()
     {
         ChangeQueueOwner owner = Mockito.mock(ChangeQueueOwner.class);
-        ChangeQueue change = Mockito.mock(ChangeQueue.class);
-        ChangeQueue reverse = Mockito.mock(ChangeQueue.class);
-        ChangeQueue change2 = Mockito.mock(ChangeQueue.class);
-        ChangeQueue reverse2 = Mockito.mock(ChangeQueue.class);
+        WorldChange change = Mockito.mock(WorldChange.class);
+        WorldChange reverse = Mockito.mock(WorldChange.class);
+        WorldChange change2 = Mockito.mock(WorldChange.class);
+        WorldChange reverse2 = Mockito.mock(WorldChange.class);
         UndoQueue queue = new CommonUndoQueue(owner);
         queue.addHistory(change, reverse);
         queue.addHistory(change2, reverse2);
@@ -206,10 +206,10 @@ public class UndoQueueTest
     public void testMovePointerPositive2()
     {
         ChangeQueueOwner owner = Mockito.mock(ChangeQueueOwner.class);
-        ChangeQueue change = Mockito.mock(ChangeQueue.class);
-        ChangeQueue reverse = Mockito.mock(ChangeQueue.class);
-        ChangeQueue change2 = Mockito.mock(ChangeQueue.class);
-        ChangeQueue reverse2 = Mockito.mock(ChangeQueue.class);
+        WorldChange change = Mockito.mock(WorldChange.class);
+        WorldChange reverse = Mockito.mock(WorldChange.class);
+        WorldChange change2 = Mockito.mock(WorldChange.class);
+        WorldChange reverse2 = Mockito.mock(WorldChange.class);
         UndoQueue queue = new CommonUndoQueue(owner);
         queue.addHistory(change, reverse);
         queue.addHistory(change2, reverse2);

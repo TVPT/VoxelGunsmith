@@ -27,7 +27,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.regex.Matcher;
@@ -35,6 +34,7 @@ import java.util.regex.Pattern;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Queues;
 import com.thevoxelbox.vsl.VariableScope;
 import com.thevoxelbox.vsl.api.IVariableScope;
 import com.voxelplugineering.voxelsniper.Gunsmith;
@@ -43,10 +43,10 @@ import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
+import com.voxelplugineering.voxelsniper.api.world.queue.WorldChange;
 import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 import com.voxelplugineering.voxelsniper.brushes.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.registry.WeakWrapper;
-import com.voxelplugineering.voxelsniper.world.queue.ChangeQueue;
 import com.voxelplugineering.voxelsniper.world.queue.CommonUndoQueue;
 
 /**
@@ -71,7 +71,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     /**
      * The queue of pending {@link ChangeQueue}s waiting to be processed.
      */
-    private Queue<ChangeQueue> pending;
+    private Queue<WorldChange> pending;
     private AliasHandler personalAliasHandler;
     private Map<String, String> arguments;
     private UndoQueue history;
@@ -89,7 +89,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
         this.brushVariables = new VariableScope();
         this.brushVariables.setCaseSensitive(false);
         this.arguments = Maps.newHashMap();
-        this.pending = new LinkedList<ChangeQueue>();
+        this.pending = Queues.newArrayDeque();
         this.personalAliasHandler = new AliasHandler(this, Gunsmith.getGlobalAliasHandler());
         this.history = new CommonUndoQueue(this);
         resetSettings();
@@ -228,16 +228,16 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
      * {@inheritDoc}
      */
     @Override
-    public Optional<ChangeQueue> getNextPendingChange()
+    public Optional<WorldChange> getNextPendingChange()
     {
-        return (this.pending.isEmpty() ? Optional.<ChangeQueue>absent() : Optional.<ChangeQueue>of(this.pending.peek()));
+        return (this.pending.isEmpty() ? Optional.<WorldChange>absent() : Optional.<WorldChange>of(this.pending.peek()));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void addPending(ChangeQueue queue)
+    public void addPending(WorldChange queue)
     {
         checkNotNull(queue, "ChangeQueue cannot be null");
         queue.reset();
@@ -306,4 +306,18 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
         return this.history;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void buildChange(WorldChange change, WorldChange undo)
+    {
+        change.reset();
+        addPending(change);
+        if (undo != null)
+        {
+            undo.reset();
+            this.history.addHistory(change, undo);
+        }
+    }
 }

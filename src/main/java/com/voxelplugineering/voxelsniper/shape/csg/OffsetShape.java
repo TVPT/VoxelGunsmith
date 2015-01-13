@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.shape.csg;
 
-import com.voxelplugineering.voxelsniper.shape.SingleMaterialShape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
@@ -76,5 +75,14 @@ public abstract class OffsetShape implements CSGShape
      * @return The copy
      */
     public abstract CSGShape clone();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getVolume()
+    {
+        return getWidth() * getHeight() * getLength();
+    }
 
 }

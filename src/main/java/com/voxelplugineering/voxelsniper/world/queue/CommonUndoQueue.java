@@ -27,6 +27,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.voxelplugineering.voxelsniper.api.world.queue.ChangeQueueOwner;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
+import com.voxelplugineering.voxelsniper.api.world.queue.WorldChange;
 
 /**
  * A standard {@link UndoQueue}.
@@ -50,7 +51,7 @@ public class CommonUndoQueue implements UndoQueue
         this.capacity = 30;
     }
 
-    private void init(ChangeQueue change, ChangeQueue reverse)
+    private void init(WorldChange change, WorldChange reverse)
     {
         this.first = this.pointer = new Entry(change, reverse);
     }
@@ -59,7 +60,7 @@ public class CommonUndoQueue implements UndoQueue
      * {@inheritDoc}
      */
     @Override
-    public void addHistory(ChangeQueue change, ChangeQueue reverse)
+    public void addHistory(WorldChange change, WorldChange reverse)
     {
         checkNotNull(change);
         if (this.pointer == null)
@@ -224,10 +225,10 @@ class Entry
 
     Entry next = null;
     Entry last = null;
-    ChangeQueue undo;
-    ChangeQueue redo;
+    WorldChange undo;
+    WorldChange redo;
 
-    public Entry(ChangeQueue r, ChangeQueue u)
+    public Entry(WorldChange r, WorldChange u)
     {
         this.undo = u;
         this.redo = r;

@@ -40,12 +40,14 @@ import com.thevoxelbox.vsl.nodes.vars.ChainedOutputNode;
 import com.thevoxelbox.vsl.nodes.vars.VariableGetNode;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
+import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Chunk;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
+import com.voxelplugineering.voxelsniper.brushes.hard.VoxelBrushPart;
 import com.voxelplugineering.voxelsniper.nodes.block.BlockBreakNode;
 import com.voxelplugineering.voxelsniper.nodes.material.MaterialCompareNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.DiscShapeNode;
@@ -64,8 +66,8 @@ import com.voxelplugineering.voxelsniper.nodes.world.CountOccurrencesNode;
 import com.voxelplugineering.voxelsniper.nodes.world.GetBlockFromLocationNode;
 import com.voxelplugineering.voxelsniper.nodes.world.GetOverlappingChunksNode;
 import com.voxelplugineering.voxelsniper.nodes.world.RefreshChunkNode;
-import com.voxelplugineering.voxelsniper.nodes.world.ShapeMaterialSetNode;
 import com.voxelplugineering.voxelsniper.nodes.world.biome.SetBiomeNode;
+import com.voxelplugineering.voxelsniper.nodes.world.buffer.MaterialShapeFloodNode;
 import com.voxelplugineering.voxelsniper.registry.vsl.ArgumentParsers;
 
 /**
@@ -254,12 +256,7 @@ public class DefaultBrushBuilder
         }
 
         { //Voxel shape brush part
-            VariableGetNode<Double> radius = new VariableGetNode<Double>("brushsize");
-            VoxelShapeNode shape = new VoxelShapeNode(radius.getValue());
-            ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
-
-            BrushNodeGraph brush = new BrushNodeGraph("voxel");
-            brush.setNext(shapeOut);
+            BrushNodeGraph brush = new VoxelBrushPart();
             graphs.put("voxel", brush);
         }
 
@@ -274,16 +271,13 @@ public class DefaultBrushBuilder
         }
 
         { //material set
-            ChainedInputNode<Shape> shapeIn = new ChainedInputNode<Shape>("shape");
+            ChainedInputNode<MaterialShape> shapeIn = new ChainedInputNode<MaterialShape>("shape");
             VariableGetNode<Material> getMaterial = new VariableGetNode<Material>("setmaterial");
-            VariableGetNode<Block> target = new VariableGetNode<Block>("targetblock");
 
-            BlockBreakNode blockBreak = new BlockBreakNode(target.getValue());
-
-            ShapeMaterialSetNode setMaterial = new ShapeMaterialSetNode(shapeIn.getValue(), getMaterial.getValue(), blockBreak.getLocation());
+            MaterialShapeFloodNode flood = new MaterialShapeFloodNode(shapeIn.getValue(), getMaterial.getValue());
 
             BrushNodeGraph brush = new BrushNodeGraph("material");
-            brush.setNext(setMaterial);
+            brush.setNext(flood);
             graphs.put("material", brush);
         }
 

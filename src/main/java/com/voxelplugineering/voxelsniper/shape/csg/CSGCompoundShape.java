@@ -51,7 +51,7 @@ public class CSGCompoundShape extends OffsetShape
         this.a = base;
         this.b = null;
         this.operation = null;
-        this.width = 0;
+        this.width = 0;//TODO
         this.height = 0;
         this.length = 0;
     }

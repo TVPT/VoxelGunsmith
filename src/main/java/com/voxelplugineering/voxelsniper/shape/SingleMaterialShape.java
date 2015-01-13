@@ -168,4 +168,13 @@ public class SingleMaterialShape implements MaterialShape
         return new SingleMaterialShape(this.shape.clone(), this.material);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getVolume()
+    {
+        return this.shape.getVolume();
+    }
+
 }
