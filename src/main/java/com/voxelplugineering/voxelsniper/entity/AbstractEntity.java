@@ -11,6 +11,11 @@ import com.voxelplugineering.voxelsniper.registry.WeakWrapper;
  */
 public abstract class AbstractEntity<T> extends WeakWrapper<T> implements Entity
 {
+    /**
+     * Creates a new AbstractEntity.
+     *
+     * @param value The entity
+     */
     public AbstractEntity(T value)
     {
         super(value);
