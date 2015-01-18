@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.shape.csg;
 
-import com.voxelplugineering.voxelsniper.shape.SingleMaterialShape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**

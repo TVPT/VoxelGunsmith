@@ -25,8 +25,8 @@ package com.voxelplugineering.voxelsniper.world.queue;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.world.World;
+import com.voxelplugineering.voxelsniper.api.world.queue.ChangeQueueOwner;
 
 /**
  * An abstract change queue.
@@ -37,11 +37,11 @@ public abstract class ChangeQueue
     /**
      * The sniper which this queue is attached to.
      */
-    private Player sniper;
+    protected ChangeQueueOwner owner;
     /**
      * The world that this queue is changing.
      */
-    private World world;
+    protected World world;
 
     /**
      * Creates a new {@link ChangeQueue}.
@@ -49,12 +49,12 @@ public abstract class ChangeQueue
      * @param sniper the player
      * @param world the world
      */
-    public ChangeQueue(Player sniper, World world)
+    public ChangeQueue(ChangeQueueOwner sniper, World world)
     {
         checkNotNull(world, "World cannot be null");
         checkNotNull(sniper, "Sniper cannot be null");
         this.world = world;
-        this.sniper = sniper;
+        this.owner = sniper;
     }
 
     /**
@@ -62,9 +62,9 @@ public abstract class ChangeQueue
      * 
      * @return the owner
      */
-    public Player getOwner()
+    public ChangeQueueOwner getOwner()
     {
-        return this.sniper;
+        return this.owner;
     }
 
     /**

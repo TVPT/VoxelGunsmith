@@ -24,12 +24,13 @@
 package com.voxelplugineering.voxelsniper.api.world.queue;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.api.entity.MessageReceiver;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueue;
 
 /**
  * An interface for anything which may be the owner of a change queue.
  */
-public interface ChangeQueueOwner
+public interface ChangeQueueOwner extends MessageReceiver
 {
 
     /**
