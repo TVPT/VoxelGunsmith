@@ -25,11 +25,12 @@ package com.voxelplugineering.voxelsniper;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import com.voxelplugineering.voxelsniper.api.brushes.BrushParser;
+import com.voxelplugineering.voxelsniper.api.brushes.BrushParser.BrushPart;
+import com.voxelplugineering.voxelsniper.brushes.StandardBrushParser;
 
 /**
  * Regex tests TODO: The layout of this test is bad, as is the coverage
@@ -37,7 +38,7 @@ import org.junit.Test;
 public class RegexTest
 {
 
-    Pattern pattern;
+    BrushParser parser;
 
     /**
      * 
@@ -45,74 +46,136 @@ public class RegexTest
     @Before
     public void setup()
     {
-        this.pattern = Pattern.compile("([\\S&&[^\\{]]+)[\\s]*(?:((?:\\{[^\\}]*\\}[\\s]*)+))?");
+        this.parser = new StandardBrushParser();
     }
 
     /**
      * 
      */
     @Test
-    public void test()
+    public void check0()
     {
-        assertEquals(1, check("hello {world}"));
-        assertEquals(1, check("hello{world}"));
-        assertEquals(2, check("hello {world} ape"));
-        assertEquals(4, check("hello {world} ape orange banana"));
-        assertEquals(2, check("hello {wor ld} ape"));
-        assertEquals(4, check("hello {world} ape or$$$$ange {tst tsj ;;2*$29f fsff} banana*@(#%"));
-        assertEquals(2, check("hello {wor ld}{other} ape"));
-        assertEquals(2, check("hello {wor ld} {other} ape"));
-        assertEquals(1, check("{ignored} hello {wor ld}"));
-        assertEquals(0, check("invalid {wor ld"));
-        assertEquals(0, check("invalid {wor ld {embedded} oh dear}"));
+        test("hello", new String[] { "hello" }, new String[] { "" });
     }
 
-    private String prep(String s)
+    /**
+     * 
+     */
+    @Test
+    public void check1()
     {
-        int count = 0;
-        for (char c : s.toCharArray())
-        {
-            if (c == '{')
-            {
-                if (count > 0)
-                {
-                    return "";
-                }
-                count++;
-            } else if (c == '}')
-            {
-                if (count < 0)
-                {
-                    return "";
-                }
-                count--;
-            }
-        }
-        if (count != 0)
-        {
-            return "";
-        }
-        s = s.trim();
-        while (s.startsWith("{"))
-        {
-            int index = s.indexOf("}");
-            if (index == -1)
-            {
-                s = s.substring(1);
-            }
-            s = s.substring(index + 1).trim();
-        }
-        return s;
+        test("hello {world}", new String[] { "hello" }, new String[] { "world" });
     }
 
-    private int check(String s)
+    /**
+     * 
+     */
+    @Test
+    public void check2()
     {
-        Matcher m = this.pattern.matcher(prep(s));
+        test("hello{world}", new String[] { "hello" }, new String[] { "world" });
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void check3()
+    {
+        test("hello {world} ape", new String[] { "hello", "ape" }, new String[] { "world", "" });
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void check4()
+    {
+        test("hello {world} ape orange banana", new String[] { "hello", "ape", "orange", "banana" }, new String[] { "world", "", "", "" });
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void check5()
+    {
+        test("hello {wor ld} ape", new String[] { "hello", "ape" }, new String[] { "wor ld", "" });
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void check6()
+    {
+        test("hello {world} ape or$$$$ange {tst tsj ;;2*$29f fsff} banana*@(#%", new String[] { "hello", "ape", "or$$$$ange", "banana*@(#%" },
+                new String[] { "world", "", "tst tsj ;;2*$29f fsff", "" });
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void check7()
+    {
+        test("hello {wor ld}{other} ape", new String[] { "hello", "ape" }, new String[] { "wor ld", "" });
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void check8()
+    {
+        test("hello {wor ld} {other} ape", new String[] { "hello", "ape" }, new String[] { "wor ld", "" });
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void check9()
+    {
+        test("{ignored} hello {wor ld}", new String[] { "hello" }, new String[] { "wor ld" });
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void check10()
+    {
+        test("invalid {wor ld", new String[] {}, new String[] {});
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void check11()
+    {
+        test("invalid {wor ld {embedded} oh dear}", new String[] {}, new String[] {});
+    }
+
+    private void test(String full, String[] brushes, String[] arguments)
+    {
+        if (brushes.length == 0 || arguments.length == 0)
+        {
+            assertEquals(false, this.parser.validate(full));
+            return;
+        }
+        assertEquals(true, this.parser.validate(full));
+        BrushPart[] parts = this.parser.parse(full).get();
+        assertEquals(brushes.length, parts.length);
+        assertEquals(arguments.length, parts.length);
         int i = 0;
-        while (m.find())
+        for (BrushPart part : parts)
         {
+            assertEquals(brushes[i], part.getBrushName());
+            assertEquals(arguments[i], part.getBrushArgument());
             i++;
         }
-        return i;
     }
+
 }

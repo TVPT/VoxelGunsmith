@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.brushes;
 
-import java.util.Collections;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
@@ -31,7 +30,6 @@ import com.thevoxelbox.vsl.api.IVariableHolder;
 import com.thevoxelbox.vsl.node.NodeGraph;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 
 /**
  * The Gunsmith specific {@link NodeGraph}.
@@ -40,9 +38,7 @@ public class BrushNodeGraph extends NodeGraph
 {
 
     String help = "No help is provided for this brush part.";
-    Map<String, ArgumentParser<?>> arguments;
-    Map<String, String> argDefaults;
-    String primary = null;
+    Map<String, BrushArgument<?>> arguments;
 
     /**
      * Creates a new {@link BrushNodeGraph}.
@@ -53,7 +49,6 @@ public class BrushNodeGraph extends NodeGraph
     {
         super(name);
         this.arguments = Maps.newHashMap();
-        this.argDefaults = Maps.newHashMap();
     }
 
     /**
@@ -75,40 +70,41 @@ public class BrushNodeGraph extends NodeGraph
     {
         RuntimeState state = new RuntimeState(vars);
         BrushNodeGraph ng = this;
-        while (ng != null && map != null)
+        String missing = "";
+        /*while (ng != null && map != null)
         {
+            //TODO
             String inv = ng.parseArguments(map.get(ng.getName()), state.getVars(), vars.<Player>get("__PLAYER__", Player.class).get());
             if (!inv.isEmpty())
             {
                 vars.<Player>get("__PLAYER__", Player.class).get().sendMessage("Invalid arguments: " + inv);
                 return;
             }
-            ng = (BrushNodeGraph) ng.getNextGraph();
-        }
-        String missing = "";
-        for (String s : this.arguments.keySet())
-        {
-            if (!vars.hasValue(s))
+            for (String s : ng.arguments.keySet())
             {
-                if (this.argDefaults.containsKey(s))
+                if (!vars.hasValue(s))
                 {
-                    vars.set(s, this.arguments.get(s).get(this.argDefaults.get(s)));
-                } else
-                {
-                    if (!missing.isEmpty())
+                    if (ng.argDefaults.containsKey(s))
                     {
-                        missing += " ";
+                        vars.set(s, ng.arguments.get(s).get(ng.argDefaults.get(s)));
+                    } else
+                    {
+                        if (!missing.isEmpty())
+                        {
+                            missing += " ";
+                        }
+                        missing += s;
                     }
-                    missing += s;
                 }
             }
+            ng = (BrushNodeGraph) ng.getNextGraph();
         }
         if (!missing.isEmpty())
         {
             vars.<Player>get("__PLAYER__", Player.class).get()
                     .sendMessage("Missing required variable" + (missing.indexOf(" ") != -1 ? "s" : " ") + ": " + missing);
             return;
-        }
+        }*/
         exec(state);
     }
 
@@ -142,7 +138,7 @@ public class BrushNodeGraph extends NodeGraph
      */
     public void addArgument(String name, ArgumentParser<?> parser, String defaultValue, String... aliases)
     {
-        if (defaultValue != null && !defaultValue.isEmpty())
+        /*if (defaultValue != null && !defaultValue.isEmpty())
         {
             this.argDefaults.put(name, defaultValue);
         }
@@ -150,7 +146,7 @@ public class BrushNodeGraph extends NodeGraph
         for (String alias : aliases)
         {
             this.arguments.put(alias, parser);
-        }
+        }*/
     }
 
     /**
@@ -161,50 +157,12 @@ public class BrushNodeGraph extends NodeGraph
      */
     public void setArgumentAsPrimary(String arg)
     {
-        if (!this.arguments.containsKey(arg))
+        /*if (!this.arguments.containsKey(arg))
         {
             this.primary = null;
             return;
         }
-        this.primary = arg;
-    }
-
-    private String parseArguments(String group, IVariableHolder vars, Player player)
-    {
-        if (group == null)
-        {
-            return "";
-        }
-        String arg = group.replaceAll("[\\{\\}]", " ").trim();
-        String[] args = arg.split(" ");
-        if (args.length == 1 && this.primary != null)
-        {
-            vars.set(this.primary, this.arguments.get(this.primary).get(arg).get());
-        } else
-        {
-            String invalid = "";
-            for (String s : args)
-            {
-                if (!s.contains("="))
-                {
-                    invalid += s + " ";
-                    continue;
-                }
-                String[] kv = s.split("=");
-                if (this.arguments.containsKey(kv[0]))
-                {
-                    vars.set(kv[0], this.arguments.get(kv[0]).get(kv[1]));
-                } else
-                {
-                    invalid += kv[0] + " ";
-                }
-            }
-            if (!invalid.isEmpty())
-            {
-                return invalid;
-            }
-        }
-        return "";
+        this.primary = arg;*/
     }
 
     /**
@@ -214,7 +172,7 @@ public class BrushNodeGraph extends NodeGraph
      */
     public String getPrimaryArgument()
     {
-        return this.primary;
+        return null;//this.primary;
     }
 
     /**
@@ -224,7 +182,7 @@ public class BrushNodeGraph extends NodeGraph
      */
     public Map<String, ArgumentParser<?>> getArguments()
     {
-        return Collections.unmodifiableMap(this.arguments);
+        return null;//Collections.unmodifiableMap(this.arguments);
     }
 
 }

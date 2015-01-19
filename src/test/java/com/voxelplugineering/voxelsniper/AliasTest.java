@@ -32,6 +32,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.voxelplugineering.voxelsniper.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.api.brushes.BrushParser;
+import com.voxelplugineering.voxelsniper.api.brushes.BrushParser.BrushPart;
+import com.voxelplugineering.voxelsniper.brushes.StandardBrushParser;
 
 /**
  * A test suite for the alias system
@@ -171,7 +174,7 @@ public class AliasTest
 
         String init = "hello { abc }";
 
-        assertEquals("hello {abc}", this.alias.expand(init));
+        assertEquals("hello { abc }", this.alias.expand(init));
     }
 
     /**
@@ -182,10 +185,36 @@ public class AliasTest
     {
 
         this.alias.register("hello", "hello {world}");
+        BrushParser parser = new StandardBrushParser();
 
         String init = "hello{abc}";
 
-        assertEquals("hello {world} {abc}", this.alias.expand(init));
+        assertEquals("hello {world}", toString(this.alias.expand(init, parser)));
+    }
+
+    /**
+     * Tests that aliases directly next to args are expanded.
+     */
+    @Test
+    public void testIgnoringArgs2()
+    {
+
+        this.alias.register("abc", "hello {world}");
+        BrushParser parser = new StandardBrushParser();
+
+        String init = "hello{abc}";
+
+        assertEquals("hello {abc}", toString(this.alias.expand(init, parser)));
+    }
+
+    private String toString(BrushPart[] b)
+    {
+        StringBuilder s = new StringBuilder();
+        for (BrushPart p : b)
+        {
+            s.append(p.getBrushName()).append(" {").append(p.getBrushArgument()).append("} ");
+        }
+        return s.toString().trim();
     }
 
     /**
@@ -211,17 +240,17 @@ public class AliasTest
         this.alias.clear();
 
         assertEquals("hello {world}", this.alias.expand("hello {world}"));
-        assertEquals("hello {world}", this.alias.expand("hello{world}"));
+        assertEquals("hello{world}", this.alias.expand("hello{world}"));
         assertEquals("hello {world} ape", this.alias.expand("hello {world} ape"));
         assertEquals("hello {world} ape orange banana", this.alias.expand("hello {world} ape orange banana"));
-        assertEquals("hello {wor,ld} ape", this.alias.expand("hello {wor ld} ape"));
-        assertEquals("hello {world} ape or$$$$ange {tst,tsj,;;2*$29f,fsff} banana*@(#%",
+        assertEquals("hello {wor ld} ape", this.alias.expand("hello {wor ld} ape"));
+        assertEquals("hello {world} ape or$$$$ange {tst tsj ;;2*$29f fsff} banana*@(#%",
                 this.alias.expand("hello {world} ape or$$$$ange {tst tsj ;;2*$29f fsff} banana*@(#%"));
-        assertEquals("hello {wor,ld,other} ape", this.alias.expand("hello {wor ld}{other} ape"));
-        assertEquals("hello {wor,ld,other} ape", this.alias.expand("hello {wor ld} {other} ape"));
-        assertEquals("hello {wor,ld}", this.alias.expand("{ignored} hello {wor ld}"));
-        assertEquals("", this.alias.expand("invalid {wor ld"));
-        assertEquals("", this.alias.expand("invalid {wor ld {embedded} oh dear}"));
+        assertEquals("hello {wor ld}{other} ape", this.alias.expand("hello {wor ld}{other} ape"));
+        assertEquals("hello {wor ld} {other} ape", this.alias.expand("hello {wor ld} {other} ape"));
+        assertEquals("{ignored} hello {wor ld}", this.alias.expand("{ignored} hello {wor ld}"));
+        assertEquals("invalid {wor ld", this.alias.expand("invalid {wor ld"));
+        assertEquals("invalid {wor ld {embedded} oh dear}", this.alias.expand("invalid {wor ld {embedded} oh dear}"));
     }
 
     private String normalize(String s)

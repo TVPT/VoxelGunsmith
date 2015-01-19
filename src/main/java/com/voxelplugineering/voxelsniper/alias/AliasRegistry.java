@@ -34,12 +34,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Set;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Queues;
+import com.voxelplugineering.voxelsniper.api.brushes.BrushParser;
+import com.voxelplugineering.voxelsniper.api.brushes.BrushParser.BrushPart;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
 /**
@@ -163,65 +168,56 @@ public class AliasRegistry
      */
     public String expand(String string)
     {
-        if (!validate(string))
-        {
-            return "";
-        }
-        Pattern pattern = Pattern.compile("([\\S&&[^\\{]]+)[\\s]*(?:((?:\\{[^\\}]*\\}[\\s]*)+))?");
-        String finalBrush = "";
-        Matcher match = pattern.matcher(prep(string));
-        while (match.find())
-        {
-            finalBrush += match.group(1) + " " + (match.group(2) == null ? "" : normalize(match.group(2)) + " ");
-        }
-        return expand_(finalBrush);
+        return expand_(string);
     }
 
-    private boolean validate(String fullBrush)
+    /**
+     * Recursively expands all aliases found within the given string.
+     * 
+     * @param brush the brush to expand
+     * @return the result expansion
+     */
+    public BrushPart[] expand(String brush, BrushParser parser)
     {
-        int co = 0;
-        for (char c : fullBrush.toCharArray())
+        if (parser.validate(brush))
         {
-            if (c == '{')
-            {
-                if (co > 0)
-                {
-                    return false;
-                }
-                co++;
-            }
-            if (c == '}')
-            {
-                if (co < 0)
-                {
-                    return false;
-                }
-                co--;
-            }
+            return expand(parser.parse(brush).get(), parser);
+        } else
+        {
+            return new BrushPart[0];
         }
-        return co == 0;
     }
 
-    private String normalize(String s)
+    /**
+     * Recursively expands all aliases found within the given string.
+     * 
+     * @param brush the brush to expand
+     * @return the result expansion
+     */
+    public BrushPart[] expand(BrushPart[] brush, BrushParser parser)
     {
-        Pattern p = Pattern.compile("(\\{[^\\}]*\\})[\\s]*");
-        Matcher match = p.matcher(s);
-        String f = "";
-        while (match.find())
+        List<BrushPart> ret = Lists.newArrayList();
+        Queue<BrushPart> working = Queues.newArrayDeque();
+        for (BrushPart p : brush)
         {
-            String m = match.group(1);
-            m = m.trim().replace(" ", ",");
-            m = m.replace("{,", "{");
-            m = m.replace(",}", "}");
-            while (m.contains(",,"))
-            {
-                m = m.replace(",,", ",");
-            }
-            f += m + " ";
+            working.add(p);
         }
-        f = f.replaceAll("\\}[\\s]*\\{", ",");
-        f = f.trim();
-        return f;
+
+        while (!working.isEmpty())
+        {
+            BrushPart next = working.poll();
+            Optional<BrushPart[]> p = parser.parse(expand_(next.getBrushName() + " {" + next.getBrushArgument() + "}"));
+            if (!p.isPresent())
+            {
+                continue;
+            }
+            for (BrushPart n : p.get())
+            {
+                ret.add(n);
+            }
+        }
+
+        return ret.toArray(new BrushPart[ret.size()]);
     }
 
     private String expand_(String string)
@@ -229,13 +225,28 @@ public class AliasRegistry
         String[] split = string.split(" ");
         int i = 0;
         List<String> alreadyUsedAliases = new ArrayList<String>();
+        boolean inside = false;
         while (i < split.length)
         {
             boolean found = false;
             outer: for (int j = i; j < split.length; j++)
             {
                 String section = StringUtilities.getSection(split, i, j);
-                if (section.contains("{") || section.contains("}"))
+                if (section.contains("{") && section.contains("}"))
+                {
+                    found = false;
+                    break outer;
+                } else if (section.contains("{"))
+                {
+                    inside = true;
+                    found = false;
+                    break outer;
+                } else if (section.contains("}") && inside)
+                {
+                    inside = false;
+                    found = false;
+                    break outer;
+                } else if (inside)
                 {
                     found = false;
                     break outer;
@@ -258,21 +269,6 @@ public class AliasRegistry
             }
         }
         return StringUtilities.getSection(split, 0, split.length - 1);
-    }
-
-    private String prep(String s)
-    {
-        s = s.trim();
-        while (s.startsWith("{"))
-        {
-            int index = s.indexOf("}");
-            if (index == -1)
-            {
-                s = s.substring(1);
-            }
-            s = s.substring(index + 1).trim();
-        }
-        return s;
     }
 
     /**

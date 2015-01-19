@@ -140,8 +140,8 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
         this.arguments.clear();
         BrushNodeGraph start = null;
         BrushNodeGraph last = null;
-        Pattern pattern = Pattern.compile("([\\S&&[^\\{]]+) ?(?:(\\{[^\\}]*\\}))?");
-        Matcher match = pattern.matcher(prep(Gunsmith.getConfiguration().get("defaultBrush").get().toString()));
+        Pattern pattern = Pattern.compile("([\\S&&[^\\{]]+)[\\s]*(?:((?:\\{[^\\}]*\\}[\\s]*)+))?");
+        Matcher match = pattern.matcher(Gunsmith.getConfiguration().get("defaultBrush").get().toString());
         while (match.find())
         {
             String brushName = match.group(1);
@@ -178,21 +178,6 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
                                         .toString()).get();
         sendMessage("Set material to " + material.getName());
         getBrushSettings().set("setMaterial", material);
-    }
-
-    private String prep(String s)
-    {
-        s = s.trim();
-        while (s.startsWith("{"))
-        {
-            int index = s.indexOf("}");
-            if (index == -1)
-            {
-                s = s.substring(1);
-            }
-            s = s.substring(index + 1).trim();
-        }
-        return s;
     }
 
     /**

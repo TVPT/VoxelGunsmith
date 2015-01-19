@@ -156,6 +156,8 @@ public class DefaultBrushBuilder
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
 
             BrushNodeGraph brush = new BrushNodeGraph("ball");
+            brush.addArgument("selection", ArgumentParsers.BOOLEAN_PARSER, "false");
+            brush.setArgumentAsPrimary("selection");
             brush.setHelp("Creates a ball shaped volume");
             brush.setNext(shapeOut);
             graphs.put("ball", brush);
@@ -242,7 +244,7 @@ public class DefaultBrushBuilder
 
         }
 
-        {//drain TODO
+        { //drain TODO
 
         }
 

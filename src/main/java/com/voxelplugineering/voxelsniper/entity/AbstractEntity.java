@@ -26,7 +26,6 @@ package com.voxelplugineering.voxelsniper.entity;
 import com.voxelplugineering.voxelsniper.api.entity.Entity;
 import com.voxelplugineering.voxelsniper.registry.WeakWrapper;
 
-
 /**
  * An abstract entity.
  *

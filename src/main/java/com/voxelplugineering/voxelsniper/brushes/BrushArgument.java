@@ -21,49 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.registry.vsl;
+package com.voxelplugineering.voxelsniper.brushes;
 
-import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
-import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 
 /**
- * A static library of standard argument parsers.
+ * Represents a single
+ * 
+ * @param <T>
  */
-@SuppressWarnings("javadoc")
-public class ArgumentParsers
+public class BrushArgument<T>
 {
 
-    public static ArgumentParser<Biome> BIOME_PARSER = null;
-    public static ArgumentParser<Boolean> BOOLEAN_PARSER = null;
-    public static ArgumentParser<String> STRING_PARSER = null;
-
-    /**
-     * Initialize
-     */
-    public static void init()
+    private final ArgumentParser<T> parser;
+    private final String name;
+    private final T defaultValue;
+    private final int index;
+    
+    public BrushArgument(int index, String name, ArgumentParser<T> parser)
     {
-        STRING_PARSER = new ArgumentParser.RawParser();
-        BIOME_PARSER = new ArgumentParser<Biome>()
-        {
-
-            @Override
-            public Optional<Biome> get(String arg)
-            {
-                return Gunsmith.getBiomeRegistry().getBiome(arg);
-            }
-
-        };
-        BOOLEAN_PARSER = new ArgumentParser<Boolean>()
-        {
-
-            @Override
-            public Optional<Boolean> get(String arg)
-            {
-                return Optional.of(Boolean.valueOf(arg));
-            }
-
-        };
+        this(index, name, parser, null);
     }
+    
+    public BrushArgument(int index, String name, ArgumentParser<T> parser, T value)
+    {
+        this.parser = parser;
+        this.name = name;
+        this.defaultValue = value;
+        this.index = index;
+    }
+    
 }
