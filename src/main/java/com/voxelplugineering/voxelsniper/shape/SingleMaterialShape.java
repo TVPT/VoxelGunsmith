@@ -23,7 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.shape;
 
+import java.util.Map;
+
 import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
@@ -166,6 +169,62 @@ public class SingleMaterialShape implements MaterialShape
     public MaterialShape clone()
     {
         return new SingleMaterialShape(this.shape.clone(), this.material);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Material getDefaultMaterial()
+    {
+        return this.material;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] getRawMaterialData()
+    {
+        return new byte[this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength()];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] getRawExtraMaterialData()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasExtraData()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<Short, Material> getMaterialsDictionary()
+    {
+        Map<Short, Material> ret = Maps.newHashMap();
+        ret.put((short) 0, this.material);
+        return ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaxMaterialId()
+    {
+        return 0;
     }
 
 }

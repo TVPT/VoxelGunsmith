@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.api.shape;
 
+import java.util.Map;
+
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 
@@ -72,5 +74,22 @@ public interface MaterialShape extends Shape
      * Resets the shape to the default material.
      */
     void reset();
+
+    /**
+     * Gets the default material for this MaterialShape.
+     * 
+     * @return The material
+     */
+    Material getDefaultMaterial();
+
+    byte[] getRawMaterialData();
+
+    byte[] getRawExtraMaterialData();
+
+    boolean hasExtraData();
+
+    Map<Short, Material> getMaterialsDictionary();
+
+    int getMaxMaterialId();
 
 }

@@ -26,6 +26,7 @@ package com.voxelplugineering.voxelsniper.shape;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
@@ -40,10 +41,12 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
  */
 public class ComplexMaterialShape implements MaterialShape
 {
+
     private short nextId = 1;
     private BiMap<Short, Material> materialDictionary;
     private BiMap<Material, Short> inverseDictionary;
-    private short[] materials;
+    private byte[] materialsA;
+    private byte[] materialsB;
     private Shape shape;
     private Material defaultMaterial;
 
@@ -59,7 +62,7 @@ public class ComplexMaterialShape implements MaterialShape
         this.shape = new ComplexShape(shape);
         this.materialDictionary = HashBiMap.create();
         this.inverseDictionary = this.materialDictionary.inverse();
-        this.materials = new short[shape.getWidth() * shape.getLength() * shape.getHeight()];
+        this.materialsA = new byte[shape.getWidth() * shape.getLength() * shape.getHeight()];
         this.materialDictionary.put((short) 0, defaultMaterial);
         this.flood(defaultMaterial);
         this.defaultMaterial = defaultMaterial;
@@ -82,25 +85,53 @@ public class ComplexMaterialShape implements MaterialShape
      * @param y the y position to get
      * @param z the z position to get
      * @param relative whether to offset the given position to the origin
-     * @return the material, or {@link Optional#absent()} if the point in the shape is not set
+     * @return the material, or {@link Optional#absent()} if the point in the
+     *         shape is not set
      */
     public Optional<Material> getMaterial(int x, int y, int z, boolean relative)
     {
         if (this.getShape().get(x, y, z, relative))
         {
-            if (this.materials[getIndex(x, y, z)] == -1)
+            if (get(x, y, z) == -1)
             {
-                this.materials[getIndex(x, y, z)] = 0; // the default material
+                set(x, y, z, (short) 0); // the default material
             }
-            return Optional.<Material>of(this.materialDictionary.get(this.materials[getIndex(x, y, z)]));
+            return Optional.<Material> of(this.materialDictionary.get(get(x, y, z)));
         } else
         {
             return Optional.absent();
         }
     }
 
+    private short get(int x, int y, int z)
+    {
+        int index = getIndex(x, y, z);
+        short ret = (short) (this.materialsA[index] & 0xFF);
+        if (this.nextId > 255)
+        {
+            ret = (short) (ret | (this.materialsB[index] & 0xFF));
+        }
+        return ret;
+    }
+
+    private void set(int x, int y, int z, short data)
+    {
+        int index = getIndex(x, y, z);
+        this.materialsA[index] = (byte) (data & 0xff);
+        if (this.nextId > 255)
+        {
+            if (this.materialsB == null)
+            {
+                this.materialsB = new byte[this.materialsA.length];
+            }
+
+            this.materialsB[index] = (byte) ((data & 0xff00) >> 8);
+        }
+    }
+
     /**
-     * Sets the given point in the shape and applies the given material to that point.
+     * Sets the given point in the shape and applies the given material to that
+     * point.
      * 
      * @param x the x position
      * @param y the y position
@@ -122,12 +153,13 @@ public class ComplexMaterialShape implements MaterialShape
             throw new ArrayIndexOutOfBoundsException("Tried to set material outside of the shape. (" + x + ", " + y + ", " + z + ")");
         }
         short id = this.getOrRegisterMaterial(material);
-        this.materials[getIndex(x, y, z)] = id;
+        set(x, y, z, id);
         getShape().set(x, y, z, false);
     }
 
     /**
-     * Unsets the given location in the shape and clears any material data for that point.
+     * Unsets the given location in the shape and clears any material data for
+     * that point.
      * 
      * @param x the x position
      * @param y the y position
@@ -146,7 +178,7 @@ public class ComplexMaterialShape implements MaterialShape
         {
             throw new ArrayIndexOutOfBoundsException("Tried to unset material outside of the shape. (" + x + ", " + y + ", " + z + ")");
         }
-        this.materials[getIndex(x, y, z)] = -1;
+        set(x, y, z, (short) -1);
         getShape().unset(x, y, z, false);
     }
 
@@ -166,10 +198,10 @@ public class ComplexMaterialShape implements MaterialShape
                 {
                     if (this.getShape().get(x, y, z, false))
                     {
-                        this.materials[getIndex(x, y, z)] = id;
+                        set(x, y, z, id);
                     } else
                     {
-                        this.materials[getIndex(x, y, z)] = -1;
+                        set(x, y, z, (short) -1);
                     }
                 }
             }
@@ -177,7 +209,8 @@ public class ComplexMaterialShape implements MaterialShape
     }
 
     /**
-     * Fills the entire horizontal layers between y and height with the given material.
+     * Fills the entire horizontal layers between y and height with the given
+     * material.
      * 
      * @param material The material
      * @param y The starting y layer
@@ -188,12 +221,22 @@ public class ComplexMaterialShape implements MaterialShape
         short id = this.getOrRegisterMaterial(material);
         int startIndex = getIndex(0, y, 0);
         int endIndex = getIndex(this.shape.getWidth() - 1, y + height - 1, this.shape.getLength() - 1) + 1;
-        Arrays.fill(this.materials, startIndex, endIndex, id);
+        Arrays.fill(this.materialsA, startIndex, endIndex, (byte) (id & 0xff));
+        if (this.nextId > 255)
+        {
+            if (this.materialsB == null)
+            {
+                this.materialsB = new byte[this.materialsA.length];
+            }
+
+            Arrays.fill(this.materialsB, startIndex, endIndex, (byte) ((id & 0xff00) >> 8));
+        }
     }
 
     /**
-     * Returns the id for the given material within this {@link MaterialShape}'s dictionary. If the material is not found in the dictionary then the
-     * next id is allocated to it.
+     * Returns the id for the given material within this {@link MaterialShape}'s
+     * dictionary. If the material is not found in the dictionary then the next
+     * id is allocated to it.
      * 
      * @param material the material to fetch
      * @return the id for the material
@@ -212,7 +255,8 @@ public class ComplexMaterialShape implements MaterialShape
     }
 
     /**
-     * Returns the width of the underlying shape (x-axis size). Note that this is not the width of the region set, but rather the width of the total
+     * Returns the width of the underlying shape (x-axis size). Note that this
+     * is not the width of the region set, but rather the width of the total
      * possible volume.
      * 
      * @return the width
@@ -223,7 +267,8 @@ public class ComplexMaterialShape implements MaterialShape
     }
 
     /**
-     * Returns the height of this shape (y-axis size). Note that this is not the height of the region set, but rather the height of the total possible
+     * Returns the height of this shape (y-axis size). Note that this is not the
+     * height of the region set, but rather the height of the total possible
      * volume.
      * 
      * @return the height
@@ -234,7 +279,8 @@ public class ComplexMaterialShape implements MaterialShape
     }
 
     /**
-     * Returns the length of this shape (z-axis size). Note that this is not the length of the region set, but rather the length of the total possible
+     * Returns the length of this shape (z-axis size). Note that this is not the
+     * length of the region set, but rather the length of the total possible
      * volume.
      * 
      * @return the length
@@ -268,7 +314,8 @@ public class ComplexMaterialShape implements MaterialShape
     }
 
     /**
-     * Floods the shape with the default material, effectively resetting it to initial conditions.
+     * Floods the shape with the default material, effectively resetting it to
+     * initial conditions.
      */
     public void reset()
     {
@@ -299,7 +346,7 @@ public class ComplexMaterialShape implements MaterialShape
     @Override
     public MaterialShape clone()
     {
-        //TODO
+        // TODO
         return null;
     }
 
@@ -310,6 +357,62 @@ public class ComplexMaterialShape implements MaterialShape
     public void unset(int x, int y, int z, boolean relative)
     {
         this.shape.unset(x, y, z, relative);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Material getDefaultMaterial()
+    {
+        return this.defaultMaterial;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] getRawMaterialData()
+    {
+        return this.materialsA;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] getRawExtraMaterialData()
+    {
+        return this.materialsB;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasExtraData()
+    {
+        // Note: nextId is always one greater than the actual max id required,
+        // therefore this check is against 256, not 255.
+        return this.nextId > 256;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<Short, Material> getMaterialsDictionary()
+    {
+        return this.materialDictionary;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaxMaterialId()
+    {
+        return this.nextId - 1;
     }
 
 }

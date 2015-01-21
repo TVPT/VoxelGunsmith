@@ -24,7 +24,9 @@
 package com.voxelplugineering.voxelsniper.api.util.schematic;
 
 import java.io.File;
+import java.io.IOException;
 
+import com.voxelplugineering.voxelsniper.api.entity.MessageReceiver;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 
 /**
@@ -39,8 +41,9 @@ public interface SchematicLoader
      * 
      * @param file The file to load from
      * @return The world region
+     * @throws IOException 
      */
-    MaterialShape load(File file);
+    MaterialShape load(File file) throws IOException;
 
     /**
      * Saves a world region to file.
@@ -48,6 +51,30 @@ public interface SchematicLoader
      * @param file The file to save to
      * @param shape The region to save
      */
-    void save(File file, MaterialShape shape);
+    void save(File f, MaterialShape shape, MessageReceiver owner) throws IOException;
 
+    public static interface Converter
+    {
+        
+        MaterialShape convert();
+        
+    }
+    
+    public static class StencilConverter implements Converter
+    {
+        
+        public StencilConverter(File stencil)
+        {
+            //TODO
+        }
+
+        @Override
+        public MaterialShape convert()
+        {
+            // TODO Auto-generated method stub
+            return null;
+        }
+        
+    }
+    
 }

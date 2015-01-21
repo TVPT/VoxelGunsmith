@@ -96,6 +96,17 @@ public final class CompoundTag extends Tag
     }
 
     /**
+     * Checks if the given key is stored within this compound tag.
+     * 
+     * @param key The key
+     * @return If the key is found
+     */
+    public boolean contains(String key)
+    {
+        return this.value.containsKey(key);
+    }
+
+    /**
      * Gets a child tag from this {@link CompoundTag}.
      * 
      * @param key The key to retrieve
