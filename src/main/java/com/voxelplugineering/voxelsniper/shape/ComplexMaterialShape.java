@@ -372,7 +372,7 @@ public class ComplexMaterialShape implements MaterialShape
      * {@inheritDoc}
      */
     @Override
-    public byte[] getRawMaterialData()
+    public byte[] getLowerMaterialData()
     {
         return this.materialsA;
     }
@@ -381,7 +381,7 @@ public class ComplexMaterialShape implements MaterialShape
      * {@inheritDoc}
      */
     @Override
-    public byte[] getRawExtraMaterialData()
+    public byte[] getUpperMaterialData()
     {
         return this.materialsB;
     }
@@ -413,6 +413,12 @@ public class ComplexMaterialShape implements MaterialShape
     public int getMaxMaterialId()
     {
         return this.nextId - 1;
+    }
+    
+    protected void registerMaterial(short key, Material material)
+    {
+        this.materialDictionary.put(key, material);
+        this.nextId = (short) Math.max(this.nextId, key);
     }
 
 }

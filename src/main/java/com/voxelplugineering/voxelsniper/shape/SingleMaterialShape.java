@@ -184,7 +184,7 @@ public class SingleMaterialShape implements MaterialShape
      * {@inheritDoc}
      */
     @Override
-    public byte[] getRawMaterialData()
+    public byte[] getLowerMaterialData()
     {
         return new byte[this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength()];
     }
@@ -193,7 +193,7 @@ public class SingleMaterialShape implements MaterialShape
      * {@inheritDoc}
      */
     @Override
-    public byte[] getRawExtraMaterialData()
+    public byte[] getUpperMaterialData()
     {
         return null;
     }

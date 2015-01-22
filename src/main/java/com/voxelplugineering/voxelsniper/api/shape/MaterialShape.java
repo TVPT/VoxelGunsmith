@@ -82,14 +82,41 @@ public interface MaterialShape extends Shape
      */
     Material getDefaultMaterial();
 
-    byte[] getRawMaterialData();
+    /**
+     * Gets the least significant byte of the material data for this shape.
+     * 
+     * @return The lower byte array
+     */
+    byte[] getLowerMaterialData();
 
-    byte[] getRawExtraMaterialData();
+    /**
+     * Gets the most significant byte of the material data for this shape.
+     * 
+     * @return The upper byte array
+     */
+    byte[] getUpperMaterialData();
 
+    /**
+     * Gets if this shape exceeds 256 dictionary values and therefore needs both
+     * the upper and lower halves of the material data arrays.
+     * 
+     * @return Has extra data
+     */
     boolean hasExtraData();
 
+    /**
+     * Gets the material dictionary for this shape. This dictionary is a mapping
+     * of shorts to the materials that they represent.
+     * 
+     * @return The material dictionary
+     */
     Map<Short, Material> getMaterialsDictionary();
 
+    /**
+     * Gets the largest id used in the material dictionary.
+     * 
+     * @return The largest id
+     */
     int getMaxMaterialId();
 
 }

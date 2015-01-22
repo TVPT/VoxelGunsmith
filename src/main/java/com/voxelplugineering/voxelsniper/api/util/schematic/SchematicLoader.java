@@ -47,27 +47,49 @@ public interface SchematicLoader
 
     /**
      * Saves a world region to file.
+     * @param f 
      * 
      * @param file The file to save to
      * @param shape The region to save
+     * @param owner The message receiver to post results to
+     * @throws IOException If there is an error saving
      */
     void save(File f, MaterialShape shape, MessageReceiver owner) throws IOException;
 
+    /**
+     * A schematic format converter.
+     */
     public static interface Converter
     {
         
+        /**
+         * Performs the conversion and returns the converted {@link MaterialShape}.
+         * 
+         * @return The shape
+         */
         MaterialShape convert();
         
     }
     
+    /**
+     * A converter for converting .vstencil files to MCEdit schematics.
+     */
     public static class StencilConverter implements Converter
     {
         
+        /**
+         * Creates a new {@link StencilConverter} for the given stencil file.
+         * 
+         * @param stencil The stencil file
+         */
         public StencilConverter(File stencil)
         {
             //TODO
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public MaterialShape convert()
         {

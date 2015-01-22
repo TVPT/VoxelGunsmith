@@ -190,6 +190,21 @@ public class NBTSchematicLoader implements SchematicLoader
             Vector3i vec = new Vector3i(x, y, z);
             entitiesMap.put(vec, entity);
         }
+
+        //Load material dictionary
+        List<Tag> dict = schematicTag.getChildTag("MaterialDictionary", ListTag.class).get().getValue();
+        Map<Short, Material> materialDict = Maps.newHashMap();
+        for (Tag tag : dict)
+        {
+            if (!(tag instanceof CompoundTag))
+            {
+                continue;
+            }
+            CompoundTag material = (CompoundTag) tag;
+            short key = material.getChildTag("Key", ShortTag.class).get().getValue();
+            String mat = material.getChildTag("Name", StringTag.class).get().getValue();
+            materialDict.put(key, Gunsmith.getDefaultMaterialRegistry().getMaterial(mat).or(Gunsmith.getDefaultMaterialRegistry().getAirMaterial()));
+        }
         // create region and return
         NamedWorldSection region;
         if (schematicTag.contains("WEOffsetX") && schematicTag.contains("WEOffsetY") && schematicTag.contains("WEOffsetZ"))
@@ -197,12 +212,10 @@ public class NBTSchematicLoader implements SchematicLoader
             int offsetX = schematicTag.getChildTag("WEOffsetX", IntTag.class).get().getValue();
             int offsetY = schematicTag.getChildTag("WEOffsetY", IntTag.class).get().getValue();
             int offsetZ = schematicTag.getChildTag("WEOffsetZ", IntTag.class).get().getValue();
-            region = new NamedWorldSection(new CuboidShape(width, height, length, new Vector3i(offsetX, offsetY, offsetZ)), Gunsmith
-                    .getDefaultMaterialRegistry().getAirMaterial());
+            region = new NamedWorldSection(new CuboidShape(width, height, length, new Vector3i(offsetX, offsetY, offsetZ)), materialDict);
         } else
         {
-            region = new NamedWorldSection(new CuboidShape(width, height, length, new Vector3i(0, 0, 0)), Gunsmith.getDefaultMaterialRegistry()
-                    .getAirMaterial());
+            region = new NamedWorldSection(new CuboidShape(width, height, length, new Vector3i(0, 0, 0)), materialDict);
         }
         String name;
         if (schematicTag.contains("name"))
@@ -212,7 +225,6 @@ public class NBTSchematicLoader implements SchematicLoader
         {
             name = file.getName().replace(".schematic", "");
         }
-        // TODO load material dictionary
 
         // region.setBlocks(blockData, blocks);
         region.setTileEntityMap(tileEntitiesMap);
@@ -287,10 +299,10 @@ public class NBTSchematicLoader implements SchematicLoader
         schematic.put("WEOffsetZ", new IntTag("WEOffsetZ", origin.getZ()));
 
         // store the lower byte of the block Ids
-        schematic.put("Blocks", new ByteArrayTag("Blocks", shape.getRawMaterialData()));
+        schematic.put("Blocks", new ByteArrayTag("Blocks", shape.getLowerMaterialData()));
         if (shape.hasExtraData())
         {
-            schematic.put("AddBlocks", new ByteArrayTag("AddBlocks", shape.getRawExtraMaterialData()));
+            schematic.put("AddBlocks", new ByteArrayTag("AddBlocks", shape.getUpperMaterialData()));
         }
         if (shape instanceof NamedWorldSection)
         {
@@ -307,7 +319,7 @@ public class NBTSchematicLoader implements SchematicLoader
 
         Map<Short, Material> materialDict = shape.getMaterialsDictionary();
         List<CompoundTag> materials = Lists.newArrayList();
-        for(Map.Entry<Short, Material> entry: materialDict.entrySet())
+        for (Map.Entry<Short, Material> entry : materialDict.entrySet())
         {
             Map<String, Tag> material = Maps.newHashMap();
             material.put("Key", new ShortTag("Key", entry.getKey()));
@@ -324,23 +336,29 @@ public class NBTSchematicLoader implements SchematicLoader
     }
 
     /**
-     * A converter for converting schematics to the new format.
+     * A converter for converting MCEdit schematics to the new format.
      */
     public static class LegacyConverter implements SchematicLoader.Converter
     {
 
         /**
-         * @param file
-         * @param schematicTag
+         * Creates a new {@link LegacyConverter}.
+         * 
+         * @param file The schematic file
+         * @param schematicTag The schematic root NBT node
          */
         public LegacyConverter(File file, CompoundTag schematicTag)
         {
-            // TODO Auto-generated constructor stub
+            // TODO
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public MaterialShape convert()
         {
-            // TODO Auto-generated method stub
+            // TODO
             return null;
         }
 
