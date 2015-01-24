@@ -226,14 +226,12 @@ public class AliasTest
 
     private String normalize(String s)
     {
-        System.out.println("norn: " + s);
         Pattern p = Pattern.compile("(\\{[^\\}]*\\})[\\s]*");
         Matcher match = p.matcher(s);
         String f = "";
         while (match.find())
         {
             String m = match.group(1);
-            System.out.println("match: " + m);
             m = m.trim().replace(" ", ",");
             m = m.replace("{,", "{");
             m = m.replace(",}", "}");
