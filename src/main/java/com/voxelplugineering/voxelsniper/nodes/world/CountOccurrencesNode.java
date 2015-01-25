@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.world;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.Block;
@@ -32,7 +32,7 @@ import com.voxelplugineering.voxelsniper.api.world.material.Material;
 /**
  * A node that counts the occurrences of a material in a block array.
  */
-public class CountOccurrencesNode extends Node
+public class CountOccurrencesNode extends AbstractNode
 {
     private final Provider<Block[]> blockArrayProvider;
     private final Provider<Material> materialProvider;

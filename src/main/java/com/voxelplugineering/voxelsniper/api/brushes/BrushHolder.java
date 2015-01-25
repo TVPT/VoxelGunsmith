@@ -25,7 +25,7 @@ package com.voxelplugineering.voxelsniper.api.brushes;
 
 import java.util.Map;
 
-import com.thevoxelbox.vsl.api.IVariableScope;
+import com.thevoxelbox.vsl.api.variables.VariableScope;
 import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 
 /**
@@ -60,7 +60,7 @@ public interface BrushHolder
      * 
      * @return the brush settings
      */
-    IVariableScope getBrushSettings();
+    VariableScope getBrushSettings();
 
     /**
      * Resets the settings of this player to their default configuration.

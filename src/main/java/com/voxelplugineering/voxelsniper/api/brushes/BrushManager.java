@@ -24,7 +24,7 @@
 package com.voxelplugineering.voxelsniper.api.brushes;
 
 import com.google.common.base.Optional;
-import com.thevoxelbox.vsl.node.NodeGraph;
+import com.thevoxelbox.vsl.api.node.NodeGraph;
 import com.voxelplugineering.voxelsniper.api.Manager;
 import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 

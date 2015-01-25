@@ -23,19 +23,19 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.material;
 
-import com.thevoxelbox.vsl.api.INode;
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.api.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 
 /**
- * A node for comparing two materials and executing another {@link INode} if the comparison is true.
+ * A node for comparing two materials and executing another {@link Node} if the comparison is true.
  */
-public class MaterialCompareNode extends Node
+public class MaterialCompareNode extends AbstractNode
 {
 
-    private INode body = null;
+    private Node body = null;
     private final Provider<Material> a;
     private final Provider<Material> b;
 
@@ -56,7 +56,7 @@ public class MaterialCompareNode extends Node
      * 
      * @param body the node to execute if the comparison is true
      */
-    public void setBody(INode body)
+    public void setBody(Node body)
     {
         this.body = body;
     }
@@ -69,7 +69,7 @@ public class MaterialCompareNode extends Node
     {
         if (this.a.get(state).equals(this.b.get(state)))
         {
-            INode next = this.body;
+            Node next = this.body;
             while (next != null)
             {
                 next.exec(state);

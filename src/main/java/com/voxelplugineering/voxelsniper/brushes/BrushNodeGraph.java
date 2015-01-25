@@ -27,8 +27,9 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.thevoxelbox.vsl.api.IVariableHolder;
-import com.thevoxelbox.vsl.node.NodeGraph;
+import com.thevoxelbox.vsl.api.node.NodeGraph;
+import com.thevoxelbox.vsl.api.variables.VariableHolder;
+import com.thevoxelbox.vsl.node.RunnableNodeGraph;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
@@ -36,7 +37,7 @@ import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 /**
  * The Gunsmith specific {@link NodeGraph}.
  */
-public class BrushNodeGraph extends NodeGraph
+public class BrushNodeGraph extends RunnableNodeGraph
 {
 
     String help = "No help is provided for this brush part.";
@@ -60,7 +61,7 @@ public class BrushNodeGraph extends NodeGraph
      * {@inheritDoc}
      */
     @Override
-    public void run(IVariableHolder vars)
+    public void run(VariableHolder vars)
     {
         run(vars, null);
     }
@@ -71,7 +72,7 @@ public class BrushNodeGraph extends NodeGraph
      * @param vars The variables
      * @param map The arguments
      */
-    public void run(IVariableHolder vars, Map<String, String> map)
+    public void run(VariableHolder vars, Map<String, String> map)
     {
         RuntimeState state = new RuntimeState(vars);
         BrushNodeGraph ng = this;
@@ -169,7 +170,7 @@ public class BrushNodeGraph extends NodeGraph
         this.primary = arg;
     }
 
-    private String parseArguments(String group, IVariableHolder vars, Player player)
+    private String parseArguments(String group, VariableHolder vars, Player player)
     {
         if (group == null)
         {

@@ -29,9 +29,11 @@ import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
-import org.junit.Test;
 import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
 
+import com.thevoxelbox.vsl.api.node.Node;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.Block;
@@ -69,7 +71,7 @@ public class NodeTest
         when(block.getMaterial()).thenReturn(material);
         when(block.getLocation()).thenReturn(location);
 
-        BlockBreakNode node = new BlockBreakNode(new Provider<Block>(block));
+        BlockBreakNode node = new BlockBreakNode(new Provider<Block>(Mockito.mock(Node.class), block));
         node.exec(this.state);
 
         assertEquals(node.getLocation().get(this.state), location);

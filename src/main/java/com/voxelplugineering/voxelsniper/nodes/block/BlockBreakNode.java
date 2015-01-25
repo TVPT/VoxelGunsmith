@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.block;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.Block;
@@ -33,7 +33,7 @@ import com.voxelplugineering.voxelsniper.api.world.material.Material;
 /**
  * Node to get location and material from block
  */
-public class BlockBreakNode extends Node
+public class BlockBreakNode extends AbstractNode
 {
 
     private final Provider<Block> block;

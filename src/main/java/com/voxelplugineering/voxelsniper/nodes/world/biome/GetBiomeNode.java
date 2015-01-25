@@ -24,7 +24,7 @@
 package com.voxelplugineering.voxelsniper.nodes.world.biome;
 
 import com.google.common.base.Optional;
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.Gunsmith;
@@ -34,7 +34,7 @@ import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 /**
  * A node for getting a {@link Biome} by name.
  */
-public class GetBiomeNode extends Node
+public class GetBiomeNode extends AbstractNode
 {
 
     private final Provider<String> name;

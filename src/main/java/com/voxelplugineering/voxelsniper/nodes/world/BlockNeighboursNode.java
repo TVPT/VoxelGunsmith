@@ -24,9 +24,9 @@
 package com.voxelplugineering.voxelsniper.nodes.world;
 
 import com.google.common.base.Optional;
-import com.thevoxelbox.vsl.node.Node;
-import com.thevoxelbox.vsl.util.Input;
-import com.thevoxelbox.vsl.util.Output;
+import com.thevoxelbox.vsl.annotation.Input;
+import com.thevoxelbox.vsl.annotation.Output;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.Block;
@@ -36,7 +36,7 @@ import com.voxelplugineering.voxelsniper.util.Direction;
 /**
  * A node that fetches available neighbouring blocks.
  */
-public class BlockNeighboursNode extends Node
+public class BlockNeighboursNode extends AbstractNode
 {
     @Input
     private final Provider<Block> blockProvider;
@@ -46,7 +46,7 @@ public class BlockNeighboursNode extends Node
     /**
      * Creates a new BlockNeighboursNode.
      *
-     * @param blockProvider The block provider
+     * @param blockProvider The block providerAbstractNode
      */
     public BlockNeighboursNode(Provider<Block> blockProvider)
     {

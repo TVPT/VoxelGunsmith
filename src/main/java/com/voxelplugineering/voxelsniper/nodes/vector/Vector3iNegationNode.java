@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.vector;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
@@ -31,7 +31,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * Returns the negative of the given vector.
  */
-public class Vector3iNegationNode extends Node
+public class Vector3iNegationNode extends AbstractNode
 {
 
     private Provider<Vector3i> vecIn;

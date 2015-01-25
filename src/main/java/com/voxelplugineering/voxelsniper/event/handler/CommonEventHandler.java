@@ -27,8 +27,8 @@ import java.io.File;
 import java.io.IOException;
 
 import com.google.common.eventbus.DeadEvent;
-import com.thevoxelbox.vsl.VariableScope;
-import com.thevoxelbox.vsl.api.IVariableScope;
+import com.thevoxelbox.vsl.api.variables.VariableScope;
+import com.thevoxelbox.vsl.variables.ParentedVariableScope;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.event.EventHandler;
@@ -135,7 +135,7 @@ public class CommonEventHandler
             ray.setRange(range);
             ray.trace();
 
-            IVariableScope brushVariables = new VariableScope(sniper.getBrushSettings());
+            VariableScope brushVariables = new ParentedVariableScope(sniper.getBrushSettings());
             brushVariables.setCaseSensitive(false);
             brushVariables.set("origin", location);
             brushVariables.set("yaw", yaw);

@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.world;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.Block;
@@ -32,7 +32,7 @@ import com.voxelplugineering.voxelsniper.api.world.Location;
 /**
  * A node for retrieving a block from a location. Equivalent to {@code location.getWorld().getBlockAt(location);}
  */
-public class GetBlockFromLocationNode extends Node
+public class GetBlockFromLocationNode extends AbstractNode
 {
 
     private final Provider<Location> input;

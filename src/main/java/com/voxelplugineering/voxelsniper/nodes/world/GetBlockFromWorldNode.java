@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.world;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.Block;
@@ -34,7 +34,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
  * Takes a world and a vector position and returns the block at that location. Equivalent to
  * {@code world.getBlockAt(vector.getX(), vector.getY(), vector.getZ());}
  */
-public class GetBlockFromWorldNode extends Node
+public class GetBlockFromWorldNode extends AbstractNode
 {
 
     private final Provider<World> world;

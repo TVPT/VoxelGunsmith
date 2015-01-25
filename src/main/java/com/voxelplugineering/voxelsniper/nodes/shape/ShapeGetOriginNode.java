@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.shape;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
@@ -32,7 +32,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * Gets the origin of a shape.
  */
-public class ShapeGetOriginNode extends Node
+public class ShapeGetOriginNode extends AbstractNode
 {
 
     private final Provider<Shape> shape;

@@ -27,7 +27,7 @@ import java.util.List;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
@@ -38,7 +38,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3d;
 /**
  * Gets all chunks which overlap with the given shape.
  */
-public class GetOverlappingChunksNode extends Node
+public class GetOverlappingChunksNode extends AbstractNode
 {
 
     private final Provider<Shape> shape;

@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.shape;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
@@ -32,7 +32,7 @@ import com.voxelplugineering.voxelsniper.shape.ComplexShape;
 /**
  * A node for flattening a shape into a 1 unit high disc.
  */
-public class FlattenShapeNode extends Node
+public class FlattenShapeNode extends AbstractNode
 {
     private final Provider<Shape> shapeIn;
     private final Provider<Shape> shapeOut;

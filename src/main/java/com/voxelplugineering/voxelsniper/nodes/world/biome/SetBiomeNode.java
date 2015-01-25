@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.world.biome;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.Location;
@@ -32,7 +32,7 @@ import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 /**
  * A node for setting the biome of a world at a location.
  */
-public class SetBiomeNode extends Node
+public class SetBiomeNode extends AbstractNode
 {
     private final Provider<Biome> biome;
     private final Provider<Location> location;

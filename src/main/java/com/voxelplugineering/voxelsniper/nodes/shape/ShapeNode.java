@@ -23,14 +23,14 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.shape;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
 
 /**
  * An abstract node for any node returning a shape.
  */
-public abstract class ShapeNode extends Node
+public abstract class ShapeNode extends AbstractNode
 {
 
     protected final Provider<Shape> shape;

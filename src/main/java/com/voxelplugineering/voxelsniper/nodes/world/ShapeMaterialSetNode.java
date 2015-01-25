@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.world;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
@@ -37,7 +37,7 @@ import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 /**
  * A visual scripting node to set the a shape to a material.
  */
-public class ShapeMaterialSetNode extends Node
+public class ShapeMaterialSetNode extends AbstractNode
 {
     private final Provider<Shape> shape;
     private final Provider<Material> material;

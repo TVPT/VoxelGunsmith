@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.logging;
 
 import java.io.PrintStream;
+import java.util.logging.Level;
 
 /**
  * A logger wrapping a {@link PrintStream}. Designed for use for logging to consoles such as standard out.
@@ -32,6 +33,19 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.
 {
 
     private final PrintStream stream;
+    private final Level level;
+
+    /**
+     * Creates a new {@link PrintStreamLogger}.
+     * 
+     * @param stream The print stream to wrap
+     * @param level The logging level
+     */
+    public PrintStreamLogger(PrintStream stream, Level level)
+    {
+        this.stream = stream;
+        this.level = level;
+    }
 
     /**
      * Creates a new {@link PrintStreamLogger}.
@@ -40,7 +54,7 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.
      */
     public PrintStreamLogger(PrintStream stream)
     {
-        this.stream = stream;
+        this(stream, Level.INFO);
     }
 
     /**
@@ -49,7 +63,10 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.
     @Override
     public void debug(String msg)
     {
-        printWithPrefix("[DEBUG]", msg);
+        if(this.level.intValue() <= Level.FINE.intValue())
+        {
+            printWithPrefix("[DEBUG]", msg);
+        }
     }
 
     /**
@@ -58,7 +75,10 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.
     @Override
     public void info(String msg)
     {
-        printWithPrefix("[INFO]", msg);
+        if(this.level.intValue() <= Level.INFO.intValue())
+        {
+            printWithPrefix("[INFO]", msg);
+        }
     }
 
     /**
@@ -67,7 +87,10 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.
     @Override
     public void warn(String msg)
     {
-        printWithPrefix("[WARNING]", msg);
+        if(this.level.intValue() <= Level.WARNING.intValue())
+        {
+            printWithPrefix("[WARNING]", msg);
+        }
     }
 
     /**

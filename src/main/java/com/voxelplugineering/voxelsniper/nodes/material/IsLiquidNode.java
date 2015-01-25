@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.material;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
@@ -31,7 +31,7 @@ import com.voxelplugineering.voxelsniper.api.world.material.Material;
 /**
  * Checks if a material is a liquid.
  */
-public class IsLiquidNode extends Node
+public class IsLiquidNode extends AbstractNode
 {
 
     private final Provider<Material> material;

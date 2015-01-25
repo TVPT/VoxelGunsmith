@@ -23,26 +23,31 @@
  */
 package com.voxelplugineering.voxelsniper.util.vsl;
 
+import java.util.Set;
+
 import com.google.common.base.Optional;
-import com.thevoxelbox.vsl.api.IVariableScope;
+import com.thevoxelbox.vsl.api.variables.VariableHolder;
+import com.thevoxelbox.vsl.api.variables.VariableScope;
 
 /**
  * An immutable variable holder.
  * <p>
- * <strong>WARNING:</strong> values returned from {@link #get(String)} or {@link #get(String, Class)} may be mutable!
+ * <strong>WARNING:</strong> values returned from {@link #get(String)} or
+ * {@link #get(String, Class)} may be mutable!
  * </p>
  */
-public final class ImmutableVariableHolder implements IVariableScope
+public final class ImmutableVariableHolder implements VariableScope
 {
 
-    private final IVariableScope vars;
+    private final VariableHolder vars;
 
     /**
-     * Creates a new {@link ImmutableVariableHolder} wrapping the given {@link IVariableScope}.
+     * Creates a new {@link ImmutableVariableHolder} wrapping the given
+     * {@link VariableScope}.
      * 
      * @param vars The scope to wrap
      */
-    public ImmutableVariableHolder(IVariableScope vars)
+    public ImmutableVariableHolder(VariableHolder vars)
     {
         this.vars = vars;
     }
@@ -96,7 +101,7 @@ public final class ImmutableVariableHolder implements IVariableScope
      * {@inheritDoc}
      */
     @Override
-    public void setParent(IVariableScope scope)
+    public void setParent(VariableHolder scope)
     {
         throw new UnsupportedOperationException("immutable type.");
     }
@@ -105,25 +110,49 @@ public final class ImmutableVariableHolder implements IVariableScope
      * {@inheritDoc}
      */
     @Override
-    public IVariableScope getParent()
+    public Optional<VariableHolder> getParent()
     {
-        return new ImmutableVariableHolder(this.vars.getParent());
+        if (this.vars instanceof VariableScope)
+        {
+            if (((VariableScope) this.vars).getParent().isPresent())
+            {
+                return Optional.<VariableHolder>of(new ImmutableVariableHolder(((VariableScope) this.vars).getParent().get()));
+            } else
+            {
+                return Optional.absent();
+            }
+        }
+        return Optional.absent();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Optional<IVariableScope> getHighestParent()
+    public Optional<VariableHolder> getHighestParent()
     {
-        Optional<IVariableScope> high = this.vars.getHighestParent();
-        if (high.isPresent())
+
+        if (this.vars instanceof VariableScope)
         {
-            return Optional.<IVariableScope>of(new ImmutableVariableHolder(high.get()));
-        } else
-        {
-            return Optional.absent();
+            Optional<VariableHolder> high = ((VariableScope) this.vars).getHighestParent();
+            if (high.isPresent())
+            {
+                return Optional.<VariableHolder>of(new ImmutableVariableHolder(high.get()));
+            } else
+            {
+                return Optional.absent();
+            }
         }
+        return Optional.absent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<String> keyset()
+    {
+        return this.vars.keyset();//No need for defensive copy or unmodifiable copy, as VariableHolder#keyset() is already a copy
     }
 
 }

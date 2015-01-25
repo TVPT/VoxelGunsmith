@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.world;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.Chunk;
@@ -31,7 +31,7 @@ import com.voxelplugineering.voxelsniper.api.world.Chunk;
 /**
  * Refreshes a chunk.
  */
-public class RefreshChunkNode extends Node
+public class RefreshChunkNode extends AbstractNode
 {
 
     private final Provider<Chunk> chunk;

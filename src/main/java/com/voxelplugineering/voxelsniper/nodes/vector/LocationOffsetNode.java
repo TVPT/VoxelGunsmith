@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.vector;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.Location;
@@ -32,7 +32,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * Offsets a location by a given vector offset. Equivalent to {@code location.add(vector.getX(), vector.getY(), vector.getZ());}
  */
-public class LocationOffsetNode extends Node
+public class LocationOffsetNode extends AbstractNode
 {
 
     private final Provider<Location> input;

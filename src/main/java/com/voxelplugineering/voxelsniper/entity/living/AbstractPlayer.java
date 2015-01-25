@@ -35,8 +35,8 @@ import java.util.regex.Pattern;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
-import com.thevoxelbox.vsl.VariableScope;
-import com.thevoxelbox.vsl.api.IVariableScope;
+import com.thevoxelbox.vsl.api.variables.VariableScope;
+import com.thevoxelbox.vsl.variables.ParentedVariableScope;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
@@ -67,7 +67,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     /**
      * The brush settings specific to this player.
      */
-    private IVariableScope brushVariables;
+    private VariableScope brushVariables;
     /**
      * The queue of pending {@link ChangeQueue}s waiting to be processed.
      */
@@ -86,7 +86,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
         super(player);
         //TODO: have player inherit brushes from group rather than the global brush manager always.
         this.personalBrushManager = new CommonBrushManager(Gunsmith.getGlobalBrushManager());
-        this.brushVariables = new VariableScope();
+        this.brushVariables = new ParentedVariableScope();
         this.brushVariables.setCaseSensitive(false);
         this.arguments = Maps.newHashMap();
         this.pending = new LinkedList<ChangeQueue>();
@@ -126,7 +126,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
      * {@inheritDoc}
      */
     @Override
-    public IVariableScope getBrushSettings()
+    public VariableScope getBrushSettings()
     {
         return this.brushVariables;
     }
@@ -145,12 +145,12 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
         while (match.find())
         {
             String brushName = match.group(1);
-            BrushNodeGraph brush = getPersonalBrushManager().getBrush(brushName).orNull();
-            if (brush == null)
+            Optional<BrushNodeGraph> brush = getPersonalBrushManager().getBrush(brushName);
+            if (!brush.isPresent())
             {
                 getPersonalBrushManager().loadBrush(brushName);
-                brush = getPersonalBrushManager().getBrush(brushName).orNull();
-                if (brush == null)
+                brush = getPersonalBrushManager().getBrush(brushName);
+                if (!brush.isPresent())
                 {
                     sendMessage("Could not find a brush part named " + brushName);
                     break;
@@ -158,12 +158,12 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
             }
             if (start == null)
             {
-                start = brush;
-                last = brush;
+                start = brush.get();
+                last = brush.get();
             } else
             {
-                last.chain(brush);
-                last = brush;
+                last.chain(brush.get());
+                last = brush.get();
             }
         }
         setCurrentBrush(start);

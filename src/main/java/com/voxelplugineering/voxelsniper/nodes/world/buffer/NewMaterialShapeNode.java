@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.world.buffer;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
@@ -34,7 +34,7 @@ import com.voxelplugineering.voxelsniper.shape.SingleMaterialShape;
 /**
  * Creates a new MaterialShape wrapped around the given shape.
  */
-public class NewMaterialShapeNode extends Node
+public class NewMaterialShapeNode extends AbstractNode
 {
     private final Provider<MaterialShape> matshape;
     private final Provider<Shape> shape;
@@ -63,7 +63,7 @@ public class NewMaterialShapeNode extends Node
     {
         this.matshape = new Provider<MaterialShape>(this);
         this.shape = shape;
-        this.defaultMaterial = new Provider<Material>(defaultMaterial);
+        this.defaultMaterial = new Provider<Material>(this, defaultMaterial);
     }
 
     /**

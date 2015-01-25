@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.vector;
 
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
@@ -31,7 +31,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * Adds two {@link Vector3i}s together and returns the result.
  */
-public class VectorAdditionNode extends Node
+public class VectorAdditionNode extends AbstractNode
 {
 
     private final Provider<Vector3i> a;

@@ -23,8 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.nodes.shape;
 
-import com.thevoxelbox.vsl.api.INode;
-import com.thevoxelbox.vsl.node.Node;
+import com.thevoxelbox.vsl.api.node.Node;
+import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
@@ -33,7 +33,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * Iterates over every point in a shape and executes a node pathway.
  */
-public class ShapeForEachNode extends Node
+public class ShapeForEachNode extends AbstractNode
 {
 
     private final Provider<Shape> shape;
@@ -87,7 +87,7 @@ public class ShapeForEachNode extends Node
                         {
                             this.nextValue.set(new Vector3i(x, y, z), state.getUUID());
                         }
-                        INode n = this.next;
+                        Node n = this.next;
                         while (n != null)
                         {
                             n.exec(state);

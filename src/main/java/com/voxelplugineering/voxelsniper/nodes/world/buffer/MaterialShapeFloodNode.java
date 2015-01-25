@@ -57,7 +57,7 @@ public class MaterialShapeFloodNode extends MaterialShapeNode
     public MaterialShapeFloodNode(Provider<MaterialShape> shape, Material fill)
     {
         super(shape);
-        this.fill = new Provider<Material>(fill);
+        this.fill = new Provider<Material>(this, fill);
     }
 
     /**

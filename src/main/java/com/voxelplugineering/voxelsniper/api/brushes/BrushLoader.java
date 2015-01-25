@@ -25,7 +25,7 @@ package com.voxelplugineering.voxelsniper.api.brushes;
 
 import java.io.ObjectOutputStream;
 
-import com.thevoxelbox.vsl.node.NodeGraph;
+import com.thevoxelbox.vsl.api.node.NodeGraph;
 import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 
 /**
@@ -36,7 +36,7 @@ public interface BrushLoader
 
     /**
      * Loads a brush specified by the given byte array. The Class is loaded by the given class loader. The format for the serialization is as follows:
-     * 4-bytes format version 4-bytes brush version {@link com.thevoxelbox.vsl.node.NodeGraph} serialized by java's {@link ObjectOutputStream}
+     * 4-bytes format version 4-bytes brush version {@link NodeGraph} serialized by java's {@link ObjectOutputStream}
      * 
      * @param serialized the serialized version of the brush, cannot be null
      * @return the compiled class
