@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.api.service.scheduler;
 
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.scheduler.Task;
 
 /**
@@ -38,7 +39,7 @@ public interface Scheduler
      * @param interval The interval, in milliseconds
      * @return The new task
      */
-    Task startSynchronousTask(Runnable runnable, int interval);
+    Optional<? extends Task> startSynchronousTask(Runnable runnable, int interval);
 
     /**
      * Starts a new task asynchronously.
@@ -47,7 +48,7 @@ public interface Scheduler
      * @param interval The interval, in milliseconds
      * @return The new task
      */
-    Task startAsynchronousTask(Runnable runnable, int interval);
+    Optional<? extends Task> startAsynchronousTask(Runnable runnable, int interval);
 
     /**
      * Halts all the currently running tasks.
