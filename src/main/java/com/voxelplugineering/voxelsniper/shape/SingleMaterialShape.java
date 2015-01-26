@@ -39,7 +39,7 @@ public class SingleMaterialShape implements MaterialShape
 {
 
     private final Shape shape;
-    private final Material material;
+    private Material material;
 
     /**
      * Creates a new {@link SingleMaterialShape}.
@@ -149,7 +149,7 @@ public class SingleMaterialShape implements MaterialShape
     @Override
     public void flood(Material material)
     {
-        throw new UnsupportedOperationException();
+        this.material = material;
     }
 
     /**

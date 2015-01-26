@@ -99,6 +99,24 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
      * {@inheritDoc}
      */
     @Override
+    public boolean isPlayer()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void sendMessage(String format, Object... args)
+    {
+        sendMessage(String.format(format, args));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public BrushManager getPersonalBrushManager()
     {
         return this.personalBrushManager;
