@@ -31,7 +31,8 @@ import java.util.regex.Pattern;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.voxelplugineering.voxelsniper.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.alias.CommonAliasRegistry;
+import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 
 /**
  * A test suite for the alias system
@@ -47,7 +48,7 @@ public class AliasTest
     @Before
     public void setup()
     {
-        this.alias = new AliasRegistry();
+        this.alias = new CommonAliasRegistry();
     }
 
     /**
@@ -132,7 +133,7 @@ public class AliasTest
     @Test
     public void testParentage()
     {
-        AliasRegistry child = new AliasRegistry(this.alias);
+        AliasRegistry child = new CommonAliasRegistry(this.alias);
 
         this.alias.register("abc", "absd");
 
@@ -149,7 +150,7 @@ public class AliasTest
     @Test
     public void testParentage2()
     {
-        AliasRegistry child = new AliasRegistry(this.alias);
+        AliasRegistry child = new CommonAliasRegistry(this.alias);
 
         this.alias.register("abc", "rawr");
         child.register("abc", "absd");

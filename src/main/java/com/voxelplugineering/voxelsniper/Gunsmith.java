@@ -383,7 +383,6 @@ public final class Gunsmith
         dataFolder = base;
         //Create standard log distributor
         logDistributor = new CommonLoggingDistributor();
-        logDistributor.init();
         //System.setProperty("voxel.log.location", base.getAbsolutePath());
         //File config = new File(base.getAbsolutePath(), "log4j2.xml");
         //System.out.println("log4j config: " + config.getAbsolutePath());
@@ -442,7 +441,6 @@ public final class Gunsmith
 
         globalBrushManager = provider.getGlobalBrushManager();
         checkRef(globalBrushManager);
-        globalBrushManager.init();
 
         commandHandler = provider.getCommandHandler();
         checkRef(commandHandler);
@@ -581,20 +579,12 @@ public final class Gunsmith
         }
 
         isPluginEnabled = false;
-        if (globalBrushManager != null)
-        {
-            globalBrushManager.stop();
-        }
         globalBrushManager = null;
         defaultBrushLoader = null;
         commandHandler = null;
         defaultEventHandler = null;
         eventBus = null;
         configuration = null;
-        if (logDistributor != null)
-        {
-            logDistributor.stop();
-        }
         logDistributor = null;
         globalAliasRegistries = null;
         platformProxy = null;

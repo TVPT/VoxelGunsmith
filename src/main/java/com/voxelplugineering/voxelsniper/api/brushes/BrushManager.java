@@ -25,7 +25,6 @@ package com.voxelplugineering.voxelsniper.api.brushes;
 
 import com.google.common.base.Optional;
 import com.thevoxelbox.vsl.api.node.NodeGraph;
-import com.voxelplugineering.voxelsniper.api.Manager;
 import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 
 /**
@@ -34,7 +33,7 @@ import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
  * Therefore, by connecting the classloader to the brush manager when the manager is garbage collected (eg. when the user disconnects from the
  * environment) the classloader (and by extension all classes loaded explicitly for this manager) are also garbage connected.
  */
-public interface BrushManager extends Manager
+public interface BrushManager
 {
 
     /**

@@ -31,8 +31,10 @@ import com.thevoxelbox.vsl.api.node.NodeGraph;
 import com.thevoxelbox.vsl.api.variables.VariableHolder;
 import com.thevoxelbox.vsl.node.RunnableNodeGraph;
 import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 
 /**
  * The Gunsmith specific {@link NodeGraph}.
@@ -40,7 +42,7 @@ import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 public class BrushNodeGraph extends RunnableNodeGraph
 {
 
-    String help = "No help is provided for this brush part.";
+    String help = Gunsmith.getConfiguration().get("defaultBrushHelpMessage", String.class).or(TextFormat.RED + "No help is provided for this brush part.");
     Map<String, ArgumentParser<?>> arguments;
     Map<String, String> argDefaults;
     String primary = null;

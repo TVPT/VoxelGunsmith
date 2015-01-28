@@ -48,35 +48,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
      */
     public CommonLoggingDistributor()
     {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void init()
-    {
         this.loggers = Maps.newHashMap();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void stop()
-    {
-        this.loggers = null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void restart()
-    {
-        stop();
-        init();
     }
 
     /**

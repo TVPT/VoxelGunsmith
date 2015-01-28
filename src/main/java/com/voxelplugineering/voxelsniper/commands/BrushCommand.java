@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;

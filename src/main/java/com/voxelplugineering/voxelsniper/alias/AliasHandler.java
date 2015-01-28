@@ -41,6 +41,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonReader;
 import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
+import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 
 /**
  * A handler for targeted {@link AliasRegistry}s.
@@ -92,7 +93,7 @@ public class AliasHandler
         if (!this.aliasTargets.containsKey(target))
         {
             AliasRegistry parentRegistry = this.parent == null ? null : this.parent.getRegistry(target).orNull();
-            this.aliasTargets.put(target, new AliasRegistry(parentRegistry));
+            this.aliasTargets.put(target, new CommonAliasRegistry(parentRegistry));
         }
     }
 

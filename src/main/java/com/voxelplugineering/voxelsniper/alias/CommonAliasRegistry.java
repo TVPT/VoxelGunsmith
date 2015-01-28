@@ -34,37 +34,44 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
+import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
 /**
  * A registry for aliases.
+ * <p>
+ * TODO: clean up {@link #expand(String)}
+ * </p>
  */
-public class AliasRegistry
+public class CommonAliasRegistry implements AliasRegistry
 {
 
     private Map<String, String> aliases;
     private AliasRegistry parent;
+    private boolean caseSensitive = true;
 
     /**
      * Creates a new {@link AliasRegistry} with no parent.
      */
-    public AliasRegistry()
+    public CommonAliasRegistry()
     {
         this(null);
     }
 
     /**
-     * Creates a new {@link AliasRegistry} with the given registry as its parent.
+     * Creates a new {@link AliasRegistry} with the given registry as its
+     * parent.
      * 
      * @param parent the parent registry
      */
-    public AliasRegistry(AliasRegistry parent)
+    public CommonAliasRegistry(AliasRegistry parent)
     {
         this.aliases = Maps.newTreeMap(new Comparator<String>()
         {
@@ -81,12 +88,21 @@ public class AliasRegistry
             }
         });
         this.parent = parent;
+        this.caseSensitive = Gunsmith.getConfiguration().get("caseSensitiveAliases", Boolean.class).or(true); //default to non-action
     }
 
     /**
-     * Returns the parent registry
+     * Sets whether the keys of this registry should be case sensitive.
      * 
-     * @return the parent, may be null
+     * @param cs Case sensitivity
+     */
+    public void setCaseSensitive(boolean cs)
+    {
+        this.caseSensitive = cs;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public AliasRegistry getParent()
     {
@@ -94,10 +110,7 @@ public class AliasRegistry
     }
 
     /**
-     * Registers a new alias with this registry.
-     * 
-     * @param alias the new alias, cannot be null or empty
-     * @param value the new value for this alias, cannot be null or empty
+     * {@inheritDoc}
      */
     public void register(String alias, String value)
     {
@@ -106,11 +119,15 @@ public class AliasRegistry
         checkArgument(!alias.isEmpty(), "Alias cannot be empty.");
         checkArgument(!value.isEmpty(), "Value cannot be empty.");
 
+        if (!caseSensitive)
+        {
+            alias = alias.toLowerCase();
+        }
         this.aliases.put(alias, value);
     }
 
     /**
-     * Clears all aliases in this registry.
+     * {@inheritDoc}
      */
     public void clear()
     {
@@ -118,13 +135,16 @@ public class AliasRegistry
     }
 
     /**
-     * Returns the alias value for the given alias key.
-     * 
-     * @param alias the key
-     * @return the value
+     * {@inheritDoc}
      */
     public Optional<String> getAlias(String alias)
     {
+        checkNotNull(alias, "Alias cannot be null.");
+        checkArgument(!alias.isEmpty(), "Alias cannot be empty.");
+        if (!caseSensitive)
+        {
+            alias = alias.toLowerCase();
+        }
         if (!this.aliases.containsKey(alias))
         {
             if (this.parent != null)
@@ -139,10 +159,7 @@ public class AliasRegistry
     }
 
     /**
-     * Returns all keys of this collection. Including, if the deep flag is set, all keys of its parent registries as well.
-     * 
-     * @param deep whether to include keys from parent registries as well
-     * @return the keys
+     * {@inheritDoc}
      */
     public Collection<String> getKeys(boolean deep)
     {
@@ -156,13 +173,11 @@ public class AliasRegistry
     }
 
     /**
-     * Recursively expands all aliases found within the given string.
-     * 
-     * @param string the string to expand
-     * @return the result expansion
+     * {@inheritDoc}
      */
     public String expand(String string)
     {
+        checkNotNull(string, "Alias cannot be null.");
         if (!validate(string))
         {
             return "";
@@ -235,6 +250,11 @@ public class AliasRegistry
             outer: for (int j = i; j < split.length; j++)
             {
                 String section = StringUtilities.getSection(split, i, j);
+
+                if (!caseSensitive)
+                {
+                    section = section.toLowerCase();
+                }
                 if (section.contains("{") || section.contains("}"))
                 {
                     found = false;
@@ -242,7 +262,7 @@ public class AliasRegistry
                 }
                 for (String alias : this.getKeys(true))
                 {
-                    if (alias.equalsIgnoreCase(section) && !alreadyUsedAliases.contains(alias))
+                    if (alias.equals(section) && !alreadyUsedAliases.contains(alias))
                     {
                         alreadyUsedAliases.add(alias);
                         found = true;
@@ -276,10 +296,7 @@ public class AliasRegistry
     }
 
     /**
-     * Returns a Set of all entries in this registry. Intended for use in serialization only, nor for fetching aliases, use {@link #getAlias(String)}
-     * instead.
-     * 
-     * @return the set of entries
+     * {@inheritDoc}
      */
     public Set<Entry<String, String>> getEntries()
     {

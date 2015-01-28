@@ -84,31 +84,6 @@ public class CommonBrushManager implements BrushManager
     /**
      * {@inheritDoc}
      */
-    public void init()
-    {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void stop()
-    {
-        this.brushes.clear();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void restart()
-    {
-        stop();
-        init();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void addLoader(BrushLoader loader)
     {
         this.loaders.add(0, loader);

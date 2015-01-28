@@ -26,6 +26,7 @@ package com.voxelplugineering.voxelsniper.command;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 
 /**
@@ -45,7 +46,7 @@ public abstract class Command
     /**
      * A help message for this command.
      */
-    private String helpMsg = "No help was provided for this command.";
+    private String helpMsg = Gunsmith.getConfiguration().get("defaultHelpMessage", String.class).or("No help was provided for this command.");
     /**
      * If this command is player only or usable by the console as well.
      */

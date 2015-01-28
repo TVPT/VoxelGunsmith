@@ -33,5 +33,7 @@ public class BaseConfiguration
     int minimumWorldDepth = 0;
     int maximumWorldHeight = 255;
     double rayTraceStep = 0.2;
+    
+    String playerSysVarName = "__PLAYER__";
 
 }

@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.config;
 
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 
 /**
@@ -42,12 +43,17 @@ public class VoxelSniperConfiguration
     String defaultBrushMaterial = "AIR";
 
     //Default messages
+    //Gunsmith.getConfiguration().get("", String.class).or("");
     String permissionsRequiredMessage = TextFormat.DARK_RED + "You require more permissions in order to perform this action.";
     String defaultHelpMessage = TextFormat.RED + "No help is provided for this command.";
+    String defaultBrushHelpMessage = TextFormat.RED + "No help is provided for this brush part.";
     String brushSizeChangedMessage = TextFormat.GREEN + "Your brush size was changed to " + TextFormat.GOLD + "%.1f";
     String brushNotFoundMessage = TextFormat.RED + "Could not find a brush part named " + TextFormat.GOLD + "%s";
     String brushSetMessage = TextFormat.GREEN + "Your brush has been set to " + TextFormat.GOLD + "%s";
     String materialNotFoundMessage = TextFormat.RED + "Could not find that material.";
     String materialSetMessage = TextFormat.GREEN + "Set material to " + TextFormat.GOLD + "%s";
     String materialMaskSetMessage = TextFormat.GREEN + "Set secondary material to " + TextFormat.GOLD + "%s";
+    
+    //Alias Settings
+    boolean caseSensitiveAliases = true;
 }

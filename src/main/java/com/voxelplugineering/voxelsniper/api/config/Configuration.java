@@ -42,10 +42,25 @@ public interface Configuration
     /**
      * Returns a value from configuration.
      * 
-     * @param name the name or key to search and return from the configuration storage, cannot be null or empty
-     * @return the value stored in configuration, or null if the key is not found
+     * @param name the name or key to search and return from the configuration
+     *            storage, cannot be null or empty
+     * @return the value stored in configuration, or null if the key is not
+     *         found
      */
     Optional<Object> get(String name);
+
+    /**
+     * Returns a value from configuration. The the type of the config value is
+     * not assignable to the expectedType then {@link Optional#absent()} is
+     * returned.
+     * 
+     * @param name the name or key to search and return from the configuration
+     *            storage, cannot be null or empty
+     * @param expectedType The expected type of the config value
+     * @return the value stored in configuration, or null if the key is not
+     *         found
+     */
+    <T> Optional<T> get(String name, Class<T> expectedType);
 
     /**
      * Returns whether the given key exists within this configuration registry.
@@ -56,11 +71,14 @@ public interface Configuration
     boolean has(String name);
 
     /**
-     * Attempts to register the container with this configuration storage. This will load all values from the fields of the given object and place
-     * them into the configuration. It will also keep the Class of the Object as a reference to the fields contained within this container in order to
-     * store or load them from/to a source.
+     * Attempts to register the container with this configuration storage. This
+     * will load all values from the fields of the given object and place them
+     * into the configuration. It will also keep the Class of the Object as a
+     * reference to the fields contained within this container in order to store
+     * or load them from/to a source.
      * <p>
-     * If any of the fields have names matching keys already stored within this configuration storage the values in this configuration storage will be
+     * If any of the fields have names matching keys already stored within this
+     * configuration storage the values in this configuration storage will be
      * overwritten.
      * 
      * @param container the new container to load, cannot be null
@@ -68,7 +86,8 @@ public interface Configuration
     void registerContainer(Class<?> container);
 
     /**
-     * Returns the Class of a previously registered container. Returns null if no container matching the given name has been registered previously.
+     * Returns the Class of a previously registered container. Returns null if
+     * no container matching the given name has been registered previously.
      * 
      * @param containerName the name of the container, cannot be null or empty
      * @return the container class

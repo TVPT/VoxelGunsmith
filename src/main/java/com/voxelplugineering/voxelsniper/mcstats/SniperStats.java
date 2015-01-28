@@ -31,12 +31,11 @@ import org.mcstats.Metrics;
 
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.Manager;
 
 /**
  * Implementation of Sniper Stats.
  */
-public final class SniperStats extends Metrics implements Manager
+public final class SniperStats extends Metrics
 {
     private static int snipesDone = 0;
     private static long snipeCounterInitTimeStamp = 0;
@@ -113,9 +112,8 @@ public final class SniperStats extends Metrics implements Manager
     }
 
     /**
-     * {@inheritDoc}
+     * Initializes the stats manager.
      */
-    @Override
     public void init()
     {
         try
@@ -178,9 +176,8 @@ public final class SniperStats extends Metrics implements Manager
     }
 
     /**
-     * {@inheritDoc}
+     * Disables the stats manager.
      */
-    @Override
     public void stop()
     {
         try
@@ -193,9 +190,8 @@ public final class SniperStats extends Metrics implements Manager
     }
 
     /**
-     * {@inheritDoc}
+     * Restarts the stats manager.
      */
-    @Override
     public void restart()
     {
         stop();

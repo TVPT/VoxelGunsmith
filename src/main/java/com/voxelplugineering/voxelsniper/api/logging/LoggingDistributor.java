@@ -23,12 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.api.logging;
 
-import com.voxelplugineering.voxelsniper.api.Manager;
-
 /**
  * A distributor for logging messages to a collection of {@link Logger}s.
  */
-public interface LoggingDistributor extends Logger, Manager
+public interface LoggingDistributor extends Logger
 {
 
     /**

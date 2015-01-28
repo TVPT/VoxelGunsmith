@@ -87,6 +87,25 @@ public class ConfigurationManager implements Configuration
      * {@inheritDoc}
      */
     @Override
+    public <T> Optional<T> get(String name, Class<T> expectedType)
+    {
+        checkNotNull(name, "Name cannot be null!");
+        checkArgument(!name.isEmpty(), "Name cannot be empty");
+        if(has(name))
+        {
+            Object o = this.config.get(name);
+            if(expectedType.isAssignableFrom(o.getClass()))
+            {
+                return Optional.of(expectedType.cast(o));
+            }
+        }
+        return Optional.absent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void registerContainer(Class<?> container)
     {
         checkNotNull(container, "Container cannot be null!");

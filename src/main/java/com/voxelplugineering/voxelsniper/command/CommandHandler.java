@@ -46,7 +46,7 @@ public class CommandHandler
     /**
      * The message sent to players when they lack the required permission for a command.
      */
-    private String permissionMessage = "You lack the required permission for this command.";
+    private String permissionMessage = Gunsmith.getConfiguration().get("permissionsRequiredMessage", String.class).or("You lack the required permission for this command.");
 
     /**
      * A Map of commands with their primary alias as the key.
@@ -62,10 +62,6 @@ public class CommandHandler
      */
     public CommandHandler()
     {
-        if (Gunsmith.getConfiguration().has("permissionsRequiredMessage"))
-        {
-            this.permissionMessage = Gunsmith.getConfiguration().get("permissionsRequiredMessage").get().toString();
-        }
         this.commands = Maps.newHashMap();
     }
 
