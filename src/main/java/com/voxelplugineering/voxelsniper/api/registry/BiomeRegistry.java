@@ -64,7 +64,7 @@ public interface BiomeRegistry<T>
      * 
      * @return The biomes
      */
-    Iterable<Biome> getBiomes();
+    Biome[] getBiomes();
 
     /**
      * Gets the default biome.

@@ -65,6 +65,6 @@ public interface PlayerRegistry<T>
      * 
      * @return The players
      */
-    Iterable<Player> getAllPlayers();
+    Player[] getAllPlayers();
 
 }

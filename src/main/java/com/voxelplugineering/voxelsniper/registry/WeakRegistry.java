@@ -23,12 +23,13 @@
  */
 package com.voxelplugineering.voxelsniper.registry;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.common.collect.MapMaker;
 import com.voxelplugineering.voxelsniper.api.Registry;
 
@@ -50,11 +51,7 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     /**
      * A map of name to value.
      */
-    BiMap<String, V> nameRegistry;
-    /**
-     * The inverse of the nameRegistry mapping value to name.
-     */
-    BiMap<V, String> inverseNameRegistry;
+    Map<String, K> nameRegistry;
 
     private boolean caseSensitiveKeys = true;
 
@@ -64,8 +61,7 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     public WeakRegistry()
     {
         this.registry = new MapMaker().weakKeys().weakValues().makeMap();
-        this.nameRegistry = HashBiMap.create();
-        this.inverseNameRegistry = this.nameRegistry.inverse();
+        this.nameRegistry = new MapMaker().weakValues().makeMap();
     }
 
     /**
@@ -85,8 +81,13 @@ public class WeakRegistry<K, V> implements Registry<K, V>
      */
     public void register(String name, K key, V value)
     {
+        checkNotNull(key);
+        checkNotNull(value);
         this.registry.put(key, value);
-        this.nameRegistry.put(this.caseSensitiveKeys ? name : name.toUpperCase(), value);
+        if(name != null)
+        {
+            this.nameRegistry.put(this.caseSensitiveKeys ? name : name.toUpperCase(), key);
+        }
     }
 
     /**
@@ -94,7 +95,8 @@ public class WeakRegistry<K, V> implements Registry<K, V>
      */
     public Optional<V> get(K key)
     {
-        return this.registry.containsKey(key) ? Optional.<V>of(this.registry.get(key)) : Optional.<V>absent();
+        checkNotNull(key);
+        return Optional.fromNullable(this.registry.get(key));
     }
 
     /**
@@ -106,7 +108,17 @@ public class WeakRegistry<K, V> implements Registry<K, V>
         {
             name = name.toUpperCase();
         }
-        return this.nameRegistry.containsKey(name) ? Optional.<V>of(validate(this.nameRegistry.get(name))) : Optional.<V>absent();
+        if(!this.nameRegistry.containsKey(name))
+        {
+            return Optional.absent();
+        }
+        K key = this.nameRegistry.get(name);
+        if(!this.registry.containsKey(key))
+        {
+            this.nameRegistry.remove(name);
+            return Optional.absent();
+        }
+        return Optional.of(this.registry.get(key));
     }
 
     /**
@@ -114,27 +126,26 @@ public class WeakRegistry<K, V> implements Registry<K, V>
      */
     public Optional<String> getNameForValue(V value)
     {
-        return this.inverseNameRegistry.containsKey(value) ? Optional.<String>of(this.inverseNameRegistry.get(validate(value))) : Optional
-                .<String>absent();
-    }
-
-    /**
-     * Validates that the given value is still referenced within the weak map.
-     * 
-     * @param value the value to check
-     * @return the value if it is still relevant, else null
-     */
-    private V validate(V value)
-    {
-        for (Entry<K, V> e : this.registry.entrySet())
+        K key = null;
+        for(Map.Entry<K, V> entry: this.registry.entrySet())
         {
-            if (e.getValue().equals(value))
+            if(entry.getValue() == value)
             {
-                return value;
+                key = entry.getKey();
+                break;
             }
         }
-        this.inverseNameRegistry.remove(value);//This is automatically reflected within the nameRegistry.
-        return null;
+        if(key != null)
+        {
+            for(Map.Entry<String, K> entry: this.nameRegistry.entrySet())
+            {
+                if(entry.getValue() == key)
+                {
+                    return Optional.of(entry.getKey());
+                }
+            }
+        }
+        return Optional.absent();
     }
 
     /**
@@ -148,9 +159,9 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     /**
      * {@inheritDoc}
      */
-    public Iterable<V> getRegisteredValues()
+    public Set<Entry<K, V>> getRegisteredValues()
     {
-        return this.inverseNameRegistry.keySet();
+        return this.registry.entrySet();
     }
 
 }

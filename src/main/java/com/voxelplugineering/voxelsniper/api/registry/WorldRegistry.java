@@ -55,6 +55,6 @@ public interface WorldRegistry<T>
      * 
      * @return The worlds
      */
-    Iterable<World> getLoadedWorlds();
+    World[] getLoadedWorlds();
 
 }

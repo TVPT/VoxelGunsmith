@@ -23,6 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.registry;
 
+import java.util.Map;
+import java.util.Set;
+
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
@@ -84,9 +87,16 @@ public class CommonPlayerRegistry<T> implements PlayerRegistry<T>
      * {@inheritDoc}
      */
     @Override
-    public Iterable<Player> getAllPlayers()
+    public Player[] getAllPlayers()
     {
-        return this.registry.getRegisteredValues();
+        Set<Map.Entry<T, Player>> playerSet = this.registry.getRegisteredValues();
+        Player[] players = new Player[playerSet.size()];
+        int i = 0;
+        for (Map.Entry<T, Player> e : playerSet)
+        {
+            players[i++] = e.getValue();
+        }
+        return players;
     }
 
 }

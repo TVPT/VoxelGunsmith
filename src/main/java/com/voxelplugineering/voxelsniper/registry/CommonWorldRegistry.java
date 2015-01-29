@@ -23,6 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.registry;
 
+import java.util.Map;
+import java.util.Set;
+
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.registry.RegistryProvider;
 import com.voxelplugineering.voxelsniper.api.registry.WorldRegistry;
@@ -70,9 +73,16 @@ public class CommonWorldRegistry<T> implements WorldRegistry<T>
      * {@inheritDoc}
      */
     @Override
-    public Iterable<World> getLoadedWorlds()
+    public World[] getLoadedWorlds()
     {
-        return this.registry.getRegisteredValues();
+        Set<Map.Entry<T, World>> worldsSet = this.registry.getRegisteredValues();
+        World[] worlds = new World[worldsSet.size()];
+        int i = 0;
+        for (Map.Entry<T, World> e : worldsSet)
+        {
+            worlds[i++] = e.getValue();
+        }
+        return worlds;
     }
 
 }

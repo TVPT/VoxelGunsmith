@@ -23,6 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.registry;
 
+import java.util.Map;
+import java.util.Set;
+
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.registry.BiomeRegistry;
@@ -84,9 +87,16 @@ public class CommonBiomeRegistry<T> implements BiomeRegistry<T>
      * {@inheritDoc}
      */
     @Override
-    public Iterable<Biome> getBiomes()
+    public Biome[] getBiomes()
     {
-        return this.registry.getRegisteredValues();
+        Set<Map.Entry<T, Biome>> biomeSet = this.registry.getRegisteredValues();
+        Biome[] biomes = new Biome[biomeSet.size()];
+        int i = 0;
+        for (Map.Entry<T, Biome> e : biomeSet)
+        {
+            biomes[i++] = e.getValue();
+        }
+        return biomes;
     }
 
     /**

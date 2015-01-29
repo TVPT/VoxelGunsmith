@@ -23,6 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
+import java.util.Set;
+import java.util.Map.Entry;
+
 import com.google.common.base.Optional;
 
 /**
@@ -79,6 +82,6 @@ public interface Registry<K, V>
      * 
      * @return a collection of the values
      */
-    Iterable<V> getRegisteredValues();
+    Set<Entry<K, V>> getRegisteredValues();
 
 }
