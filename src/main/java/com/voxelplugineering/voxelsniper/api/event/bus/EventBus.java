@@ -23,8 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.api.event.bus;
 
-import java.util.concurrent.Future;
-
+import com.google.common.util.concurrent.ListenableFuture;
 import com.voxelplugineering.voxelsniper.api.event.EventHandler;
 import com.voxelplugineering.voxelsniper.api.event.EventPriority;
 import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy;
@@ -113,6 +112,6 @@ public interface EventBus
      * @param event The event to post
      * @return A future for the task
      */
-    Future<Event> post(Event event);
+    ListenableFuture<Event> post(Event event);
 
 }

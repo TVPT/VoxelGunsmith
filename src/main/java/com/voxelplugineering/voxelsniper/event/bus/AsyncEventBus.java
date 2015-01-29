@@ -37,8 +37,10 @@ import java.util.concurrent.ThreadFactory;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
-import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.event.EventHandler;
 import com.voxelplugineering.voxelsniper.api.event.EventPriority;
@@ -58,7 +60,7 @@ import com.voxelplugineering.voxelsniper.event.Event;
 public class AsyncEventBus implements EventBus
 {
 
-    private final ExecutorService executor;
+    private final ListeningExecutorService executor;
     private final Map<Class<? extends Event>, SubscriberList> registry;
 
     /**
@@ -69,7 +71,7 @@ public class AsyncEventBus implements EventBus
      */
     public AsyncEventBus(ExecutorService executorService)
     {
-        this.executor = executorService;
+        this.executor = MoreExecutors.listeningDecorator(executorService);
         this.registry = new MapMaker().concurrencyLevel(4).makeMap();
     }
 
@@ -80,7 +82,7 @@ public class AsyncEventBus implements EventBus
     public AsyncEventBus()
     {
         final String prefix = Gunsmith.getConfiguration().get("eventBusThreadPrefix", String.class).or("AsyncEventBus-executor-");
-        this.executor = Executors.newCachedThreadPool(new ThreadFactory()
+        this.executor = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(new ThreadFactory()
         {
 
             private final ThreadGroup group;
@@ -96,7 +98,7 @@ public class AsyncEventBus implements EventBus
                 Thread thr = new Thread(this.group, r, prefix + this.count++);
                 return thr;
             }
-        });
+        }));
         this.registry = new MapMaker().concurrencyLevel(4).makeMap();
     }
 
@@ -198,7 +200,7 @@ public class AsyncEventBus implements EventBus
      * {@inheritDoc}
      */
     @Override
-    public Future<Event> post(Event event)
+    public ListenableFuture<Event> post(Event event)
     {
         if (event.getThreadingPolicy() == ThreadingPolicy.ASYNCHRONOUS)
         {
@@ -213,7 +215,7 @@ public class AsyncEventBus implements EventBus
 
     }
 
-    private Future<Event> postSync(Event event)
+    private ListenableFuture<Event> postSync(Event event)
     {
         List<Subscriber> subs = getListForEventType(event.getClass()).getOrderedSubscribers();
         if (subs.isEmpty() && !event.getClass().equals(DeadEvent.class))
@@ -236,7 +238,7 @@ public class AsyncEventBus implements EventBus
         return Futures.immediateFuture(event);
     }
 
-    private Future<Event> postAsyncSeq(Event event)
+    private ListenableFuture<Event> postAsyncSeq(Event event)
     {
         List<Subscriber> subs = getListForEventType(event.getClass()).getOrderedSubscribers();
         if (subs.isEmpty() && !event.getClass().equals(DeadEvent.class))
@@ -264,7 +266,7 @@ public class AsyncEventBus implements EventBus
         return Futures.immediateFuture(event);
     }
 
-    private Future<Event> postAsync(Event event)
+    private ListenableFuture<Event> postAsync(Event event)
     {
         List<Subscriber> subs = getListForEventType(event.getClass()).getOrderedSubscribers();
         if (subs.isEmpty() && !event.getClass().equals(DeadEvent.class))
@@ -333,125 +335,6 @@ class EventCallable implements Callable<Event>
     {
         this.sub.getMethod().invoke(this.sub.getContainer(), this.event);
         return this.event;
-    }
-
-}
-
-class Subscriber
-{
-
-    private final Object container;
-    private final Method exec;
-    private final Class<? extends Event> eventType;
-    private final EventPriority priority;
-
-    public Subscriber(Object container, Method exec, Class<? extends Event> eventType, EventPriority priority)
-    {
-        this.container = container;
-        this.exec = exec;
-        this.eventType = eventType;
-        this.priority = priority;
-        this.exec.setAccessible(true);
-    }
-
-    public Object getContainer()
-    {
-        return this.container;
-    }
-
-    public Method getMethod()
-    {
-        return this.exec;
-    }
-
-    public Class<? extends Event> getEventType()
-    {
-        return this.eventType;
-    }
-
-    public EventPriority getPriority()
-    {
-        return this.priority;
-    }
-
-    public String toString()
-    {
-        return "Subscriber " + this.exec.getName() + " (" + this.eventType.getName() + " - " + this.priority.name() + ")";
-    }
-}
-
-class SubscriberList
-{
-
-    private final Map<EventPriority, List<Subscriber>> subs;
-    private final SubscriberList parent;
-
-    public SubscriberList(SubscriberList parent)
-    {
-        this.subs = Maps.newEnumMap(EventPriority.class);
-        this.parent = parent;
-    }
-
-    public SubscriberList()
-    {
-        this(null);
-    }
-
-    public void register(Subscriber s)
-    {
-        getOrCreateList(s.getPriority()).add(s);
-    }
-
-    public synchronized void unregister(Subscriber s)
-    {
-        if (this.subs.containsKey(s.getPriority()))
-        {
-            this.subs.get(s.getPriority()).remove(s);
-        }
-    }
-
-    public void register(Iterable<Subscriber> list)
-    {
-        for (Subscriber s : list)
-        {
-            register(s);
-        }
-    }
-
-    public synchronized List<Subscriber> getOrCreateList(EventPriority p)
-    {
-        List<Subscriber> list;
-        if (!this.subs.containsKey(p))
-        {
-            list = Lists.newArrayList();
-            this.subs.put(p, list);
-        } else
-        {
-            list = this.subs.get(p);
-        }
-        return list;
-    }
-
-    public List<Subscriber> getOrderedSubscribers()
-    {
-        List<Subscriber> list = Lists.newArrayList();
-        for (EventPriority p : EventPriority.values())
-        {
-            appendPriority(list, p);
-        }
-        return list;
-    }
-
-    private void appendPriority(List<Subscriber> list, EventPriority p)
-    {
-        if (this.subs.containsKey(p))
-        {
-            list.addAll(this.subs.get(p));
-        }
-        if (this.parent != null)
-        {
-            this.parent.appendPriority(list, p);
-        }
     }
 
 }
