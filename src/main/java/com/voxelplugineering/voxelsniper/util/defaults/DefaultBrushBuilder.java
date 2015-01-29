@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.util.vsl;
+package com.voxelplugineering.voxelsniper.util.defaults;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -200,35 +200,36 @@ public class DefaultBrushBuilder
             graphs.put("biome", brush);
         }
 
-        { // blend TODO
+        { // TODO blend
 
         }
 
-        { // blob {growth, recursion} TODO
+        { // TODO blob {growth, recursion}
 
         }
 
-        { // canyon {min, max} TODO
+        { // TODO canyon {min, max}
 
         }
 
-        { // checker TODO
+        { // TODO checker
 
         }
 
-        { // cleansnow TODO
+        { // TODO cleansnow
 
         }
 
-        { // comet TODO
+        { // TODO comet
 
         }
 
-        { // cylinder {face} TODO
+        { // TODO cylinder {face}
 
         }
 
-        { //disc {face} TODO
+        { // disc {face}
+            // TODO support face arg
             VariableGetNode<Double> radius = new VariableGetNode<Double>("brushsize");
             DiscShapeNode shape = new DiscShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
@@ -239,79 +240,79 @@ public class DefaultBrushBuilder
             graphs.put("disc", brush);
         }
 
-        { // dome {face} TODO
+        { // TODO dome {face}
 
         }
 
-        { //drain TODO
+        { // TODO drain
 
         }
 
-        { // ellipse {face} TODO
+        { // TODO ellipse {face}
 
         }
 
-        { // ellipsoid TODO
+        { // TODO ellipsoid
 
         }
 
-        { // entity {type} TODO
+        { // TODO entity {type}
 
         }
 
-        { // entityremoval {type} TODO
+        { // TODO entityremoval {type}
 
         }
 
-        { // erosion {erode, erodeRecursions, fill, fillRecursions} TODO
+        { // TODO erosion {erode, erodeRecursions, fill, fillRecursions}
 
         }
 
-        { // filldown {from-existing} TODO
+        { // TODO filldown {from-existing}
 
         }
 
-        { // heatray TODO
+        { // TODO heatray
 
         }
 
-        { // lightning TODO
+        { // TODO lightning
 
         }
 
-        { // line TODO
+        { // TODO line
 
         }
 
-        { // ocean {min, max} TODO
+        { // TODO ocean {min, max}
 
         }
 
-        { // overlay {height, face} TODO
+        { // TODO overlay {height, face}
 
         }
 
-        { // pull {height} TODO
+        { // TODO pull {height}
 
         }
 
-        { // random {weight} TODO
+        { // TODO random {weight}
 
         }
 
-        { // ring {inner, face} TODO
+        { // TODO ring {inner, face}
 
         }
 
-        { // torus {inner, height, face} TODO
+        { // TODO torus {inner, height, face}
 
         }
 
-        { // rotation {yaw, pitch, roll} TODO
+        { // TODO rotation {yaw, pitch, roll}
 
         }
 
-        { // set TODO
+        { // TODO set
 
         }
 
@@ -410,31 +411,31 @@ public class DefaultBrushBuilder
             graphs.put("snipe", brush);
         }
 
-        { // snowcone TODO
+        { // TODO snowcone
 
         }
 
-        { // splatter {seed, growth, recursion} TODO
+        { // TODO splatter {seed, growth, recursion}
 
         }
 
-        { // spline TODO
+        { // TODO spline
 
         }
 
-        { // stencil {name, rotate, flip} TODO
+        { // TODO stencil {name, rotate, flip}
 
         }
 
-        { // stencillist {name, rotate, flip} TODO
+        { // TODO stencillist {name, rotate, flip}
 
         }
 
-        { // tree {type} TODO
+        { // TODO tree {type}
 
         }
 
-        { // triangle TODO
+        { // TODO triangle
 
         }
 
@@ -448,7 +449,8 @@ public class DefaultBrushBuilder
             graphs.put("voxel", brush);
         }
 
-        { // voxeldisc {face} TODO
+        { // voxeldisc {face}
+            // TODO support face arg
             VariableGetNode<Double> radius = new VariableGetNode<Double>("brushsize");
             VoxelDiscShapeNode shape = new VoxelDiscShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
@@ -458,11 +460,11 @@ public class DefaultBrushBuilder
             graphs.put("voxeldisc", brush);
         }
 
-        { // 3-point circle TODO
+        { // TODO 3-point circle
 
         }
 
-        { // populator {type} TODO
+        { // TODO populator {type}
 
         }
     }

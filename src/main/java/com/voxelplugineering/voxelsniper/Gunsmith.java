@@ -58,6 +58,7 @@ import com.voxelplugineering.voxelsniper.event.handler.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.logging.CommonLoggingDistributor;
 import com.voxelplugineering.voxelsniper.registry.vsl.ArgumentParsers;
 import com.voxelplugineering.voxelsniper.util.AnnotationHelper;
+import com.voxelplugineering.voxelsniper.util.defaults.DefaultAliasBuilder;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueTask;
 
 /**
@@ -448,6 +449,8 @@ public final class Gunsmith
             }
         }
 
+        aliasTask = new AliasSaveTask();
+        
         File globalAliases = new File(platformProxy.getDataFolder(), "aliases.json");
         if (globalAliases.exists())
         {
@@ -459,14 +462,13 @@ public final class Gunsmith
                 getLogger().error(e, "Error loading global aliases");
             }
         }
-        /*TODO default aliases
-         * 
-         * If the aliases file does not exist then create a default set of aliases
-         * mirroring the legacy setup and create an aliases file with those values.
-         */
-
+        else
+        {
+            DefaultAliasBuilder.loadDefaultAliases(globalAliasRegistries);
+            aliasTask.addDirty(globalAliasRegistries);
+        }
+        
         schedulerProxy.startSynchronousTask(new ChangeQueueTask(), 100);
-        aliasTask = new AliasSaveTask();
         schedulerProxy.startSynchronousTask(aliasTask, 30000);
 
         getLogger().info("Gunsmith initialization finalized.");

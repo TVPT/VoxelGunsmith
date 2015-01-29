@@ -21,34 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper;
+package com.voxelplugineering.voxelsniper.util.defaults;
 
-import java.io.File;
-
-import com.voxelplugineering.voxelsniper.util.defaults.DefaultBrushBuilder;
+import com.voxelplugineering.voxelsniper.alias.AliasHandler;
+import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 
 /**
- * The main class for utility operations.
+ * A utility for loading default aliases.
  */
-public class GunsmithMain
+public class DefaultAliasBuilder
 {
 
     /**
-     * The main method.
+     * Loads the standard default aliases into the given {@link AliasHandler}.
      * 
-     * @param args The program arguments.
+     * @param registry The handler
      */
-    public static void main(String[] args)
+    public static void loadDefaultAliases(AliasHandler registry)
     {
-        if (args.length == 2 && args[0].equalsIgnoreCase("--generate"))
-        {
-            DefaultBrushBuilder.buildBrushes();
-            DefaultBrushBuilder.saveAll(new File(args[1]));
-        } else
-        {
-            System.out.println("Usage: java -jar Gunsmith.jar <command> [args]\n\tgenerate <directory>\t: "
-                    + "Generates all default brushes into the given directory.");
+       
+        
+        { // brushes
+            
+            if(!registry.hasTarget("brush"))
+            {
+                registry.registerTarget("brush");
+            }
+            AliasRegistry alias = registry.getRegistry("brush").get();
+            
+            alias.register("b", "ball");
+            alias.register("d", "disc");
+            alias.register("m", "material");
+            alias.register("mm", "materialmask material");
+            alias.register("s", "snipe");
+            alias.register("v", "voxel");
+            alias.register("vd", "voxeldisc");
+            
         }
     }
-
+    
 }
