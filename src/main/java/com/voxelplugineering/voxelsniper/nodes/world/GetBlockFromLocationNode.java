@@ -30,7 +30,8 @@ import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 
 /**
- * A node for retrieving a block from a location. Equivalent to {@code location.getWorld().getBlockAt(location);}
+ * A node for retrieving a block from a location. Equivalent to
+ * {@code location.getWorld().getBlockAt(location);}
  */
 public class GetBlockFromLocationNode extends AbstractNode
 {

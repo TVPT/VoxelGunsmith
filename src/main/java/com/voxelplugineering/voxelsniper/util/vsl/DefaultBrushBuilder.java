@@ -69,7 +69,8 @@ import com.voxelplugineering.voxelsniper.nodes.world.biome.SetBiomeNode;
 import com.voxelplugineering.voxelsniper.registry.vsl.ArgumentParsers;
 
 /**
- * In lieu of having flat file brushes this will temporarily serve as a builder for brushes at runtime for debugging during development.
+ * In lieu of having flat file brushes this will temporarily serve as a builder
+ * for brushes at runtime for debugging during development.
  */
 public class DefaultBrushBuilder
 {
@@ -242,7 +243,7 @@ public class DefaultBrushBuilder
 
         }
 
-        {//drain TODO
+        { //drain TODO
 
         }
 

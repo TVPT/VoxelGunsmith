@@ -52,7 +52,8 @@ public class RayTrace
     private World world;
 
     /**
-     * A set of materials which are treated as non-solid to the ray (eg. the ray passes through them without stopping)
+     * A set of materials which are treated as non-solid to the ray (eg. the ray
+     * passes through them without stopping)
      */
     private List<Material> traversalBlocks = Lists.newArrayList();
 
@@ -106,7 +107,8 @@ public class RayTrace
     private double step;
 
     /**
-     * Creates a new raytrace to reference with the given location yaw and pitch.
+     * Creates a new raytrace to reference with the given location yaw and
+     * pitch.
      *
      * @param origin the origin location
      * @param yaw the yaw
@@ -228,7 +230,8 @@ public class RayTrace
     }
 
     /**
-     * Returns the length of the last ray (the distance from the origin to the target block).
+     * Returns the length of the last ray (the distance from the origin to the
+     * target block).
      * 
      * @return the length
      */

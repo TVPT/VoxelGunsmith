@@ -31,7 +31,8 @@ import com.voxelplugineering.voxelsniper.api.world.World;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
- * Takes a world and a vector position and returns the block at that location. Equivalent to
+ * Takes a world and a vector position and returns the block at that location.
+ * Equivalent to
  * {@code world.getBlockAt(vector.getX(), vector.getY(), vector.getZ());}
  */
 public class GetBlockFromWorldNode extends AbstractNode

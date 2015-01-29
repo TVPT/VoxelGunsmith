@@ -34,6 +34,7 @@ import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
  */
 public class SetBiomeNode extends AbstractNode
 {
+
     private final Provider<Biome> biome;
     private final Provider<Location> location;
 

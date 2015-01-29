@@ -36,6 +36,7 @@ import com.voxelplugineering.voxelsniper.shape.SingleMaterialShape;
  */
 public class NewMaterialShapeNode extends AbstractNode
 {
+
     private final Provider<MaterialShape> matshape;
     private final Provider<Shape> shape;
     private final Provider<Material> defaultMaterial;

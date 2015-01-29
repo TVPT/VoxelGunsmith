@@ -37,6 +37,7 @@ import com.voxelplugineering.voxelsniper.Gunsmith;
  */
 public class FileBrushLoader extends CommonBrushLoader
 {
+
     /**
      * The current file format version of this brush loader.
      */
@@ -77,7 +78,8 @@ public class FileBrushLoader extends CommonBrushLoader
     }
 
     /**
-     * Loads the brush stored in the given file. The brush is loaded with the given ClassLoader.
+     * Loads the brush stored in the given file. The brush is loaded with the
+     * given ClassLoader.
      * 
      * @param data the file to load the brush from
      * @return the brush
@@ -120,11 +122,14 @@ public class FileBrushLoader extends CommonBrushLoader
     }
 
     /**
-     * Loads the brush identified by the given name from the given directory. The brush is loaded in with the given ClassLoader. Assumes the file
-     * extension is not included. First attempts to load a .brush file with the given name. If that file is not found but a .vsl script with the same
+     * Loads the brush identified by the given name from the given directory.
+     * The brush is loaded in with the given ClassLoader. Assumes the file
+     * extension is not included. First attempts to load a .brush file with the
+     * given name. If that file is not found but a .vsl script with the same
      * name exists the .vsl script is first converted to a .brush file.
      * <p>
-     * TODO: add a boolean to ignore file extension and load as if it was a .brush file.
+     * TODO: add a boolean to ignore file extension and load as if it was a
+     * .brush file.
      * 
      * @param name the name of the brush to load, cannot be null or empty
      * @param directory the directory to load the brush from, cannot be null
@@ -177,7 +182,8 @@ public class FileBrushLoader extends CommonBrushLoader
     }
 
     /**
-     * For future file format changes to support converting old file formats to the most recent file format.
+     * For future file format changes to support converting old file formats to
+     * the most recent file format.
      * 
      * @param old the old file, cannot be null
      * @return a success flag

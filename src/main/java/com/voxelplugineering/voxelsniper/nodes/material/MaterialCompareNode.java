@@ -30,7 +30,8 @@ import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 
 /**
- * A node for comparing two materials and executing another {@link Node} if the comparison is true.
+ * A node for comparing two materials and executing another {@link Node} if the
+ * comparison is true.
  */
 public class MaterialCompareNode extends AbstractNode
 {

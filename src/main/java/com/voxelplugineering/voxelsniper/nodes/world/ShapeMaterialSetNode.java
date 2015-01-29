@@ -39,6 +39,7 @@ import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
  */
 public class ShapeMaterialSetNode extends AbstractNode
 {
+
     private final Provider<Shape> shape;
     private final Provider<Material> material;
     private final Provider<Location> target;

@@ -60,6 +60,10 @@ import com.voxelplugineering.voxelsniper.util.nbt.Tag;
 public class NBTSchematicLoader implements SchematicLoader
 {
 
+    /* TODO unit tests for this
+     * 
+     */
+
     /**
      * Creates a new {@link NBTSchematicLoader}.
      */

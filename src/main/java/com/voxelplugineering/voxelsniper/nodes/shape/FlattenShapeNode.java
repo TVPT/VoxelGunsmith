@@ -34,6 +34,7 @@ import com.voxelplugineering.voxelsniper.shape.ComplexShape;
  */
 public class FlattenShapeNode extends AbstractNode
 {
+
     private final Provider<Shape> shapeIn;
     private final Provider<Shape> shapeOut;
 

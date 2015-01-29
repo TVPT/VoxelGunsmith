@@ -33,6 +33,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
  */
 public class SphereShapeNode extends ShapeNode
 {
+
     private final Provider<Double> radius;
 
     /**

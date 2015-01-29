@@ -42,7 +42,8 @@ import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 public class BrushNodeGraph extends RunnableNodeGraph
 {
 
-    String help = Gunsmith.getConfiguration().get("defaultBrushHelpMessage", String.class).or(TextFormat.RED + "No help is provided for this brush part.");
+    String help = Gunsmith.getConfiguration().get("defaultBrushHelpMessage", String.class)
+            .or(TextFormat.RED + "No help is provided for this brush part.");
     Map<String, ArgumentParser<?>> arguments;
     Map<String, String> argDefaults;
     String primary = null;
@@ -157,7 +158,8 @@ public class BrushNodeGraph extends RunnableNodeGraph
     }
 
     /**
-     * Sets a certain argument as the primary argument. The argument specific must have already been added with
+     * Sets a certain argument as the primary argument. The argument specific
+     * must have already been added with
      * {@link #addArgument(String, ArgumentParser, String, String...)}.
      * 
      * @param arg The new primary argument

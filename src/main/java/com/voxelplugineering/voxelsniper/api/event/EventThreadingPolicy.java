@@ -33,7 +33,8 @@ import java.util.concurrent.ExecutorService;
 import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
 
 /**
- * Annotates an event to specify the threading policy that should be followed by {@link EventBus}s handling of the event when it is posted to the bus.
+ * Annotates an event to specify the threading policy that should be followed by
+ * {@link EventBus}s handling of the event when it is posted to the bus.
  */
 @Retention(RUNTIME)
 @Target(TYPE)
@@ -48,10 +49,14 @@ public @interface EventThreadingPolicy
     /**
      * Possible threading policies for an event post.
      * <ul>
-     * <li>SYNCHRONIZED: handlers will be called from the posting thread in sequential order.</li>
-     * <li>ASYNCHRONOUS_SEQUENTIAL: handlers will be called asynchronously to the posting thread, handlers will be called sequentially.</li>
-     * <li>ASYNCHRONOUS: handlers will be called asynchronously to the posting thread, depending on if the {@link EventBus}'s {@link ExecutorService}
-     * has enough threads available, the handlers may or may not be executed sequentially.</li>
+     * <li>SYNCHRONIZED: handlers will be called from the posting thread in
+     * sequential order.</li>
+     * <li>ASYNCHRONOUS_SEQUENTIAL: handlers will be called asynchronously to
+     * the posting thread, handlers will be called sequentially.</li>
+     * <li>ASYNCHRONOUS: handlers will be called asynchronously to the posting
+     * thread, depending on if the {@link EventBus}'s {@link ExecutorService}
+     * has enough threads available, the handlers may or may not be executed
+     * sequentially.</li>
      * </ul>
      */
     @SuppressWarnings("javadoc")

@@ -27,7 +27,8 @@ import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 
 /**
- * A factory for {@link Material}s wrapping a Material from the underlying implementation.
+ * A factory for {@link Material}s wrapping a Material from the underlying
+ * implementation.
  * 
  * @param <T> The material class of the specific implementation
  */
@@ -35,7 +36,8 @@ public interface MaterialRegistry<T>
 {
 
     /**
-     * Returns the {@link Material} representation of air/empty space in the underlying implementation.
+     * Returns the {@link Material} representation of air/empty space in the
+     * underlying implementation.
      * 
      * @return the material of air
      */

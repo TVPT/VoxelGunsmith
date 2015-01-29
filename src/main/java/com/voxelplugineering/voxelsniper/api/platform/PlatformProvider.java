@@ -141,4 +141,5 @@ public interface PlatformProvider
      * @return The format proxy
      */
     TextFormatProxy getFormatProxy();
+
 }

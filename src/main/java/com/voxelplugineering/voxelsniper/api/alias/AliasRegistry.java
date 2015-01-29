@@ -81,7 +81,7 @@ public interface AliasRegistry
      * @return the result expansion
      */
     String expand(String string);
-    
+
     /**
      * Returns the parent registry
      * 

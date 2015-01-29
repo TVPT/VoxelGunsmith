@@ -65,10 +65,12 @@ import java.util.zip.GZIPOutputStream;
 
 /**
  * <p>
- * This class writes <strong>NBT</strong>, or <strong>Named Binary Tag</strong> <code>Tag</code> objects to an underlying <code>OutputStream</code>.
+ * This class writes <strong>NBT</strong>, or <strong>Named Binary Tag</strong>
+ * <code>Tag</code> objects to an underlying <code>OutputStream</code>.
  * </p>
  * <p>
- * The NBT format was created by Markus Persson, and the specification may be found at <a href="http://www.minecraft.net/docs/NBT.txt">
+ * The NBT format was created by Markus Persson, and the specification may be
+ * found at <a href="http://www.minecraft.net/docs/NBT.txt">
  * http://www.minecraft.net/docs/NBT.txt</a>.
  * </p>
  * 
@@ -83,7 +85,8 @@ public final class NBTOutputStream implements Closeable
     private final DataOutputStream output;
 
     /**
-     * Creates a new <code>NBTOutputStream</code>, which will write data to the specified underlying this.output stream.
+     * Creates a new <code>NBTOutputStream</code>, which will write data to the
+     * specified underlying this.output stream.
      * 
      * @param os The this.output stream.
      * @throws IOException if an I/O error occurs.

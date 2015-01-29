@@ -35,8 +35,10 @@ public interface BrushLoader
 {
 
     /**
-     * Loads a brush specified by the given byte array. The Class is loaded by the given class loader. The format for the serialization is as follows:
-     * 4-bytes format version 4-bytes brush version {@link NodeGraph} serialized by java's {@link ObjectOutputStream}
+     * Loads a brush specified by the given byte array. The Class is loaded by
+     * the given class loader. The format for the serialization is as follows:
+     * 4-bytes format version 4-bytes brush version {@link NodeGraph} serialized
+     * by java's {@link ObjectOutputStream}
      * 
      * @param serialized the serialized version of the brush, cannot be null
      * @return the compiled class
@@ -44,9 +46,11 @@ public interface BrushLoader
     BrushNodeGraph loadBrush(byte[] serialized);
 
     /**
-     * Loads the specified brush from the default source for this brush loader. The class is loaded by the given class loader.
+     * Loads the specified brush from the default source for this brush loader.
+     * The class is loaded by the given class loader.
      * 
-     * @param identifier the identifier of the brush to search the default source for, cannot be null
+     * @param identifier the identifier of the brush to search the default
+     *            source for, cannot be null
      * @return the compiled class
      */
     BrushNodeGraph loadBrush(String identifier);

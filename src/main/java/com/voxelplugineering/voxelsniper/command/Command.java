@@ -52,7 +52,8 @@ public abstract class Command
      */
     private boolean playerOnly = false;
     /**
-     * An array of permissions nodes, a sniper must have at least one of these in order to execute this command.
+     * An array of permissions nodes, a sniper must have at least one of these
+     * in order to execute this command.
      */
     private String[] permissions = null;
 
@@ -71,7 +72,8 @@ public abstract class Command
     }
 
     /**
-     * Extracts and validates the arguments for the command and passes it to the specific executor.
+     * Extracts and validates the arguments for the command and passes it to the
+     * specific executor.
      * 
      * @param sender the command source
      * @param args the raw command arguments
@@ -151,7 +153,8 @@ public abstract class Command
     }
 
     /**
-     * Returns the permission nodes for this command. A sniper is required to have at least one of these in order to execute the command.
+     * Returns the permission nodes for this command. A sniper is required to
+     * have at least one of these in order to execute the command.
      * 
      * @return the permissions
      */

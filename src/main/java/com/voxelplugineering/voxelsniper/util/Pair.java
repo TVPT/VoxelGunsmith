@@ -31,6 +31,7 @@ package com.voxelplugineering.voxelsniper.util;
  */
 public class Pair<K, V>
 {
+
     /**
      * The first value.
      */

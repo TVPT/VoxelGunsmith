@@ -46,6 +46,10 @@ import com.voxelplugineering.voxelsniper.util.RayTrace;
 public class CommonEventHandler
 {
 
+    private final String playerFolderName = Gunsmith.getConfiguration().get("playerDataDirectory", String.class).or("players/");
+    private final String aliasFile = Gunsmith.getConfiguration().get("aliasesFileName", String.class).or("aliases.json");
+    private final String playerSysvar = Gunsmith.getConfiguration().get("playerSysVarName", String.class).or("__PLAYER__");
+
     /**
      * Constructs a new CommonEventHandler
      */
@@ -55,8 +59,9 @@ public class CommonEventHandler
     }
 
     /**
-     * An event handler for the {@link SniperCreateEvent}s. This should initialize the players into the player registry, creating their {@link Player}
-     * objects and setting their defaults.
+     * An event handler for the {@link SniperCreateEvent}s. This should
+     * initialize the players into the player registry, creating their
+     * {@link Player} objects and setting their defaults.
      * 
      * @param event the event
      */
@@ -65,9 +70,9 @@ public class CommonEventHandler
     {
         Player player = event.getSniper();
         //TODO use UUID for directory name
-        File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), "players/" + player.getName());
+        File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName + player.getName());
         playerFolder.mkdirs();
-        File aliases = new File(playerFolder, "aliases.json");
+        File aliases = new File(playerFolder, this.aliasFile);
         if (aliases.exists())
         {
             try
@@ -81,7 +86,8 @@ public class CommonEventHandler
     }
 
     /**
-     * An event handler for {@link SniperDestroyEvent} in order to save player-specific settings.
+     * An event handler for {@link SniperDestroyEvent} in order to save
+     * player-specific settings.
      * 
      * @param event the event
      */
@@ -89,8 +95,8 @@ public class CommonEventHandler
     public void onPlayerLeave(SniperEvent.SniperDestroyEvent event)
     {
         Player player = event.getSniper();
-        File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), "players/" + player.getName());
-        File aliases = new File(playerFolder, "aliases.json");
+        File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName + player.getName());
+        File aliases = new File(playerFolder, this.aliasFile);
 
         try
         {
@@ -103,11 +109,15 @@ public class CommonEventHandler
         {
             Gunsmith.getLogger().error(e, "Error saving player aliases!");
         }
+
+        //TODO cache players undo queue for N minutes
     }
 
     /**
-     * Processes the given {@link com.voxelplugineering.voxelsniper.event.SnipeEvent} and performs all necessary checks of the event. This event
-     * handler is supports asynchronous callback.
+     * Processes the given
+     * {@link com.voxelplugineering.voxelsniper.event.SnipeEvent} and performs
+     * all necessary checks of the event. This event handler is supports
+     * asynchronous callback.
      *
      * @param event the snipe event to perform
      */
@@ -121,33 +131,23 @@ public class CommonEventHandler
             double yaw = event.getYaw();
             double pitch = event.getPitch();
             RayTrace ray = new RayTrace(location, yaw, pitch);
-            double range = (Double) Gunsmith.getConfiguration().get("rayTraceRange").get();
-            try
+            double range = (Double) Gunsmith.getConfiguration().get("rayTraceRange").or(250.0);
+            if (sniper.getBrushSettings().hasValue("range"))
             {
-                if (sniper.getBrushSettings().hasValue("range"))
-                {
-                    range = sniper.getBrushSettings().get("range", Double.class).get();
-                }
-            } catch (NumberFormatException ignored)
-            {
-                assert true;
+                range = sniper.getBrushSettings().get("range", Double.class).get();
             }
             ray.setRange(range);
             ray.trace();
 
             VariableScope brushVariables = new ParentedVariableScope(sniper.getBrushSettings());
             brushVariables.setCaseSensitive(false);
-            brushVariables.set("origin", location);
+            brushVariables.set("origin", location);//TODO move all variable names to configuration
             brushVariables.set("yaw", yaw);
             brushVariables.set("pitch", pitch);
             brushVariables.set("targetBlock", ray.getTargetBlock());
             brushVariables.set("lastBlock", ray.getLastBlock());
             brushVariables.set("length", ray.getLength());
-            brushVariables.set("__PLAYER__", sniper);
-            System.out.println("post: " + ray);
-            System.out.println(ray.getTargetBlock());
-            System.out.println(ray.getTargetBlock().getLocation());
-            System.out.println(ray.getTargetBlock().getLocation().toString());
+            brushVariables.set(this.playerSysvar, sniper);
             Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());
             sniper.getCurrentBrush().run(brushVariables, sniper.getBrushArguments());
         } catch (Exception e)

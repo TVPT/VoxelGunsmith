@@ -26,13 +26,15 @@ package com.voxelplugineering.voxelsniper.api.platform;
 import java.io.File;
 
 /**
- * The specific implementation core class, provides direct platform utilities and versioning for Gunsmith.
+ * The specific implementation core class, provides direct platform utilities
+ * and versioning for Gunsmith.
  */
 public interface PlatformProxy
 {
 
     /**
-     * Gets the name of the platform, examples may include "Bukkit", "Spigot", "Sponge", etc.
+     * Gets the name of the platform, examples may include "Bukkit", "Spigot",
+     * "Sponge", etc.
      *
      * @return The name of the platform
      */
@@ -79,4 +81,5 @@ public interface PlatformProxy
      * @return The number of players online
      */
     int getNumberOfPlayersOnline();
+
 }

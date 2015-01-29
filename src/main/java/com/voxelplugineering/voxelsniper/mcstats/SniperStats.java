@@ -37,6 +37,7 @@ import com.voxelplugineering.voxelsniper.Gunsmith;
  */
 public final class SniperStats extends Metrics
 {
+
     private static int snipesDone = 0;
     private static long snipeCounterInitTimeStamp = 0;
     private static Map<String, Integer> brushUsageCounter = Maps.newHashMap();
@@ -64,7 +65,8 @@ public final class SniperStats extends Metrics
     }
 
     /**
-     * Set Initialization time for reference when calculating average Snipes per Minute.
+     * Set Initialization time for reference when calculating average Snipes per
+     * Minute.
      *
      * @param currentTimeMillis Current time
      */
@@ -154,6 +156,7 @@ public final class SniperStats extends Metrics
             {
                 brushUsageGraph.addPlotter(new Metrics.Plotter(entry.getKey())
                 {
+
                     @Override
                     public int getValue()
                     {

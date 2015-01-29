@@ -46,7 +46,8 @@ public class GunsmithMain
             DefaultBrushBuilder.saveAll(new File(args[1]));
         } else
         {
-            System.out.println("Usage: java -jar Gunsmith.jar <command> [args]\n\tgenerate <directory>\t: Generates all default brushes into the given directory.");
+            System.out.println("Usage: java -jar Gunsmith.jar <command> [args]\n\tgenerate <directory>\t: "
+                    + "Generates all default brushes into the given directory.");
         }
     }
 

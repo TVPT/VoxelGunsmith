@@ -56,28 +56,18 @@ import com.voxelplugineering.voxelsniper.world.queue.CommonUndoQueue;
  */
 public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
 {
-    /**
-     * This users specific brush manager.
-     */
+
     private BrushManager personalBrushManager;
-    /**
-     * The currently selected brush.
-     */
     private BrushNodeGraph currentBrush;
-    /**
-     * The brush settings specific to this player.
-     */
     private VariableScope brushVariables;
-    /**
-     * The queue of pending {@link ChangeQueue}s waiting to be processed.
-     */
     private Queue<ChangeQueue> pending;
     private AliasHandler personalAliasHandler;
     private Map<String, String> arguments;
     private UndoQueue history;
 
     /**
-     * Creates a new CommonPlayer with a weak reference to the player. TODO add constructor for receiving custom parent brush manager
+     * Creates a new CommonPlayer with a weak reference to the player. TODO add
+     * constructor for receiving custom parent brush manager
      * 
      * @param player the player object
      */

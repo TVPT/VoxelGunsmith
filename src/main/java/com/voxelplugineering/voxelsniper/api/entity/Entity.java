@@ -40,7 +40,8 @@ public interface Entity
     World getWorld();
 
     /**
-     * Gets the name of the entity, may be a generic name if the entity has no special name.
+     * Gets the name of the entity, may be a generic name if the entity has no
+     * special name.
      * 
      * @return The name
      */

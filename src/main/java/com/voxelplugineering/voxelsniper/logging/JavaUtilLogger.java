@@ -27,10 +27,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A wrapper for a {@link java.util.logging.Logger} to receive logging messages from gunsmith.
+ * A wrapper for a {@link java.util.logging.Logger} to receive logging messages
+ * from gunsmith.
  */
 public class JavaUtilLogger implements com.voxelplugineering.voxelsniper.api.logging.Logger
 {
+
     private final Logger logger;
 
     /**

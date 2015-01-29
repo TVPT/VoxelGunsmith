@@ -56,3 +56,13 @@ public class ArgumentParsers
         };
     }
 }
+
+/* TODO default ArgumentParsers
+ * 
+ * Add default parsers for:
+ *  - Players
+ *  - Worlds
+ *  - Materials
+ *  - Numbers
+ * 
+ */

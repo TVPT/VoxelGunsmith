@@ -28,7 +28,8 @@ import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 
 /**
- * A factory for creating instances of {@link Player} from the specific implementation's user class.
+ * A factory for creating instances of {@link Player} from the specific
+ * implementation's user class.
  * 
  * @param <T> the underlying Player class
  */
@@ -36,7 +37,8 @@ public interface PlayerRegistry<T>
 {
 
     /**
-     * Returns a special case {@link Player} for the console of the dedicated server. Has no brush context but can recieve messages.
+     * Returns a special case {@link Player} for the console of the dedicated
+     * server. Has no brush context but can recieve messages.
      * 
      * @return An {@link Player} representing the console
      */

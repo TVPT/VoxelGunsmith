@@ -46,8 +46,9 @@ public interface Block
     Location getLocation();
 
     /**
-     * Gets the material currently at the location of this voxel. Unless overridden by the specific implementation this material may be out of date to
-     * the underlying world.
+     * Gets the material currently at the location of this voxel. Unless
+     * overridden by the specific implementation this material may be out of
+     * date to the underlying world.
      * 
      * @return The material
      */

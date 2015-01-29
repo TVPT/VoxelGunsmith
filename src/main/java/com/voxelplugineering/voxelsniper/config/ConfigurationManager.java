@@ -91,10 +91,10 @@ public class ConfigurationManager implements Configuration
     {
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
-        if(has(name))
+        if (has(name))
         {
             Object o = this.config.get(name);
-            if(expectedType.isAssignableFrom(o.getClass()))
+            if (expectedType.isAssignableFrom(o.getClass()))
             {
                 return Optional.of(expectedType.cast(o));
             }

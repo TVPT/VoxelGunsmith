@@ -40,7 +40,8 @@ public class CommonUndoQueue implements UndoQueue
     private Entry first = null;
 
     /**
-     * Creates a new {@link CommonUndoQueue} associated with the given {@link ChangeQueueOwner}.
+     * Creates a new {@link CommonUndoQueue} associated with the given
+     * {@link ChangeQueueOwner}.
      * 
      * @param owner The owner
      */

@@ -30,7 +30,8 @@ public interface Logger
 {
 
     /**
-     * Logs a debug message to the output. Will not be displayed unless the output's logging level is set to debug.
+     * Logs a debug message to the output. Will not be displayed unless the
+     * output's logging level is set to debug.
      * 
      * @param msg the debug message, cannot be null or empty
      */

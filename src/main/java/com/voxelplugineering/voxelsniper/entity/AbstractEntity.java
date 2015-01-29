@@ -26,7 +26,6 @@ package com.voxelplugineering.voxelsniper.entity;
 import com.voxelplugineering.voxelsniper.api.entity.Entity;
 import com.voxelplugineering.voxelsniper.registry.WeakWrapper;
 
-
 /**
  * An abstract entity.
  *
@@ -34,6 +33,7 @@ import com.voxelplugineering.voxelsniper.registry.WeakWrapper;
  */
 public abstract class AbstractEntity<T> extends WeakWrapper<T> implements Entity
 {
+
     /**
      * Creates a new AbstractEntity.
      *

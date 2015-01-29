@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.config;
 
-import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 
 /**
@@ -31,11 +30,13 @@ import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
  */
 public class VoxelSniperConfiguration
 {
+
     //Default constants
     double rayTraceRange = 250;
     int blockChangesPerSecond = 80000;
     int undoHistorySize = 20;
     int statusMessageThreshold = 80000;
+    String playerDataDirectory = "players/";
 
     //Default brush settings
     String defaultBrush = "voxel material";
@@ -53,7 +54,7 @@ public class VoxelSniperConfiguration
     String materialNotFoundMessage = TextFormat.RED + "Could not find that material.";
     String materialSetMessage = TextFormat.GREEN + "Set material to " + TextFormat.GOLD + "%s";
     String materialMaskSetMessage = TextFormat.GREEN + "Set secondary material to " + TextFormat.GOLD + "%s";
-    
+
     //Alias Settings
     boolean caseSensitiveAliases = true;
 }

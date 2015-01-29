@@ -35,7 +35,8 @@ import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.command.Command;
 
 /**
- * Standard brush command to select a brush and provide the necessary arguments to said brush.
+ * Standard brush command to select a brush and provide the necessary arguments
+ * to said brush.
  */
 public class VSCommand extends Command
 {

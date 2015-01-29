@@ -34,6 +34,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
  */
 public class ShapeUnsetNode extends AbstractNode
 {
+
     private final Provider<Shape> shape;
     private final Provider<Vector3i> target;
 

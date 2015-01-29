@@ -46,6 +46,7 @@ import com.voxelplugineering.voxelsniper.nodes.block.BlockBreakNode;
  */
 public class NodeTest
 {
+
     RuntimeState state;
 
     /**

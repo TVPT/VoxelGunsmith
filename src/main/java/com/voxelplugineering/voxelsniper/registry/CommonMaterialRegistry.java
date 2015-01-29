@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.registry;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 
@@ -37,6 +38,7 @@ public class CommonMaterialRegistry<T> implements MaterialRegistry<T>
 
     private final WeakRegistry<T, Material> registry;
     private Material air;
+    private String defaultMaterialName = Gunsmith.getConfiguration().get("defaultMaterialName", String.class).or("air");
 
     /**
      * Creates a new {@link CommonMaterialRegistry}.
@@ -81,7 +83,7 @@ public class CommonMaterialRegistry<T> implements MaterialRegistry<T>
     public void registerMaterial(String name, T object, Material material)
     {
         this.registry.register(name, object, material);
-        if (name.equalsIgnoreCase("air") || name.equalsIgnoreCase("void") || name.equalsIgnoreCase("null"))
+        if (name.equalsIgnoreCase(this.defaultMaterialName))
         {
             this.air = material;
         }

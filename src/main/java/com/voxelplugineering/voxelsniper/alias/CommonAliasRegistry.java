@@ -119,7 +119,7 @@ public class CommonAliasRegistry implements AliasRegistry
         checkArgument(!alias.isEmpty(), "Alias cannot be empty.");
         checkArgument(!value.isEmpty(), "Value cannot be empty.");
 
-        if (!caseSensitive)
+        if (!this.caseSensitive)
         {
             alias = alias.toLowerCase();
         }
@@ -141,7 +141,7 @@ public class CommonAliasRegistry implements AliasRegistry
     {
         checkNotNull(alias, "Alias cannot be null.");
         checkArgument(!alias.isEmpty(), "Alias cannot be empty.");
-        if (!caseSensitive)
+        if (!this.caseSensitive)
         {
             alias = alias.toLowerCase();
         }
@@ -251,7 +251,7 @@ public class CommonAliasRegistry implements AliasRegistry
             {
                 String section = StringUtilities.getSection(split, i, j);
 
-                if (!caseSensitive)
+                if (!this.caseSensitive)
                 {
                     section = section.toLowerCase();
                 }

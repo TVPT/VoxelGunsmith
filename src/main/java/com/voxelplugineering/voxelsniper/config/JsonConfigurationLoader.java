@@ -40,20 +40,25 @@ import com.google.gson.GsonBuilder;
 import com.voxelplugineering.voxelsniper.api.config.Configuration;
 
 /**
- * A configuration loader for loading and saving configuration containers to json flat files.
+ * A configuration loader for loading and saving configuration containers to
+ * json flat files.
  */
 public class JsonConfigurationLoader
 {
 
     /**
-     * Loads a configuration container from the given jsonFile. The configuration container must be registered with the configuration storage before
-     * calling this.
+     * Loads a configuration container from the given jsonFile. The
+     * configuration container must be registered with the configuration storage
+     * before calling this.
      * 
      * @param jsonFile the jsonFile to load the container from, cannot be null
-     * @param configuration the configuration object to load the values into, cannot be null
+     * @param configuration the configuration object to load the values into,
+     *            cannot be null
      * @param containerName the name of the container, cannot be null or empty
-     * @throws IOException if there is an issue with loading values from the file
-     * @throws IllegalAccessException if there was an issue loading the values from the fields
+     * @throws IOException if there is an issue with loading values from the
+     *             file
+     * @throws IllegalAccessException if there was an issue loading the values
+     *             from the fields
      */
     public static void load(File jsonFile, Configuration configuration, String containerName) throws IOException, IllegalAccessException
     {
@@ -78,15 +83,18 @@ public class JsonConfigurationLoader
     }
 
     /**
-     * Saves the values of a configuration container from the configuration object to the given file as a json object. The container just have been
+     * Saves the values of a configuration container from the configuration
+     * object to the given file as a json object. The container just have been
      * registered to the configuration object prior to calling this.
      * 
      * @param output the file to output to
      * @param configuration the configuration to save the values from
      * @param containerName the name of the container to save the values from
      * @throws IOException if there is a problem saving to the file
-     * @throws InstantiationException if there was a problem creating the writer to save the file
-     * @throws IllegalAccessException if there was a problem getting the data from the container
+     * @throws InstantiationException if there was a problem creating the writer
+     *             to save the file
+     * @throws IllegalAccessException if there was a problem getting the data
+     *             from the container
      */
     public static void save(File output, Configuration configuration, String containerName) throws IOException, InstantiationException,
             IllegalAccessException
@@ -109,14 +117,17 @@ public class JsonConfigurationLoader
     }
 
     /**
-     * Saves all containers registered with the configuration object to files. The files are named according to the container names (with a .json file
+     * Saves all containers registered with the configuration object to files.
+     * The files are named according to the container names (with a .json file
      * extension). The files are stored in the directory specified.
      * 
      * @param outputFolder the directory to store the files to
      * @param configuration the configuration object to save the values from
      * @throws IOException if there is an issue saving the files.
-     * @throws InstantiationException if there was a problem creating the writer to save the file
-     * @throws IllegalAccessException if there was a problem getting the data from the container
+     * @throws InstantiationException if there was a problem creating the writer
+     *             to save the file
+     * @throws IllegalAccessException if there was a problem getting the data
+     *             from the container
      */
     public static void saveAllContainers(File outputFolder, Configuration configuration) throws IOException, InstantiationException,
             IllegalAccessException

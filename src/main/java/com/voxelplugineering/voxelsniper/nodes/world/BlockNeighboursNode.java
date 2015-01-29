@@ -38,6 +38,7 @@ import com.voxelplugineering.voxelsniper.util.Direction;
  */
 public class BlockNeighboursNode extends AbstractNode
 {
+
     @Input
     private final Provider<Block> blockProvider;
     @Output

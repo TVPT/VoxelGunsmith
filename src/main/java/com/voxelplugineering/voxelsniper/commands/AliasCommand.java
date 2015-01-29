@@ -34,7 +34,8 @@ import com.voxelplugineering.voxelsniper.command.Command;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
 /**
- * Standard brush command to select a brush and provide the necessary arguments to said brush.
+ * Standard brush command to select a brush and provide the necessary arguments
+ * to said brush.
  */
 public class AliasCommand extends Command
 {

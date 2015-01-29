@@ -32,7 +32,8 @@ public class PrimativeComplexShapeFactory
 {
 
     /**
-     * Creates a cube with the given radius, the distance along a side of the cube will be radius*2+1
+     * Creates a cube with the given radius, the distance along a side of the
+     * cube will be radius*2+1
      * 
      * @param radius the radius
      * @return the new shape
@@ -43,7 +44,8 @@ public class PrimativeComplexShapeFactory
     }
 
     /**
-     * Creates a square disc with a height of 1, aligned orthogonally to the given direction.
+     * Creates a square disc with a height of 1, aligned orthogonally to the
+     * given direction.
      * 
      * @param radius the radius of the disc
      * @param direction the direction
@@ -65,7 +67,8 @@ public class PrimativeComplexShapeFactory
     }
 
     /**
-     * Creates a rectangular volume. the 3 radii are for each of the axes with each side equal to the radius*2+1 where radius is the radius for that
+     * Creates a rectangular volume. the 3 radii are for each of the axes with
+     * each side equal to the radius*2+1 where radius is the radius for that
      * specific axis.
      * 
      * @param rx the x-axis radius
@@ -143,7 +146,8 @@ public class PrimativeComplexShapeFactory
     /**
      * Creates an elliptical cylinder in the direction of the given axis.
      * <p>
-     * The axes are ordered according to the right had rule, where the directional axis takes the place of the z-axis.
+     * The axes are ordered according to the right had rule, where the
+     * directional axis takes the place of the z-axis.
      * 
      * @param rx the first radius perpendicular to the axis
      * @param ry the second radius perpendicular to the axis
@@ -241,7 +245,8 @@ public class PrimativeComplexShapeFactory
     }
 
     /**
-     * Creates a cylinder with the given radius and height, the flat plane of the cylinder is aligned to be orthogonal to the given direction.
+     * Creates a cylinder with the given radius and height, the flat plane of
+     * the cylinder is aligned to be orthogonal to the given direction.
      * 
      * @param radius the radius
      * @param height the height
@@ -254,7 +259,8 @@ public class PrimativeComplexShapeFactory
     }
 
     /**
-     * Creates a disc with the given radius and a height of 1, the flat plane of the disc is aligned to be orthogonal to the given direction.
+     * Creates a disc with the given radius and a height of 1, the flat plane of
+     * the disc is aligned to be orthogonal to the given direction.
      * 
      * @param radius the radius
      * @param direction the direction
@@ -266,9 +272,11 @@ public class PrimativeComplexShapeFactory
     }
 
     /**
-     * Creates a ellipse with the given pair of radii, the flat plane of the ellipse is aligned to be orthogonal to the given direction.
+     * Creates a ellipse with the given pair of radii, the flat plane of the
+     * ellipse is aligned to be orthogonal to the given direction.
      * <p>
-     * The axes are ordered according to the right had rule, where the direction takes the place of the z-axis.
+     * The axes are ordered according to the right had rule, where the direction
+     * takes the place of the z-axis.
      * 
      * @param rx the radius in the x-direction
      * @param ry the radius in the y direction

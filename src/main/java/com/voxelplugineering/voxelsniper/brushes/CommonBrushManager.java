@@ -44,7 +44,8 @@ public class CommonBrushManager implements BrushManager
 {
 
     /**
-     * The parent brush manager, referenced by the brush getter if it cannot be found within this brush manager.
+     * The parent brush manager, referenced by the brush getter if it cannot be
+     * found within this brush manager.
      */
     private BrushManager parent = null;
     /**

@@ -31,6 +31,7 @@ import com.voxelplugineering.voxelsniper.Gunsmith;
 @SuppressWarnings("javadoc")
 public enum TextFormat
 {
+
     BLACK,
     DARK_BLUE,
     DARK_GREEN,
@@ -62,4 +63,5 @@ public enum TextFormat
     {
         return Gunsmith.getTextFormatProxy().getFormat(this);
     }
+
 }

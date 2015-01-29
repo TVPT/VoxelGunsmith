@@ -30,53 +30,62 @@ import com.voxelplugineering.voxelsniper.api.entity.MessageReceiver;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 
 /**
- * A schematic loader is an interface for loading or saving regions of the world to a persistent storage. TODO: better persistence abstraction TODO:
- * need a more complete representation for a region of a world (w/ entities and tile entites mostly)
+ * A schematic loader is an interface for loading or saving regions of the world
+ * to a persistent storage. TODO: better persistence abstraction TODO: need a
+ * more complete representation for a region of a world (w/ entities and tile
+ * entities mostly)
  */
 public interface SchematicLoader
 {
 
+    /* TODO
+     * 
+     * Schematic loaders for alternate data sources such as a database perhaps.
+     * 
+     */
+
     /**
-     * Loads a world region from the given file. TODO: need a more abstract data soruce
+     * Loads a world region from the given file. TODO: need a more abstract data
+     * source.
      * 
      * @param file The file to load from
      * @return The world region
-     * @throws IOException 
+     * @throws IOException If there is an error loading
      */
     MaterialShape load(File file) throws IOException;
 
     /**
      * Saves a world region to file.
-     * @param f 
      * 
      * @param file The file to save to
      * @param shape The region to save
      * @param owner The message receiver to post results to
      * @throws IOException If there is an error saving
      */
-    void save(File f, MaterialShape shape, MessageReceiver owner) throws IOException;
+    void save(File file, MaterialShape shape, MessageReceiver owner) throws IOException;
 
     /**
      * A schematic format converter.
      */
     public static interface Converter
     {
-        
+
         /**
-         * Performs the conversion and returns the converted {@link MaterialShape}.
+         * Performs the conversion and returns the converted
+         * {@link MaterialShape}.
          * 
          * @return The shape
          */
         MaterialShape convert();
-        
+
     }
-    
+
     /**
      * A converter for converting .vstencil files to MCEdit schematics.
      */
     public static class StencilConverter implements Converter
     {
-        
+
         /**
          * Creates a new {@link StencilConverter} for the given stencil file.
          * 
@@ -96,7 +105,7 @@ public interface SchematicLoader
             // TODO Auto-generated method stub
             return null;
         }
-        
+
     }
-    
+
 }

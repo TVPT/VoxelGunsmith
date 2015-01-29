@@ -57,6 +57,7 @@ public interface Configuration
      * @param name the name or key to search and return from the configuration
      *            storage, cannot be null or empty
      * @param expectedType The expected type of the config value
+     * @param <T> The expected type
      * @return the value stored in configuration, or null if the key is not
      *         found
      */

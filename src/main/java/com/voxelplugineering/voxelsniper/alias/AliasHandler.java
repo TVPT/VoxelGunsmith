@@ -144,7 +144,8 @@ public class AliasHandler
     }
 
     /**
-     * Loads this {@link AliasHandler}s data from the given file. The file is assumed to be a json file.
+     * Loads this {@link AliasHandler}s data from the given file. The file is
+     * assumed to be a json file.
      * <p>
      * TODO support better persistence options
      * 
@@ -193,7 +194,8 @@ public class AliasHandler
     }
 
     /**
-     * Saves this {@link AliasHandler}s data from to given file. The data is outputted as json.
+     * Saves this {@link AliasHandler}s data from to given file. The data is
+     * outputted as json.
      * <p>
      * TODO support better persistence options
      * 
@@ -235,5 +237,11 @@ public class AliasHandler
         }
 
     }
+
+    /* TODO persistence
+     * 
+     * Move this to a more generic persistence system?
+     * 
+     */
 
 }

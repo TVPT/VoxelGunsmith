@@ -36,17 +36,21 @@ import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 
 /**
- * A handler for commands which handles registration of command handlers and commands. Also delegates commands to the handlers and registers commands
- * with the underlying registrar.
+ * A handler for commands which handles registration of command handlers and
+ * commands. Also delegates commands to the handlers and registers commands with
+ * the underlying registrar.
  * <p>
  * TODO: correctly identify and handle commands with overlapping aliases.
  */
 public class CommandHandler
 {
+
     /**
-     * The message sent to players when they lack the required permission for a command.
+     * The message sent to players when they lack the required permission for a
+     * command.
      */
-    private String permissionMessage = Gunsmith.getConfiguration().get("permissionsRequiredMessage", String.class).or("You lack the required permission for this command.");
+    private String permissionMessage = Gunsmith.getConfiguration().get("permissionsRequiredMessage", String.class)
+            .or("You lack the required permission for this command.");
 
     /**
      * A Map of commands with their primary alias as the key.
@@ -77,7 +81,8 @@ public class CommandHandler
     }
 
     /**
-     * Registers a new command with this system. Will overwrite any aliases already registered.
+     * Registers a new command with this system. Will overwrite any aliases
+     * already registered.
      * 
      * @param cmd the new command
      */

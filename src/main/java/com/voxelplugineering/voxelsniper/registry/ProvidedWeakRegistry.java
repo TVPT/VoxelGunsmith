@@ -28,7 +28,8 @@ import com.voxelplugineering.voxelsniper.api.registry.RegistryProvider;
 import com.voxelplugineering.voxelsniper.util.Pair;
 
 /**
- * A {@link WeakRegistry} which takes a custom provider which is referenced to get the value when a key is not found within the registry.
+ * A {@link WeakRegistry} which takes a custom provider which is referenced to
+ * get the value when a key is not found within the registry.
  * 
  * @param <K> the key type
  * @param <V> the value type

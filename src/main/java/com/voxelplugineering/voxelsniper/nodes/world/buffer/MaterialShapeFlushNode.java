@@ -35,6 +35,7 @@ import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
  */
 public class MaterialShapeFlushNode extends MaterialShapeNode
 {
+
     private final Provider<Location> target;
 
     /**

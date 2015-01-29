@@ -179,18 +179,21 @@ public abstract class Metrics
     public abstract int getPlayersOnline();
 
     /**
-     * Gets the File object of the config file that should be used to store data such as the GUID and opt-out status
+     * Gets the File object of the config file that should be used to store data
+     * such as the GUID and opt-out status
      *
      * @return the File object for the config file
      */
     public abstract File getConfigFile();
 
     /**
-     * Construct and create a Graph that can be used to separate specific plotters to their own graphs on the metrics website. Plotters can be added
-     * to the graph object returned.
+     * Construct and create a Graph that can be used to separate specific
+     * plotters to their own graphs on the metrics website. Plotters can be
+     * added to the graph object returned.
      *
      * @param name The name of the graph
-     * @return Graph object created. Will never return NULL under normal circumstances unless bad parameters are given
+     * @return Graph object created. Will never return NULL under normal
+     *         circumstances unless bad parameters are given
      */
     public Graph createGraph(final String name)
     {
@@ -210,7 +213,8 @@ public abstract class Metrics
     }
 
     /**
-     * Add a Graph object to SpoutMetrics that represents data for the plugin that should be sent to the backend
+     * Add a Graph object to SpoutMetrics that represents data for the plugin
+     * that should be sent to the backend
      *
      * @param graph The name of the graph
      */
@@ -225,8 +229,10 @@ public abstract class Metrics
     }
 
     /**
-     * Start measuring statistics. This will immediately create an async repeating task as the plugin and send the initial data to the metrics
-     * backend, and then after that it will post in increments of PING_INTERVAL * 1200 ticks.
+     * Start measuring statistics. This will immediately create an async
+     * repeating task as the plugin and send the initial data to the metrics
+     * backend, and then after that it will post in increments of PING_INTERVAL
+     * * 1200 ticks.
      *
      * @return True if statistics measuring is running, otherwise false.
      */
@@ -339,7 +345,8 @@ public abstract class Metrics
     }
 
     /**
-     * Enables metrics for the server by setting "opt-out" to false in the config file and starting the metrics task.
+     * Enables metrics for the server by setting "opt-out" to false in the
+     * config file and starting the metrics task.
      *
      * @throws java.io.IOException
      */
@@ -364,7 +371,8 @@ public abstract class Metrics
     }
 
     /**
-     * Disables metrics for the server by setting "opt-out" to true in the config file and canceling the metrics task.
+     * Disables metrics for the server by setting "opt-out" to true in the
+     * config file and canceling the metrics task.
      *
      * @throws java.io.IOException
      */
@@ -597,7 +605,8 @@ public abstract class Metrics
     }
 
     /**
-     * Check if mineshafter is present. If it is, we need to bypass it to send POST requests
+     * Check if mineshafter is present. If it is, we need to bypass it to send
+     * POST requests
      *
      * @return true if mineshafter is installed on the server
      */
@@ -723,7 +732,8 @@ public abstract class Metrics
     {
 
         /**
-         * The graph's name, alphanumeric and spaces only :) If it does not comply to the above when submitted, it is rejected
+         * The graph's name, alphanumeric and spaces only :) If it does not
+         * comply to the above when submitted, it is rejected
          */
         private final String name;
 
@@ -802,7 +812,8 @@ public abstract class Metrics
         }
 
         /**
-         * Called when the server owner decides to opt-out of BukkitMetrics while the server is running.
+         * Called when the server owner decides to opt-out of BukkitMetrics
+         * while the server is running.
          */
         protected void onOptOut()
         {
@@ -831,7 +842,8 @@ public abstract class Metrics
         /**
          * Construct a plotter with a specific plot name
          *
-         * @param name the name of the plotter to use, which will show up on the website
+         * @param name the name of the plotter to use, which will show up on the
+         *            website
          */
         public Plotter(final String name)
         {
@@ -839,9 +851,11 @@ public abstract class Metrics
         }
 
         /**
-         * Get the current value for the plotted point. Since this function defers to an external function it may or may not return immediately thus
-         * cannot be guaranteed to be thread friendly or safe. This function can be called from any thread so care should be taken when accessing
-         * resources that need to be synchronized.
+         * Get the current value for the plotted point. Since this function
+         * defers to an external function it may or may not return immediately
+         * thus cannot be guaranteed to be thread friendly or safe. This
+         * function can be called from any thread so care should be taken when
+         * accessing resources that need to be synchronized.
          *
          * @return the current value for the point to be plotted.
          */

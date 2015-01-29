@@ -31,7 +31,8 @@ import com.voxelplugineering.voxelsniper.api.world.World;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 
 /**
- * A combination location and material representation of a single voxel. The location is immutable.
+ * A combination location and material representation of a single voxel. The
+ * location is immutable.
  */
 public class CommonBlock implements Block
 {

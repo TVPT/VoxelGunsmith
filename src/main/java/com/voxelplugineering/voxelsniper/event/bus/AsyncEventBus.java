@@ -48,8 +48,9 @@ import com.voxelplugineering.voxelsniper.event.DeadEvent;
 import com.voxelplugineering.voxelsniper.event.Event;
 
 /**
- * An {@link EventBus} implementation supporting all {@link ThreadingPolicy} types. Optionally takes an {@link ExecutorService} to use for
- * asynchronous task delegation.
+ * An {@link EventBus} implementation supporting all {@link ThreadingPolicy}
+ * types. Optionally takes an {@link ExecutorService} to use for asynchronous
+ * task delegation.
  * <p>
  * This class is safe for concurrent use.
  * </p>
@@ -63,7 +64,8 @@ public class AsyncEventBus implements EventBus
     /**
      * Creates a new {@link AsyncEventBus}.
      * 
-     * @param executorService The {@link ExecutorService} to use for asynchronous task delegation
+     * @param executorService The {@link ExecutorService} to use for
+     *            asynchronous task delegation
      */
     public AsyncEventBus(ExecutorService executorService)
     {
@@ -72,12 +74,15 @@ public class AsyncEventBus implements EventBus
     }
 
     /**
-     * Creates a new {@link AsyncEventBus}. This defaults to using {@link Executors#newCachedThreadPool()} for event handler delegation.
+     * Creates a new {@link AsyncEventBus}. This defaults to using
+     * {@link Executors#newCachedThreadPool()} for event handler delegation.
      */
     public AsyncEventBus()
     {
-        this(Executors.newCachedThreadPool(new ThreadFactory()
+        final String prefix = Gunsmith.getConfiguration().get("eventBusThreadPrefix", String.class).or("AsyncEventBus-executor-");
+        this.executor = Executors.newCachedThreadPool(new ThreadFactory()
         {
+
             private final ThreadGroup group;
             private int count = 0;
 
@@ -88,10 +93,11 @@ public class AsyncEventBus implements EventBus
             @Override
             public Thread newThread(Runnable r)
             {
-                Thread thr = new Thread(this.group, r, "AsyncEventBus-executor-" + this.count++);
+                Thread thr = new Thread(this.group, r, prefix + this.count++);
                 return thr;
             }
-        }));
+        });
+        this.registry = new MapMaker().concurrencyLevel(4).makeMap();
     }
 
     /**
@@ -312,6 +318,7 @@ class FutureFutureCallable implements Callable<Event>
 
 class EventCallable implements Callable<Event>
 {
+
     private final Event event;
     private final Subscriber sub;
 
@@ -375,6 +382,7 @@ class Subscriber
 
 class SubscriberList
 {
+
     private final Map<EventPriority, List<Subscriber>> subs;
     private final SubscriberList parent;
 

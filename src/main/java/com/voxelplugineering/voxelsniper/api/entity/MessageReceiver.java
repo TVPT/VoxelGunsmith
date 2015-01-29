@@ -37,7 +37,8 @@ public interface MessageReceiver
     void sendMessage(String msg);
 
     /**
-     * Sends a message to the user. Created by the same specification of {@link String#format(String, Object...)}.
+     * Sends a message to the user. Created by the same specification of
+     * {@link String#format(String, Object...)}.
      * 
      * @param format the format string
      * @param args the format arguments

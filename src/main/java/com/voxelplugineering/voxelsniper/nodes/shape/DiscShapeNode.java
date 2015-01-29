@@ -33,6 +33,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
  */
 public class DiscShapeNode extends ShapeNode
 {
+
     private final Provider<Double> radius;
 
     /**

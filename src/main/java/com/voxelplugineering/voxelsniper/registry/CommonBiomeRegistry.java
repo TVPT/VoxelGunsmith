@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.registry;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.registry.BiomeRegistry;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 
@@ -36,7 +37,8 @@ public class CommonBiomeRegistry<T> implements BiomeRegistry<T>
 {
 
     private final WeakRegistry<T, Biome> registry;
-    Biome defaultBiome = null;
+    private Biome defaultBiome = null;
+    private String defaultBiomeName = Gunsmith.getConfiguration().get("defaultBiomeName", String.class).or("plains");
 
     /**
      * Creates a new {@link CommonBiomeRegistry}.
@@ -72,7 +74,7 @@ public class CommonBiomeRegistry<T> implements BiomeRegistry<T>
     public void registerBiome(String name, T object, Biome biome)
     {
         this.registry.register(name, object, biome);
-        if (name.equalsIgnoreCase("plains"))
+        if (name.equalsIgnoreCase(this.defaultBiomeName))
         {
             this.defaultBiome = biome;
         }

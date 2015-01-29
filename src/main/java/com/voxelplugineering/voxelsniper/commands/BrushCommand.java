@@ -39,22 +39,28 @@ import com.voxelplugineering.voxelsniper.command.Command;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
 /**
- * Standard brush command to select a brush and provide the necessary arguments to said brush.
+ * Standard brush command to select a brush and provide the necessary arguments
+ * to said brush.
  */
 public class BrushCommand extends Command
 {
+
     /**
      * The message sent to players when their brush size is changed.
      */
-    private String brushSizeChangeMessage = "Your brush size was changed to %.1f";
+    private String brushSizeChangeMessage = Gunsmith.getConfiguration().get("brushSizeChangedMessage", String.class)
+            .or("Your brush size was changed to %.1f");
     /**
      * The message sent to players when a brush is not found.
      */
-    private String brushNotFoundMessage = "Could not find a brush part named %s";
+    private String brushNotFoundMessage = Gunsmith.getConfiguration().get("brushNotFoundMessage", String.class)
+            .or("Could not find a brush part named %s");
     /**
      * The message sent to players when their brush is set.
      */
-    private String brushSetMessage = "Your brush has been set to %s";
+    private String brushSetMessage = Gunsmith.getConfiguration().get("brushSetMessage", String.class).or("Your brush has been set to %s");
+    private String brushArgumentRegex = Gunsmith.getConfiguration().get("brushArgumentRegex", String.class)
+            .or("([\\S&&[^\\{]]+)[\\s]*(?:((?:\\{[^\\}]*\\}[\\s]*)+))?");
 
     /**
      * Constructs a new BrushCommand
@@ -64,18 +70,6 @@ public class BrushCommand extends Command
         super("brush", "Sets your current brush");
         setAliases("b");
         setPermissions("voxelsniper.command.brush");
-        if (Gunsmith.getConfiguration().has("brushSizeChangedMessage"))
-        {
-            this.brushSizeChangeMessage = Gunsmith.getConfiguration().get("brushSizeChangedMessage").get().toString();
-        }
-        if (Gunsmith.getConfiguration().has("brushNotFoundMessage"))
-        {
-            this.brushNotFoundMessage = Gunsmith.getConfiguration().get("brushNotFoundMessage").get().toString();
-        }
-        if (Gunsmith.getConfiguration().has("brushSetMessage"))
-        {
-            this.brushSetMessage = Gunsmith.getConfiguration().get("brushSetMessage").get().toString();
-        }
     }
 
     /**
@@ -120,7 +114,7 @@ public class BrushCommand extends Command
             }
             BrushNodeGraph start = null;
             BrushNodeGraph last = null;
-            Pattern pattern = Pattern.compile("([\\S&&[^\\{]]+)[\\s]*(?:((?:\\{[^\\}]*\\}[\\s]*)+))?");
+            Pattern pattern = Pattern.compile(this.brushArgumentRegex);
             Matcher match = pattern.matcher(prep(fullBrush));
             while (match.find())
             {
@@ -147,6 +141,13 @@ public class BrushCommand extends Command
                 }
                 sniper.setBrushArgument(brushName, normalize(match.group(2)));
             }
+
+            /* TODO validate brush
+             * 
+             * Ensure that the brush has an action and not just a shape.
+             * 
+             */
+
             sniper.setCurrentBrush(start);
             sniper.sendMessage(this.brushSetMessage, fullBrush);
             return true;
@@ -154,6 +155,8 @@ public class BrushCommand extends Command
         sender.sendMessage(this.getHelpMsg());
         return false;
     }
+
+    //TODO These methods should be moved or replaced
 
     private boolean validate(String fullBrush)
     {

@@ -26,13 +26,7 @@ package com.voxelplugineering.voxelsniper;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.voxelplugineering.voxelsniper.api.event.EventHandler;
 import com.voxelplugineering.voxelsniper.api.event.EventPriority;
@@ -42,26 +36,12 @@ import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
 import com.voxelplugineering.voxelsniper.event.DeadEvent;
 import com.voxelplugineering.voxelsniper.event.Event;
 import com.voxelplugineering.voxelsniper.event.bus.AsyncEventBus;
-import com.voxelplugineering.voxelsniper.logging.PrintStreamLogger;
 
 /**
  * Tests for the {@link AsyncEventBus} implementation.
  */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(Gunsmith.class)
 public class EventBusTest
 {
-
-    /**
-     * 
-     */
-    @BeforeClass
-    public static void setupClass()
-    {
-        PrintStreamLogger logger = new PrintStreamLogger(System.out);
-        PowerMockito.mockStatic(Gunsmith.class);
-        Mockito.when(Gunsmith.getLogger()).thenReturn(logger);
-    }
 
     /**
      * 
@@ -287,6 +267,7 @@ public class EventBusTest
      */
     public static class SuperHandler
     {
+
         protected int count = 0;
 
         /**

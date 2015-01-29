@@ -44,7 +44,8 @@ public class AnnotationHelper
             .weakValues().makeMap();
 
     /**
-     * Gets whether the given annotation is applied to the given class, or any of its super classes.
+     * Gets whether the given annotation is applied to the given class, or any
+     * of its super classes.
      * 
      * @param cls The class to check
      * @param annotation The annotation class to check for
@@ -75,7 +76,8 @@ public class AnnotationHelper
     }
 
     /**
-     * Gets the annotation value of the given annotation type for the given class.
+     * Gets the annotation value of the given annotation type for the given
+     * class.
      * 
      * @param cls The class to check
      * @param annotation The annotation type

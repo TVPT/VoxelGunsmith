@@ -30,7 +30,8 @@ import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.world.queue.ChangeQueueOwner;
 
 /**
- * Representation of a user within Gunsmith. Holds all state information relevant to the user.
+ * Representation of a user within Gunsmith. Holds all state information
+ * relevant to the user.
  */
 public interface Player extends CommandSender, Living, BrushHolder, ChangeQueueOwner, AliasOwner
 {

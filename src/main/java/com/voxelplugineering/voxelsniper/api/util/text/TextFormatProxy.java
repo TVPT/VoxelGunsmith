@@ -37,4 +37,22 @@ public interface TextFormatProxy
      */
     String getFormat(TextFormat format);
 
+    /**
+     * A trivial {@link TextFormatProxy} which simply returns the name of the
+     * {@link TextFormat}.
+     */
+    public static class TrivialTextFormatProxy implements TextFormatProxy
+    {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getFormat(TextFormat format)
+        {
+            return format.name();
+        }
+
+    }
+
 }

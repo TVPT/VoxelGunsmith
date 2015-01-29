@@ -34,6 +34,7 @@ import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy;
  */
 public abstract class SniperEvent extends Event
 {
+
     /**
      * The sniper.
      */

@@ -27,7 +27,8 @@ import java.io.PrintStream;
 import java.util.logging.Level;
 
 /**
- * A logger wrapping a {@link PrintStream}. Designed for use for logging to consoles such as standard out.
+ * A logger wrapping a {@link PrintStream}. Designed for use for logging to
+ * consoles such as standard out.
  */
 public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.logging.Logger
 {
@@ -63,7 +64,7 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.
     @Override
     public void debug(String msg)
     {
-        if(this.level.intValue() <= Level.FINE.intValue())
+        if (this.level.intValue() <= Level.FINE.intValue())
         {
             printWithPrefix("[DEBUG]", msg);
         }
@@ -75,7 +76,7 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.
     @Override
     public void info(String msg)
     {
-        if(this.level.intValue() <= Level.INFO.intValue())
+        if (this.level.intValue() <= Level.INFO.intValue())
         {
             printWithPrefix("[INFO]", msg);
         }
@@ -87,7 +88,7 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.
     @Override
     public void warn(String msg)
     {
-        if(this.level.intValue() <= Level.WARNING.intValue())
+        if (this.level.intValue() <= Level.WARNING.intValue())
         {
             printWithPrefix("[WARNING]", msg);
         }

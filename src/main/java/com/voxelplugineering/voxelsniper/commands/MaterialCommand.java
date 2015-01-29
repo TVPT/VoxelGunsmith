@@ -33,12 +33,21 @@ import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.command.Command;
 
 /**
- * Standard brush command to select a brush and provide the necessary arguments to said brush.
+ * Standard brush command to select a brush and provide the necessary arguments
+ * to said brush.
  */
 public class MaterialCommand extends Command
 {
+
+    /* TODO block states ?
+     * 
+     * 
+     * 
+     */
+
     /**
-     * The message sent to the player if their chosen material is not found in the registry.
+     * The message sent to the player if their chosen material is not found in
+     * the registry.
      */
     private String materialNotFoundMessage = "Could not find that material.";
     /**

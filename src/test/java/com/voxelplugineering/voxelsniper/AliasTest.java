@@ -48,6 +48,7 @@ public class AliasTest
     @Before
     public void setup()
     {
+        System.out.println(Gunsmith.getConfiguration());
         this.alias = new CommonAliasRegistry();
     }
 
@@ -98,7 +99,8 @@ public class AliasTest
     }
 
     /**
-     * A test that aliases cannot be infinitely repeated (if they contain themselves).
+     * A test that aliases cannot be infinitely repeated (if they contain
+     * themselves).
      */
     @Test
     public void testInfiniteProtection()
@@ -113,7 +115,8 @@ public class AliasTest
     }
 
     /**
-     * A test that aliases cannot be infinitely repeated (if they contain themselves), but can be applied multiple times to different points.
+     * A test that aliases cannot be infinitely repeated (if they contain
+     * themselves), but can be applied multiple times to different points.
      */
     @Test
     public void testInfiniteProtection2()
@@ -204,7 +207,8 @@ public class AliasTest
     }
 
     /**
-     * Tests that expansion without any aliases has no effect (other than normalization).
+     * Tests that expansion without any aliases has no effect (other than
+     * normalization).
      */
     @Test
     public void testNonAction()

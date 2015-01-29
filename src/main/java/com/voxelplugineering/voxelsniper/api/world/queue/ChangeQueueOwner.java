@@ -48,7 +48,8 @@ public interface ChangeQueueOwner extends MessageReceiver
     void redoHistory(int n);
 
     /**
-     * Returns whether this sniper has pending change queues which have not yet been handled.
+     * Returns whether this sniper has pending change queues which have not yet
+     * been handled.
      * 
      * @return has pending changes
      */

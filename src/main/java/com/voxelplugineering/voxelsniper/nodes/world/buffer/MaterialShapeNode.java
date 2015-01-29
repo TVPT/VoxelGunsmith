@@ -32,6 +32,7 @@ import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
  */
 public abstract class MaterialShapeNode extends AbstractNode
 {
+
     protected final Provider<MaterialShape> shape;
 
     /**

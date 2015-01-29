@@ -26,7 +26,8 @@ package com.voxelplugineering.voxelsniper.api.world;
 import com.voxelplugineering.voxelsniper.api.entity.Entity;
 
 /**
- * Represents a section of a world. In minecraft this will have the area of 16x16x256.
+ * Represents a section of a world. In minecraft this will have the area of
+ * 16x16x256.
  * <p>
  * TODO have methods for getting the bounding area.
  */

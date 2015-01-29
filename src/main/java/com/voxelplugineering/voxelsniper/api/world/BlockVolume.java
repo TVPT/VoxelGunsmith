@@ -44,7 +44,8 @@ public interface BlockVolume
     Optional<Block> getBlock(int x, int y, int z);
 
     /**
-     * Gets the block at the given location. or {@link Optional#absent()} if the location is not in this volume.
+     * Gets the block at the given location. or {@link Optional#absent()} if the
+     * location is not in this volume.
      * 
      * @param location The location
      * @return The block
@@ -68,6 +69,12 @@ public interface BlockVolume
      * @param z The Z position
      */
     void setBlock(Material material, int x, int y, int z);
+
+    /*TODO no-phys
+     * 
+     * Support changing blocks without notifying surrounding blocks of the change.
+     * 
+     */
 
     /**
      * Sets the block at the given location to the given material.

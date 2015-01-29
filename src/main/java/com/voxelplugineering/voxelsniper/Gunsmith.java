@@ -23,8 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -63,7 +61,8 @@ import com.voxelplugineering.voxelsniper.util.AnnotationHelper;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueTask;
 
 /**
- * The Core of VoxelGunsmith, provides access to handlers and validates initialization is done completely and correctly.
+ * The Core of VoxelGunsmith, provides access to handlers and validates
+ * initialization is done completely and correctly.
  */
 public final class Gunsmith
 {
@@ -94,54 +93,6 @@ public final class Gunsmith
      * The initialization state of Gunsmith.
      */
     private static boolean isPluginEnabled = false;
-
-    /**
-     * Sets the Platform proxy to be used.
-     *
-     * @param proxy Implementation of IPlatformProxy to be used
-     */
-    public static void setPlatform(PlatformProxy proxy)
-    {
-        checkNotNull(proxy, "Cannot set a null proxy!");
-        check();
-        Gunsmith.platformProxy = proxy;
-    }
-
-    /**
-     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.brushes.BrushManager} to be used.
-     *
-     * @param brushManager Implementation of IBrushManager to be used, cannot be null
-     */
-    public static void setGlobalBrushManager(BrushManager brushManager)
-    {
-        checkNotNull(brushManager, "Cannot set a null BrushManager!");
-        check();
-        Gunsmith.globalBrushManager = brushManager;
-    }
-
-    /**
-     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.api.brushes.BrushLoader} to be used.
-     *
-     * @param brushLoader Implementation of IBrushLoader to be used, cannot be null
-     */
-    public static void setDefaultBrushLoader(BrushLoader brushLoader)
-    {
-        checkNotNull(brushLoader, "Cannot set a null BrushLoader!");
-        check();
-        Gunsmith.defaultBrushLoader = brushLoader;
-    }
-
-    /**
-     * Sets the implementation of {@link com.voxelplugineering.voxelsniper.command.CommandHandler} to be used.
-     *
-     * @param command Implementation of CommandHandler to be used, cannot be null
-     */
-    public static void setCommandHandler(CommandHandler command)
-    {
-        checkNotNull(command, "Cannot set a null CommandHandler!");
-        check();
-        Gunsmith.commandHandler = command;
-    }
 
     /**
      * Gets the instance of the implementation of IPlatformProxy.
@@ -220,6 +171,10 @@ public final class Gunsmith
      */
     public static Configuration getConfiguration()
     {
+        if (configuration == null)
+        {
+            DefaultSetupProxy.setupConfiguration();
+        }
         return configuration;
     }
 
@@ -230,6 +185,10 @@ public final class Gunsmith
      */
     public static Logger getLogger()
     {
+        if (logDistributor == null)
+        {
+            DefaultSetupProxy.setupLogger();
+        }
         return logDistributor;
     }
 
@@ -368,11 +327,17 @@ public final class Gunsmith
      */
     public static TextFormatProxy getTextFormatProxy()
     {
+        if (formatProxy == null)
+        {
+            formatProxy = new TextFormatProxy.TrivialTextFormatProxy();
+        }
         return formatProxy;
     }
 
     /**
-     * Should be called at the start of the initialization process. Sets up default states before the specific implementation registers its overrides.
+     * Should be called at the start of the initialization process. Sets up
+     * default states before the specific implementation registers its
+     * overrides.
      * 
      * @param base The root data folder for Gunsmith's data
      * @param provider The platform's provider
@@ -382,12 +347,14 @@ public final class Gunsmith
         check();
         dataFolder = base;
         //Create standard log distributor
-        logDistributor = new CommonLoggingDistributor();
+        DefaultSetupProxy.setupLogger();
         //System.setProperty("voxel.log.location", base.getAbsolutePath());
         //File config = new File(base.getAbsolutePath(), "log4j2.xml");
         //System.out.println("log4j config: " + config.getAbsolutePath());
         //System.setProperty("log4j.configurationFile", config.getAbsolutePath());
         //logDistributor.registerLogger(new Log4jLogger(LogManager.getLogger(Gunsmith.class)), "log4j");
+
+        //TODO setup log4j logging properly
 
         getLogger().info(
                 "Starting Gunsmith initialization process. ("
@@ -403,9 +370,7 @@ public final class Gunsmith
 
         formatProxy = provider.getFormatProxy();
 
-        configuration = new ConfigurationManager();
-        configuration.registerContainer(BaseConfiguration.class);
-        configuration.registerContainer(VoxelSniperConfiguration.class);
+        DefaultSetupProxy.setupConfiguration();
         //configuration is also setup here so that any values can be overwritten from the specific impl
 
         globalAliasRegistries = new AliasHandler(new AliasOwner.GunsmithAliasOwner());
@@ -494,6 +459,11 @@ public final class Gunsmith
                 getLogger().error(e, "Error loading global aliases");
             }
         }
+        /*TODO default aliases
+         * 
+         * If the aliases file does not exist then create a default set of aliases
+         * mirroring the legacy setup and create an aliases file with those values.
+         */
 
         schedulerProxy.startSynchronousTask(new ChangeQueueTask(), 100);
         aliasTask = new AliasSaveTask();
@@ -603,4 +573,30 @@ public final class Gunsmith
         formatProxy = null;
         AnnotationHelper.clean();
     }
+
+    private static class DefaultSetupProxy
+    {
+
+        public static void setupConfiguration()
+        {
+            if (configuration != null)
+            {
+                return;
+            }
+            configuration = new ConfigurationManager();
+            configuration.registerContainer(BaseConfiguration.class);
+            configuration.registerContainer(VoxelSniperConfiguration.class);
+        }
+
+        public static void setupLogger()
+        {
+            if (logDistributor != null)
+            {
+                return;
+            }
+            logDistributor = new CommonLoggingDistributor();
+        }
+
+    }
+
 }

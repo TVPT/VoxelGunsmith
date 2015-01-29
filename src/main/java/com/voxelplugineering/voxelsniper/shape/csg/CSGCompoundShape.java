@@ -76,7 +76,8 @@ public class CSGCompoundShape extends OffsetShape
     }
 
     /**
-     * Creates a new {@link CSGCompoundShape} representing the other shape added to this one.
+     * Creates a new {@link CSGCompoundShape} representing the other shape added
+     * to this one.
      * 
      * @param other The other shape
      * @return The new CSGShape
@@ -87,7 +88,8 @@ public class CSGCompoundShape extends OffsetShape
     }
 
     /**
-     * Creates a new {@link CSGCompoundShape} representing the other shape subtracted from this one.
+     * Creates a new {@link CSGCompoundShape} representing the other shape
+     * subtracted from this one.
      * 
      * @param other The other shape
      * @return The new CSGShape
@@ -98,7 +100,8 @@ public class CSGCompoundShape extends OffsetShape
     }
 
     /**
-     * Creates a new {@link CSGCompoundShape} representing the other shape xor'ed with this one.
+     * Creates a new {@link CSGCompoundShape} representing the other shape
+     * xor'ed with this one.
      * 
      * @param other The other shape
      * @return The new CSGShape

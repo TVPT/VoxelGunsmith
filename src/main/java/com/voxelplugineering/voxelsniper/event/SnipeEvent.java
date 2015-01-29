@@ -34,6 +34,7 @@ import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy;
 @EventThreadingPolicy(ASYNCHRONOUS)
 public class SnipeEvent extends SniperEvent
 {
+
     private final double yaw;
     private final double pitch;
 
@@ -70,4 +71,5 @@ public class SnipeEvent extends SniperEvent
     {
         return this.pitch;
     }
+
 }

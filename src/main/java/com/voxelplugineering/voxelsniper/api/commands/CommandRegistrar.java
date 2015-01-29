@@ -26,7 +26,8 @@ package com.voxelplugineering.voxelsniper.api.commands;
 import com.voxelplugineering.voxelsniper.command.Command;
 
 /**
- * Implemented by the specific implementations the command registrar handles the registering of commands within the underlying APIs.
+ * Implemented by the specific implementations the command registrar handles the
+ * registering of commands within the underlying APIs.
  */
 public interface CommandRegistrar
 {

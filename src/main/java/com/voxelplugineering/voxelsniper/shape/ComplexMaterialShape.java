@@ -96,7 +96,7 @@ public class ComplexMaterialShape implements MaterialShape
             {
                 set(x, y, z, (short) 0); // the default material
             }
-            return Optional.<Material> of(this.materialDictionary.get(get(x, y, z)));
+            return Optional.<Material>of(this.materialDictionary.get(get(x, y, z)));
         } else
         {
             return Optional.absent();
@@ -414,7 +414,13 @@ public class ComplexMaterialShape implements MaterialShape
     {
         return this.nextId - 1;
     }
-    
+
+    /**
+     * Registers a material at the given key index.
+     * 
+     * @param key The key
+     * @param material The material
+     */
     protected void registerMaterial(short key, Material material)
     {
         this.materialDictionary.put(key, material);

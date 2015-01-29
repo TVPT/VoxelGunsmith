@@ -33,18 +33,22 @@ import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.command.Command;
 
 /**
- * Standard brush command to select a brush and provide the necessary arguments to said brush.
+ * Standard brush command to select a brush and provide the necessary arguments
+ * to said brush.
  */
 public class MaskMaterialCommand extends Command
 {
+
     /**
-     * The message sent to players if their chosen material is not found within the registry.
+     * The message sent to players if their chosen material is not found within
+     * the registry.
      */
-    private String materialNotFoundMessage = "Could not find that material.";
+    private String materialNotFoundMessage = Gunsmith.getConfiguration().get("materialNotFoundMessage", String.class)
+            .or("Could not find that material.");
     /**
      * The message sent to the player when their material is set.
      */
-    private String materialSetMessage = "Set secondary material to %s";
+    private String materialSetMessage = Gunsmith.getConfiguration().get("materialMaskSetMessage", String.class).or("Set secondary material to %s");
 
     /**
      * Constructs a new BrushCommand
@@ -54,14 +58,6 @@ public class MaskMaterialCommand extends Command
         super("maskmaterial", "Sets your current secondary brush material");
         setAliases("vr");
         setPermissions("voxelsniper.command.materialmask");
-        if (Gunsmith.getConfiguration().has("materialNotFoundMessage"))
-        {
-            this.materialNotFoundMessage = Gunsmith.getConfiguration().get("materialNotFoundMessage").get().toString();
-        }
-        if (Gunsmith.getConfiguration().has("materialMaskSetMessage"))
-        {
-            this.materialSetMessage = Gunsmith.getConfiguration().get("materialMaskSetMessage").get().toString();
-        }
     }
 
     /**

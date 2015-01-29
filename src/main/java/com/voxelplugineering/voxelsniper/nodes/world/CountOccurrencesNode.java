@@ -34,6 +34,7 @@ import com.voxelplugineering.voxelsniper.api.world.material.Material;
  */
 public class CountOccurrencesNode extends AbstractNode
 {
+
     private final Provider<Block[]> blockArrayProvider;
     private final Provider<Material> materialProvider;
     private final Provider<Integer> integerProvider;

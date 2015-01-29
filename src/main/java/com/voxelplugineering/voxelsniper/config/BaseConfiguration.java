@@ -33,7 +33,12 @@ public class BaseConfiguration
     int minimumWorldDepth = 0;
     int maximumWorldHeight = 255;
     double rayTraceStep = 0.2;
-    
+
+    String defaultBiomeName = "plains";
+    String defaultMaterialName = "air";
+
     String playerSysVarName = "__PLAYER__";
+    String brushArgumentRegex = "([\\S&&[^\\{]]+)[\\s]*(?:((?:\\{[^\\}]*\\}[\\s]*)+))?";
+    String eventBusThreadPrefix = "AsyncEventBus-executor-";
 
 }
