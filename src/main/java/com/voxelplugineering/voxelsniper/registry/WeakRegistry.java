@@ -60,7 +60,7 @@ public class WeakRegistry<K, V> implements Registry<K, V>
      */
     public WeakRegistry()
     {
-        this.registry = new MapMaker().weakKeys().weakValues().makeMap();
+        this.registry = new MapMaker().weakKeys().makeMap();
         this.nameRegistry = new MapMaker().weakValues().makeMap();
     }
 
