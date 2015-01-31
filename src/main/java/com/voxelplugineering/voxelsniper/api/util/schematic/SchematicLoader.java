@@ -38,7 +38,7 @@ import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 public interface SchematicLoader
 {
 
-    /* TODO
+    /* TODO Schematic loaders for alternate data
      * 
      * Schematic loaders for alternate data sources such as a database perhaps.
      * 
@@ -93,7 +93,7 @@ public interface SchematicLoader
          */
         public StencilConverter(File stencil)
         {
-            //TODO
+            //TODO StencilConverter
         }
 
         /**
@@ -102,7 +102,6 @@ public interface SchematicLoader
         @Override
         public MaterialShape convert()
         {
-            // TODO Auto-generated method stub
             return null;
         }
 

@@ -81,7 +81,6 @@ public class CuboidShape extends OffsetShape
     @Override
     public int getHeight()
     {
-        // TODO Auto-generated method stub
         return this.h;
     }
 
@@ -91,7 +90,6 @@ public class CuboidShape extends OffsetShape
     @Override
     public int getLength()
     {
-        // TODO Auto-generated method stub
         return this.l;
     }
 

@@ -450,7 +450,7 @@ public final class Gunsmith
         }
 
         aliasTask = new AliasSaveTask();
-        
+
         File globalAliases = new File(platformProxy.getDataFolder(), "aliases.json");
         if (globalAliases.exists())
         {
@@ -461,13 +461,12 @@ public final class Gunsmith
             {
                 getLogger().error(e, "Error loading global aliases");
             }
-        }
-        else
+        } else
         {
             DefaultAliasBuilder.loadDefaultAliases(globalAliasRegistries);
             aliasTask.addDirty(globalAliasRegistries);
         }
-        
+
         schedulerProxy.startSynchronousTask(new ChangeQueueTask(), 100);
         schedulerProxy.startSynchronousTask(aliasTask, 30000);
 

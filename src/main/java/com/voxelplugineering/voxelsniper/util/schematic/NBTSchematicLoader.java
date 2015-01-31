@@ -353,7 +353,7 @@ public class NBTSchematicLoader implements SchematicLoader
          */
         public LegacyConverter(File file, CompoundTag schematicTag)
         {
-            // TODO
+            // TODO LegacyConverter
         }
 
         /**
@@ -362,7 +362,6 @@ public class NBTSchematicLoader implements SchematicLoader
         @Override
         public MaterialShape convert()
         {
-            // TODO
             return null;
         }
 

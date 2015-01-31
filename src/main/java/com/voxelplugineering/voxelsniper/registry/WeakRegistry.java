@@ -84,7 +84,7 @@ public class WeakRegistry<K, V> implements Registry<K, V>
         checkNotNull(key);
         checkNotNull(value);
         this.registry.put(key, value);
-        if(name != null)
+        if (name != null)
         {
             this.nameRegistry.put(this.caseSensitiveKeys ? name : name.toUpperCase(), key);
         }
@@ -108,12 +108,12 @@ public class WeakRegistry<K, V> implements Registry<K, V>
         {
             name = name.toUpperCase();
         }
-        if(!this.nameRegistry.containsKey(name))
+        if (!this.nameRegistry.containsKey(name))
         {
             return Optional.absent();
         }
         K key = this.nameRegistry.get(name);
-        if(!this.registry.containsKey(key))
+        if (!this.registry.containsKey(key))
         {
             this.nameRegistry.remove(name);
             return Optional.absent();
@@ -127,19 +127,19 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     public Optional<String> getNameForValue(V value)
     {
         K key = null;
-        for(Map.Entry<K, V> entry: this.registry.entrySet())
+        for (Map.Entry<K, V> entry : this.registry.entrySet())
         {
-            if(entry.getValue() == value)
+            if (entry.getValue() == value)
             {
                 key = entry.getKey();
                 break;
             }
         }
-        if(key != null)
+        if (key != null)
         {
-            for(Map.Entry<String, K> entry: this.nameRegistry.entrySet())
+            for (Map.Entry<String, K> entry : this.nameRegistry.entrySet())
             {
-                if(entry.getValue() == key)
+                if (entry.getValue() == key)
                 {
                     return Optional.of(entry.getKey());
                 }

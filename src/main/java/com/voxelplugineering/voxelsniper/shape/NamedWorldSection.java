@@ -105,7 +105,7 @@ public class NamedWorldSection extends ComplexMaterialShape
      */
     public boolean hasTileEntities()
     {
-        // TODO Auto-generated method stub
+        // TODO hasTileEntities
         return false;
     }
 
@@ -117,7 +117,7 @@ public class NamedWorldSection extends ComplexMaterialShape
      */
     public Map<Vector3i, CompoundTag> getTileEntities()
     {
-        // TODO Auto-generated method stub
+        // TODO getTileEntities
         return null;
     }
 
@@ -130,7 +130,7 @@ public class NamedWorldSection extends ComplexMaterialShape
      */
     public void setTileEntityMap(Map<Vector3i, CompoundTag> tileEntitiesMap)
     {
-        // TODO Auto-generated method stub
+        // TODO setTileEntityMap
 
     }
 
@@ -141,7 +141,7 @@ public class NamedWorldSection extends ComplexMaterialShape
      */
     public boolean hasEntities()
     {
-        // TODO Auto-generated method stub
+        // TODO hasEntities
         return false;
     }
 
@@ -153,7 +153,7 @@ public class NamedWorldSection extends ComplexMaterialShape
      */
     public Map<Vector3i, CompoundTag> getEntities()
     {
-        // TODO Auto-generated method stub
+        // TODO getEntities
         return null;
     }
 
@@ -166,7 +166,7 @@ public class NamedWorldSection extends ComplexMaterialShape
      */
     public void setEntitiesMap(Map<Vector3i, CompoundTag> entitiesMap)
     {
-        // TODO Auto-generated method stub
+        // TODO setEntitiesMap
 
     }
 

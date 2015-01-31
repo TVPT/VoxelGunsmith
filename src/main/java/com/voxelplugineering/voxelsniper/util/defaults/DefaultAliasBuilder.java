@@ -39,16 +39,15 @@ public class DefaultAliasBuilder
      */
     public static void loadDefaultAliases(AliasHandler registry)
     {
-       
-        
+
         { // brushes
-            
-            if(!registry.hasTarget("brush"))
+
+            if (!registry.hasTarget("brush"))
             {
                 registry.registerTarget("brush");
             }
             AliasRegistry alias = registry.getRegistry("brush").get();
-            
+
             alias.register("b", "ball");
             alias.register("d", "disc");
             alias.register("m", "material");
@@ -56,8 +55,8 @@ public class DefaultAliasBuilder
             alias.register("s", "snipe");
             alias.register("v", "voxel");
             alias.register("vd", "voxeldisc");
-            
+
         }
     }
-    
+
 }

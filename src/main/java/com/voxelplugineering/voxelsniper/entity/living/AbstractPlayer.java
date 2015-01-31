@@ -67,7 +67,8 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
 
     /**
      * Creates a new CommonPlayer with a weak reference to the player. TODO add
-     * constructor for receiving custom parent brush manager
+     * constructor for receiving custom parent brush manager, or better yet full
+     * group support
      * 
      * @param player the player object
      */

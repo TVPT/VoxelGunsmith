@@ -42,7 +42,7 @@ import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.nodes.block.BlockBreakNode;
 
 /**
- * Standard node test class. TODO Actually write some tests!
+ * Standard node test class.
  */
 public class NodeTest
 {
@@ -78,5 +78,7 @@ public class NodeTest
         assertEquals(node.getLocation().get(this.state), location);
         assertEquals(node.getMaterial().get(this.state), material);
     }
+
+    //TODO remaining node tests
 
 }

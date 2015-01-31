@@ -29,4 +29,11 @@ package com.voxelplugineering.voxelsniper.api.entity;
 public interface EntityType
 {
 
+    /**
+     * Gets the name of this entity type.
+     * 
+     * @return The name
+     */
+    String getName();
+
 }

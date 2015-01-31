@@ -229,7 +229,7 @@ public class DefaultBrushBuilder
         }
 
         { // disc {face}
-            // TODO support face arg
+          // TODO support face arg
             VariableGetNode<Double> radius = new VariableGetNode<Double>("brushsize");
             DiscShapeNode shape = new DiscShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
@@ -450,7 +450,7 @@ public class DefaultBrushBuilder
         }
 
         { // voxeldisc {face}
-            // TODO support face arg
+          // TODO support face arg
             VariableGetNode<Double> radius = new VariableGetNode<Double>("brushsize");
             VoxelDiscShapeNode shape = new VoxelDiscShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
