@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.api.entity;
 
+import java.util.UUID;
+
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.World;
 
@@ -46,6 +48,13 @@ public interface Entity
      * @return The name
      */
     String getName();
+
+    /**
+     * Gets the {@link UUID} for this entity.
+     * 
+     * @return The UUID
+     */
+    UUID getUniqueId();
 
     /**
      * Gets the EntityType for this entity.

@@ -97,8 +97,6 @@ public class Subscriber
     }
 
     /**
-     * 
-     * 
      * @return The string representation
      */
     public String toString()

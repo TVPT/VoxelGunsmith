@@ -36,4 +36,11 @@ public interface EntityType
      */
     String getName();
 
+    /**
+     * Gets if this entity type is alive.
+     * 
+     * @return Is alive
+     */
+    boolean isAlive();
+
 }
