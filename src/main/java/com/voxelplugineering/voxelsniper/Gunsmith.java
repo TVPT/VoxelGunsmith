@@ -361,6 +361,10 @@ public final class Gunsmith
                 "Starting Gunsmith initialization process. ("
                         + new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z").format(new Date(System.currentTimeMillis())) + ")");
 
+        //The Text Format Proxy needs to be set early so values loaded to configuration from the default set are correctly converted.
+        formatProxy = provider.getFormatProxy();
+        getLogger().info("Set format proxy to " + formatProxy.getClass().getName());
+
         //Create the eventBus for all Gunsmith events
         eventBus = new AsyncEventBus();
 
@@ -368,8 +372,6 @@ public final class Gunsmith
         eventBus.register(defaultEventHandler);
         //default event handler is registered here so that if a plugin wishes it can unregister the
         //event handler and register its own in its place
-
-        formatProxy = provider.getFormatProxy();
 
         DefaultSetupProxy.setupConfiguration();
         //configuration is also setup here so that any values can be overwritten from the specific impl
@@ -527,7 +529,7 @@ public final class Gunsmith
         //save all player's personal aliases
         for (Player player : sniperRegistry.getAllPlayers())
         {
-            File playerFolder = new File(Gunsmith.platformProxy.getDataFolder(), "players/" + player.getName());
+            File playerFolder = new File(Gunsmith.platformProxy.getDataFolder(), "players/" + player.getUniqueId());
             File aliases = new File(playerFolder, "aliases.json");
 
             try

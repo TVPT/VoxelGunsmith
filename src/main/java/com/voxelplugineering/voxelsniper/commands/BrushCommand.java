@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
@@ -116,6 +117,7 @@ public class BrushCommand extends Command
             BrushNodeGraph last = null;
             Pattern pattern = Pattern.compile(this.brushArgumentRegex);
             Matcher match = pattern.matcher(prep(fullBrush));
+            boolean nonActionCheck = false;
             while (match.find())
             {
                 String brushName = match.group(1);
@@ -130,6 +132,10 @@ public class BrushCommand extends Command
                         return false;
                     }
                 }
+                if (brush.getType() == BrushPartType.MISC || brush.getType() == BrushPartType.EFFECT)
+                {
+                    nonActionCheck = true;
+                }
                 if (start == null)
                 {
                     start = brush;
@@ -142,14 +148,13 @@ public class BrushCommand extends Command
                 sniper.setBrushArgument(brushName, normalize(match.group(2)));
             }
 
-            /* TODO validate brush
-             * 
-             * Ensure that the brush has an action and not just a shape.
-             * 
-             */
-
             sniper.setCurrentBrush(start);
             sniper.sendMessage(this.brushSetMessage, fullBrush);
+
+            if (!nonActionCheck)
+            {
+                sniper.sendMessage(TextFormat.RED + "Warning! Your selected chain of brush parts does not have any parts which have any effect!");
+            }
             return true;
         }
         sender.sendMessage(this.getHelpMsg());

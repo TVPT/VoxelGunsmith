@@ -54,6 +54,7 @@ public class ShapeChangeQueue extends ChangeQueue
      */
     private long position = 0;
     private int ticks = 0;
+    private boolean reported = false;
 
     /**
      * Creates a new {@link ShapeChangeQueue}.
@@ -117,6 +118,7 @@ public class ShapeChangeQueue extends ChangeQueue
             this.position = this.shape.getHeight() - 1;
             this.state = ExecutionState.BREAKABLE;
             this.ticks = 0;
+            this.reported = false;
         }
         if (this.state == ExecutionState.BREAKABLE)
         {
@@ -186,10 +188,14 @@ public class ShapeChangeQueue extends ChangeQueue
             }
             if (this.position == this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength())
             {
-                this.owner.sendMessage("Finished %d changes.", this.position);
+                if (this.reported)
+                {
+                    this.owner.sendMessage("Finished %d changes.", this.position);
+                }
                 this.state = ExecutionState.DONE;
             } else if (this.ticks > 10)
             {
+                this.reported = true;
                 this.ticks = 0;
                 this.owner.sendMessage("Performed %d out of %d changes.", this.position,
                         this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength());

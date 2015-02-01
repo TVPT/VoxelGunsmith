@@ -38,7 +38,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 public class SingleMaterialShape implements MaterialShape
 {
 
-    private final Shape shape;
+    private Shape shape;
     private Material material;
 
     /**
@@ -84,6 +84,15 @@ public class SingleMaterialShape implements MaterialShape
      * {@inheritDoc}
      */
     @Override
+    public boolean supportsChanges()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean get(int x, int y, int z, boolean relative)
     {
         return this.shape.get(x, y, z, relative);
@@ -104,6 +113,10 @@ public class SingleMaterialShape implements MaterialShape
     @Override
     public void set(int x, int y, int z, boolean relative)
     {
+        if (!this.shape.supportsChanges())
+        {
+            this.shape = new ComplexShape(this.shape);
+        }
         this.shape.set(x, y, z, relative);
     }
 
@@ -113,6 +126,10 @@ public class SingleMaterialShape implements MaterialShape
     @Override
     public void unset(int x, int y, int z, boolean relative)
     {
+        if (!this.shape.supportsChanges())
+        {
+            this.shape = new ComplexShape(this.shape);
+        }
         this.shape.unset(x, y, z, relative);
     }
 
@@ -131,6 +148,10 @@ public class SingleMaterialShape implements MaterialShape
     @Override
     public Optional<Material> getMaterial(int x, int y, int z, boolean relative)
     {
+        if (!get(x, y, z, relative))
+        {
+            return Optional.absent();
+        }
         return Optional.of(this.material);
     }
 

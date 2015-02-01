@@ -283,8 +283,8 @@ public class RayTrace
         {
             step();
         }
-        this.targetBlock = this.world.getBlock(this.targetX, this.targetY, this.targetZ).orNull();
-        this.lastBlock = this.world.getBlock(this.lastX, this.lastY, this.lastZ).or(this.targetBlock);
+        this.lastBlock = this.world.getBlock(this.lastX, this.lastY, this.lastZ).orNull();
+        this.targetBlock = this.world.getBlock(this.targetX, this.targetY, this.targetZ).or(this.lastBlock);
     }
 
     /**

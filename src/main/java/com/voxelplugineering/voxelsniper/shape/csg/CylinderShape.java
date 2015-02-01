@@ -57,7 +57,7 @@ public class CylinderShape extends OffsetShape
     @Override
     public boolean get(int x, int y, int z, boolean relative)
     {
-        if (relative)
+        if (!relative)
         {
             x -= getOrigin().getX();
             y -= getOrigin().getY();

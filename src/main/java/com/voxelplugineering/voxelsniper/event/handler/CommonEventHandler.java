@@ -125,6 +125,7 @@ public class CommonEventHandler
     public void onSnipe(SnipeEvent event)
     {
         Player sniper = event.getSniper();
+        boolean attemptedNullAction = false;
         try
         {
             Location location = sniper.getLocation();
@@ -139,21 +140,30 @@ public class CommonEventHandler
             ray.setRange(range);
             ray.trace();
 
+            if (ray.getTargetBlock() == null)
+            {
+                attemptedNullAction = true;
+            }
+
             VariableScope brushVariables = new ParentedVariableScope(sniper.getBrushSettings());
             brushVariables.setCaseSensitive(false);
             brushVariables.set("origin", location);//TODO move all variable names to configuration
             brushVariables.set("yaw", yaw);
             brushVariables.set("pitch", pitch);
             brushVariables.set("targetBlock", ray.getTargetBlock());
-            brushVariables.set("lastBlock", ray.getLastBlock());
+            //brushVariables.set("lastBlock", ray.getLastBlock());
+            //TODO support gunpoweder alt action
             brushVariables.set("length", ray.getLength());
             brushVariables.set(this.playerSysvar, sniper);
             Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());
             sniper.getCurrentBrush().run(brushVariables, sniper.getBrushArguments());
         } catch (Exception e)
         {
-            sniper.sendMessage("Error executing brush, see console for more details.");
-            Gunsmith.getLogger().error(e, "Error executing brush");
+            if (!attemptedNullAction)
+            {
+                sniper.sendMessage("Error executing brush, see console for more details.");
+                Gunsmith.getLogger().error(e, "Error executing brush");
+            }
         }
     }
 

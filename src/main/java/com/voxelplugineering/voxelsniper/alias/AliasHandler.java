@@ -43,6 +43,9 @@ import com.google.gson.stream.JsonReader;
 import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
 import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * A handler for targeted {@link AliasRegistry}s.
  */
@@ -71,6 +74,7 @@ public class AliasHandler
      */
     public AliasHandler(AliasOwner owner, AliasHandler parent)
     {
+        checkNotNull(owner);
         this.parent = parent;
         this.aliasTargets = Maps.newHashMap();
         this.owner = owner;
@@ -90,6 +94,8 @@ public class AliasHandler
      */
     public void registerTarget(String target)
     {
+        checkNotNull(target);
+        checkArgument(!target.isEmpty());
         if (!this.aliasTargets.containsKey(target))
         {
             AliasRegistry parentRegistry = this.parent == null ? null : this.parent.getRegistry(target).orNull();
@@ -105,6 +111,8 @@ public class AliasHandler
      */
     public Optional<AliasRegistry> getRegistry(String target)
     {
+        checkNotNull(target);
+        checkArgument(!target.isEmpty());
         if (this.aliasTargets.containsKey(target))
         {
             return Optional.of(this.aliasTargets.get(target));
@@ -130,6 +138,8 @@ public class AliasHandler
      */
     public boolean hasTarget(String target)
     {
+        checkNotNull(target);
+        checkArgument(!target.isEmpty());
         return this.aliasTargets.containsKey(target);
     }
 
@@ -154,6 +164,7 @@ public class AliasHandler
      */
     public void load(File dataFile) throws IOException
     {
+        checkNotNull(dataFile);
         if (!dataFile.exists())
         {
             return;
@@ -204,6 +215,7 @@ public class AliasHandler
      */
     public void save(File dataFile) throws IOException
     {
+        checkNotNull(dataFile);
         if (dataFile.exists())
         {
             dataFile.delete();

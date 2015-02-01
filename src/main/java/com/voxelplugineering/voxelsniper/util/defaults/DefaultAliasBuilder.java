@@ -57,6 +57,20 @@ public class DefaultAliasBuilder
             alias.register("vd", "voxeldisc");
 
         }
+
+        { // brushes
+
+            if (!registry.hasTarget("material"))
+            {
+                registry.registerTarget("material");
+            }
+            AliasRegistry alias = registry.getRegistry("material").get();
+
+            alias.register("0", "air");
+            alias.register("1", "stone");
+            alias.register("2", "grass");
+
+        }
     }
 
 }

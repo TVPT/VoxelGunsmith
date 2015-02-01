@@ -21,68 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.shape.csg;
-
-import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+package com.voxelplugineering.voxelsniper.api.brushes;
 
 /**
- * A CSG shape offset by a vector.
+ * An enumeration of some standard brush part types.
  */
-public abstract class OffsetShape implements CSGShape
+@SuppressWarnings("javadoc")
+public enum BrushPartType
 {
-
-    private Vector3i origin;
-
-    /**
-     * Creates a {@link OffsetShape}.
-     * 
-     * @param origin The offset
-     */
-    public OffsetShape(Vector3i origin)
-    {
-        this.origin = origin;
-    }
-
-    /**
-     * Creates a default {@link OffsetShape}, offset by {0, 0, 0}.
-     */
-    public OffsetShape()
-    {
-        this(new Vector3i(0, 0, 0));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean supportsChanges()
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Vector3i getOrigin()
-    {
-        return this.origin;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void offset(Vector3i offset)
-    {
-        this.origin = this.origin.add(offset);
-    }
-
-    /**
-     * Creates a copy of this {@link OffsetShape}.
-     * 
-     * @return The copy
-     */
-    public abstract CSGShape clone();
-
+    SHAPE, MASK, EFFECT, MISC
 }

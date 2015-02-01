@@ -72,8 +72,6 @@ public interface Entity
 
     /**
      * Sets the location of this entity.
-     * <p>
-     * TODO proper handling for cross-world transfers?
      * 
      * @param newLocation The new location
      */

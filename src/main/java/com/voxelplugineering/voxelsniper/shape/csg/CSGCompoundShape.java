@@ -76,6 +76,15 @@ public class CSGCompoundShape extends OffsetShape
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean supportsChanges()
+    {
+        return false;
+    }
+
+    /**
      * Creates a new {@link CSGCompoundShape} representing the other shape added
      * to this one.
      * 

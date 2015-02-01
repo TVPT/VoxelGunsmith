@@ -21,68 +21,62 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.shape.csg;
+package com.voxelplugineering.voxelsniper.nodes.shape;
 
-import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+import com.thevoxelbox.vsl.annotation.Input;
+import com.thevoxelbox.vsl.annotation.Output;
+import com.thevoxelbox.vsl.node.AbstractNode;
+import com.thevoxelbox.vsl.util.Provider;
+import com.thevoxelbox.vsl.util.RuntimeState;
+import com.voxelplugineering.voxelsniper.api.shape.Shape;
+import com.voxelplugineering.voxelsniper.shape.ComplexShape;
 
 /**
- * A CSG shape offset by a vector.
+ * A node to convert a shape which does not support changes to a
+ * {@link ComplexShape}.
  */
-public abstract class OffsetShape implements CSGShape
+public class ToComplexShapeNode extends AbstractNode
 {
 
-    private Vector3i origin;
+    @Input
+    private final Provider<Shape> input;
+    @Output
+    private final Provider<Shape> output;
 
     /**
-     * Creates a {@link OffsetShape}.
+     * Creates a new {@link ToComplexShapeNode}.
      * 
-     * @param origin The offset
+     * @param in The input shape
      */
-    public OffsetShape(Vector3i origin)
+    public ToComplexShapeNode(Provider<Shape> in)
     {
-        this.origin = origin;
-    }
-
-    /**
-     * Creates a default {@link OffsetShape}, offset by {0, 0, 0}.
-     */
-    public OffsetShape()
-    {
-        this(new Vector3i(0, 0, 0));
+        this.input = in;
+        this.output = new Provider<Shape>(this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean supportsChanges()
+    public void exec(RuntimeState state)
     {
-        return false;
+        Shape s = this.input.get(state);
+        if (s.supportsChanges())
+        {
+            this.output.set(s, state.getUUID());
+        } else
+        {
+            this.output.set(new ComplexShape(s), state.getUUID());
+        }
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Vector3i getOrigin()
-    {
-        return this.origin;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void offset(Vector3i offset)
-    {
-        this.origin = this.origin.add(offset);
-    }
-
-    /**
-     * Creates a copy of this {@link OffsetShape}.
+     * Gets the complex converted shape.
      * 
-     * @return The copy
+     * @return The complex shape
      */
-    public abstract CSGShape clone();
-
+    public Provider<Shape> getComplexShape()
+    {
+        return this.output;
+    }
 }

@@ -32,6 +32,7 @@ import com.thevoxelbox.vsl.api.variables.VariableHolder;
 import com.thevoxelbox.vsl.node.RunnableNodeGraph;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
 import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
@@ -42,22 +43,35 @@ import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 public class BrushNodeGraph extends RunnableNodeGraph
 {
 
-    String help = Gunsmith.getConfiguration().get("defaultBrushHelpMessage", String.class)
+    private String help = Gunsmith.getConfiguration().get("defaultBrushHelpMessage", String.class)
             .or(TextFormat.RED + "No help is provided for this brush part.");
-    Map<String, ArgumentParser<?>> arguments;
-    Map<String, String> argDefaults;
-    String primary = null;
-
+    private final Map<String, ArgumentParser<?>> arguments;
+    private final Map<String, String> argDefaults;
+    private String primary = null;
+    private final BrushPartType type;
+    
     /**
      * Creates a new {@link BrushNodeGraph}.
      * 
      * @param name The brush name
+     * @param type The type
      */
-    public BrushNodeGraph(String name)
+    public BrushNodeGraph(String name, BrushPartType type)
     {
         super(name);
         this.arguments = Maps.newHashMap();
         this.argDefaults = Maps.newHashMap();
+        this.type = type;
+    }
+    
+    /**
+     * Gets the general type of this brush part.
+     * 
+     * @return The type
+     */
+    public BrushPartType getType()
+    {
+        return this.type;
     }
 
     /**

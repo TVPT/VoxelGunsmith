@@ -30,6 +30,8 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * A task for saving aliases.
  */
@@ -53,6 +55,7 @@ public class AliasSaveTask implements Runnable
      */
     public synchronized void addDirty(AliasHandler alias)
     {
+        checkNotNull(alias);
         if (!this.dirty.contains(alias))
         {
             this.dirty.add(alias);

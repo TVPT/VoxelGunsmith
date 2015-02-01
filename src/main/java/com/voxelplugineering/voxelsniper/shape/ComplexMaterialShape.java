@@ -79,6 +79,15 @@ public class ComplexMaterialShape implements MaterialShape
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean supportsChanges()
+    {
+        return true;
+    }
+
+    /**
      * Gets the material at the given location.
      * 
      * @param x the x position to get
@@ -142,6 +151,10 @@ public class ComplexMaterialShape implements MaterialShape
     public void setMaterial(int x, int y, int z, boolean relative, Material material)
     {
         checkNotNull(material);
+        if (!this.shape.supportsChanges())
+        {
+            this.shape = new ComplexShape(this.shape);
+        }
         if (relative)
         {
             x += getShape().getOrigin().getX();
@@ -168,6 +181,10 @@ public class ComplexMaterialShape implements MaterialShape
      */
     public void unsetMaterial(int x, int y, int z, boolean relative)
     {
+        if (!this.shape.supportsChanges())
+        {
+            this.shape = new ComplexShape(this.shape);
+        }
         if (relative)
         {
             x += getShape().getOrigin().getX();

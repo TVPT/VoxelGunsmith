@@ -32,25 +32,38 @@ public interface Shape
 {
 
     /**
-     * Gets the width.
+     * Returns the width of this shape (x-axis size). Note that this is not the
+     * width of the region set, but rather the width of the total possible
+     * volume.
      * 
-     * @return The width
+     * @return the width
      */
     int getWidth();
 
     /**
-     * Gets the height
+     * Returns the height of this shape (y-axis size). Note that this is not the
+     * height of the region set, but rather the height of the total possible
+     * volume.
      * 
-     * @return The height
+     * @return the height
      */
     int getHeight();
 
     /**
-     * Gets the length.
+     * Returns the length of this shape (z-axis size). Note that this is not the
+     * length of the region set, but rather the length of the total possible
+     * volume.
      * 
-     * @return The length
+     * @return the length
      */
     int getLength();
+
+    /**
+     * Gets if this shape supports set/unset operations.
+     * 
+     * @return Supports changes
+     */
+    boolean supportsChanges();
 
     /**
      * Gets if the shape covers the given position.

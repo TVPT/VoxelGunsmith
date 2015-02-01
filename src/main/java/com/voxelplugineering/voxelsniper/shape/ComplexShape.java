@@ -41,21 +41,10 @@ public class ComplexShape implements Shape
      * The shape. Dimensions are [x][z][y/8].
      */
     private byte[][][] shape;
-    /**
-     * The origin location of the shape.
-     */
+
     private Vector3i origin;
-    /**
-     * The width of the shape (x-axis).
-     */
     private int width;
-    /**
-     * The height of the shape (y-axis).
-     */
     private int height;
-    /**
-     * The length of the shape (z-axis).
-     */
     private int length;
 
     /**
@@ -135,39 +124,39 @@ public class ComplexShape implements Shape
     }
 
     /**
-     * Returns the width of this shape (x-axis size). Note that this is not the
-     * width of the region set, but rather the width of the total possible
-     * volume.
-     * 
-     * @return the width
+     * {@inheritDoc}
      */
+    @Override
     public int getWidth()
     {
         return this.width;
     }
 
     /**
-     * Returns the height of this shape (y-axis size). Note that this is not the
-     * height of the region set, but rather the height of the total possible
-     * volume.
-     * 
-     * @return the height
+     * {@inheritDoc}
      */
+    @Override
     public int getHeight()
     {
         return this.height;
     }
 
     /**
-     * Returns the length of this shape (z-axis size). Note that this is not the
-     * length of the region set, but rather the length of the total possible
-     * volume.
-     * 
-     * @return the length
+     * {@inheritDoc}
      */
+    @Override
     public int getLength()
     {
         return this.length;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean supportsChanges()
+    {
+        return true;
     }
 
     /**
@@ -182,25 +171,18 @@ public class ComplexShape implements Shape
     }
 
     /**
-     * Returns the origin of this shape.
-     * 
-     * @return the origin
+     * {@inheritDoc}
      */
+    @Override
     public Vector3i getOrigin()
     {
         return this.origin;
     }
 
     /**
-     * Sets the given position in the shape. This position is relative to the
-     * lowest corner of the shape.
-     * 
-     * @param x the x position to set
-     * @param y the y position to set
-     * @param z the z position to set
-     * @param relative if the position being retrieved should be offset of the
-     *            origin of this shape
+     * {@inheritDoc}
      */
+    @Override
     public void set(int x, int y, int z, boolean relative)
     {
         if (relative)
@@ -217,14 +199,7 @@ public class ComplexShape implements Shape
     }
 
     /**
-     * Unsets the given position in the shape. This position is relative to the
-     * lowest corner of the shape.
-     * 
-     * @param x the x position to unset
-     * @param y the y position to unset
-     * @param z the z position to unset
-     * @param relative if the position being retrieved should be offset of the
-     *            origin of this shape
+     * {@inheritDoc}
      */
     public void unset(int x, int y, int z, boolean relative)
     {
@@ -242,14 +217,7 @@ public class ComplexShape implements Shape
     }
 
     /**
-     * Returns the state of a position in the shape.
-     * 
-     * @param x the x position to return
-     * @param y the y position to return
-     * @param z the z position to return
-     * @param relative if the position being retrieved should be offset of the
-     *            origin of this shape
-     * @return the state of the position
+     * {@inheritDoc}
      */
     public boolean get(int x, int y, int z, boolean relative)
     {

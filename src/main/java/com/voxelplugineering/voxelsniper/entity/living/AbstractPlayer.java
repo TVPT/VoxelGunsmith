@@ -187,6 +187,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
                                         .toString()).get();
         sendMessage("Set material to " + material.getName());
         getBrushSettings().set("setMaterial", material);
+        getBrushSettings().set("maskmaterial", material);
     }
 
     private String prep(String s)
