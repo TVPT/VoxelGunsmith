@@ -49,7 +49,7 @@ public class BrushNodeGraph extends RunnableNodeGraph
     private final Map<String, String> argDefaults;
     private String primary = null;
     private final BrushPartType type;
-    
+
     /**
      * Creates a new {@link BrushNodeGraph}.
      * 
@@ -63,7 +63,7 @@ public class BrushNodeGraph extends RunnableNodeGraph
         this.argDefaults = Maps.newHashMap();
         this.type = type;
     }
-    
+
     /**
      * Gets the general type of this brush part.
      * 

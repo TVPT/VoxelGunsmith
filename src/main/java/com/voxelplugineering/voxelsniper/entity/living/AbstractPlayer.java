@@ -45,7 +45,7 @@ import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
 import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 import com.voxelplugineering.voxelsniper.brushes.CommonBrushManager;
-import com.voxelplugineering.voxelsniper.registry.WeakWrapper;
+import com.voxelplugineering.voxelsniper.entity.AbstractEntity;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueue;
 import com.voxelplugineering.voxelsniper.world.queue.CommonUndoQueue;
 
@@ -54,7 +54,7 @@ import com.voxelplugineering.voxelsniper.world.queue.CommonUndoQueue;
  * 
  * @param <T> The underlying player type
  */
-public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
+public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Player
 {
 
     private BrushManager personalBrushManager;
@@ -303,7 +303,7 @@ public abstract class AbstractPlayer<T> extends WeakWrapper<T> implements Player
     @Override
     public File getAliasFile()
     {
-        File aliases = new File(Gunsmith.getDataFolder(), "players/" + getName() + "/aliases.json");
+        File aliases = new File(Gunsmith.getDataFolder(), "players/" + getUniqueId().toString() + "/aliases.json");
         return aliases;
     }
 

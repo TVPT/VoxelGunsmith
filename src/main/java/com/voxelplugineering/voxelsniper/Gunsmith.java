@@ -529,7 +529,7 @@ public final class Gunsmith
         //save all player's personal aliases
         for (Player player : sniperRegistry.getAllPlayers())
         {
-            File playerFolder = new File(Gunsmith.platformProxy.getDataFolder(), "players/" + player.getUniqueId());
+            File playerFolder = new File(Gunsmith.platformProxy.getDataFolder(), "players/" + player.getUniqueId().toString());
             File aliases = new File(playerFolder, "aliases.json");
 
             try

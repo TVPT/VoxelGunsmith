@@ -38,10 +38,9 @@ import com.google.common.collect.Maps;
 public class AnnotationHelper
 {
 
-    private static Map<Class<?>, List<Class<? extends Annotation>>> annotationCache = new MapMaker().concurrencyLevel(8).weakKeys().weakValues()
-            .makeMap();
+    private static Map<Class<?>, List<Class<? extends Annotation>>> annotationCache = new MapMaker().concurrencyLevel(8).weakKeys().makeMap();
     private static Map<Class<?>, Map<Class<? extends Annotation>, Annotation>> annotationValueCache = new MapMaker().concurrencyLevel(8).weakKeys()
-            .weakValues().makeMap();
+            .makeMap();
 
     /**
      * Gets whether the given annotation is applied to the given class, or any
