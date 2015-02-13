@@ -24,12 +24,10 @@
 package com.voxelplugineering.voxelsniper.api.world;
 
 import com.voxelplugineering.voxelsniper.api.entity.Entity;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
- * Represents a section of a world. In minecraft this will have the area of
- * 16x16x256.
- * <p>
- * TODO have methods for getting the bounding area.
+ * Represents a section of a world.
  */
 public interface Chunk extends BlockVolume
 {
@@ -52,5 +50,26 @@ public interface Chunk extends BlockVolume
      * Refreshes this chunk.
      */
     void refreshChunk();
+
+    /**
+     * Gets the minimal point of this chunk's bounding area.
+     * 
+     * @return The minimal point
+     */
+    Vector3i getMinBound();
+
+    /**
+     * Gets the maximal point of this chunk's bounding area.
+     * 
+     * @return The maximal point
+     */
+    Vector3i getMaxBound();
+
+    /**
+     * Gets the size of this chunk's bounding area.
+     * 
+     * @return The size
+     */
+    Vector3i getSize();
 
 }
