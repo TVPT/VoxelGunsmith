@@ -75,7 +75,8 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     protected AbstractPlayer(T player)
     {
         super(player);
-        //TODO: have player inherit brushes from group rather than the global brush manager always.
+        // TODO: have player inherit brushes from group rather than the global
+        // brush manager always.
         this.personalBrushManager = new CommonBrushManager(Gunsmith.getGlobalBrushManager());
         this.brushVariables = new ParentedVariableScope();
         this.brushVariables.setCaseSensitive(false);
@@ -190,7 +191,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         getBrushSettings().set("maskmaterial", material);
     }
 
-    private String prep(String s)
+    private static String prep(String s)
     {
         s = s.trim();
         while (s.startsWith("{"))
@@ -240,7 +241,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     @Override
     public Optional<ChangeQueue> getNextPendingChange()
     {
-        return (this.pending.isEmpty() ? Optional.<ChangeQueue>absent() : Optional.<ChangeQueue>of(this.pending.peek()));
+        return (this.pending.isEmpty() ? Optional.<ChangeQueue> absent() : Optional.<ChangeQueue> of(this.pending.peek()));
     }
 
     /**
@@ -292,7 +293,8 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     {
         if (arg == null || arg.isEmpty())
         {
-            return;//Note: no illegal argument exception as arg is allowed to be null
+            return;// Note: no illegal argument exception as arg is allowed to
+                   // be null
         }
         this.arguments.put(brush, arg);
     }

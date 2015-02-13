@@ -69,18 +69,15 @@ public class RayTrace
     /*
      * Values used internally for the calculation of the ray trace.
      * 
-     * length:        the length of the ray
-     * range:         the maximum length of the ray before stopping
-     * minWorldY:     the minimum y value of the world
-     * maxWorldY:     the maximum y value of the world
-     * yaw:           the yaw of the direction of the ray
-     * pitch:         the pitch of the direction of the ray
-     * currentX|Y|Z:  the current position of the ray, relative to the origin
-     * targetX|Y|Z:   the position of the target block
-     * lastX|Y|Z:     the position of the last block
-     * rotX|Y:        the yaw and pitch of the ray shifted to the same context as the world, as well as the sine and cosine of each
-     * step:          the increment amount of the step of the ray trace
-     * 
+     * length: the length of the ray range: the maximum length of the ray before
+     * stopping minWorldY: the minimum y value of the world maxWorldY: the
+     * maximum y value of the world yaw: the yaw of the direction of the ray
+     * pitch: the pitch of the direction of the ray currentX|Y|Z: the current
+     * position of the ray, relative to the origin targetX|Y|Z: the position of
+     * the target block lastX|Y|Z: the position of the last block rotX|Y: the
+     * yaw and pitch of the ray shifted to the same context as the world, as
+     * well as the sine and cosine of each step: the increment amount of the
+     * step of the ray trace
      */
 
     private double length;
@@ -109,7 +106,7 @@ public class RayTrace
     /**
      * Creates a new raytrace to reference with the given location yaw and
      * pitch.
-     *
+     * 
      * @param origin the origin location
      * @param yaw the yaw
      * @param pitch the pitch
@@ -258,12 +255,15 @@ public class RayTrace
         this.lastZ = (int) Math.floor(this.currentZ);
 
         // I think this is to do with the axis orientation of minecraft,
-        // not sure how to handle this in a context separated from the implementation.
-        // Possibly something attached to the world to detail the different orientations
+        // not sure how to handle this in a context separated from the
+        // implementation.
+        // Possibly something attached to the world to detail the different
+        // orientations
         // of the axis and which directions they represent.
         //
         // Currently:
-        // 0 degrees of yaw is the direction of the positive x axis going clockwise towards the positive z axis first.
+        // 0 degrees of yaw is the direction of the positive x axis going
+        // clockwise towards the positive z axis first.
         this.rotX = (this.yaw + 90) % 360;
         this.rotY = this.pitch * -1;
         this.rotYCos = Math.cos(Math.toRadians(this.rotY));
@@ -296,7 +296,7 @@ public class RayTrace
         this.lastX = this.targetX;
         this.lastY = this.targetY;
         this.lastZ = this.targetZ;
-        //step until we find a new block in the line
+        // step until we find a new block in the line
         do
         {
             this.length += this.step;
@@ -314,7 +314,7 @@ public class RayTrace
         Optional<Block> next = this.world.getBlock(this.targetX, this.targetY, this.targetZ);
         if (!next.isPresent())
         {
-            //Abort out of bounds, or something wrong with area of world
+            // Abort out of bounds, or something wrong with area of world
             this.targetX = this.lastX;
             this.targetY = this.lastY;
             this.targetZ = this.lastZ;
@@ -322,20 +322,20 @@ public class RayTrace
         }
         if (!this.traversalBlocks.contains(next.get().getMaterial()))
         {
-            //Abort - found non-traversal block
+            // Abort - found non-traversal block
             return;
         }
 
         if (this.length > this.range || this.targetY > this.maxWorldY || this.targetY < this.minWorldY)
         {
-            //Abort - Out of bounds
+            // Abort - Out of bounds
             this.targetX = this.lastX;
             this.targetY = this.lastY;
             this.targetZ = this.lastZ;
             this.length = this.range;
         } else
         {
-            //continue
+            // continue
             step();
         }
     }

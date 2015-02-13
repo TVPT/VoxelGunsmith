@@ -60,8 +60,8 @@ import com.voxelplugineering.voxelsniper.util.nbt.Tag;
 public class NBTSchematicLoader implements SchematicLoader
 {
 
-    /* TODO unit tests for this
-     * 
+    /*
+     * TODO unit tests for this
      */
 
     /**
@@ -195,7 +195,7 @@ public class NBTSchematicLoader implements SchematicLoader
             entitiesMap.put(vec, entity);
         }
 
-        //Load material dictionary
+        // Load material dictionary
         List<Tag> dict = schematicTag.getChildTag("MaterialDictionary", ListTag.class).get().getValue();
         Map<Short, Material> materialDict = Maps.newHashMap();
         for (Tag tag : dict)

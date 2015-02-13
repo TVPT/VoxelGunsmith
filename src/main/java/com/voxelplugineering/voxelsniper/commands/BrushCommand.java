@@ -161,9 +161,9 @@ public class BrushCommand extends Command
         return false;
     }
 
-    //TODO These methods should be moved or replaced
+    // TODO These methods should be moved or replaced
 
-    private boolean validate(String fullBrush)
+    private static boolean validate(String fullBrush)
     {
         int co = 0;
         for (char c : fullBrush.toCharArray())
@@ -188,7 +188,7 @@ public class BrushCommand extends Command
         return co == 0;
     }
 
-    private String normalize(String s)
+    private static String normalize(String s)
     {
         if (s == null)
         {
@@ -214,7 +214,7 @@ public class BrushCommand extends Command
         return f;
     }
 
-    private String prep(String s)
+    private static String prep(String s)
     {
         s = s.trim();
         while (s.startsWith("{"))

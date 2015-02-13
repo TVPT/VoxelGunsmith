@@ -46,7 +46,7 @@ public class BlockNeighboursNode extends AbstractNode
 
     /**
      * Creates a new BlockNeighboursNode.
-     *
+     * 
      * @param blockProvider The block providerAbstractNode
      */
     public BlockNeighboursNode(Provider<Block> blockProvider)
@@ -57,7 +57,7 @@ public class BlockNeighboursNode extends AbstractNode
 
     /**
      * Gets the neighbors found by this node.
-     *
+     * 
      * @return The neighboring blocks
      */
     public Provider<Block[]> getNeighbours()

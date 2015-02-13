@@ -57,7 +57,7 @@ public class MaterialShapeFlushNode extends MaterialShapeNode
     public void exec(RuntimeState state)
     {
         MaterialShape s = this.shape.get(state);
-        new ShapeChangeQueue(state.getVars().<Player>get("__PLAYER__", Player.class).get(), this.target.get(state), s);
+        new ShapeChangeQueue(state.getVars().<Player> get("__PLAYER__", Player.class).get(), this.target.get(state), s);
     }
 
 }

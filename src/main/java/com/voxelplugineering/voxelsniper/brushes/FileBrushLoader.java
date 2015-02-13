@@ -46,8 +46,7 @@ public class FileBrushLoader extends CommonBrushLoader
     /*
      * Brush File Format Outline (Version 1)
      * 
-     * 4 bytes - File format version number
-     * 4-bytes - Brush version number
+     * 4 bytes - File format version number 4-bytes - Brush version number
      * remaining - serialized IRunnableGraph
      */
 
@@ -58,7 +57,7 @@ public class FileBrushLoader extends CommonBrushLoader
 
     /**
      * Constructs a new FileBrushLoader with the default directory
-     *
+     * 
      * @param defaultDir the directory to load brushes, cannot be null
      */
     public FileBrushLoader(File defaultDir)
@@ -69,7 +68,7 @@ public class FileBrushLoader extends CommonBrushLoader
 
     /**
      * Gets the default directory in the file system
-     *
+     * 
      * @return the default file directory
      */
     public File getDefaultDirectory()
@@ -115,7 +114,8 @@ public class FileBrushLoader extends CommonBrushLoader
             return loaded;
         } catch (Exception e)
         {
-            //Gunsmith.getLogger().error(e, "Error loading brush " + e.getMessage());
+            // Gunsmith.getLogger().error(e, "Error loading brush " +
+            // e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -177,7 +177,7 @@ public class FileBrushLoader extends CommonBrushLoader
      */
     public static boolean convertVSLGraph(File serFile)
     {
-        //TODO convertVSLGraph
+        // TODO convertVSLGraph
         throw new UnsupportedOperationException();
     }
 
@@ -190,7 +190,7 @@ public class FileBrushLoader extends CommonBrushLoader
      */
     public static boolean convertToVersion(File old)
     {
-        //TODO convertToVersion
+        // TODO convertToVersion
         return false;
     }
 

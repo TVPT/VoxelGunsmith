@@ -457,7 +457,7 @@ public class ComplexShapeTest
     /**
      * 
      */
-    //@Test
+    // @Test
     public void testCombine()
     {
         ComplexShape shape1 = new ComplexShape(1, 1, 1);
@@ -473,7 +473,7 @@ public class ComplexShapeTest
     /**
      * 
      */
-    //@Test
+    // @Test
     public void testAdd()
     {
         ComplexShape shape1 = new ComplexShape(1, 1, 1);
@@ -490,7 +490,7 @@ public class ComplexShapeTest
     /**
      * 
      */
-    //@Test
+    // @Test
     public void testAdd2()
     {
         ComplexShape shape1 = new ComplexShape(1, 1, 1);
@@ -504,14 +504,14 @@ public class ComplexShapeTest
         assertShapesDeepEqual(shape3, shape1);
     }
 
-    private void assertVectorEquals(Vector3i a, Vector3i b)
+    private static void assertVectorEquals(Vector3i a, Vector3i b)
     {
         assertEquals(a.getX(), b.getX());
         assertEquals(a.getY(), b.getY());
         assertEquals(a.getZ(), b.getZ());
     }
 
-    private void assertShapesEqual(Shape a, Shape b)
+    private static void assertShapesEqual(Shape a, Shape b)
     {
         assertEquals(a.getWidth(), b.getWidth());
         assertEquals(a.getHeight(), b.getHeight());
@@ -520,7 +520,7 @@ public class ComplexShapeTest
         assertVectorEquals(a.getOrigin(), b.getOrigin());
     }
 
-    private void assertShapesDeepEqual(Shape a, Shape b)
+    private static void assertShapesDeepEqual(Shape a, Shape b)
     {
         assertEquals(a.getWidth(), b.getWidth());
         assertEquals(a.getHeight(), b.getHeight());

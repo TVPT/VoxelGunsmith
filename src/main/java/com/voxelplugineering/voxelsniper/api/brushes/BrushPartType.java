@@ -24,10 +24,25 @@
 package com.voxelplugineering.voxelsniper.api.brushes;
 
 /**
- * An enumeration of some standard brush part types.
+ * An enumeration of some standard brush part types. These describe the general
+ * targeted purpose of a brush part but should NOT be relied upon.
  */
-@SuppressWarnings("javadoc")
 public enum BrushPartType
 {
-    SHAPE, MASK, EFFECT, MISC
+    /**
+     * A brush part which defines a shape.
+     */
+    SHAPE,
+    /**
+     * A brush part which modifies a pre-existing shape.
+     */
+    MASK,
+    /**
+     * A brush part which performs an effect upon an area defined by a shape.
+     */
+    EFFECT,
+    /**
+     * A brush part which performs some unknown purpose.
+     */
+    MISC
 }

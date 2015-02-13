@@ -59,7 +59,7 @@ public abstract class Command
 
     /**
      * Constructs a new command with the given name and help.
-     *
+     * 
      * @param name the name of this command
      * @param help the help string for this command
      */

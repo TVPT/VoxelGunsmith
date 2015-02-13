@@ -95,10 +95,10 @@ public class BrushNodeGraph extends RunnableNodeGraph
         BrushNodeGraph ng = this;
         while (ng != null && map != null)
         {
-            String inv = ng.parseArguments(map.get(ng.getName()), state.getVars(), vars.<Player>get("__PLAYER__", Player.class).get());
+            String inv = ng.parseArguments(map.get(ng.getName()), state.getVars(), vars.<Player> get("__PLAYER__", Player.class).get());
             if (!inv.isEmpty())
             {
-                vars.<Player>get("__PLAYER__", Player.class).get().sendMessage("Invalid arguments: " + inv);
+                vars.<Player> get("__PLAYER__", Player.class).get().sendMessage("Invalid arguments: " + inv);
                 return;
             }
             ng = (BrushNodeGraph) ng.getNextGraph();
@@ -123,7 +123,7 @@ public class BrushNodeGraph extends RunnableNodeGraph
         }
         if (!missing.isEmpty())
         {
-            vars.<Player>get("__PLAYER__", Player.class).get()
+            vars.<Player> get("__PLAYER__", Player.class).get()
                     .sendMessage("Missing required variable" + (missing.indexOf(" ") != -1 ? "s" : " ") + ": " + missing);
             return;
         }

@@ -41,7 +41,7 @@ public class Vector3i implements Serializable, Cloneable
 
     /**
      * Constructs a new vector with the direction.
-     *
+     * 
      * @param x the x coordinate, gets cast to an integer
      * @param y the y coordinate, gets cast to an integer
      * @param z the z coordinate, gets cast to an integer

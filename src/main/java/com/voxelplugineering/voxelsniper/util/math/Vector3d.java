@@ -40,7 +40,7 @@ public class Vector3d implements Serializable, Cloneable
 
     /**
      * Constructs a new vector with the direction.
-     *
+     * 
      * @param x the x coordinate
      * @param y the y coordinate
      * @param z the z coordinate

@@ -41,7 +41,7 @@ public class CountOccurrencesNode extends AbstractNode
 
     /**
      * Creates a new CountOccurrences node.
-     *
+     * 
      * @param materialProvider The material provider
      * @param blockArrayProvider The block array provider
      */

@@ -40,7 +40,7 @@ public class StringUtilities
      * This method uses a region to check case-insensitive equality. This means
      * the internal array does not need to be copied like a toLowerCase() call
      * would.
-     *
+     * 
      * @param string String to check
      * @param prefix Prefix of string to compare
      * @return true if provided string starts with, ignoring case, the prefix
@@ -57,7 +57,7 @@ public class StringUtilities
     /**
      * Copies all elements from the iterable collection of originals to the
      * collection provided.
-     *
+     * 
      * @param token String to search for
      * @param originals An iterable collection of strings to filter.
      * @param collection The collection to add matches to
@@ -92,7 +92,7 @@ public class StringUtilities
 
     /**
      * Finds all matching strings in the given list of candidates.
-     *
+     * 
      * @param partial the partial to look for
      * @param candidates the candidates to parse
      * @return a new list of partial matches

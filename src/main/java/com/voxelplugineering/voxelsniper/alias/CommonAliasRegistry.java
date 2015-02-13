@@ -42,6 +42,8 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
 /**
@@ -56,22 +58,26 @@ public class CommonAliasRegistry implements AliasRegistry
     private Map<String, String> aliases;
     private AliasRegistry parent;
     private boolean caseSensitive = true;
+    private final String registryName;
 
     /**
      * Creates a new {@link AliasRegistry} with no parent.
+     * 
+     * @param name The registry name
      */
-    public CommonAliasRegistry()
+    public CommonAliasRegistry(String name)
     {
-        this(null);
+        this(name, null);
     }
 
     /**
      * Creates a new {@link AliasRegistry} with the given registry as its
      * parent.
      * 
+     * @param name The registry name
      * @param parent the parent registry
      */
-    public CommonAliasRegistry(AliasRegistry parent)
+    public CommonAliasRegistry(String name, AliasRegistry parent)
     {
         this.aliases = Maps.newTreeMap(new Comparator<String>()
         {
@@ -88,7 +94,10 @@ public class CommonAliasRegistry implements AliasRegistry
             }
         });
         this.parent = parent;
-        this.caseSensitive = Gunsmith.getConfiguration().get("caseSensitiveAliases", Boolean.class).or(true); //default to non-action
+        this.caseSensitive = Gunsmith.getConfiguration().get("caseSensitiveAliases", Boolean.class).or(true); // default
+                                                                                                              // to
+                                                                                                              // non-action
+        this.registryName = name;
     }
 
     /**
@@ -192,7 +201,7 @@ public class CommonAliasRegistry implements AliasRegistry
         return expand_(finalBrush);
     }
 
-    private boolean validate(String fullBrush)
+    private static boolean validate(String fullBrush)
     {
         int co = 0;
         for (char c : fullBrush.toCharArray())
@@ -217,7 +226,7 @@ public class CommonAliasRegistry implements AliasRegistry
         return co == 0;
     }
 
-    private String normalize(String s)
+    private static String normalize(String s)
     {
         Pattern p = Pattern.compile("(\\{[^\\}]*\\})[\\s]*");
         Matcher match = p.matcher(s);
@@ -280,7 +289,7 @@ public class CommonAliasRegistry implements AliasRegistry
         return StringUtilities.getSection(split, 0, split.length - 1);
     }
 
-    private String prep(String s)
+    private static String prep(String s)
     {
         s = s.trim();
         while (s.startsWith("{"))
@@ -301,6 +310,30 @@ public class CommonAliasRegistry implements AliasRegistry
     public Set<Entry<String, String>> getEntries()
     {
         return Collections.unmodifiableSet(this.aliases.entrySet());
+    }
+
+    @Override
+    public void fromContainer(DataContainer container)
+    {
+        for (String key : container.keySet())
+        {
+            Optional<String> alias = container.readString(key);
+            if (alias.isPresent())
+            {
+                this.register(key, alias.get());
+            }
+        }
+    }
+
+    @Override
+    public DataContainer toContainer()
+    {
+        MemoryContainer container = new MemoryContainer(this.registryName);
+        for (String key : this.aliases.keySet())
+        {
+            container.writeString(key, this.aliases.get(key));
+        }
+        return container;
     }
 
 }

@@ -35,49 +35,49 @@ public interface PlatformProxy
     /**
      * Gets the name of the platform, examples may include "Bukkit", "Spigot",
      * "Sponge", etc.
-     *
+     * 
      * @return The name of the platform
      */
     String getName();
 
     /**
      * Gets the version of the platform.
-     *
+     * 
      * @return The version of the platform
      */
     String getVersion();
 
     /**
      * Gets the full version string of the platform.
-     *
+     * 
      * @return The full version string of the platform
      */
     String getFullVersion();
 
     /**
      * Returns the main thread of VoxelSniper.
-     *
+     * 
      * @return the thread
      */
     Thread getMainThread();
 
     /**
      * Returns the main storage directory for data.
-     *
+     * 
      * @return the data folder
      */
     File getDataFolder();
 
     /**
      * Gets the Configuration file for Metrics to be used.
-     *
+     * 
      * @return The file containing the configuration for Metrics
      */
     File getMetricsFile();
 
     /**
      * Gets the number of players online.
-     *
+     * 
      * @return The number of players online
      */
     int getNumberOfPlayersOnline();

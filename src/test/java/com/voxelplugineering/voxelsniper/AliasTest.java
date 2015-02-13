@@ -49,7 +49,7 @@ public class AliasTest
     public void setup()
     {
         System.out.println(Gunsmith.getConfiguration());
-        this.alias = new CommonAliasRegistry();
+        this.alias = new CommonAliasRegistry("test");
     }
 
     /**
@@ -136,7 +136,7 @@ public class AliasTest
     @Test
     public void testParentage()
     {
-        AliasRegistry child = new CommonAliasRegistry(this.alias);
+        AliasRegistry child = new CommonAliasRegistry("test", this.alias);
 
         this.alias.register("abc", "absd");
 
@@ -153,7 +153,7 @@ public class AliasTest
     @Test
     public void testParentage2()
     {
-        AliasRegistry child = new CommonAliasRegistry(this.alias);
+        AliasRegistry child = new CommonAliasRegistry("test", this.alias);
 
         this.alias.register("abc", "rawr");
         child.register("abc", "absd");
@@ -229,7 +229,7 @@ public class AliasTest
         assertEquals("", this.alias.expand("invalid {wor ld {embedded} oh dear}"));
     }
 
-    private String normalize(String s)
+    private static String normalize(String s)
     {
         Pattern p = Pattern.compile("(\\{[^\\}]*\\})[\\s]*");
         Matcher match = p.matcher(s);

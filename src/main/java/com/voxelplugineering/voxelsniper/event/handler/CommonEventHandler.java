@@ -37,12 +37,12 @@ import com.voxelplugineering.voxelsniper.event.SnipeEvent;
 import com.voxelplugineering.voxelsniper.event.SniperEvent;
 import com.voxelplugineering.voxelsniper.event.SniperEvent.SniperCreateEvent;
 import com.voxelplugineering.voxelsniper.event.SniperEvent.SniperDestroyEvent;
+import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSource;
 import com.voxelplugineering.voxelsniper.util.RayTrace;
 
 /**
  * An event handler for the default behavior for events.
  */
-@SuppressWarnings("static-method")
 public class CommonEventHandler
 {
 
@@ -69,15 +69,16 @@ public class CommonEventHandler
     public void onPlayerJoin(SniperEvent.SniperCreateEvent event)
     {
         Player player = event.getSniper();
-        //TODO use UUID for directory name
+        // TODO use UUID for directory name
         File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName + player.getName());
         playerFolder.mkdirs();
         File aliases = new File(playerFolder, this.aliasFile);
+        JsonDataSource data = new JsonDataSource(aliases);
         if (aliases.exists())
         {
             try
             {
-                player.getPersonalAliasHandler().load(aliases);
+                data.read(player.getPersonalAliasHandler());
             } catch (IOException e)
             {
                 Gunsmith.getLogger().error(e, "Error loading player aliases!");
@@ -97,6 +98,7 @@ public class CommonEventHandler
         Player player = event.getSniper();
         File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName + player.getUniqueId().toString());
         File aliases = new File(playerFolder, this.aliasFile);
+        JsonDataSource data = new JsonDataSource(aliases);
 
         try
         {
@@ -104,13 +106,13 @@ public class CommonEventHandler
             {
                 aliases.createNewFile();
             }
-            player.getPersonalAliasHandler().save(aliases);
+            data.write(player.getPersonalAliasHandler());
         } catch (IOException e)
         {
             Gunsmith.getLogger().error(e, "Error saving player aliases!");
         }
 
-        //TODO cache players undo queue for N minutes
+        // TODO cache players undo queue for N minutes
     }
 
     /**
@@ -118,7 +120,7 @@ public class CommonEventHandler
      * {@link com.voxelplugineering.voxelsniper.event.SnipeEvent} and performs
      * all necessary checks of the event. This event handler is supports
      * asynchronous callback.
-     *
+     * 
      * @param event the snipe event to perform
      */
     @EventHandler
@@ -147,12 +149,13 @@ public class CommonEventHandler
 
             VariableScope brushVariables = new ParentedVariableScope(sniper.getBrushSettings());
             brushVariables.setCaseSensitive(false);
-            brushVariables.set("origin", location);//TODO move all variable names to configuration
+            brushVariables.set("origin", location);// TODO move all variable
+                                                   // names to configuration
             brushVariables.set("yaw", yaw);
             brushVariables.set("pitch", pitch);
             brushVariables.set("targetBlock", ray.getTargetBlock());
-            //brushVariables.set("lastBlock", ray.getLastBlock());
-            //TODO support gunpoweder alt action
+            // brushVariables.set("lastBlock", ray.getLastBlock());
+            // TODO support gunpoweder alt action
             brushVariables.set("length", ray.getLength());
             brushVariables.set(this.playerSysvar, sniper);
             Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());

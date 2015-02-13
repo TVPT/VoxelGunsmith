@@ -78,12 +78,12 @@ public abstract class Metrics
     /**
      * Debug mode
      */
-    private final boolean debug;
+    final boolean debug;
 
     /**
      * All of the custom graphs to submit to metrics
      */
-    private final Set<Graph> graphs = Collections.synchronizedSet(new HashSet<Graph>());
+    final Set<Graph> graphs = Collections.synchronizedSet(new HashSet<Graph>());
 
     /**
      * The plugin configuration file
@@ -113,12 +113,12 @@ public abstract class Metrics
     /**
      * Lock for synchronization
      */
-    private final Object optOutLock = new Object();
+    final Object optOutLock = new Object();
 
     /**
      * The thread submission is running on
      */
-    private Thread thread = null;
+    Thread thread = null;
 
     /**
      * Creates a new Metrics manager.
@@ -166,14 +166,14 @@ public abstract class Metrics
 
     /**
      * Get the full server version
-     *
+     * 
      * @return The server version
      */
     public abstract String getServerVersion();
 
     /**
      * Get the amount of players online
-     *
+     * 
      * @return Players online
      */
     public abstract int getPlayersOnline();
@@ -181,7 +181,7 @@ public abstract class Metrics
     /**
      * Gets the File object of the config file that should be used to store data
      * such as the GUID and opt-out status
-     *
+     * 
      * @return the File object for the config file
      */
     public abstract File getConfigFile();
@@ -190,7 +190,7 @@ public abstract class Metrics
      * Construct and create a Graph that can be used to separate specific
      * plotters to their own graphs on the metrics website. Plotters can be
      * added to the graph object returned.
-     *
+     * 
      * @param name The name of the graph
      * @return Graph object created. Will never return NULL under normal
      *         circumstances unless bad parameters are given
@@ -215,7 +215,7 @@ public abstract class Metrics
     /**
      * Add a Graph object to SpoutMetrics that represents data for the plugin
      * that should be sent to the backend
-     *
+     * 
      * @param graph The name of the graph
      */
     public void addGraph(final Graph graph)
@@ -233,7 +233,7 @@ public abstract class Metrics
      * repeating task as the plugin and send the initial data to the metrics
      * backend, and then after that it will post in increments of PING_INTERVAL
      * * 1200 ticks.
-     *
+     * 
      * @return True if statistics measuring is running, otherwise false.
      */
     public boolean start()
@@ -267,30 +267,38 @@ public abstract class Metrics
                         {
                             try
                             {
-                                // This has to be synchronized or it can collide with the disable method.
+                                // This has to be synchronized or it can collide
+                                // with the disable method.
                                 synchronized (Metrics.this.optOutLock)
                                 {
-                                    // Disable Task, if it is running and the server owner decided to opt-out
+                                    // Disable Task, if it is running and the
+                                    // server owner decided to opt-out
                                     if (isOptOut() && Metrics.this.thread != null)
                                     {
                                         Thread temp = Metrics.this.thread;
                                         Metrics.this.thread = null;
-                                        // Tell all plotters to stop gathering information.
+                                        // Tell all plotters to stop gathering
+                                        // information.
                                         for (Graph graph : Metrics.this.graphs)
                                         {
                                             graph.onOptOut();
                                         }
-                                        temp.interrupt(); // interrupting ourselves
+                                        temp.interrupt(); // interrupting
+                                                          // ourselves
                                         return;
                                     }
                                 }
 
-                                // We use the inverse of firstPost because if it is the first time we are posting,
-                                // it is not a interval ping, so it evaluates to FALSE
-                                // Each time thereafter it will evaluate to TRUE, i.e PING!
+                                // We use the inverse of firstPost because if it
+                                // is the first time we are posting,
+                                // it is not a interval ping, so it evaluates to
+                                // FALSE
+                                // Each time thereafter it will evaluate to
+                                // TRUE, i.e PING!
                                 postPlugin(!this.firstPost);
 
-                                // After the first post we set firstPost to false
+                                // After the first post we set firstPost to
+                                // false
                                 // Each post thereafter will be a ping
                                 this.firstPost = false;
                                 this.nextPost = System.currentTimeMillis() + (PING_INTERVAL * 60 * 1000);
@@ -320,7 +328,7 @@ public abstract class Metrics
 
     /**
      * Has the server owner denied plugin metrics?
-     *
+     * 
      * @return true if metrics should be opted out of it
      */
     public boolean isOptOut()
@@ -347,15 +355,17 @@ public abstract class Metrics
     /**
      * Enables metrics for the server by setting "opt-out" to false in the
      * config file and starting the metrics task.
-     *
+     * 
      * @throws java.io.IOException
      */
     public void enable() throws IOException
     {
-        // This has to be synchronized or it can collide with the check in the task.
+        // This has to be synchronized or it can collide with the check in the
+        // task.
         synchronized (this.optOutLock)
         {
-            // Check if the server owner has already set opt-out, if not, set it.
+            // Check if the server owner has already set opt-out, if not, set
+            // it.
             if (isOptOut())
             {
                 this.properties.setProperty("opt-out", "false");
@@ -373,15 +383,17 @@ public abstract class Metrics
     /**
      * Disables metrics for the server by setting "opt-out" to true in the
      * config file and canceling the metrics task.
-     *
+     * 
      * @throws java.io.IOException
      */
     public void disable() throws IOException
     {
-        // This has to be synchronized or it can collide with the check in the task.
+        // This has to be synchronized or it can collide with the check in the
+        // task.
         synchronized (this.optOutLock)
         {
-            // Check if the server owner has already set opt-out, if not, set it.
+            // Check if the server owner has already set opt-out, if not, set
+            // it.
             if (!isOptOut())
             {
                 this.properties.setProperty("opt-out", "true");
@@ -400,18 +412,20 @@ public abstract class Metrics
     /**
      * Generic method that posts a plugin to the metrics website
      */
-    private void postPlugin(final boolean isPing) throws IOException
+    void postPlugin(final boolean isPing) throws IOException
     {
         String serverVersion = getServerVersion();
         int playersOnline = getPlayersOnline();
 
-        // END server software specific section -- all code below does not use any code outside of this class / Java
+        // END server software specific section -- all code below does not use
+        // any code outside of this class / Java
 
         // Construct the post data
         StringBuilder json = new StringBuilder(1024);
         json.append('{');
 
-        // The plugin's description file containg all of the plugin data such as name, version, author, etc
+        // The plugin's description file containg all of the plugin data such as
+        // name, version, author, etc
         appendJSONPair(json, "guid", this.guid);
         appendJSONPair(json, "plugin_version", this.pluginVersion);
         appendJSONPair(json, "server_version", serverVersion);
@@ -575,7 +589,7 @@ public abstract class Metrics
 
     /**
      * GZip compress a string of bytes
-     *
+     * 
      * @param input
      * @return The gziped string
      */
@@ -593,12 +607,13 @@ public abstract class Metrics
             e.printStackTrace();
         } finally
         {
-            if (gzos != null) try
-            {
-                gzos.close();
-            } catch (IOException ignore)
-            {
-            }
+            if (gzos != null)
+                try
+                {
+                    gzos.close();
+                } catch (IOException ignore)
+                {
+                }
         }
 
         return baos.toByteArray();
@@ -607,10 +622,10 @@ public abstract class Metrics
     /**
      * Check if mineshafter is present. If it is, we need to bypass it to send
      * POST requests
-     *
+     * 
      * @return true if mineshafter is installed on the server
      */
-    private boolean isMineshafterPresent()
+    private static boolean isMineshafterPresent()
     {
         try
         {
@@ -624,7 +639,7 @@ public abstract class Metrics
 
     /**
      * Appends a json encoded key/value pair to the given string builder.
-     *
+     * 
      * @param json
      * @param key
      * @param value
@@ -665,7 +680,7 @@ public abstract class Metrics
 
     /**
      * Escape a string to create a valid JSON string
-     *
+     * 
      * @param text
      * @return
      */
@@ -716,7 +731,7 @@ public abstract class Metrics
 
     /**
      * Encode text as UTF-8
-     *
+     * 
      * @param text the text to encode
      * @return the encoded text, as UTF-8
      */
@@ -742,14 +757,14 @@ public abstract class Metrics
          */
         private final Set<Plotter> plotters = new LinkedHashSet<Plotter>();
 
-        private Graph(final String name)
+        Graph(final String name)
         {
             this.name = name;
         }
 
         /**
          * Gets the graph's name
-         *
+         * 
          * @return the Graph's name
          */
         public String getName()
@@ -759,7 +774,7 @@ public abstract class Metrics
 
         /**
          * Add a plotter to the graph, which will be used to plot entries
-         *
+         * 
          * @param plotter the plotter to add to the graph
          */
         public void addPlotter(final Plotter plotter)
@@ -769,7 +784,7 @@ public abstract class Metrics
 
         /**
          * Remove a plotter from the graph
-         *
+         * 
          * @param plotter the plotter to remove from the graph
          */
         public void removePlotter(final Plotter plotter)
@@ -779,7 +794,7 @@ public abstract class Metrics
 
         /**
          * Gets an <b>unmodifiable</b> set of the plotter objects in the graph
-         *
+         * 
          * @return an unmodifiable {@link java.util.Set} of the plotter objects
          */
         public Set<Plotter> getPlotters()
@@ -841,7 +856,7 @@ public abstract class Metrics
 
         /**
          * Construct a plotter with a specific plot name
-         *
+         * 
          * @param name the name of the plotter to use, which will show up on the
          *            website
          */
@@ -856,14 +871,14 @@ public abstract class Metrics
          * thus cannot be guaranteed to be thread friendly or safe. This
          * function can be called from any thread so care should be taken when
          * accessing resources that need to be synchronized.
-         *
+         * 
          * @return the current value for the point to be plotted.
          */
         public abstract int getValue();
 
         /**
          * Get the column name for the plotted point
-         *
+         * 
          * @return the plotted point's column name
          */
         public String getColumnName()

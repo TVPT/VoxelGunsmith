@@ -79,6 +79,6 @@ public class NodeTest
         assertEquals(node.getMaterial().get(this.state), material);
     }
 
-    //TODO remaining node tests
+    // TODO remaining node tests
 
 }

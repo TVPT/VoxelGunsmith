@@ -57,6 +57,7 @@ import com.voxelplugineering.voxelsniper.event.bus.AsyncEventBus;
 import com.voxelplugineering.voxelsniper.event.handler.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.logging.CommonLoggingDistributor;
 import com.voxelplugineering.voxelsniper.registry.vsl.ArgumentParsers;
+import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSource;
 import com.voxelplugineering.voxelsniper.util.AnnotationHelper;
 import com.voxelplugineering.voxelsniper.util.defaults.DefaultAliasBuilder;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueTask;
@@ -73,8 +74,8 @@ public final class Gunsmith
     private static CommandHandler commandHandler;
     private static CommonEventHandler defaultEventHandler;
     private static EventBus eventBus;
-    private static Configuration configuration;
-    private static LoggingDistributor logDistributor;
+    static Configuration configuration;
+    static LoggingDistributor logDistributor;
     private static AliasHandler globalAliasRegistries;
     private static ExecutorService eventBusExecutor;
     private static PlatformProxy platformProxy;
@@ -97,7 +98,7 @@ public final class Gunsmith
 
     /**
      * Gets the instance of the implementation of IPlatformProxy.
-     *
+     * 
      * @return The instance of the implementation of IPlatformProxy
      */
     public static PlatformProxy getPlatformProxy()
@@ -117,7 +118,7 @@ public final class Gunsmith
 
     /**
      * Gets the instance of the implementation of IBrushLoader.
-     *
+     * 
      * @return The instance of the implementation of IBrushLoader
      */
     public static BrushLoader getDefaultBrushLoader()
@@ -127,7 +128,7 @@ public final class Gunsmith
 
     /**
      * Gets the instance of the implementation of IBrushLoader.
-     *
+     * 
      * @return The instance of the implementation of IBrushLoader
      */
     public static BrushManager getGlobalBrushManager()
@@ -137,7 +138,7 @@ public final class Gunsmith
 
     /**
      * Gets the instance of the implementation of EventBus.
-     *
+     * 
      * @return The instance of the implementation of EventBus
      */
     public static EventBus getEventBus()
@@ -147,7 +148,7 @@ public final class Gunsmith
 
     /**
      * Gets the instance of the implementation of CommandHandler.
-     *
+     * 
      * @return The instance of the implementation of CommandHandler
      */
     public static CommandHandler getCommandHandler()
@@ -157,7 +158,7 @@ public final class Gunsmith
 
     /**
      * Gets the instance of the implementation of CommonEventHandler.
-     *
+     * 
      * @return The instance of the implementation of CommonEventHandler
      */
     public static CommonEventHandler getDefaultEventHandler()
@@ -167,7 +168,7 @@ public final class Gunsmith
 
     /**
      * Gets the instance of the implementation of IConfiguration.
-     *
+     * 
      * @return The instance of the implementation of IConfiguration
      */
     public static Configuration getConfiguration()
@@ -347,34 +348,39 @@ public final class Gunsmith
     {
         check();
         dataFolder = base;
-        //Create standard log distributor
+        // Create standard log distributor
         DefaultSetupProxy.setupLogger();
-        //System.setProperty("voxel.log.location", base.getAbsolutePath());
-        //File config = new File(base.getAbsolutePath(), "log4j2.xml");
-        //System.out.println("log4j config: " + config.getAbsolutePath());
-        //System.setProperty("log4j.configurationFile", config.getAbsolutePath());
-        //logDistributor.registerLogger(new Log4jLogger(LogManager.getLogger(Gunsmith.class)), "log4j");
+        // System.setProperty("voxel.log.location", base.getAbsolutePath());
+        // File config = new File(base.getAbsolutePath(), "log4j2.xml");
+        // System.out.println("log4j config: " + config.getAbsolutePath());
+        // System.setProperty("log4j.configurationFile",
+        // config.getAbsolutePath());
+        // logDistributor.registerLogger(new
+        // Log4jLogger(LogManager.getLogger(Gunsmith.class)), "log4j");
 
-        //TODO setup log4j logging properly
+        // TODO setup log4j logging properly
 
         getLogger().info(
                 "Starting Gunsmith initialization process. ("
                         + new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z").format(new Date(System.currentTimeMillis())) + ")");
 
-        //The Text Format Proxy needs to be set early so values loaded to configuration from the default set are correctly converted.
+        // The Text Format Proxy needs to be set early so values loaded to
+        // configuration from the default set are correctly converted.
         formatProxy = provider.getFormatProxy();
         getLogger().info("Set format proxy to " + formatProxy.getClass().getName());
 
-        //Create the eventBus for all Gunsmith events
+        // Create the eventBus for all Gunsmith events
         eventBus = new AsyncEventBus();
 
         defaultEventHandler = new CommonEventHandler();
         eventBus.register(defaultEventHandler);
-        //default event handler is registered here so that if a plugin wishes it can unregister the
-        //event handler and register its own in its place
+        // default event handler is registered here so that if a plugin wishes
+        // it can unregister the
+        // event handler and register its own in its place
 
         DefaultSetupProxy.setupConfiguration();
-        //configuration is also setup here so that any values can be overwritten from the specific impl
+        // configuration is also setup here so that any values can be
+        // overwritten from the specific impl
 
         globalAliasRegistries = new AliasHandler(new AliasOwner.GunsmithAliasOwner());
         globalAliasRegistries.registerTarget("brush");
@@ -454,11 +460,12 @@ public final class Gunsmith
         aliasTask = new AliasSaveTask();
 
         File globalAliases = new File(platformProxy.getDataFolder(), "aliases.json");
+        JsonDataSource data = new JsonDataSource(globalAliases);
         if (globalAliases.exists())
         {
             try
             {
-                globalAliasRegistries.load(globalAliases);
+                data.read(globalAliasRegistries);
             } catch (IOException e)
             {
                 getLogger().error(e, "Error loading global aliases");
@@ -513,6 +520,7 @@ public final class Gunsmith
         }
 
         File globalAliases = new File(platformProxy.getDataFolder(), "aliases.json");
+        JsonDataSource data = new JsonDataSource(globalAliases);
 
         try
         {
@@ -520,17 +528,18 @@ public final class Gunsmith
             {
                 globalAliases.createNewFile();
             }
-            getGlobalAliasHandler().save(globalAliases);
+            data.write(getGlobalAliasHandler());
         } catch (IOException e)
         {
             getLogger().error(e, "Error saving global aliases");
         }
 
-        //save all player's personal aliases
+        // save all player's personal aliases
         for (Player player : sniperRegistry.getAllPlayers())
         {
             File playerFolder = new File(Gunsmith.platformProxy.getDataFolder(), "players/" + player.getUniqueId().toString());
             File aliases = new File(playerFolder, "aliases.json");
+            JsonDataSource playerData = new JsonDataSource(aliases);
 
             try
             {
@@ -538,7 +547,7 @@ public final class Gunsmith
                 {
                     aliases.createNewFile();
                 }
-                player.getPersonalAliasHandler().save(aliases);
+                playerData.write(player.getPersonalAliasHandler());
             } catch (IOException e)
             {
                 Gunsmith.getLogger().error(e, "Error saving player aliases!");

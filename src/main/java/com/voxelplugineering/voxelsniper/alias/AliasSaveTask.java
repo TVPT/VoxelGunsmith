@@ -29,6 +29,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSource;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -73,7 +74,8 @@ public class AliasSaveTask implements Runnable
             AliasHandler alias = it.next();
             try
             {
-                alias.save(alias.getOwner().getAliasFile());
+                JsonDataSource data = new JsonDataSource(alias.getOwner().getAliasFile());
+                data.write(alias);
             } catch (IOException e)
             {
                 Gunsmith.getLogger().error(e, "Error saving aliases");

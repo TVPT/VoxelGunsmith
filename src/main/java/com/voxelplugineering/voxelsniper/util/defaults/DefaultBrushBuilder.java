@@ -153,7 +153,7 @@ public class DefaultBrushBuilder
     public static void buildBrushes()
     {
 
-        { //ball
+        { // ball
             VariableGetNode<Double> radius = new VariableGetNode<Double>("brushsize");
             SphereShapeNode shape = new SphereShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
@@ -164,7 +164,7 @@ public class DefaultBrushBuilder
             graphs.put("ball", brush);
         }
 
-        { //biome {type}
+        { // biome {type}
             VariableGetNode<Biome> biome = new VariableGetNode<Biome>("biome");
             ChainedInputNode<Shape> shapeIn = new ChainedInputNode<Shape>("shape");
             VariableGetNode<Block> target = new VariableGetNode<Block>("targetBlock");
@@ -319,7 +319,7 @@ public class DefaultBrushBuilder
         }
 
         { // shell
-            //@formatter:off
+          // @formatter:off
             ChainedInputNode<Shape> shapeInput = new ChainedInputNode<Shape>("shape");
             ToComplexShapeNode complexify = new ToComplexShapeNode(shapeInput.getValue());
             ShapeGetOriginNode origin = new ShapeGetOriginNode(complexify.getComplexShape());
@@ -328,20 +328,19 @@ public class DefaultBrushBuilder
             VariableGetNode<Block> target = new VariableGetNode<Block>("targetblock");
             BlockBreakNode blockBreak = new BlockBreakNode(target.getValue());
             ShapeForEachNode forEach = new ShapeForEachNode(complexify.getComplexShape(), false);
-                ShapeUnsetNode unset = new ShapeUnsetNode(complexify.getComplexShape(), forEach.getNextValue());
-                LocationOffsetNode offset = new LocationOffsetNode(blockBreak.getLocation(), forEach.getNextValue());
-                LocationOffsetNode offset2 = new LocationOffsetNode(offset.getOffsetLocation(), negorigin
-                             .getNegativeVector());
-                GetBlockFromLocationNode getBlock = new GetBlockFromLocationNode(offset2.getOffsetLocation());
-                BlockNeighboursNode neighboursNode = new BlockNeighboursNode(getBlock.getBlock());
-                CountOccurrencesNode countNode = new CountOccurrencesNode(maskMaterial.getValue(), neighboursNode.getNeighbours());
-                StaticValueNode<Integer> valueNode = new StaticValueNode<Integer>(0);
-                NumberEqualsNode numberNode = new NumberEqualsNode(valueNode.getValue(), countNode.getCount(), false);
-                IfStatement ifStatement = new IfStatement(numberNode.getComparisonResult());
+            ShapeUnsetNode unset = new ShapeUnsetNode(complexify.getComplexShape(), forEach.getNextValue());
+            LocationOffsetNode offset = new LocationOffsetNode(blockBreak.getLocation(), forEach.getNextValue());
+            LocationOffsetNode offset2 = new LocationOffsetNode(offset.getOffsetLocation(), negorigin.getNegativeVector());
+            GetBlockFromLocationNode getBlock = new GetBlockFromLocationNode(offset2.getOffsetLocation());
+            BlockNeighboursNode neighboursNode = new BlockNeighboursNode(getBlock.getBlock());
+            CountOccurrencesNode countNode = new CountOccurrencesNode(maskMaterial.getValue(), neighboursNode.getNeighbours());
+            StaticValueNode<Integer> valueNode = new StaticValueNode<Integer>(0);
+            NumberEqualsNode numberNode = new NumberEqualsNode(valueNode.getValue(), countNode.getCount(), false);
+            IfStatement ifStatement = new IfStatement(numberNode.getComparisonResult());
 
-                ShapeSetNode set = new ShapeSetNode(complexify.getComplexShape(), forEach.getNextValue());
-                ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", complexify.getComplexShape());
-            //@formatter:on
+            ShapeSetNode set = new ShapeSetNode(complexify.getComplexShape(), forEach.getNextValue());
+            ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", complexify.getComplexShape());
+            // @formatter:on
             forEach.setBody(unset);
             unset.setNext(offset);
             offset.setNext(offset2);
@@ -358,7 +357,7 @@ public class DefaultBrushBuilder
             graphs.put("shell", brush);
         }
 
-        { //material set
+        { // material set
             ChainedInputNode<Shape> shapeIn = new ChainedInputNode<Shape>("shape");
             VariableGetNode<Material> getMaterial = new VariableGetNode<Material>("setmaterial");
             VariableGetNode<Block> target = new VariableGetNode<Block>("targetblock");
@@ -372,8 +371,8 @@ public class DefaultBrushBuilder
             graphs.put("material", brush);
         }
 
-        { //material mask
-            //@formatter:off
+        { // material mask
+          // @formatter:off
             ChainedInputNode<Shape> shapeInput = new ChainedInputNode<Shape>("shape");
             ToComplexShapeNode complexify = new ToComplexShapeNode(shapeInput.getValue());
             ShapeGetOriginNode origin = new ShapeGetOriginNode(complexify.getComplexShape());
@@ -382,15 +381,15 @@ public class DefaultBrushBuilder
             VariableGetNode<Block> target = new VariableGetNode<Block>("targetblock");
             BlockBreakNode blockBreak = new BlockBreakNode(target.getValue());
             ShapeForEachNode forEach = new ShapeForEachNode(complexify.getComplexShape(), false);
-                ShapeUnsetNode unset = new ShapeUnsetNode(complexify.getComplexShape(), forEach.getNextValue());
-                LocationOffsetNode offset = new LocationOffsetNode(blockBreak.getLocation(), forEach.getNextValue());
-                LocationOffsetNode offset2 = new LocationOffsetNode(offset.getOffsetLocation(), negorigin.getNegativeVector());
-                GetBlockFromLocationNode getBlock = new GetBlockFromLocationNode(offset2.getOffsetLocation());
-                BlockBreakNode blockBreak2 = new BlockBreakNode(getBlock.getBlock());
-                MaterialCompareNode compare = new MaterialCompareNode(maskMaterial.getValue(), blockBreak2.getMaterial());
-                    ShapeSetNode set = new ShapeSetNode(complexify.getComplexShape(), forEach.getNextValue());
+            ShapeUnsetNode unset = new ShapeUnsetNode(complexify.getComplexShape(), forEach.getNextValue());
+            LocationOffsetNode offset = new LocationOffsetNode(blockBreak.getLocation(), forEach.getNextValue());
+            LocationOffsetNode offset2 = new LocationOffsetNode(offset.getOffsetLocation(), negorigin.getNegativeVector());
+            GetBlockFromLocationNode getBlock = new GetBlockFromLocationNode(offset2.getOffsetLocation());
+            BlockBreakNode blockBreak2 = new BlockBreakNode(getBlock.getBlock());
+            MaterialCompareNode compare = new MaterialCompareNode(maskMaterial.getValue(), blockBreak2.getMaterial());
+            ShapeSetNode set = new ShapeSetNode(complexify.getComplexShape(), forEach.getNextValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", complexify.getComplexShape());
-            //@formatter:on
+            // @formatter:on
             forEach.setBody(unset);
             unset.setNext(offset);
             offset.setNext(offset2);
@@ -405,7 +404,7 @@ public class DefaultBrushBuilder
             graphs.put("materialmask", brush);
         }
 
-        { //Snipe brush
+        { // Snipe brush
             StaticValueNode<Double> radius = new StaticValueNode<Double>(0.0);
             VoxelShapeNode shape = new VoxelShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());

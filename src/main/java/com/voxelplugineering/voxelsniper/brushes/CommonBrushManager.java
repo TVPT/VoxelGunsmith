@@ -73,7 +73,7 @@ public class CommonBrushManager implements BrushManager
 
     /**
      * Creates a new CommonBrushManager with the subscribed parent
-     *
+     * 
      * @param parent the parent
      */
     public CommonBrushManager(BrushManager parent)
@@ -98,7 +98,7 @@ public class CommonBrushManager implements BrushManager
         checkNotNull(identifier, "Name cannot be null!");
         checkArgument(!identifier.isEmpty(), "Name cannot be empty");
         checkNotNull(graph, "Brush class cannot be null!");
-        //TODO: Check version if already loaded
+        // TODO: Check version if already loaded
         this.brushes.put(identifier, graph);
     }
 
@@ -137,7 +137,7 @@ public class CommonBrushManager implements BrushManager
             }
             return Optional.absent();
         }
-        return Optional.<BrushNodeGraph>of(br);
+        return Optional.<BrushNodeGraph> of(br);
     }
 
     /**

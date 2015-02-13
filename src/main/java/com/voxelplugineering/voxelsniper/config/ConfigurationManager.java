@@ -114,7 +114,7 @@ public class ConfigurationManager implements Configuration
         {
             throw new IllegalArgumentException("Cannot register an already registered container");
         }
-        //Load default values from the container
+        // Load default values from the container
         Object obj;
         try
         {

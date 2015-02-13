@@ -38,7 +38,7 @@ public class ChangeQueueTask implements Runnable
     @Override
     public void run()
     {
-        //long start = System.currentTimeMillis();
+        // long start = System.currentTimeMillis();
         int n = 0;
         for (Player p : Gunsmith.getPlayerRegistry().getAllPlayers())
         {
@@ -60,8 +60,10 @@ public class ChangeQueueTask implements Runnable
                 continue;
             }
             int allocation = remaining / (n--);
-            //For the frankly hilarious case where there are more pending change queues than blocks allocated per tick we simple set the 
-            //allocation to a minimum of 1 which will at least do something slowly rather than nothing
+            // For the frankly hilarious case where there are more pending
+            // change queues than blocks allocated per tick we simple set the
+            // allocation to a minimum of 1 which will at least do something
+            // slowly rather than nothing
             if (allocation < 0)
             {
                 allocation = 1;
@@ -88,7 +90,8 @@ public class ChangeQueueTask implements Runnable
                 break;
             }
         }
-        //Gunsmith.getLogger().info("Change queue tick length: " + (System.currentTimeMillis() - start) + " ms");
+        // Gunsmith.getLogger().info("Change queue tick length: " +
+        // (System.currentTimeMillis() - start) + " ms");
     }
 
 }

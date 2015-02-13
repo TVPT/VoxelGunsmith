@@ -109,8 +109,9 @@ public class EventBusTest
         DeadEventHandler handler = new DeadEventHandler();
         bus.register(handler);
         bus.post(new TestEvent());
-        //This timeout is required as AsyncEventBus#post will return immediately upon posting the dead event,
-        //so we must wait for the dead event to be handled.
+        // This timeout is required as AsyncEventBus#post will return
+        // immediately upon posting the dead event,
+        // so we must wait for the dead event to be handled.
         long timeout = 1000;
         while (timeout > 0 && !handler.dead)
         {
@@ -150,7 +151,7 @@ public class EventBusTest
         bus.unregister(handler);
     }
 
-    //=======================================================================
+    // =======================================================================
 
     /**
      * 

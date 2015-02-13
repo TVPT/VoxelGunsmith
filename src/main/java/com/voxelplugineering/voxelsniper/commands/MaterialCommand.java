@@ -39,10 +39,8 @@ import com.voxelplugineering.voxelsniper.command.Command;
 public class MaterialCommand extends Command
 {
 
-    /* TODO block states ?
-     * 
-     * 
-     * 
+    /*
+     * TODO block states ?
      */
 
     /**

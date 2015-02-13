@@ -46,7 +46,7 @@ public final class CommonLocation implements Cloneable, Location
 
     /**
      * Creates a new CommonLocation for use in the API.
-     *
+     * 
      * @param world the world, cannot be null
      * @param x the x coordinate
      * @param y the y coordinate

@@ -40,7 +40,7 @@ public class SnipeEvent extends SniperEvent
 
     /**
      * Constructs a new SnipeEvent for processing
-     *
+     * 
      * @param sniper the sniper involved
      * @param y the yaw
      * @param p the pitch

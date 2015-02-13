@@ -70,10 +70,11 @@ public interface BlockVolume
      */
     void setBlock(Material material, int x, int y, int z);
 
-    /*TODO no-phys
+    /*
+     * TODO no-phys
      * 
-     * Support changing blocks without notifying surrounding blocks of the change.
-     * 
+     * Support changing blocks without notifying surrounding blocks of the
+     * change.
      */
 
     /**

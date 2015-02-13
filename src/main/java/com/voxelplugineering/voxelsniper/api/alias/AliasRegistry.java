@@ -28,11 +28,12 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
 
 /**
  * Represents a registry for aliases.
  */
-public interface AliasRegistry
+public interface AliasRegistry extends DataSerializable
 {
 
     /**

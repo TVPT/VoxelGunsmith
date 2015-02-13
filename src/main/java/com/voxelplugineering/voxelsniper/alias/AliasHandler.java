@@ -23,33 +23,25 @@
  */
 package com.voxelplugineering.voxelsniper.alias;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collections;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.stream.JsonReader;
 import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
 import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkArgument;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
+import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 
 /**
  * A handler for targeted {@link AliasRegistry}s.
  */
-public class AliasHandler
+public class AliasHandler implements DataSerializable
 {
 
     private AliasHandler parent;
@@ -69,7 +61,7 @@ public class AliasHandler
     /**
      * Sets the parent alias handler.
      * 
-     * @param parent the new parent
+     * @param parent The new parent
      * @param owner The owner
      */
     public AliasHandler(AliasOwner owner, AliasHandler parent)
@@ -90,17 +82,19 @@ public class AliasHandler
     /**
      * Registers a new target.
      * 
-     * @param target the new target name
+     * @param target The new target name
+     * @return The newly created {@link AliasRegistry}
      */
-    public void registerTarget(String target)
+    public AliasRegistry registerTarget(String target)
     {
         checkNotNull(target);
         checkArgument(!target.isEmpty());
         if (!this.aliasTargets.containsKey(target))
         {
             AliasRegistry parentRegistry = this.parent == null ? null : this.parent.getRegistry(target).orNull();
-            this.aliasTargets.put(target, new CommonAliasRegistry(parentRegistry));
+            this.aliasTargets.put(target, new CommonAliasRegistry(target, parentRegistry));
         }
+        return this.aliasTargets.get(target);
     }
 
     /**
@@ -133,8 +127,8 @@ public class AliasHandler
     /**
      * Returns whether this handler has the given target.
      * 
-     * @param target the target to check
-     * @return whether the target exists
+     * @param target The target to check
+     * @return Whether the target exists
      */
     public boolean hasTarget(String target)
     {
@@ -154,106 +148,34 @@ public class AliasHandler
     }
 
     /**
-     * Loads this {@link AliasHandler}s data from the given file. The file is
-     * assumed to be a json file.
-     * <p>
-     * TODO support better persistence options
-     * 
-     * @param dataFile the file to load from
-     * @throws IOException if there is an issue loading the file
+     * {@inheritDoc}
      */
-    public void load(File dataFile) throws IOException
+    @Override
+    public void fromContainer(DataContainer container)
     {
-        checkNotNull(dataFile);
-        if (!dataFile.exists())
+        for (String key : container.keySet())
         {
-            return;
-        }
-
-        JsonReader reader = null;
-
-        try
-        {
-            reader = new JsonReader(new FileReader(dataFile));
-
-            reader.beginObject();
-
-            while (reader.hasNext())
+            Optional<DataContainer> regContainer = container.readContainer(key);
+            if (regContainer.isPresent())
             {
-                String target = reader.nextName();
-                registerTarget(target);
-                AliasRegistry targetReg = getRegistry(target).get();
-                reader.beginObject();
-                while (reader.hasNext())
-                {
-                    String key = reader.nextName();
-                    String value = reader.nextString();
-                    targetReg.register(key, value);
-                }
-                reader.endObject();
-            }
-
-            reader.endObject();
-        } finally
-        {
-            if (reader != null)
-            {
-                reader.close();
+                AliasRegistry registry = this.registerTarget(key);
+                registry.fromContainer(regContainer.get());
             }
         }
-
     }
 
     /**
-     * Saves this {@link AliasHandler}s data from to given file. The data is
-     * outputted as json.
-     * <p>
-     * TODO support better persistence options
-     * 
-     * @param dataFile the file to save to
-     * @throws IOException if there is an issue saving the file
+     * {@inheritDoc}
      */
-    public void save(File dataFile) throws IOException
+    @Override
+    public DataContainer toContainer()
     {
-        checkNotNull(dataFile);
-        if (dataFile.exists())
+        MemoryContainer container = new MemoryContainer("aliases");
+        for (String s : this.aliasTargets.keySet())
         {
-            dataFile.delete();
+            container.writeContainer(s, this.aliasTargets.get(s).toContainer());
         }
-        Writer writer = null;
-        try
-        {
-
-            dataFile.createNewFile();
-
-            writer = new FileWriter(dataFile);
-
-            Gson gson = new GsonBuilder().create();
-            JsonObject json = new JsonObject();
-            for (String target : this.aliasTargets.keySet())
-            {
-                JsonObject array = new JsonObject();
-                for (Entry<String, String> e : this.aliasTargets.get(target).getEntries())
-                {
-                    array.add(e.getKey(), new JsonPrimitive(e.getValue()));
-                }
-                json.add(target, array);
-            }
-            gson.toJson(json, writer);
-        } finally
-        {
-            if (writer != null)
-            {
-                writer.close();
-            }
-        }
-
+        return container;
     }
-
-    /* TODO persistence
-     * 
-     * Move this to a more generic persistence system?
-     * 
-     */
 
 }

@@ -179,7 +179,7 @@ public class SingleMaterialShape implements MaterialShape
     @Override
     public void reset()
     {
-        //totally unneeded...
+        // totally unneeded...
     }
 
     /**

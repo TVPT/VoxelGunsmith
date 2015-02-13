@@ -38,9 +38,9 @@ import com.voxelplugineering.voxelsniper.Gunsmith;
 public final class SniperStats extends Metrics
 {
 
-    private static int snipesDone = 0;
-    private static long snipeCounterInitTimeStamp = 0;
-    private static Map<String, Integer> brushUsageCounter = Maps.newHashMap();
+    static int snipesDone = 0;
+    static long snipeCounterInitTimeStamp = 0;
+    static Map<String, Integer> brushUsageCounter = Maps.newHashMap();
 
     /**
      * Increase the Snipes Counter.
@@ -52,7 +52,7 @@ public final class SniperStats extends Metrics
 
     /**
      * Increase usage for a specific brush.
-     *
+     * 
      * @param brushName Name of the Brush
      */
     public static void increaseBrushUsage(String brushName)
@@ -67,7 +67,7 @@ public final class SniperStats extends Metrics
     /**
      * Set Initialization time for reference when calculating average Snipes per
      * Minute.
-     *
+     * 
      * @param currentTimeMillis Current time
      */
     public static void setSnipeCounterInitTimeStamp(final long currentTimeMillis)
@@ -77,7 +77,7 @@ public final class SniperStats extends Metrics
 
     /**
      * Creates a new instance of SniperStats for Metrics.
-     *
+     * 
      * @param pluginVersion The plugin version string marked by the platform
      * @throws IOException In the event Metrics is unable to start
      */

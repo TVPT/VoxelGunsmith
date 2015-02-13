@@ -31,20 +31,20 @@ import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 public class VoxelSniperConfiguration
 {
 
-    //Default constants
+    // Default constants
     double rayTraceRange = 250;
     int blockChangesPerSecond = 80000;
     int undoHistorySize = 20;
     int statusMessageThreshold = 80000;
     String playerDataDirectory = "players/";
 
-    //Default brush settings
+    // Default brush settings
     String defaultBrush = "voxel material";
     double defaultBrushSize = 3;
     String defaultBrushMaterial = "AIR";
 
-    //Default messages
-    //Gunsmith.getConfiguration().get("", String.class).or("");
+    // Default messages
+    // Gunsmith.getConfiguration().get("", String.class).or("");
     String permissionsRequiredMessage = TextFormat.DARK_RED + "You require more permissions in order to perform this action.";
     String defaultHelpMessage = TextFormat.RED + "No help is provided for this command.";
     String defaultBrushHelpMessage = TextFormat.RED + "No help is provided for this brush part.";
@@ -55,6 +55,6 @@ public class VoxelSniperConfiguration
     String materialSetMessage = TextFormat.GREEN + "Set material to " + TextFormat.GOLD + "%s";
     String materialMaskSetMessage = TextFormat.GREEN + "Set secondary material to " + TextFormat.GOLD + "%s";
 
-    //Alias Settings
+    // Alias Settings
     boolean caseSensitiveAliases = true;
 }

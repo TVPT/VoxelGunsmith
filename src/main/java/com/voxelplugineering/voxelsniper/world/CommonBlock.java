@@ -48,7 +48,7 @@ public class CommonBlock implements Block
 
     /**
      * Creates a new CommonBlock with the given location and material
-     *
+     * 
      * @param location the location, cannot be null
      * @param material the material, cannot be null
      */

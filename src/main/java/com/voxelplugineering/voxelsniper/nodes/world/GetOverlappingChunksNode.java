@@ -67,7 +67,7 @@ public class GetOverlappingChunksNode extends AbstractNode
         Shape shape = this.shape.get(state);
         Vector3d offsetTarget = this.target.get(state).add(shape.getOrigin().multipy(-1)).toVector();
         List<Chunk> chunks = Lists.newArrayList();
-        //TODO remove assumptions about chunk size and orientation
+        // TODO remove assumptions about chunk size and orientation
         for (int x = (int) offsetTarget.getX(); x < offsetTarget.getX() + shape.getWidth(); x++)
         {
             for (int z = (int) offsetTarget.getZ(); z < offsetTarget.getZ() + shape.getLength(); z++)

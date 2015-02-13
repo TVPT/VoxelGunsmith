@@ -105,7 +105,7 @@ public class ComplexMaterialShape implements MaterialShape
             {
                 set(x, y, z, (short) 0); // the default material
             }
-            return Optional.<Material>of(this.materialDictionary.get(get(x, y, z)));
+            return Optional.<Material> of(this.materialDictionary.get(get(x, y, z)));
         } else
         {
             return Optional.absent();

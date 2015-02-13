@@ -125,7 +125,7 @@ public interface Location
 
     /**
      * Returns a new {@link CommonLocation} representing the same location.
-     *
+     * 
      * @return a newly created CommonLocation
      */
     Location clone();
