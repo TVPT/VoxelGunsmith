@@ -26,7 +26,10 @@ package com.voxelplugineering.voxelsniper.registry.vsl;
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
+import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.world.World;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
+import com.voxelplugineering.voxelsniper.api.world.material.Material;
 
 /**
  * A static library of standard argument parsers.
@@ -36,7 +39,12 @@ public class ArgumentParsers
 {
 
     public static ArgumentParser<Biome> BIOME_PARSER = null;
+    public static ArgumentParser<Double> DOUBLE_PARSER = null;
+    public static ArgumentParser<Integer> INTEGER_PARSER = null;
+    public static ArgumentParser<Material> MATERIAL_PARSER = null;
+    public static ArgumentParser<Player> PLAYER_PARSER = null;
     public static ArgumentParser<String> STRING_PARSER = null;
+    public static ArgumentParser<World> WOLRD_PARSER = null;
 
     /**
      * Initialize
@@ -54,11 +62,55 @@ public class ArgumentParsers
             }
 
         };
+        INTEGER_PARSER = new ArgumentParser<Integer>()
+        {
+
+            @Override
+            public Optional<Integer> get(String arg)
+            {
+                return Optional.of(Integer.parseInt(arg));
+            }
+
+        };
+        DOUBLE_PARSER = new ArgumentParser<Double>()
+        {
+
+            @Override
+            public Optional<Double> get(String arg)
+            {
+                return Optional.of(Double.parseDouble(arg));
+            }
+
+        };
+        WOLRD_PARSER = new ArgumentParser<World>()
+        {
+
+            @Override
+            public Optional<World> get(String arg)
+            {
+                return Gunsmith.getWorldRegistry().getWorld(arg);
+            }
+
+        };
+        MATERIAL_PARSER = new ArgumentParser<Material>()
+        {
+
+            @Override
+            public Optional<Material> get(String arg)
+            {
+                return Gunsmith.getDefaultMaterialRegistry().getMaterial(arg);
+            }
+
+        };
+        PLAYER_PARSER = new ArgumentParser<Player>()
+        {
+
+            @Override
+            public Optional<Player> get(String arg)
+            {
+                return Gunsmith.getPlayerRegistry().getPlayer(arg);
+            }
+
+        };
     }
 }
-
-/*
- * TODO default ArgumentParsers
- * 
- * Add default parsers for: - Players - Worlds - Materials - Numbers
- */
