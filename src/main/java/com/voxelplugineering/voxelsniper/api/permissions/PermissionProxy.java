@@ -27,6 +27,8 @@ import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 
 /**
  * A proxy for the permission system of the specific implementation.
+ * 
+ * TODO: group support within gunsmith
  */
 public interface PermissionProxy
 {

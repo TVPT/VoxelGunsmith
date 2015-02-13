@@ -66,18 +66,14 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     private UndoQueue history;
 
     /**
-     * Creates a new CommonPlayer with a weak reference to the player. TODO add
-     * constructor for receiving custom parent brush manager, or better yet full
-     * group support
+     * Creates a new CommonPlayer with a weak reference to the player.
      * 
      * @param player the player object
      */
-    protected AbstractPlayer(T player)
+    protected AbstractPlayer(T player, BrushManager parentBrushManager)
     {
         super(player);
-        // TODO: have player inherit brushes from group rather than the global
-        // brush manager always.
-        this.personalBrushManager = new CommonBrushManager(Gunsmith.getGlobalBrushManager());
+        this.personalBrushManager = new CommonBrushManager(parentBrushManager);
         this.brushVariables = new ParentedVariableScope();
         this.brushVariables.setCaseSensitive(false);
         this.arguments = Maps.newHashMap();
@@ -85,6 +81,11 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         this.personalAliasHandler = new AliasHandler(this, Gunsmith.getGlobalAliasHandler());
         this.history = new CommonUndoQueue(this);
         resetSettings();
+    }
+    
+    protected AbstractPlayer(T player)
+    {
+        this(player, Gunsmith.getGlobalBrushManager());
     }
 
     /**
