@@ -83,24 +83,19 @@ public class JsonDataSource extends FileDataSource
                     || type == double.class)
             {
                 json.addProperty(entry.getKey(), (Number) entry.getValue());
-            }
-            if (type == Boolean.class || type == boolean.class)
+            } else if (type == Boolean.class || type == boolean.class)
             {
                 json.addProperty(entry.getKey(), (Boolean) entry.getValue());
-            }
-            if (type == Character.class || type == char.class)
+            } else if (type == Character.class || type == char.class)
             {
                 json.addProperty(entry.getKey(), (Character) entry.getValue());
-            }
-            if (type == String.class)
+            } else if (type == String.class)
             {
                 json.addProperty(entry.getKey(), (String) entry.getValue());
-            }
-            if (DataContainer.class.isAssignableFrom(type))
+            } else if (DataContainer.class.isAssignableFrom(type))
             {
                 json.add(entry.getKey(), fromContainer((DataContainer) entry.getValue()));
-            }
-            if (DataSerializable.class.isAssignableFrom(type))
+            } else if (DataSerializable.class.isAssignableFrom(type))
             {
                 json.add(entry.getKey(), fromContainer(((DataSerializable) entry.getValue()).toContainer()));
             }

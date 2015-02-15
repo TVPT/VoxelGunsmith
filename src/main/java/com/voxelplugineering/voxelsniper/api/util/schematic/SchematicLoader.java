@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.IOException;
 
 import com.voxelplugineering.voxelsniper.api.entity.MessageReceiver;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 
 /**
@@ -38,31 +40,24 @@ import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 public interface SchematicLoader
 {
 
-    /*
-     * TODO Schematic loaders for alternate data
-     * 
-     * Schematic loaders for alternate data sources such as a database perhaps.
-     */
-
     /**
-     * Loads a world region from the given file. TODO: need a more abstract data
-     * source.
+     * Loads a world region from the given {@link DataSource}.
      * 
-     * @param file The file to load from
+     * @param data The data
      * @return The world region
      * @throws IOException If there is an error loading
      */
-    MaterialShape load(File file) throws IOException;
+    MaterialShape load(DataSource data) throws IOException;
 
     /**
-     * Saves a world region to file.
+     * Saves a world region to the given {@link DataSource}.
      * 
-     * @param file The file to save to
+     * @param data The source to save to
      * @param shape The region to save
      * @param owner The message receiver to post results to
      * @throws IOException If there is an error saving
      */
-    void save(File file, MaterialShape shape, MessageReceiver owner) throws IOException;
+    void save(DataSource data, MaterialShape shape, MessageReceiver owner) throws IOException;
 
     /**
      * A schematic format converter.

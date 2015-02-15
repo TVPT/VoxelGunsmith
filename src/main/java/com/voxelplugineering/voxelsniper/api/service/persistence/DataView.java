@@ -1,5 +1,6 @@
 package com.voxelplugineering.voxelsniper.api.service.persistence;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,6 +21,17 @@ public interface DataView
      * @return The data
      */
     Optional<Byte> readByte(String path);
+
+    /**
+     * Reads from the given path. If the path does not exist, or if the type at
+     * the path is not compatible then {@link Optional#absent()} will be
+     * returned instead.
+     * 
+     * @param path The path to read from
+     * @return The data
+     */
+    Optional<byte[]> readByteArray(String path);
+
 
     /**
      * Reads from the given path. If the path does not exist, or if the type at
@@ -126,6 +138,17 @@ public interface DataView
     Optional<? extends DataView> readContainer(String path);
 
     /**
+     * Reads from the given path. If the path does not exist, or if the type at
+     * the path is not compatible then {@link Optional#absent()} will be
+     * returned instead.
+     * 
+     * @param path The path to read from
+     * @return The data
+     */
+    @SuppressWarnings("rawtypes")
+    Optional<List> readList(String path);
+
+    /**
      * Gets the root path of this view.
      * 
      * @return The path
@@ -147,5 +170,13 @@ public interface DataView
      * @return The entries
      */
     Set<Map.Entry<String, Object>> extrySet();
+    
+    /**
+     * Gets whether the given path exists.
+     * 
+     * @param path The path to check
+     * @return Whether it exists
+     */
+    boolean contains(String path);
 
 }

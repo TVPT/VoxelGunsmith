@@ -1,5 +1,7 @@
 package com.voxelplugineering.voxelsniper.api.service.persistence;
 
+import java.util.List;
+
 import com.google.common.base.Optional;
 
 /**
@@ -21,6 +23,14 @@ public interface DataContainer extends DataView
      * @param data The value
      */
     void writeByte(String path, byte data);
+
+    /**
+     * Writes a byte array to the given path.
+     * 
+     * @param path The path
+     * @param data The value
+     */
+    void writeByteArray(String path, byte[] data);
 
     /**
      * Writes a short to the given path.
@@ -111,5 +121,13 @@ public interface DataContainer extends DataView
      * @param data The value
      */
     void writeNumber(String path, Number data);
+
+    /**
+     * Writes a List to the given path.
+     * 
+     * @param path The path
+     * @param data The value
+     */
+    void writeList(String path, List<?> data);
 
 }

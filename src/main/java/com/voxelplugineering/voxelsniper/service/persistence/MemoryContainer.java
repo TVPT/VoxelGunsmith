@@ -2,6 +2,7 @@ package com.voxelplugineering.voxelsniper.service.persistence;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,6 +41,9 @@ public class MemoryContainer implements DataContainer
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getPath()
     {
@@ -57,6 +61,9 @@ public class MemoryContainer implements DataContainer
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Byte> readByte(String path)
     {
@@ -81,6 +88,9 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Short> readShort(String path)
     {
@@ -105,6 +115,9 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Integer> readInt(String path)
     {
@@ -129,6 +142,9 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Long> readLong(String path)
     {
@@ -153,6 +169,9 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Character> readChar(String path)
     {
@@ -182,6 +201,9 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Float> readFloat(String path)
     {
@@ -206,6 +228,9 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Double> readDouble(String path)
     {
@@ -230,6 +255,9 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<String> readString(String path)
     {
@@ -248,6 +276,9 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Boolean> readBoolean(String path)
     {
@@ -266,6 +297,9 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T extends DataSerializable> Optional<T> readCustom(String path, Class<T> type)
     {
@@ -323,6 +357,9 @@ public class MemoryContainer implements DataContainer
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<DataContainer> readContainer(String path)
     {
@@ -341,6 +378,9 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeByte(String path, byte data)
     {
@@ -363,6 +403,9 @@ public class MemoryContainer implements DataContainer
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeShort(String path, short data)
     {
@@ -385,6 +428,9 @@ public class MemoryContainer implements DataContainer
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeInt(String path, int data)
     {
@@ -407,6 +453,9 @@ public class MemoryContainer implements DataContainer
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeLong(String path, long data)
     {
@@ -429,6 +478,9 @@ public class MemoryContainer implements DataContainer
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeChar(String path, char data)
     {
@@ -451,6 +503,9 @@ public class MemoryContainer implements DataContainer
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeFloat(String path, float data)
     {
@@ -473,6 +528,9 @@ public class MemoryContainer implements DataContainer
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeDouble(String path, double data)
     {
@@ -495,6 +553,9 @@ public class MemoryContainer implements DataContainer
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeString(String path, String data)
     {
@@ -517,6 +578,9 @@ public class MemoryContainer implements DataContainer
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeBoolean(String path, boolean data)
     {
@@ -539,6 +603,9 @@ public class MemoryContainer implements DataContainer
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeNumber(String key, Number data)
     {
@@ -561,6 +628,9 @@ public class MemoryContainer implements DataContainer
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T extends DataSerializable> void writeCustom(String path, T data)
     {
@@ -583,6 +653,9 @@ public class MemoryContainer implements DataContainer
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeContainer(String path, DataContainer data)
     {
@@ -605,16 +678,138 @@ public class MemoryContainer implements DataContainer
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<String> keySet()
     {
         return this.data.keySet();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<Map.Entry<String, Object>> extrySet()
     {
         return this.data.entrySet();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<byte[]> readByteArray(String path)
+    {
+        if (path.contains(PATH_SEPARATOR))
+        {
+            int index = path.indexOf(PATH_SEPARATOR);
+            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            if (container.isPresent())
+            {
+                return container.get().readByteArray(path.substring(index + 1));
+            }
+        } else if (this.data.containsKey(path))
+        {
+            return safeCast(this.data.get(path), byte[].class);
+        }
+        return Optional.absent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean contains(String path)
+    {
+        if (path.contains(PATH_SEPARATOR))
+        {
+            int index = path.indexOf(PATH_SEPARATOR);
+            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            if (container.isPresent())
+            {
+                return container.get().contains(path.substring(index + 1));
+            } else
+            {
+                return false;
+            }
+        } else
+        {
+            return this.data.containsKey(path);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void writeByteArray(String path, byte[] data)
+    {
+        if (path.contains(PATH_SEPARATOR))
+        {
+            int index = path.indexOf(PATH_SEPARATOR);
+            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            if (container.isPresent())
+            {
+                container.get().writeByteArray(path.substring(index + 1), data);
+            } else
+            {
+                DataContainer c = new MemoryContainer(path.substring(0, index));
+                this.data.put(path.substring(0, index), c);
+                c.writeByteArray(path.substring(index + 1), data);
+            }
+        } else
+        {
+            this.data.put(path, data);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("rawtypes")
+    @Override
+    public Optional<List> readList(String path)
+    {
+        if (path.contains(PATH_SEPARATOR))
+        {
+            int index = path.indexOf(PATH_SEPARATOR);
+            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            if (container.isPresent())
+            {
+                return container.get().readList(path.substring(index + 1));
+            }
+        } else if (this.data.containsKey(path))
+        {
+            return safeCast(this.data.get(path), List.class);
+        }
+        return Optional.absent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void writeList(String path, List<?> data)
+    {
+        if (path.contains(PATH_SEPARATOR))
+        {
+            int index = path.indexOf(PATH_SEPARATOR);
+            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            if (container.isPresent())
+            {
+                container.get().writeList(path.substring(index + 1), data);
+            } else
+            {
+                DataContainer c = new MemoryContainer(path.substring(0, index));
+                this.data.put(path.substring(0, index), c);
+                c.writeList(path.substring(index + 1), data);
+            }
+        } else
+        {
+            this.data.put(path, data);
+        }
     }
 
 }
