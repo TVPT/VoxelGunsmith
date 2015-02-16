@@ -23,33 +23,28 @@
  */
 package com.voxelplugineering.voxelsniper.util.schematic;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.entity.MessageReceiver;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.util.schematic.SchematicLoader;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 import com.voxelplugineering.voxelsniper.shape.NamedWorldSection;
 import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
-import com.voxelplugineering.voxelsniper.util.nbt.ByteArrayTag;
 import com.voxelplugineering.voxelsniper.util.nbt.CompoundTag;
 import com.voxelplugineering.voxelsniper.util.nbt.IntTag;
-import com.voxelplugineering.voxelsniper.util.nbt.ListTag;
-import com.voxelplugineering.voxelsniper.util.nbt.NBTInputStream;
-import com.voxelplugineering.voxelsniper.util.nbt.NBTOutputStream;
 import com.voxelplugineering.voxelsniper.util.nbt.ShortTag;
 import com.voxelplugineering.voxelsniper.util.nbt.StringTag;
 import com.voxelplugineering.voxelsniper.util.nbt.Tag;
@@ -57,7 +52,7 @@ import com.voxelplugineering.voxelsniper.util.nbt.Tag;
 /**
  * A {@link SchematicLoader} for NBT stored schematics
  */
-public class NBTSchematicLoader implements SchematicLoader
+public class CommonSchematicLoader implements SchematicLoader
 {
 
     /*
@@ -65,9 +60,9 @@ public class NBTSchematicLoader implements SchematicLoader
      */
 
     /**
-     * Creates a new {@link NBTSchematicLoader}.
+     * Creates a new {@link CommonSchematicLoader}.
      */
-    public NBTSchematicLoader()
+    public CommonSchematicLoader()
     {
 
     }
@@ -76,44 +71,34 @@ public class NBTSchematicLoader implements SchematicLoader
      * {@inheritDoc}
      */
     @Override
-    public MaterialShape load(File file) throws IOException
+    public MaterialShape load(DataSource data) throws IOException
     {
-        FileInputStream stream = new FileInputStream(file);
-        NBTInputStream nbtStream = new NBTInputStream(new GZIPInputStream(stream));
-        // Entire schematic is contained within main compound tag
-        CompoundTag schematicTag = (CompoundTag) nbtStream.readTag();
-        nbtStream.close();
-
-        if (!schematicTag.getName().equals("Schematic"))
-        {
-            throw new UnsupportedOperationException("Tag \"Schematic\" does not exist or is not first");
-        }
-        // check that the schematic contains data
+        DataContainer schematicTag = data.read();
         if (!schematicTag.contains("Blocks"))
         {
             throw new UnsupportedOperationException("Schematic file is missing a \"Blocks\" tag");
         }
         if (!schematicTag.contains("MaterialDictionary"))
         {
-            return new LegacyConverter(file, schematicTag).convert();
+            return new LegacyConverter(schematicTag).convert();
         }
         // extract dimensions
-        short width = schematicTag.getChildTag("Width", ShortTag.class).get().getValue();
-        short length = schematicTag.getChildTag("Length", ShortTag.class).get().getValue();
-        short height = schematicTag.getChildTag("Height", ShortTag.class).get().getValue();
-        String materials = schematicTag.getChildTag("Materials", StringTag.class).get().getValue();
+        int width = schematicTag.readInt("Width").get();
+        int length = schematicTag.readInt("Length").get();
+        int height = schematicTag.readInt("Height").get();
+        String materials = schematicTag.readString("Materials").get();
         if (!materials.equals("Alpha"))
         {
             throw new UnsupportedOperationException("Schematic file is not an Alpha schematic");
         }
         // extract block id and data values, addId is used if the schematic
         // contains block ids above 255
-        byte[] blockId = schematicTag.getChildTag("Blocks", ByteArrayTag.class).get().getValue();
+        byte[] blockId = schematicTag.readByteArray("Blocks").get();
         byte[] addId = new byte[0];
         short[] blocks = new short[blockId.length];
         if (schematicTag.contains("AddBlocks"))
         {
-            addId = schematicTag.getChildTag("AddBlocks", ByteArrayTag.class).get().getValue();
+            addId = schematicTag.readByteArray("AddBlocks").get();
         }
         // combine blockId and addId into a single short array blocks
         for (int index = 0; index < blockId.length; index++)
@@ -133,7 +118,8 @@ public class NBTSchematicLoader implements SchematicLoader
             }
         }
         // Need to pull out tile entities from this list of compound tags
-        List<Tag> tileEntities = schematicTag.getChildTag("TileEntities", ListTag.class).get().getValue();
+        @SuppressWarnings("unchecked")
+        List<Tag> tileEntities = schematicTag.readList("TileEntities").get();
         // this is the map we will populate with all extracted time entities
         Map<Vector3i, CompoundTag> tileEntitiesMap = Maps.newHashMap();
         for (Tag tag : tileEntities)
@@ -164,7 +150,8 @@ public class NBTSchematicLoader implements SchematicLoader
             tileEntitiesMap.put(vec, tileEntity);
         }
 
-        List<Tag> entities = schematicTag.getChildTag("Entities", ListTag.class).get().getValue();
+        @SuppressWarnings("unchecked")
+        List<Tag> entities = schematicTag.readList("Entities").get();
 
         // this is the map we will populate with all extracted time entities
         Map<Vector3i, CompoundTag> entitiesMap = new HashMap<Vector3i, CompoundTag>();
@@ -196,7 +183,8 @@ public class NBTSchematicLoader implements SchematicLoader
         }
 
         // Load material dictionary
-        List<Tag> dict = schematicTag.getChildTag("MaterialDictionary", ListTag.class).get().getValue();
+        @SuppressWarnings("unchecked")
+        List<Tag> dict = schematicTag.readList("MaterialDictionary").get();
         Map<Short, Material> materialDict = Maps.newHashMap();
         for (Tag tag : dict)
         {
@@ -213,27 +201,37 @@ public class NBTSchematicLoader implements SchematicLoader
         NamedWorldSection region;
         if (schematicTag.contains("WEOffsetX") && schematicTag.contains("WEOffsetY") && schematicTag.contains("WEOffsetZ"))
         {
-            int offsetX = schematicTag.getChildTag("WEOffsetX", IntTag.class).get().getValue();
-            int offsetY = schematicTag.getChildTag("WEOffsetY", IntTag.class).get().getValue();
-            int offsetZ = schematicTag.getChildTag("WEOffsetZ", IntTag.class).get().getValue();
+            int offsetX = schematicTag.readInt("WEOffsetX").get();
+            int offsetY = schematicTag.readInt("WEOffsetY").get();
+            int offsetZ = schematicTag.readInt("WEOffsetZ").get();
             region = new NamedWorldSection(new CuboidShape(width, height, length, new Vector3i(offsetX, offsetY, offsetZ)), materialDict);
         } else
         {
             region = new NamedWorldSection(new CuboidShape(width, height, length, new Vector3i(0, 0, 0)), materialDict);
         }
-        String name;
+        String name = null;
         if (schematicTag.contains("name"))
         {
-            name = schematicTag.getChildTag("name", StringTag.class).get().getValue();
+            name = schematicTag.readString("name").get();
         } else
         {
-            name = file.getName().replace(".schematic", "");
+            Optional<String> sourcename = data.getName();
+            if (sourcename.isPresent())
+            {
+                name = sourcename.get().replace(".schematic", "");
+            }
         }
 
         // region.setBlocks(blockData, blocks);
         region.setTileEntityMap(tileEntitiesMap);
         region.setEntitiesMap(entitiesMap);
-        region.setName(name);
+        if (name != null)
+        {
+            region.setName(name);
+        } else
+        {
+            region.setName("Unknown_" + System.currentTimeMillis());
+        }
         return region;
     }
 
@@ -241,7 +239,7 @@ public class NBTSchematicLoader implements SchematicLoader
      * {@inheritDoc}
      */
     @Override
-    public void save(File file, MaterialShape shape, MessageReceiver owner) throws IOException
+    public void save(DataSource data, MaterialShape shape, MessageReceiver owner) throws IOException
     {
         int width = shape.getWidth();
         int height = shape.getHeight();
@@ -253,7 +251,8 @@ public class NBTSchematicLoader implements SchematicLoader
         {
             if (owner == null)
             {
-                Gunsmith.getLogger().warn("Failed to save schematic to " + file.getName() + ": Dimensions exceeded max size supported.");
+                Gunsmith.getLogger().warn(
+                        "Failed to save schematic to " + data.getName().or("an unknown source") + ": Dimensions exceeded max size supported.");
             } else
             {
                 owner.sendMessage(TextFormat.RED + "Could not save schematic, dimensions exceeded maximum supported size!");
@@ -261,13 +260,12 @@ public class NBTSchematicLoader implements SchematicLoader
             return;
         }
 
-        // the map of tags for the main schematic compound tag
-        Map<String, Tag> schematic = new HashMap<String, Tag>();
+        DataContainer schematic = new MemoryContainer("");
         // Store basic schematic data
-        schematic.put("Width", new IntTag("Width", (short) width));
-        schematic.put("Height", new IntTag("Height", (short) height));
-        schematic.put("Length", new IntTag("Length", (short) length));
-        schematic.put("Materials", new StringTag("Materials", "Alpha"));
+        schematic.writeInt("Width", width);
+        schematic.writeInt("Height", height);
+        schematic.writeInt("Length", length);
+        schematic.writeString("Materials", "Alpha");
 
         // Extract tile entities and load into the main schematic map
 
@@ -298,26 +296,26 @@ public class NBTSchematicLoader implements SchematicLoader
         // save the region reference point in the WorldEdit style for
         // compatibility
         Vector3i origin = shape.getOrigin();
-        schematic.put("WEOffsetX", new IntTag("WEOffsetX", origin.getX()));
-        schematic.put("WEOffsetY", new IntTag("WEOffsetY", origin.getY()));
-        schematic.put("WEOffsetZ", new IntTag("WEOffsetZ", origin.getZ()));
+        schematic.writeInt("WEOffsetX", origin.getX());
+        schematic.writeInt("WEOffsetY", origin.getY());
+        schematic.writeInt("WEOffsetZ", origin.getZ());
 
         // store the lower byte of the block Ids
-        schematic.put("Blocks", new ByteArrayTag("Blocks", shape.getLowerMaterialData()));
+        schematic.writeByteArray("Blocks", shape.getLowerMaterialData());
         if (shape.hasExtraData())
         {
-            schematic.put("AddBlocks", new ByteArrayTag("AddBlocks", shape.getUpperMaterialData()));
+            schematic.writeByteArray("AddBlocks", shape.getUpperMaterialData());
         }
         if (shape instanceof NamedWorldSection)
         {
             NamedWorldSection complex = (NamedWorldSection) shape;
             if (complex.hasTileEntities())
             {
-                schematic.put("TileEntities", new ListTag("TileEntities", CompoundTag.class, tiles));
+                schematic.writeList("TileEntities", tiles);
             }
             if (complex.hasEntities())
             {
-                schematic.put("Entities", new ListTag("Entities", CompoundTag.class, entities));
+                schematic.writeList("Entities", entities);
             }
         }
 
@@ -331,12 +329,15 @@ public class NBTSchematicLoader implements SchematicLoader
             CompoundTag tag = new CompoundTag("Material", material);
             materials.add(tag);
         }
-        schematic.put("MaterialDictionary", new ListTag("MaterialDictionary", CompoundTag.class, materials));
+        schematic.writeList("MaterialDictionary", materials);
 
-        CompoundTag schematicTag = new CompoundTag("Schematic", schematic);
-        NBTOutputStream stream = new NBTOutputStream(new GZIPOutputStream(new FileOutputStream(file)));
-        stream.writeTag(schematicTag);
-        stream.close();
+        data.write(schematic);
+        /*
+         * CompoundTag schematicTag = new CompoundTag("Schematic", schematic);
+         * NBTOutputStream stream = new NBTOutputStream(new GZIPOutputStream(new
+         * FileOutputStream(file))); stream.writeTag(schematicTag);
+         * stream.close();
+         */
     }
 
     /**
@@ -351,7 +352,7 @@ public class NBTSchematicLoader implements SchematicLoader
          * @param file The schematic file
          * @param schematicTag The schematic root NBT node
          */
-        public LegacyConverter(File file, CompoundTag schematicTag)
+        public LegacyConverter(DataContainer data)
         {
             // TODO LegacyConverter
         }

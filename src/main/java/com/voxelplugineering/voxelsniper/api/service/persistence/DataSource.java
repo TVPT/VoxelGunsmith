@@ -2,6 +2,8 @@ package com.voxelplugineering.voxelsniper.api.service.persistence;
 
 import java.io.IOException;
 
+import com.google.common.base.Optional;
+
 /**
  * Represents a source which {@link DataContainer}s may be written to/read from.
  */
@@ -45,5 +47,12 @@ public interface DataSource
      * @throws IOException If there is a problem writing to the source
      */
     <T extends DataSerializable> T read(T object) throws IOException;
+
+    /**
+     * Gets the name of this data source, if available.
+     * 
+     * @return The name
+     */
+    Optional<String> getName();
 
 }

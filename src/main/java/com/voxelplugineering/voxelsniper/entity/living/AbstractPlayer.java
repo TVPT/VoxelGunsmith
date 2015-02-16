@@ -82,7 +82,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         this.history = new CommonUndoQueue(this);
         resetSettings();
     }
-    
+
     protected AbstractPlayer(T player)
     {
         this(player, Gunsmith.getGlobalBrushManager());
@@ -181,12 +181,10 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         sendMessage("Brush set to " + Gunsmith.getConfiguration().get("defaultBrush").get().toString());
         this.brushVariables.set("brushSize", Gunsmith.getConfiguration().get("defaultBrushSize").get());
         sendMessage("Your brush size was changed to " + Gunsmith.getConfiguration().get("defaultBrushSize").get().toString());
-        Material material =
-                getWorld()
-                        .getMaterialRegistry()
-                        .getMaterial(
-                                Gunsmith.getConfiguration().get("defaultBrushMaterial").or(getWorld().getMaterialRegistry().getAirMaterial())
-                                        .toString()).get();
+        Material material = getWorld()
+                .getMaterialRegistry()
+                .getMaterial(Gunsmith.getConfiguration().get("defaultBrushMaterial").or(getWorld().getMaterialRegistry().getAirMaterial()).toString())
+                .get();
         sendMessage("Set material to " + material.getName());
         getBrushSettings().set("setMaterial", material);
         getBrushSettings().set("maskmaterial", material);

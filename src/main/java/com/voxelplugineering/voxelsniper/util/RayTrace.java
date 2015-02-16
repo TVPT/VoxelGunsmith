@@ -67,17 +67,16 @@ public class RayTrace
     private Block lastBlock = null;
 
     /*
-     * Values used internally for the calculation of the ray trace.
-     * 
-     * length: the length of the ray range: the maximum length of the ray before
-     * stopping minWorldY: the minimum y value of the world maxWorldY: the
-     * maximum y value of the world yaw: the yaw of the direction of the ray
-     * pitch: the pitch of the direction of the ray currentX|Y|Z: the current
-     * position of the ray, relative to the origin targetX|Y|Z: the position of
-     * the target block lastX|Y|Z: the position of the last block rotX|Y: the
-     * yaw and pitch of the ray shifted to the same context as the world, as
-     * well as the sine and cosine of each step: the increment amount of the
-     * step of the ray trace
+     * Values used internally for the calculation of the ray trace. length: the
+     * length of the ray range: the maximum length of the ray before stopping
+     * minWorldY: the minimum y value of the world maxWorldY: the maximum y
+     * value of the world yaw: the yaw of the direction of the ray pitch: the
+     * pitch of the direction of the ray currentX|Y|Z: the current position of
+     * the ray, relative to the origin targetX|Y|Z: the position of the target
+     * block lastX|Y|Z: the position of the last block rotX|Y: the yaw and pitch
+     * of the ray shifted to the same context as the world, as well as the sine
+     * and cosine of each step: the increment amount of the step of the ray
+     * trace
      */
 
     private double length;

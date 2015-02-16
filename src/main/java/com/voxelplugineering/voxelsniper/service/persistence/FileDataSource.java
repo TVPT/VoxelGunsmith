@@ -2,6 +2,7 @@ package com.voxelplugineering.voxelsniper.service.persistence;
 
 import java.io.File;
 
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 
 /**
@@ -30,6 +31,15 @@ public abstract class FileDataSource implements DataSource
     public File getFile()
     {
         return this.file;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<String> getName()
+    {
+        return Optional.of(this.file.getName());
     }
 
 }

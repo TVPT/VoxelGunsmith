@@ -170,9 +170,8 @@ public class ShapeChangeQueue extends ChangeQueue
                 int z = (int) (this.position / (this.shape.getWidth() * this.shape.getHeight()));
                 int y = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) / this.shape.getWidth());
                 int x = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) % this.shape.getWidth());
-                Optional<Block> block =
-                        this.world.getBlock(x + this.originOffset.getFlooredX(), y + this.originOffset.getFlooredY(),
-                                z + this.originOffset.getFlooredZ());
+                Optional<Block> block = this.world.getBlock(x + this.originOffset.getFlooredX(), y + this.originOffset.getFlooredY(), z
+                        + this.originOffset.getFlooredZ());
                 if (!block.isPresent())
                 {
                     continue;

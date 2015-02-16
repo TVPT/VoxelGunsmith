@@ -308,8 +308,7 @@ public class ComplexShape implements Shape
                     int yy = y + oy - this.origin.getY();
                     if (xx < this.width && xx >= 0 && yy < this.height && yy >= 0 && zz < this.length && zz >= 0)
                     {
-                        newShape[x][z][y / 8] =
-                                (byte) (newShape[x][z][y / 8] | ((this.shape[xx][zz][yy / 8] & (1 << (yy % 8))) >> (yy % 8) << (y % 8)));
+                        newShape[x][z][y / 8] = (byte) (newShape[x][z][y / 8] | ((this.shape[xx][zz][yy / 8] & (1 << (yy % 8))) >> (yy % 8) << (y % 8)));
                     }
                 }
             }

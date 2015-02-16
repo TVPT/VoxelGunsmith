@@ -32,7 +32,6 @@ public interface DataView
      */
     Optional<byte[]> readByteArray(String path);
 
-
     /**
      * Reads from the given path. If the path does not exist, or if the type at
      * the path is not compatible then {@link Optional#absent()} will be
@@ -170,7 +169,7 @@ public interface DataView
      * @return The entries
      */
     Set<Map.Entry<String, Object>> extrySet();
-    
+
     /**
      * Gets whether the given path exists.
      * 

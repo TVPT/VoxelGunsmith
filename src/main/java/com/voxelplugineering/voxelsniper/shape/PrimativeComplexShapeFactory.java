@@ -78,9 +78,8 @@ public class PrimativeComplexShapeFactory
      */
     public static ComplexShape createCuboid(double rx, double ry, double rz)
     {
-        ComplexShape s =
-                new ComplexShape((int) Math.floor(rx) * 2 + 1, (int) Math.floor(ry) * 2 + 1, (int) Math.floor(rz) * 2 + 1, (int) Math.floor(rx),
-                        (int) Math.floor(ry), (int) Math.floor(rz));
+        ComplexShape s = new ComplexShape((int) Math.floor(rx) * 2 + 1, (int) Math.floor(ry) * 2 + 1, (int) Math.floor(rz) * 2 + 1,
+                (int) Math.floor(rx), (int) Math.floor(ry), (int) Math.floor(rz));
         s.invert();
         return s;
     }
@@ -95,9 +94,8 @@ public class PrimativeComplexShapeFactory
      */
     public static ComplexShape createEllipsoid(double rx, double ry, double rz)
     {
-        ComplexShape s =
-                new ComplexShape((int) Math.ceil(rx) * 2 + 1, (int) Math.ceil(ry) * 2 + 1, (int) Math.ceil(rz) * 2 + 1, (int) Math.ceil(rx),
-                        (int) Math.ceil(ry), (int) Math.ceil(rz));
+        ComplexShape s = new ComplexShape((int) Math.ceil(rx) * 2 + 1, (int) Math.ceil(ry) * 2 + 1, (int) Math.ceil(rz) * 2 + 1, (int) Math.ceil(rx),
+                (int) Math.ceil(ry), (int) Math.ceil(rz));
         s.set((int) Math.ceil(rx), (int) Math.ceil(ry), (int) Math.ceil(rz), false);
         for (double x = 0; x <= rx; x++)
         {

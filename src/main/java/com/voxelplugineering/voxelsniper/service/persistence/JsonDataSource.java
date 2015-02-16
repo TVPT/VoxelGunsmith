@@ -170,12 +170,18 @@ public class JsonDataSource extends FileDataSource
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void write(DataSerializable serial) throws IOException
     {
         write(serial.toContainer());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T extends DataSerializable> T read(T object) throws IOException
     {

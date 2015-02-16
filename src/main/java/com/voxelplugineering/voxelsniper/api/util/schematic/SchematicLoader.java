@@ -23,11 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.api.util.schematic;
 
-import java.io.File;
 import java.io.IOException;
 
 import com.voxelplugineering.voxelsniper.api.entity.MessageReceiver;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 
@@ -86,7 +84,7 @@ public interface SchematicLoader
          * 
          * @param stencil The stencil file
          */
-        public StencilConverter(File stencil)
+        public StencilConverter(DataSource stencil)
         {
             // TODO StencilConverter
         }

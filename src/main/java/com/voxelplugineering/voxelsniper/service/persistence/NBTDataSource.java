@@ -37,12 +37,18 @@ public class NBTDataSource extends FileDataSource
         super(file);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void write(DataSerializable serial) throws IOException
     {
         write(serial.toContainer());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void write(DataContainer container) throws IOException
     {
@@ -88,12 +94,12 @@ public class NBTDataSource extends FileDataSource
             } else if (type == List.class)
             {
                 List list = (List) value;
-                if(list.size() > 0)
+                if (list.size() > 0)
                 {
-                    if(list.get(0).getClass() == int.class || list.get(0).getClass() == Integer.class)
+                    if (list.get(0).getClass() == int.class || list.get(0).getClass() == Integer.class)
                     {
                         int[] integers = new int[list.size()];
-                        for(int i = 0; i < list.size(); i++)
+                        for (int i = 0; i < list.size(); i++)
                         {
                             integers[i] = (int) list.get(i);
                         }
@@ -110,10 +116,13 @@ public class NBTDataSource extends FileDataSource
 
     private static ListTag convertListToTag(List list)
     {
-        //TODO
+        // TODO
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataContainer read() throws IOException
     {
@@ -220,6 +229,9 @@ public class NBTDataSource extends FileDataSource
         return data;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T extends DataSerializable> T read(T object) throws IOException
     {

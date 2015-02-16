@@ -44,10 +44,9 @@ public class FileBrushLoader extends CommonBrushLoader
     private static final int BRUSH_FILE_FORMAT_VERSION = 1;
 
     /*
-     * Brush File Format Outline (Version 1)
-     * 
-     * 4 bytes - File format version number 4-bytes - Brush version number
-     * remaining - serialized IRunnableGraph
+     * Brush File Format Outline (Version 1) 4 bytes - File format version
+     * number 4-bytes - Brush version number remaining - serialized
+     * IRunnableGraph
      */
 
     /**
