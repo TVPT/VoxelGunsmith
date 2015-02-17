@@ -41,4 +41,10 @@ public class BaseConfiguration
     String brushArgumentRegex = "([\\S&&[^\\{]]+)[\\s]*(?:((?:\\{[^\\}]*\\}[\\s]*)+))?";
     String eventBusThreadPrefix = "AsyncEventBus-executor-";
 
+    String originVariable = "origin";
+    String yawVariable = "yaw";
+    String pitchVariable = "pitch";
+    String targetBlockVariable = "targetBlock";
+    String lengthVariable = "length";
+
 }

@@ -49,6 +49,14 @@ public class CommonEventHandler
     private final String playerFolderName = Gunsmith.getConfiguration().get("playerDataDirectory", String.class).or("players/");
     private final String aliasFile = Gunsmith.getConfiguration().get("aliasesFileName", String.class).or("aliases.json");
     private final String playerSysvar = Gunsmith.getConfiguration().get("playerSysVarName", String.class).or("__PLAYER__");
+    
+    private final String originVariable = Gunsmith.getConfiguration().get("originVariable", String.class).or("origin");
+    private final String yawVariable = Gunsmith.getConfiguration().get("yawVariable", String.class).or("yaw");
+    private final String pitchVariable = Gunsmith.getConfiguration().get("pitchVariable", String.class).or("pitch");
+    private final String targetBlockVariable = Gunsmith.getConfiguration().get("targetBlockVariable", String.class).or("targetBlock");
+    private final String lengthVariable = Gunsmith.getConfiguration().get("lengthVariable", String.class).or("length");
+    
+    private final double rayTraceRange = Gunsmith.getConfiguration().get("rayTraceRange", Double.class).or(250.0);
 
     /**
      * Constructs a new CommonEventHandler
@@ -135,7 +143,7 @@ public class CommonEventHandler
             double yaw = event.getYaw();
             double pitch = event.getPitch();
             RayTrace ray = new RayTrace(location, yaw, pitch);
-            double range = (Double) Gunsmith.getConfiguration().get("rayTraceRange").or(250.0);
+            double range = this.rayTraceRange;
             if (sniper.getBrushSettings().hasValue("range"))
             {
                 range = sniper.getBrushSettings().get("range", Double.class).get();
@@ -150,14 +158,13 @@ public class CommonEventHandler
 
             VariableScope brushVariables = new ParentedVariableScope(sniper.getBrushSettings());
             brushVariables.setCaseSensitive(false);
-            brushVariables.set("origin", location);// TODO move all variable
-                                                   // names to configuration
-            brushVariables.set("yaw", yaw);
-            brushVariables.set("pitch", pitch);
-            brushVariables.set("targetBlock", ray.getTargetBlock());
+            brushVariables.set(this.originVariable, location);
+            brushVariables.set(this.yawVariable, yaw);
+            brushVariables.set(this.pitchVariable, pitch);
+            brushVariables.set(this.targetBlockVariable, ray.getTargetBlock());
             // brushVariables.set("lastBlock", ray.getLastBlock());
             // TODO support gunpoweder alt action
-            brushVariables.set("length", ray.getLength());
+            brushVariables.set(this.lengthVariable, ray.getLength());
             brushVariables.set(this.playerSysvar, sniper);
             Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());
             sniper.getCurrentBrush().run(brushVariables, sniper.getBrushArguments());
