@@ -49,13 +49,13 @@ public class CommonEventHandler
     private final String playerFolderName = Gunsmith.getConfiguration().get("playerDataDirectory", String.class).or("players/");
     private final String aliasFile = Gunsmith.getConfiguration().get("aliasesFileName", String.class).or("aliases.json");
     private final String playerSysvar = Gunsmith.getConfiguration().get("playerSysVarName", String.class).or("__PLAYER__");
-    
+
     private final String originVariable = Gunsmith.getConfiguration().get("originVariable", String.class).or("origin");
     private final String yawVariable = Gunsmith.getConfiguration().get("yawVariable", String.class).or("yaw");
     private final String pitchVariable = Gunsmith.getConfiguration().get("pitchVariable", String.class).or("pitch");
     private final String targetBlockVariable = Gunsmith.getConfiguration().get("targetBlockVariable", String.class).or("targetBlock");
     private final String lengthVariable = Gunsmith.getConfiguration().get("lengthVariable", String.class).or("length");
-    
+
     private final double rayTraceRange = Gunsmith.getConfiguration().get("rayTraceRange", Double.class).or(250.0);
 
     /**

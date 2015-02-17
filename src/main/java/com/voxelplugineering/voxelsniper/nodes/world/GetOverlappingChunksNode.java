@@ -33,7 +33,9 @@ import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.api.world.Chunk;
 import com.voxelplugineering.voxelsniper.api.world.Location;
+import com.voxelplugineering.voxelsniper.api.world.World;
 import com.voxelplugineering.voxelsniper.util.math.Vector3d;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * Gets all chunks which overlap with the given shape.
@@ -67,12 +69,14 @@ public class GetOverlappingChunksNode extends AbstractNode
         Shape shape = this.shape.get(state);
         Vector3d offsetTarget = this.target.get(state).add(shape.getOrigin().multipy(-1)).toVector();
         List<Chunk> chunks = Lists.newArrayList();
-        // TODO remove assumptions about chunk size and orientation
+        World world = this.target.get(state).getWorld();
+        Vector3i chunkSize = world.getChunkSize();
         for (int x = (int) offsetTarget.getX(); x < offsetTarget.getX() + shape.getWidth(); x++)
         {
             for (int z = (int) offsetTarget.getZ(); z < offsetTarget.getZ() + shape.getLength(); z++)
             {
-                Optional<Chunk> c = this.target.get(state).getWorld().getChunk((x < 0 ? x - 16 : x) / 16, 0, (z < 0 ? z - 16 : z) / 16);
+                Optional<Chunk> c = world.getChunk((x < 0 ? x - chunkSize.getX() : x) / chunkSize.getX(), 0, (z < 0 ? z - chunkSize.getZ() : z)
+                        / chunkSize.getZ());
                 if (c.isPresent())
                 {
                     if (!chunks.contains(c.get()))

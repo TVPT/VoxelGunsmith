@@ -53,7 +53,7 @@ public class UndoOtherCommand extends Command
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {
-        if(args.length < 1)
+        if (args.length < 1)
         {
             sender.sendMessage(this.getHelpMsg());
             return true;
@@ -61,19 +61,18 @@ public class UndoOtherCommand extends Command
         String name = args[0];
         UndoQueue queue = null;
         Optional<Player> target = Gunsmith.getPlayerRegistry().getPlayer(name);
-        if(!target.isPresent())
+        if (!target.isPresent())
         {
             Optional<UndoQueue> attempt = Gunsmith.getOfflineUndoHandler().get(name);
-            if(attempt.isPresent())
+            if (attempt.isPresent())
             {
                 queue = attempt.get();
             }
-        }
-        else
+        } else
         {
             queue = target.get().getUndoHistory();
         }
-        if(queue == null)
+        if (queue == null)
         {
             sender.sendMessage(TextFormat.RED + "Sorry, we could not find that player.");
             return true;

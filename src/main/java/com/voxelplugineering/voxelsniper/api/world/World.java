@@ -140,4 +140,11 @@ public interface World extends BlockVolume
      */
     MaterialShape getShapeFromWorld(Location origin, Shape shape);
 
+    /**
+     * Gets a vector representing the size of chunks within this world.
+     * 
+     * @return The chunk size vector
+     */
+    Vector3i getChunkSize();
+
 }

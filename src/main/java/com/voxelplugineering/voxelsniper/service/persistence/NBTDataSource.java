@@ -1,3 +1,26 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 The Voxel Plugineering Team
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package com.voxelplugineering.voxelsniper.service.persistence;
 
 import java.io.File;
@@ -98,22 +121,22 @@ public class NBTDataSource extends FileDataSource
                 tags.put(key, fromContainer(((DataSerializable) value).toContainer()));
             } else if (type == byte.class || type == Byte.class)
             {
-                tags.put(key, new ByteTag(key, (byte) value));
+                tags.put(key, new ByteTag(key, (Byte) value));
             } else if (type == short.class || type == Short.class)
             {
-                tags.put(key, new ShortTag(key, (short) value));
+                tags.put(key, new ShortTag(key, (Short) value));
             } else if (type == int.class || type == Integer.class)
             {
-                tags.put(key, new IntTag(key, (int) value));
+                tags.put(key, new IntTag(key, (Integer) value));
             } else if (type == long.class || type == Long.class)
             {
-                tags.put(key, new LongTag(key, (long) value));
+                tags.put(key, new LongTag(key, (Long) value));
             } else if (type == float.class || type == Float.class)
             {
-                tags.put(key, new FloatTag(key, (float) value));
+                tags.put(key, new FloatTag(key, (Float) value));
             } else if (type == double.class || type == Double.class)
             {
-                tags.put(key, new DoubleTag(key, (double) value));
+                tags.put(key, new DoubleTag(key, (Double) value));
             } else if (type == Number.class)
             {
                 tags.put(key, new DoubleTag(key, ((Number) value).doubleValue()));
@@ -127,7 +150,7 @@ public class NBTDataSource extends FileDataSource
                         int[] integers = new int[list.size()];
                         for (int i = 0; i < list.size(); i++)
                         {
-                            integers[i] = (int) list.get(i);
+                            integers[i] = (Integer) list.get(i);
                         }
                         tags.put(key, new IntArrayTag(key, integers));
                         continue;

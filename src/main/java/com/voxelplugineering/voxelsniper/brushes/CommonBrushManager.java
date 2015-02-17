@@ -116,12 +116,12 @@ public class CommonBrushManager implements BrushManager
         {
             DataSourceProvider loader = iter.next();
             Optional<DataSource> source = loader.get(identifier);
-            if(source.isPresent())
+            if (source.isPresent())
             {
                 try
                 {
                     BrushNodeGraph attempt = BrushNodeGraph.buildFromContainer(source.get().read());
-                    if(attempt != null)
+                    if (attempt != null)
                     {
                         graph = attempt;
                         break;

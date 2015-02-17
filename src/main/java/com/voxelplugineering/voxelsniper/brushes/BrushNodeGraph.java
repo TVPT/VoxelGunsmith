@@ -44,22 +44,22 @@ import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
  */
 public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializable
 {
-    
+
     /**
-     * Attempts to create a {@link BrushNodeGraph} from the given {@link DataContainer}.
+     * Attempts to create a {@link BrushNodeGraph} from the given
+     * {@link DataContainer}.
      * 
      * @param container The container
      * @return The graph, or null
      */
     public static BrushNodeGraph buildFromContainer(DataContainer container)
     {
-        if(container.contains("name"))
+        if (container.contains("name"))
         {
             BrushNodeGraph brush = new BrushNodeGraph(container.readString("name").get());
             brush.fromContainer(container);
             return brush;
-        }
-        else
+        } else
         {
             return null;
         }
@@ -282,7 +282,7 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
     public void fromContainer(DataContainer container)
     {
         // TODO fromContainer
-        
+
     }
 
     @Override
