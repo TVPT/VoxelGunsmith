@@ -17,12 +17,30 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonReader;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 
 /**
  * A data source which serializes data to a file as Json.
  */
 public class JsonDataSource extends FileDataSource
 {
+
+    /**
+     * A {@link FileDataSource.Builder} for json data sources.
+     */
+    public static Builder BUILDER = new Builder()
+    {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public DataSource build(File f)
+        {
+            return new JsonDataSource(f);
+        }
+
+    };
 
     /**
      * Creates a new {@link JsonDataSource} based on the given file.

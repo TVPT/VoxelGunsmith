@@ -35,13 +35,35 @@ import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
 import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 
 /**
  * The Gunsmith specific {@link NodeGraph}.
  */
-public class BrushNodeGraph extends RunnableNodeGraph
+public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializable
 {
+    
+    /**
+     * Attempts to create a {@link BrushNodeGraph} from the given {@link DataContainer}.
+     * 
+     * @param container The container
+     * @return The graph, or null
+     */
+    public static BrushNodeGraph buildFromContainer(DataContainer container)
+    {
+        if(container.contains("name"))
+        {
+            BrushNodeGraph brush = new BrushNodeGraph(container.readString("name").get());
+            brush.fromContainer(container);
+            return brush;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
     private String help = Gunsmith.getConfiguration().get("defaultBrushHelpMessage", String.class)
             .or(TextFormat.RED + "No help is provided for this brush part.");
@@ -62,6 +84,16 @@ public class BrushNodeGraph extends RunnableNodeGraph
         this.arguments = Maps.newHashMap();
         this.argDefaults = Maps.newHashMap();
         this.type = type;
+    }
+
+    /**
+     * Creates a new {@link BrushNodeGraph}.
+     * 
+     * @param name The brush name
+     */
+    public BrushNodeGraph(String name)
+    {
+        this(name, BrushPartType.MISC);
     }
 
     /**
@@ -244,6 +276,20 @@ public class BrushNodeGraph extends RunnableNodeGraph
     public Map<String, ArgumentParser<?>> getArguments()
     {
         return Collections.unmodifiableMap(this.arguments);
+    }
+
+    @Override
+    public void fromContainer(DataContainer container)
+    {
+        // TODO fromContainer
+        
+    }
+
+    @Override
+    public DataContainer toContainer()
+    {
+        // TODO toContainer
+        return null;
     }
 
 }

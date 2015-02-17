@@ -349,8 +349,7 @@ public class CommonSchematicLoader implements SchematicLoader
         /**
          * Creates a new {@link LegacyConverter}.
          * 
-         * @param file The schematic file
-         * @param schematicTag The schematic root NBT node
+         * @param data The data to convert
          */
         public LegacyConverter(DataContainer data)
         {

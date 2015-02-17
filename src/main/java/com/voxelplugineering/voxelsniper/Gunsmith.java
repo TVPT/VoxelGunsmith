@@ -32,7 +32,6 @@ import java.util.concurrent.ExecutorService;
 import com.voxelplugineering.voxelsniper.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.alias.AliasSaveTask;
 import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
-import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.config.Configuration;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
@@ -46,8 +45,10 @@ import com.voxelplugineering.voxelsniper.api.registry.BiomeRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.PlayerRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.WorldRegistry;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 import com.voxelplugineering.voxelsniper.api.service.scheduler.Scheduler;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormatProxy;
+import com.voxelplugineering.voxelsniper.api.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
 import com.voxelplugineering.voxelsniper.config.ConfigurationManager;
@@ -61,6 +62,7 @@ import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSource;
 import com.voxelplugineering.voxelsniper.util.AnnotationHelper;
 import com.voxelplugineering.voxelsniper.util.defaults.DefaultAliasBuilder;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueTask;
+import com.voxelplugineering.voxelsniper.world.queue.CommonOfflineUndoHandler;
 
 /**
  * The Core of VoxelGunsmith, provides access to handlers and validates
@@ -70,7 +72,7 @@ public final class Gunsmith
 {
 
     private static BrushManager globalBrushManager;
-    private static BrushLoader defaultBrushLoader;
+    private static DataSourceProvider defaultBrushLoader;
     private static CommandHandler commandHandler;
     private static CommonEventHandler defaultEventHandler;
     private static EventBus eventBus;
@@ -90,6 +92,7 @@ public final class Gunsmith
     private static File dataFolder;
     private static AliasSaveTask aliasTask;
     private static TextFormatProxy formatProxy;
+    private static OfflineUndoHandler offlineUndo;
 
     /**
      * The initialization state of Gunsmith.
@@ -121,7 +124,7 @@ public final class Gunsmith
      * 
      * @return The instance of the implementation of IBrushLoader
      */
-    public static BrushLoader getDefaultBrushLoader()
+    public static DataSourceProvider getDefaultBrushLoader()
     {
         return defaultBrushLoader;
     }
@@ -337,6 +340,18 @@ public final class Gunsmith
     }
 
     /**
+     * Gets the {@link OfflineUndoHandler}. This handles the undo queues for all
+     * disconnected players until invalidated according to the individual
+     * handler's policy.
+     * 
+     * @return The undo handler
+     */
+    public static OfflineUndoHandler getOfflineUndoHandler()
+    {
+        return offlineUndo;
+    }
+
+    /**
      * Should be called at the start of the initialization process. Sets up
      * default states before the specific implementation registers its
      * overrides.
@@ -425,6 +440,8 @@ public final class Gunsmith
         biomeRegistry = provider.getBiomeRegistry();
 
         ArgumentParsers.init();
+
+        offlineUndo = new CommonOfflineUndoHandler();
 
         File config = new File(platformProxy.getDataFolder(), "VoxelSniperConfiguration.json");
         if (config.exists())
@@ -584,6 +601,7 @@ public final class Gunsmith
         aliasTask = null;
         formatProxy = null;
         AnnotationHelper.clean();
+        offlineUndo = null;
     }
 
     private static class DefaultSetupProxy

@@ -11,6 +11,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 import com.voxelplugineering.voxelsniper.util.nbt.ByteArrayTag;
 import com.voxelplugineering.voxelsniper.util.nbt.ByteTag;
 import com.voxelplugineering.voxelsniper.util.nbt.CompoundTag;
@@ -26,12 +27,31 @@ import com.voxelplugineering.voxelsniper.util.nbt.StringTag;
 import com.voxelplugineering.voxelsniper.util.nbt.Tag;
 
 /**
- * A datasource which reads from a file as NBT.
+ * A {@link DataSource} which reads from a file as NBT.
  */
 @SuppressWarnings("rawtypes")
 public class NBTDataSource extends FileDataSource
 {
 
+    /**
+     * A {@link FileDataSource.Builder} for building NBT data sources.
+     */
+    public static Builder BUILDER = new Builder()
+    {
+
+        @Override
+        public DataSource build(File f)
+        {
+            return new NBTDataSource(f);
+        }
+
+    };
+
+    /**
+     * Creates a new {@link NBTDataSource} for the given file.
+     * 
+     * @param file The file
+     */
     public NBTDataSource(File file)
     {
         super(file);
@@ -55,6 +75,12 @@ public class NBTDataSource extends FileDataSource
 
     }
 
+    /**
+     * Converts the given {@link DataContainer} to an NBT {@link CompoundTag}.
+     * 
+     * @param container The container to convert
+     * @return The tag
+     */
     public static CompoundTag fromContainer(DataContainer container)
     {
         Map<String, Tag> tags = Maps.newHashMap();

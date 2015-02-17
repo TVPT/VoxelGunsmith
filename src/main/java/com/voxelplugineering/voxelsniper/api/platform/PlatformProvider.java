@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.api.platform;
 
-import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.logging.Logger;
 import com.voxelplugineering.voxelsniper.api.permissions.PermissionProxy;
@@ -31,6 +30,7 @@ import com.voxelplugineering.voxelsniper.api.registry.BiomeRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.PlayerRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.WorldRegistry;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 import com.voxelplugineering.voxelsniper.api.service.scheduler.Scheduler;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormatProxy;
 import com.voxelplugineering.voxelsniper.command.CommandHandler;
@@ -105,7 +105,7 @@ public interface PlatformProvider
      * 
      * @return The default brush loader
      */
-    BrushLoader getDefaultBrushLoader();
+    DataSourceProvider getDefaultBrushLoader();
 
     /**
      * Gets the global brush manager.

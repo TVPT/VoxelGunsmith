@@ -42,4 +42,19 @@ public abstract class FileDataSource implements DataSource
         return Optional.of(this.file.getName());
     }
 
+    /**
+     * A builder for {@link DataSource}s from a file.
+     */
+    public static interface Builder
+    {
+        
+        /**
+         * Creates a new {@link DataSource} for the given file.
+         * 
+         * @param file The file
+         * @return The {@link DataSource}
+         */
+        DataSource build(File file);
+    }
+    
 }

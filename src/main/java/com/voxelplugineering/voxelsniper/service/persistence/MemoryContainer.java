@@ -325,7 +325,14 @@ public class MemoryContainer implements DataContainer
                     if (validateBuilder(builder))
                     {
                         Object built = builder.invoke(null, (DataContainer) obj);
-                        return safeCast(built, type);
+                        if(built != null)
+                        {
+                            return safeCast(built, type);
+                        }
+                        else
+                        {
+                            return Optional.absent();
+                        }
                     }
                 } catch (Exception e)
                 {

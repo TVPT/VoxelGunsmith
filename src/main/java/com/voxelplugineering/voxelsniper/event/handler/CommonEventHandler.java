@@ -84,6 +84,7 @@ public class CommonEventHandler
                 Gunsmith.getLogger().error(e, "Error loading player aliases!");
             }
         }
+        Gunsmith.getOfflineUndoHandler().invalidate(player.getName());
     }
 
     /**
@@ -112,7 +113,7 @@ public class CommonEventHandler
             Gunsmith.getLogger().error(e, "Error saving player aliases!");
         }
 
-        // TODO cache players undo queue for N minutes
+        Gunsmith.getOfflineUndoHandler().register(player.getName(), player.getUndoHistory());
     }
 
     /**

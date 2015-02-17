@@ -31,9 +31,8 @@ import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 
 /**
  * A schematic loader is an interface for loading or saving regions of the world
- * to a persistent storage. TODO: better persistence abstraction TODO: need a
- * more complete representation for a region of a world (w/ entities and tile
- * entities mostly)
+ * to a persistent storage. TODO: need a more complete representation for a
+ * region of a world (w/ entities and tile entities mostly)
  */
 public interface SchematicLoader
 {
