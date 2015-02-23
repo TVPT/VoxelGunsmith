@@ -126,6 +126,7 @@ public interface DataContainer extends DataView
      * 
      * @param path The path
      * @param data The value
+     * @param <T> The {@link DataSerializable} type
      */
     <T extends DataSerializable> void writeCustom(String path, T data);
 

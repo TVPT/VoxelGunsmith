@@ -63,7 +63,7 @@ public class GetBiomeNode extends AbstractNode
             this.biome.set(b.get(), state.getUUID());
         } else
         {
-            state.getVars().<Player> get("__PLAYER__", Player.class).get().sendMessage("Unknown biome: " + this.name.get(state));
+            state.getVars().<Player>get("__PLAYER__", Player.class).get().sendMessage("Unknown biome: " + this.name.get(state));
         }
     }
 

@@ -145,6 +145,7 @@ public interface DataView
      * 
      * @param path The path to read from
      * @param type The type to read as
+     * @param <T> The {@link DataSerializable} type
      * @return The data
      */
     <T extends DataSerializable> Optional<T> readCustom(String path, Class<T> type);

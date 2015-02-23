@@ -69,6 +69,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
      * Creates a new CommonPlayer with a weak reference to the player.
      * 
      * @param player the player object
+     * @param parentBrushManager The parent brush manager
      */
     protected AbstractPlayer(T player, BrushManager parentBrushManager)
     {
@@ -149,6 +150,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     public void resetSettings()
     {
         this.arguments.clear();
+        this.brushVariables.clear();
         BrushNodeGraph start = null;
         BrushNodeGraph last = null;
         Pattern pattern = Pattern.compile("([\\S&&[^\\{]]+) ?(?:(\\{[^\\}]*\\}))?");
@@ -179,15 +181,21 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         }
         setCurrentBrush(start);
         sendMessage("Brush set to " + Gunsmith.getConfiguration().get("defaultBrush").get().toString());
-        this.brushVariables.set("brushSize", Gunsmith.getConfiguration().get("defaultBrushSize").get());
+        this.brushVariables.set("brushSize", Gunsmith.getConfiguration().get("defaultBrushSize", Double.class).or(5.0));
         sendMessage("Your brush size was changed to " + Gunsmith.getConfiguration().get("defaultBrushSize").get().toString());
-        Material material = getWorld()
-                .getMaterialRegistry()
-                .getMaterial(Gunsmith.getConfiguration().get("defaultBrushMaterial").or(getWorld().getMaterialRegistry().getAirMaterial()).toString())
-                .get();
-        sendMessage("Set material to " + material.getName());
-        getBrushSettings().set("setMaterial", material);
-        getBrushSettings().set("maskmaterial", material);
+        Optional<String> materialName = Gunsmith.getConfiguration().get("defaultBrushMaterial", String.class);
+        Material mat = getWorld().getMaterialRegistry().getAirMaterial();
+        if(materialName.isPresent())
+        {
+            Optional<Material> material = getWorld().getMaterialRegistry().getMaterial(materialName.get());
+            if(material.isPresent())
+            {
+                mat = material.get();
+            }
+        }
+        sendMessage("Set material to " + mat.getName());
+        getBrushSettings().set("setMaterial", mat);
+        getBrushSettings().set("maskmaterial", mat);
     }
 
     private static String prep(String s)
@@ -240,7 +248,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     @Override
     public Optional<ChangeQueue> getNextPendingChange()
     {
-        return (this.pending.isEmpty() ? Optional.<ChangeQueue> absent() : Optional.<ChangeQueue> of(this.pending.peek()));
+        return (this.pending.isEmpty() ? Optional.<ChangeQueue>absent() : Optional.<ChangeQueue>of(this.pending.peek()));
     }
 
     /**

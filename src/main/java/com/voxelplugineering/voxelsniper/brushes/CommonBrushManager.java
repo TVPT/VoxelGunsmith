@@ -154,7 +154,7 @@ public class CommonBrushManager implements BrushManager
             }
             return Optional.absent();
         }
-        return Optional.<BrushNodeGraph> of(br);
+        return Optional.<BrushNodeGraph>of(br);
     }
 
     /**

@@ -41,8 +41,8 @@ public class MemoryContainerTest
 {
 
     /**
-	 * 
-	 */
+     * 
+     */
     @Test
     public void testReadWrite()
     {
@@ -75,8 +75,8 @@ public class MemoryContainerTest
     }
 
     /**
-	 * 
-	 */
+     * 
+     */
     @Test
     public void testJson()
     {

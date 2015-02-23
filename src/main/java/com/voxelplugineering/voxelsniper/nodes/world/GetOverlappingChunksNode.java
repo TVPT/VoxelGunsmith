@@ -75,8 +75,9 @@ public class GetOverlappingChunksNode extends AbstractNode
         {
             for (int z = (int) offsetTarget.getZ(); z < offsetTarget.getZ() + shape.getLength(); z++)
             {
-                Optional<Chunk> c = world.getChunk((x < 0 ? x - chunkSize.getX() : x) / chunkSize.getX(), 0, (z < 0 ? z - chunkSize.getZ() : z)
-                        / chunkSize.getZ());
+                Optional<Chunk> c =
+                        world.getChunk((x < 0 ? x - chunkSize.getX() : x) / chunkSize.getX(), 0,
+                                (z < 0 ? z - chunkSize.getZ() : z) / chunkSize.getZ());
                 if (c.isPresent())
                 {
                     if (!chunks.contains(c.get()))

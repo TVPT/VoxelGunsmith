@@ -66,6 +66,7 @@ public interface DataSource
      * {@link DataSerializable#fromContainer(DataContainer)}.
      * 
      * @param object The object to load the data into
+     * @param <T> The {@link DataSerializable} type
      * @return The same object
      * @throws IOException If there is a problem writing to the source
      */

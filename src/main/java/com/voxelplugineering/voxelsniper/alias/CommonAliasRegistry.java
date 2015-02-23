@@ -312,6 +312,9 @@ public class CommonAliasRegistry implements AliasRegistry
         return Collections.unmodifiableSet(this.aliases.entrySet());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void fromContainer(DataContainer container)
     {
@@ -325,6 +328,9 @@ public class CommonAliasRegistry implements AliasRegistry
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataContainer toContainer()
     {

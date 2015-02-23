@@ -37,6 +37,7 @@ targetCompatibility = 1.6
 
 // Project dependencies
 repositories {
+    mavenLocal()
     mavenCentral()
     maven {
     	url "http://repo.budgiehouse.com:8081/nexus/content/repositories/VBpublic/"
@@ -46,7 +47,7 @@ repositories {
 dependencies {
     compile 'com.google.guava:guava:18.0'
     testCompile 'junit:junit:4.11'
-    compile 'com.thevoxelbox:VisualScripting:0.2.7-SNAPSHOT'
+    compile 'com.thevoxelbox:VisualScripting:0.2.8-SNAPSHOT'
 	compile 'com.google.code.gson:gson:2.3'
 	compile 'org.mockito:mockito-core:1.9.5'
 	compile 'org.apache.logging.log4j:log4j-core:2.1'

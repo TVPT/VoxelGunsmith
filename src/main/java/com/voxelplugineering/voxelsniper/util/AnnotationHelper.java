@@ -89,7 +89,7 @@ public class AnnotationHelper
         Map<Class<? extends Annotation>, Annotation> map;
         if (!annotationValueCache.containsKey(cls))
         {
-            map = Maps.<Class<? extends Annotation>, Annotation> newConcurrentMap();
+            map = Maps.<Class<? extends Annotation>, Annotation>newConcurrentMap();
             annotationValueCache.put(cls, map);
         } else
         {
@@ -107,7 +107,7 @@ public class AnnotationHelper
                 return Optional.fromNullable(a);
             } else
             {
-                return Optional.<T> fromNullable((T) map.get(annotation));
+                return Optional.<T>fromNullable((T) map.get(annotation));
             }
         } else
         {

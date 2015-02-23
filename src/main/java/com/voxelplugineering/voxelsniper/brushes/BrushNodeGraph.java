@@ -45,6 +45,8 @@ import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializable
 {
 
+    //TODO NodeGraph's next graph should not be used.
+
     /**
      * Attempts to create a {@link BrushNodeGraph} from the given
      * {@link DataContainer}.
@@ -127,10 +129,10 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
         BrushNodeGraph ng = this;
         while (ng != null && map != null)
         {
-            String inv = ng.parseArguments(map.get(ng.getName()), state.getVars(), vars.<Player> get("__PLAYER__", Player.class).get());
+            String inv = ng.parseArguments(map.get(ng.getName()), state.getVars(), vars.<Player>get("__PLAYER__", Player.class).get());
             if (!inv.isEmpty())
             {
-                vars.<Player> get("__PLAYER__", Player.class).get().sendMessage("Invalid arguments: " + inv);
+                vars.<Player>get("__PLAYER__", Player.class).get().sendMessage("Invalid arguments: " + inv);
                 return;
             }
             ng = (BrushNodeGraph) ng.getNextGraph();
@@ -155,7 +157,7 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
         }
         if (!missing.isEmpty())
         {
-            vars.<Player> get("__PLAYER__", Player.class).get()
+            vars.<Player>get("__PLAYER__", Player.class).get()
                     .sendMessage("Missing required variable" + (missing.indexOf(" ") != -1 ? "s" : " ") + ": " + missing);
             return;
         }
@@ -278,6 +280,9 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
         return Collections.unmodifiableMap(this.arguments);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void fromContainer(DataContainer container)
     {
@@ -285,6 +290,9 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataContainer toContainer()
     {

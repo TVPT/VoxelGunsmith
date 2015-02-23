@@ -116,7 +116,7 @@ public final class ImmutableVariableHolder implements VariableScope
         {
             if (((VariableScope) this.vars).getParent().isPresent())
             {
-                return Optional.<VariableHolder> of(new ImmutableVariableHolder(((VariableScope) this.vars).getParent().get()));
+                return Optional.<VariableHolder>of(new ImmutableVariableHolder(((VariableScope) this.vars).getParent().get()));
             } else
             {
                 return Optional.absent();
@@ -137,7 +137,7 @@ public final class ImmutableVariableHolder implements VariableScope
             Optional<VariableHolder> high = ((VariableScope) this.vars).getHighestParent();
             if (high.isPresent())
             {
-                return Optional.<VariableHolder> of(new ImmutableVariableHolder(high.get()));
+                return Optional.<VariableHolder>of(new ImmutableVariableHolder(high.get()));
             } else
             {
                 return Optional.absent();
@@ -155,6 +155,15 @@ public final class ImmutableVariableHolder implements VariableScope
         return this.vars.keyset();// No need for defensive copy or unmodifiable
                                   // copy, as VariableHolder#keyset() is
                                   // already a copy
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear()
+    {
+        throw new UnsupportedOperationException("immutable type.");
     }
 
 }

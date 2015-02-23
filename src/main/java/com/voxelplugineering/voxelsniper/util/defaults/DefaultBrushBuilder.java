@@ -319,7 +319,7 @@ public class DefaultBrushBuilder
         }
 
         { // shell
-          // @formatter:off
+            // @formatter:off
             ChainedInputNode<Shape> shapeInput = new ChainedInputNode<Shape>("shape");
             ToComplexShapeNode complexify = new ToComplexShapeNode(shapeInput.getValue());
             ShapeGetOriginNode origin = new ShapeGetOriginNode(complexify.getComplexShape());
@@ -366,13 +366,13 @@ public class DefaultBrushBuilder
 
             ShapeMaterialSetNode setMaterial = new ShapeMaterialSetNode(shapeIn.getValue(), getMaterial.getValue(), blockBreak.getLocation());
 
-            BrushNodeGraph brush = new BrushNodeGraph("material", BrushPartType.SHAPE);
+            BrushNodeGraph brush = new BrushNodeGraph("material", BrushPartType.EFFECT);
             brush.setNext(setMaterial);
             graphs.put("material", brush);
         }
 
         { // material mask
-          // @formatter:off
+            // @formatter:off
             ChainedInputNode<Shape> shapeInput = new ChainedInputNode<Shape>("shape");
             ToComplexShapeNode complexify = new ToComplexShapeNode(shapeInput.getValue());
             ShapeGetOriginNode origin = new ShapeGetOriginNode(complexify.getComplexShape());

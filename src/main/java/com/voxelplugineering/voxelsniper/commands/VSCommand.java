@@ -33,6 +33,7 @@ import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.command.Command;
+import com.voxelplugineering.voxelsniper.util.IngameBrushTest;
 
 /**
  * Standard brush command to select a brush and provide the necessary arguments
@@ -41,7 +42,7 @@ import com.voxelplugineering.voxelsniper.command.Command;
 public class VSCommand extends Command
 {
 
-    Map<String, Special> special;
+    Map<String, SubCommand> subcommands;
 
     /**
      * Constructs a new BrushCommand
@@ -51,8 +52,8 @@ public class VSCommand extends Command
         super("vs", "Sets your current brush");
         setAliases("voxelsniper");
         setPermissions("voxelsniper.command.vs");
-        this.special = Maps.newHashMap();
-        setupSpecial();
+        this.subcommands = Maps.newHashMap();
+        setupSubcommands();
     }
 
     /**
@@ -65,9 +66,9 @@ public class VSCommand extends Command
 
         if (args.length >= 1)
         {
-            if (this.special.containsKey(args[0]))
+            if (this.subcommands.containsKey(args[0]))
             {
-                boolean s = this.special.get(args[0]).execute(sender, Arrays.copyOfRange(args, 1, args.length));
+                boolean s = this.subcommands.get(args[0]).execute(sender, Arrays.copyOfRange(args, 1, args.length));
                 if (s)
                 {
                     return true;
@@ -97,16 +98,16 @@ public class VSCommand extends Command
             return true;
         }
         sender.sendMessage("VoxelSniper meta commands, Usage: \'/vs key=value\' or one of:");
-        for (String spec : this.special.keySet())
+        for (String spec : this.subcommands.keySet())
         {
-            sender.sendMessage(this.special.get(spec).getHelp());
+            sender.sendMessage(this.subcommands.get(spec).getHelp());
         }
         return false;
     }
 
-    private void setupSpecial()
+    private void setupSubcommands()
     {
-        this.special.put("version", new Special()
+        this.subcommands.put("version", new SubCommand()
         {
 
             @Override
@@ -123,7 +124,7 @@ public class VSCommand extends Command
             }
 
         });
-        this.special.put("range", new Special()
+        this.subcommands.put("range", new SubCommand()
         {
 
             @Override
@@ -164,10 +165,33 @@ public class VSCommand extends Command
             }
 
         });
+        this.subcommands.put("unittest", new SubCommand()
+        {
+
+            @Override
+            boolean execute(CommandSender sender, String[] args)
+            {
+                if (sender instanceof Player)
+                {
+                    new Thread(new IngameBrushTest((Player) sender)).start();
+                } else
+                {
+                    sender.sendMessage("Sorry this is a player only sub command.");
+                }
+                return true;
+            }
+
+            @Override
+            String getHelp()
+            {
+                return "  /vs unittest -- Runs an ingame set of brush tests (warning: destructive)";
+            }
+
+        });
     }
 }
 
-abstract class Special
+abstract class SubCommand
 {
 
     abstract boolean execute(CommandSender sender, String[] args);

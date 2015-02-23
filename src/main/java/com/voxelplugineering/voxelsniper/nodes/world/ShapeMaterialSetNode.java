@@ -67,9 +67,8 @@ public class ShapeMaterialSetNode extends AbstractNode
         Shape s = this.shape.get(state);
         Location l = this.target.get(state);
         Material m = this.material.get(state);
-        Player p = state.getVars().<Player> get("__PLAYER__", Player.class).get();
+        Player p = state.getVars().<Player>get("__PLAYER__", Player.class).get();
         MaterialShape ms = new SingleMaterialShape(s, m);
-        System.out.println("Setting shape at " + l.toString());
         new ShapeChangeQueue(p, l, ms).flush();
     }
 
