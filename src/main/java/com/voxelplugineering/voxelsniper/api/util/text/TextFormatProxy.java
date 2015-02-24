@@ -23,10 +23,14 @@
  */
 package com.voxelplugineering.voxelsniper.api.util.text;
 
+import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.AbstractService;
+import com.voxelplugineering.voxelsniper.api.service.Service;
+
 /**
  * A proxy for platform specific format codes.
  */
-public interface TextFormatProxy
+public interface TextFormatProxy extends Service
 {
 
     /**
@@ -41,8 +45,13 @@ public interface TextFormatProxy
      * A trivial {@link TextFormatProxy} which simply returns the name of the
      * {@link TextFormat}.
      */
-    public static class TrivialTextFormatProxy implements TextFormatProxy
+    public static class TrivialTextFormatProxy extends AbstractService implements TextFormatProxy
     {
+
+        public TrivialTextFormatProxy()
+        {
+            super(0);
+        }
 
         /**
          * {@inheritDoc}
@@ -50,7 +59,25 @@ public interface TextFormatProxy
         @Override
         public String getFormat(TextFormat format)
         {
-            return format.name();
+            return "";
+        }
+
+        @Override
+        public String getName()
+        {
+            return "formatProxy";
+        }
+
+        @Override
+        protected void init()
+        {
+            Gunsmith.getLogger().info("Initialized TextFormat service");
+        }
+
+        @Override
+        protected void destroy()
+        {
+            Gunsmith.getLogger().info("Stopping TextFormat service");
         }
 
     }

@@ -31,11 +31,12 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.logging.Logger;
 import com.voxelplugineering.voxelsniper.api.logging.LoggingDistributor;
+import com.voxelplugineering.voxelsniper.api.service.AbstractService;
 
 /**
  * A standard logging distributor.
  */
-public class CommonLoggingDistributor implements LoggingDistributor
+public class CommonLoggingDistributor extends AbstractService implements LoggingDistributor
 {
 
     /**
@@ -48,7 +49,28 @@ public class CommonLoggingDistributor implements LoggingDistributor
      */
     public CommonLoggingDistributor()
     {
+        super(-1);
         this.loggers = Maps.newHashMap();
+    }
+
+    @Override
+    public String getName()
+    {
+        return "logger";
+    }
+
+    @Override
+    protected void init()
+    {
+        this.loggers = Maps.newHashMap();
+        info("Initializing Logging service");
+    }
+
+    @Override
+    protected void destroy()
+    {
+        info("Stopping Logging service");
+        this.loggers = null;
     }
 
     /**
@@ -57,6 +79,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
     @Override
     public void debug(String msg)
     {
+        check();
         if (msg == null || msg.isEmpty())
         {
             return;
@@ -74,13 +97,14 @@ public class CommonLoggingDistributor implements LoggingDistributor
     @Override
     public void info(String msg)
     {
+        check();
         if (msg == null || msg.isEmpty())
         {
             return;
         }
         if (this.loggers.isEmpty())
         {
-            System.out.println(msg);
+            System.out.println("[INFO] " + msg);
         }
         for (String n : this.loggers.keySet())
         {
@@ -95,6 +119,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
     @Override
     public void warn(String msg)
     {
+        check();
         if (msg == null || msg.isEmpty())
         {
             return;
@@ -116,6 +141,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
     @Override
     public void error(String msg)
     {
+        check();
         if (msg == null || msg.isEmpty())
         {
             return;
@@ -137,6 +163,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
     @Override
     public void error(Exception e)
     {
+        check();
         if (e == null)
         {
             return;
@@ -158,6 +185,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
     @Override
     public void error(Exception e, String msg)
     {
+        check();
         if (msg == null || msg.isEmpty() || e == null)
         {
             return;
@@ -180,6 +208,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
     @Override
     public void registerLogger(Logger logger, String name)
     {
+        check();
         checkNotNull(logger, "Logger cannot be null!");
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
@@ -192,6 +221,7 @@ public class CommonLoggingDistributor implements LoggingDistributor
     @Override
     public void removeLogger(String name)
     {
+        check();
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         this.loggers.remove(name);

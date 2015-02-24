@@ -46,6 +46,7 @@ import com.voxelplugineering.voxelsniper.api.event.EventHandler;
 import com.voxelplugineering.voxelsniper.api.event.EventPriority;
 import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy;
 import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
+import com.voxelplugineering.voxelsniper.api.service.AbstractService;
 import com.voxelplugineering.voxelsniper.event.DeadEvent;
 import com.voxelplugineering.voxelsniper.event.Event;
 
@@ -57,11 +58,12 @@ import com.voxelplugineering.voxelsniper.event.Event;
  * This class is safe for concurrent use.
  * </p>
  */
-public class AsyncEventBus implements EventBus
+public class AsyncEventBus extends AbstractService implements EventBus
 {
 
-    private final ListeningExecutorService executor;
-    private final Map<Class<? extends Event>, SubscriberList> registry;
+    private ListeningExecutorService executor;
+    private Map<Class<? extends Event>, SubscriberList> registry;
+    private boolean explicitExecutor = false;
 
     /**
      * Creates a new {@link AsyncEventBus}.
@@ -71,8 +73,9 @@ public class AsyncEventBus implements EventBus
      */
     public AsyncEventBus(ExecutorService executorService)
     {
+        super(2);
         this.executor = MoreExecutors.listeningDecorator(executorService);
-        this.registry = new MapMaker().concurrencyLevel(4).makeMap();
+        this.explicitExecutor = true;
     }
 
     /**
@@ -81,25 +84,52 @@ public class AsyncEventBus implements EventBus
      */
     public AsyncEventBus()
     {
-        final String prefix = Gunsmith.getConfiguration().get("eventBusThreadPrefix", String.class).or("AsyncEventBus-executor-");
-        this.executor = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(new ThreadFactory()
-        {
+        super(2);
+    }
 
-            private final ThreadGroup group;
-            private int count = 0;
+    @Override
+    public String getName()
+    {
+        return "eventBus";
+    }
 
-            {
-                this.group = Thread.currentThread().getThreadGroup();
-            }
-
-            @Override
-            public Thread newThread(Runnable r)
-            {
-                Thread thr = new Thread(this.group, r, prefix + this.count++);
-                return thr;
-            }
-        }));
+    @Override
+    protected void init()
+    {
+        Gunsmith.getLogger().info("Initializing EventBus service");
         this.registry = new MapMaker().concurrencyLevel(4).makeMap();
+        if(!this.explicitExecutor)
+        {
+            final String prefix = Gunsmith.getConfiguration().get("eventBusThreadPrefix", String.class).or("AsyncEventBus-executor-");
+            this.executor = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(new ThreadFactory()
+            {
+
+                private final ThreadGroup group;
+                private int count = 0;
+
+                {
+                    this.group = Thread.currentThread().getThreadGroup();
+                }
+
+                @Override
+                public Thread newThread(Runnable r)
+                {
+                    Thread thr = new Thread(this.group, r, prefix + this.count++);
+                    return thr;
+                }
+            }));
+        }
+    }
+
+    @Override
+    protected void destroy()
+    {
+        Gunsmith.getLogger().info("Stopping EventBus service");
+        this.registry = null;
+        if(!this.explicitExecutor)
+        {
+            this.executor = null;
+        }
     }
 
     /**
@@ -108,6 +138,7 @@ public class AsyncEventBus implements EventBus
     @Override
     public void register(Object eventHandler)
     {
+        check();
         Class<?> cls = eventHandler.getClass();
         List<Subscriber> found = Lists.newArrayList();
         for (Method m : cls.getDeclaredMethods())
@@ -163,6 +194,7 @@ public class AsyncEventBus implements EventBus
     @Override
     public void unregister(Object eventHandler)
     {
+        check();
         Class<?> cls = eventHandler.getClass();
         List<Subscriber> found = Lists.newArrayList();
         for (Method m : cls.getDeclaredMethods())
@@ -202,6 +234,7 @@ public class AsyncEventBus implements EventBus
     @Override
     public ListenableFuture<Event> post(Event event)
     {
+        check();
         if (event.getThreadingPolicy() == ThreadingPolicy.ASYNCHRONOUS)
         {
             return postAsync(event);

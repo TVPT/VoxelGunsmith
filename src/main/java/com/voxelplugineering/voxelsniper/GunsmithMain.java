@@ -44,11 +44,23 @@ public class GunsmithMain
         {
             DefaultBrushBuilder.buildBrushes();
             DefaultBrushBuilder.saveAll(new File(args[1]));
+        } else if (args.length == 1 && args[0].equalsIgnoreCase("--testinit"))
+        {
+            System.out.println("Starting init -> stop cycle test.");
+            Gunsmith.getServiceManager().init();
+            try
+            {
+                Thread.sleep(1000);
+            } catch (InterruptedException ignored)
+            {
+            }
+            System.out.println();
+            Gunsmith.getServiceManager().stop();
         } else
         {
-            System.out.println("Usage: java -jar Gunsmith.jar <command> [args]\n\tgenerate <directory>\t: "
-                    + "Generates all default brushes into the given directory.");
+            System.out.println("Usage: java -jar Gunsmith.jar <command> [args]\n"
+                    + "\t--generate <directory>\t: Generates all default brushes into the given directory.\n"
+                    + "\t--testinit\t\t: Performs a full initialization to shutdown cycle.\n");
         }
     }
-
 }

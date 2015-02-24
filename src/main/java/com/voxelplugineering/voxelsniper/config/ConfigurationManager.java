@@ -35,11 +35,12 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.config.Configuration;
+import com.voxelplugineering.voxelsniper.api.service.AbstractService;
 
 /**
  * The configuration storage.
  */
-public class ConfigurationManager implements Configuration
+public class ConfigurationManager extends AbstractService implements Configuration
 {
 
     /**
@@ -56,8 +57,29 @@ public class ConfigurationManager implements Configuration
      */
     public ConfigurationManager()
     {
+        super(1);
+    }
+
+    @Override
+    public String getName()
+    {
+        return "config";
+    }
+
+    @Override
+    protected void init()
+    {
+        Gunsmith.getLogger().info("Initializing Configuration service");
         this.config = Maps.newHashMap();
         this.containers = Maps.newHashMap();
+    }
+
+    @Override
+    protected void destroy()
+    {
+        Gunsmith.getLogger().info("Stopping Configuration service");
+        this.config = null;
+        this.containers = null;
     }
 
     /**
@@ -66,6 +88,7 @@ public class ConfigurationManager implements Configuration
     @Override
     public void set(String name, Object value)
     {
+        check();
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         checkNotNull(value, "Value cannot be null!");
@@ -78,6 +101,7 @@ public class ConfigurationManager implements Configuration
     @Override
     public Optional<Object> get(String name)
     {
+        check();
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         return has(name) ? Optional.of(this.config.get(name)) : Optional.absent();
@@ -89,6 +113,7 @@ public class ConfigurationManager implements Configuration
     @Override
     public <T> Optional<T> get(String name, Class<T> expectedType)
     {
+        check();
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         if (has(name))
@@ -108,6 +133,7 @@ public class ConfigurationManager implements Configuration
     @Override
     public void registerContainer(Class<?> container)
     {
+        check();
         checkNotNull(container, "Container cannot be null!");
         String name = container.getSimpleName();
         if (this.containers.containsKey(name))
@@ -128,7 +154,7 @@ public class ConfigurationManager implements Configuration
                 {
                     Object v = f.get(obj);
                     set(n, v);
-                    Gunsmith.getLogger().info("Set configuration value " + n + " to " + v.toString());
+                    //Gunsmith.getLogger().info("Set configuration value " + n + " to " + v.toString());
                 } catch (IllegalArgumentException e)
                 {
                     Gunsmith.getLogger().error(e, "Error setting configuration value.");
@@ -153,6 +179,7 @@ public class ConfigurationManager implements Configuration
     @Override
     public Optional<Object> getContainer(String containerName)
     {
+        check();
         checkNotNull(containerName, "Name cannot be null!");
         checkArgument(!containerName.isEmpty(), "Name cannot be empty");
         return this.containers.containsKey(containerName) ? Optional.of(this.containers.get(containerName)) : Optional.absent();
@@ -164,6 +191,7 @@ public class ConfigurationManager implements Configuration
     @Override
     public Object[] getContainers()
     {
+        check();
         Set<Entry<String, Object>> entries = this.containers.entrySet();
         Object[] containers = new Object[entries.size()];
         int i = 0;
@@ -180,6 +208,7 @@ public class ConfigurationManager implements Configuration
     @Override
     public boolean has(String name)
     {
+        check();
         return this.config.containsKey(name);
     }
 

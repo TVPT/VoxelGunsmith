@@ -1,632 +1,464 @@
-/*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 The Voxel Plugineering Team
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
 package com.voxelplugineering.voxelsniper;
 
-import java.io.File;
-import java.io.IOException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.concurrent.ExecutorService;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.alias.AliasHandler;
-import com.voxelplugineering.voxelsniper.alias.AliasSaveTask;
 import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
-import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
+import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.api.config.Configuration;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
-import com.voxelplugineering.voxelsniper.api.logging.Logger;
+import com.voxelplugineering.voxelsniper.api.expansion.Expansion;
+import com.voxelplugineering.voxelsniper.api.expansion.ExpansionManager;
 import com.voxelplugineering.voxelsniper.api.logging.LoggingDistributor;
-import com.voxelplugineering.voxelsniper.api.permissions.PermissionProxy;
-import com.voxelplugineering.voxelsniper.api.platform.PlatformProvider;
-import com.voxelplugineering.voxelsniper.api.platform.PlatformProxy;
-import com.voxelplugineering.voxelsniper.api.registry.BiomeRegistry;
-import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
-import com.voxelplugineering.voxelsniper.api.registry.PlayerRegistry;
-import com.voxelplugineering.voxelsniper.api.registry.WorldRegistry;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
-import com.voxelplugineering.voxelsniper.api.service.scheduler.Scheduler;
+import com.voxelplugineering.voxelsniper.api.service.Service;
+import com.voxelplugineering.voxelsniper.api.service.ServiceManager;
+import com.voxelplugineering.voxelsniper.api.service.ServiceProvider;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormatProxy;
-import com.voxelplugineering.voxelsniper.api.world.queue.OfflineUndoHandler;
-import com.voxelplugineering.voxelsniper.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
 import com.voxelplugineering.voxelsniper.config.ConfigurationManager;
-import com.voxelplugineering.voxelsniper.config.JsonConfigurationLoader;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.event.bus.AsyncEventBus;
 import com.voxelplugineering.voxelsniper.event.handler.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.logging.CommonLoggingDistributor;
-import com.voxelplugineering.voxelsniper.registry.vsl.ArgumentParsers;
-import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSource;
-import com.voxelplugineering.voxelsniper.util.AnnotationHelper;
-import com.voxelplugineering.voxelsniper.util.defaults.DefaultAliasBuilder;
-import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueTask;
-import com.voxelplugineering.voxelsniper.world.queue.CommonOfflineUndoHandler;
+import com.voxelplugineering.voxelsniper.util.Pair;
 
-/**
- * The Core of VoxelGunsmith, provides access to handlers and validates
- * initialization is done completely and correctly.
- */
-public final class Gunsmith
+public class Gunsmith implements ServiceManager, ExpansionManager
 {
 
-    private static BrushManager globalBrushManager;
-    private static DataSourceProvider defaultBrushLoader;
-    private static CommandHandler commandHandler;
-    private static CommonEventHandler defaultEventHandler;
-    private static EventBus eventBus;
-    static Configuration configuration;
-    static LoggingDistributor logDistributor;
-    private static AliasHandler globalAliasRegistries;
-    private static ExecutorService eventBusExecutor;
-    private static PlatformProxy platformProxy;
-    private static Thread mainThread;
-    private static ClassLoader classloader;
-    private static MaterialRegistry<?> defaultMaterialRegistry;
-    private static WorldRegistry<?> worldRegistry;
-    private static PermissionProxy permissionsProxy;
-    private static PlayerRegistry<?> sniperRegistry;
-    private static Scheduler schedulerProxy;
-    private static BiomeRegistry<?> biomeRegistry;
-    private static File dataFolder;
-    private static AliasSaveTask aliasTask;
-    private static TextFormatProxy formatProxy;
-    private static OfflineUndoHandler offlineUndo;
+    // BEGIN static accessors
 
-    /**
-     * The initialization state of Gunsmith.
-     */
-    private static boolean isPluginEnabled = false;
-
-    /**
-     * Gets the instance of the implementation of IPlatformProxy.
-     * 
-     * @return The instance of the implementation of IPlatformProxy
-     */
-    public static PlatformProxy getPlatformProxy()
+    public static ServiceManager getServiceManager()
     {
-        return platformProxy;
+        return Holder.INSTANCE;
     }
 
-    /**
-     * Returns the initialization state of Gunsmith.
-     * 
-     * @return the initialization state
-     */
-    public static boolean isEnabled()
+    public static ExpansionManager getExpansionManager()
     {
-        return isPluginEnabled;
+        return Holder.INSTANCE;
+    }
+    
+    public static LoggingDistributor getLogger()
+    {
+        return (LoggingDistributor) Holder.INSTANCE.getService("logger").orNull();
     }
 
-    /**
-     * Gets the instance of the implementation of IBrushLoader.
-     * 
-     * @return The instance of the implementation of IBrushLoader
-     */
-    public static DataSourceProvider getDefaultBrushLoader()
-    {
-        return defaultBrushLoader;
-    }
-
-    /**
-     * Gets the instance of the implementation of IBrushLoader.
-     * 
-     * @return The instance of the implementation of IBrushLoader
-     */
-    public static BrushManager getGlobalBrushManager()
-    {
-        return globalBrushManager;
-    }
-
-    /**
-     * Gets the instance of the implementation of EventBus.
-     * 
-     * @return The instance of the implementation of EventBus
-     */
-    public static EventBus getEventBus()
-    {
-        return eventBus;
-    }
-
-    /**
-     * Gets the instance of the implementation of CommandHandler.
-     * 
-     * @return The instance of the implementation of CommandHandler
-     */
-    public static CommandHandler getCommandHandler()
-    {
-        return commandHandler;
-    }
-
-    /**
-     * Gets the instance of the implementation of CommonEventHandler.
-     * 
-     * @return The instance of the implementation of CommonEventHandler
-     */
-    public static CommonEventHandler getDefaultEventHandler()
-    {
-        return defaultEventHandler;
-    }
-
-    /**
-     * Gets the instance of the implementation of IConfiguration.
-     * 
-     * @return The instance of the implementation of IConfiguration
-     */
     public static Configuration getConfiguration()
     {
-        if (configuration == null)
-        {
-            DefaultSetupProxy.setupConfiguration();
-        }
-        return configuration;
+        return (Configuration) Holder.INSTANCE.getService("config").orNull();
     }
 
-    /**
-     * Returns the global logger for Gunsmith.
-     * 
-     * @return the logger
-     */
-    public static Logger getLogger()
-    {
-        if (logDistributor == null)
-        {
-            DefaultSetupProxy.setupLogger();
-        }
-        return logDistributor;
-    }
-
-    /**
-     * Returns the logging distribution manager for Gunsmith.
-     * 
-     * @return the logging distributor
-     */
-    public static LoggingDistributor getLoggingDistributor()
-    {
-        return logDistributor;
-    }
-
-    /**
-     * Returns the global alias handler.
-     * 
-     * @return the global alias handler
-     */
-    public static AliasHandler getGlobalAliasHandler()
-    {
-        return globalAliasRegistries;
-    }
-
-    /**
-     * Returns the main execution thread.
-     * 
-     * @return The main thread
-     */
-    public static Thread getMainThread()
-    {
-        return mainThread;
-    }
-
-    /**
-     * Returns the base folder for VoxelSniper data
-     * 
-     * @return The data folder
-     */
-    public static File getDataFolder()
-    {
-        return dataFolder;
-    }
-
-    /**
-     * The classloader Gunsmith was loaded with.
-     * 
-     * @return The classloader
-     */
-    public static ClassLoader getClassLoader()
-    {
-        return classloader;
-    }
-
-    /**
-     * Returns the default material registry.
-     * 
-     * @param <T> The material type
-     * @return The default material registry
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> MaterialRegistry<T> getDefaultMaterialRegistry()
-    {
-        return (MaterialRegistry<T>) defaultMaterialRegistry;
-    }
-
-    /**
-     * Returns the world registry.
-     * 
-     * @param <T> The world type
-     * @return The world registry
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> WorldRegistry<T> getWorldRegistry()
-    {
-        return (WorldRegistry<T>) worldRegistry;
-    }
-
-    /**
-     * Returns the permissions proxy.
-     * 
-     * @return The permissions proxy
-     */
-    public static PermissionProxy getPermissionsProxy()
-    {
-        return permissionsProxy;
-    }
-
-    /**
-     * Returns the player registry.
-     * 
-     * @param <T> The player type
-     * @return The player registry
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> PlayerRegistry<T> getPlayerRegistry()
-    {
-        return (PlayerRegistry<T>) sniperRegistry;
-    }
-
-    /**
-     * Returns the scheduler proxy.
-     * 
-     * @return The scheduler
-     */
-    public static Scheduler getScheduler()
-    {
-        return schedulerProxy;
-    }
-
-    /**
-     * Returns the biome registry.
-     * 
-     * @param <T> The biome type
-     * @return The biome registry
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> BiomeRegistry<T> getBiomeRegistry()
-    {
-        return (BiomeRegistry<T>) biomeRegistry;
-    }
-
-    /**
-     * Gets the alias save handler.
-     * 
-     * @return The alias save handler
-     */
-    public static AliasSaveTask getAliasSaveHandler()
-    {
-        return aliasTask;
-    }
-
-    /**
-     * Gets the text format proxy.
-     * 
-     * @return The format proxy
-     */
     public static TextFormatProxy getTextFormatProxy()
     {
-        if (formatProxy == null)
+        return (TextFormatProxy) Holder.INSTANCE.getService("formatProxy").orNull();
+    }
+
+    private static class Holder
+    {
+
+        private static final Gunsmith INSTANCE = new Gunsmith();
+    }
+    
+    private Thread mainThread;
+    private ClassLoader classloader;
+
+    private Gunsmith()
+    {
+        this.mainThread = Thread.currentThread();
+        this.classloader = Gunsmith.class.getClassLoader();
+        initServiceManager();
+        initExpansionManager();
+    }
+
+    // BEGIN ServiceManager
+
+    private enum State
+    {
+        STOPPED, STARTING_REGISTRATION, STARTING_BUILDING, STARTING_INITIALIZING, RUNNING, STOPPING;
+    }
+
+    private Map<ServiceProvider.Type, List<ServiceProvider>> providers;
+    private Map<String, List<Pair<Object, Method>>> initHooks;
+    private Map<String, Service> services;
+    private List<String> stoppedServices;
+    private State state;
+
+    private void initServiceManager()
+    {
+        this.providers = new EnumMap<ServiceProvider.Type, List<ServiceProvider>>(ServiceProvider.Type.class);
+        this.stoppedServices = Lists.newArrayList();
+        this.state = State.STOPPED;
+        this.services = Maps.newHashMap();
+        this.initHooks = Maps.newHashMap();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void init()
+    {
+        if (this.state != State.STOPPED)
         {
-            formatProxy = new TextFormatProxy.TrivialTextFormatProxy();
+            throw new IllegalStateException();
         }
-        return formatProxy;
-    }
-
-    /**
-     * Gets the {@link OfflineUndoHandler}. This handles the undo queues for all
-     * disconnected players until invalidated according to the individual
-     * handler's policy.
-     * 
-     * @return The undo handler
-     */
-    public static OfflineUndoHandler getOfflineUndoHandler()
-    {
-        return offlineUndo;
-    }
-
-    /**
-     * Should be called at the start of the initialization process. Sets up
-     * default states before the specific implementation registers its
-     * overrides.
-     * 
-     * @param base The root data folder for Gunsmith's data
-     * @param provider The platform's provider
-     */
-    public static void beginInit(File base, PlatformProvider provider)
-    {
-        check();
-        dataFolder = base;
-        // Create standard log distributor
-        DefaultSetupProxy.setupLogger();
-        // System.setProperty("voxel.log.location", base.getAbsolutePath());
-        // File config = new File(base.getAbsolutePath(), "log4j2.xml");
-        // System.out.println("log4j config: " + config.getAbsolutePath());
-        // System.setProperty("log4j.configurationFile",
-        // config.getAbsolutePath());
-        // logDistributor.registerLogger(new
-        // Log4jLogger(LogManager.getLogger(Gunsmith.class)), "log4j");
-
-        // TODO setup log4j logging properly
-
-        getLogger().info(
-                "Starting Gunsmith initialization process. ("
-                        + new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z").format(new Date(System.currentTimeMillis())) + ")");
-
-        // The Text Format Proxy needs to be set early so values loaded to
-        // configuration from the default set are correctly converted.
-        formatProxy = provider.getFormatProxy();
-        getLogger().info("Set format proxy to " + formatProxy.getClass().getName());
-
-        // Create the eventBus for all Gunsmith events
-        eventBus = new AsyncEventBus();
-
-        defaultEventHandler = new CommonEventHandler();
-        eventBus.register(defaultEventHandler);
-        // default event handler is registered here so that if a plugin wishes
-        // it can unregister the
-        // event handler and register its own in its place
-
-        DefaultSetupProxy.setupConfiguration();
-        // configuration is also setup here so that any values can be
-        // overwritten from the specific impl
-
-        globalAliasRegistries = new AliasHandler(new AliasOwner.GunsmithAliasOwner());
-        globalAliasRegistries.registerTarget("brush");
-
-        mainThread = Thread.currentThread();
-        classloader = Gunsmith.class.getClassLoader();
-
-        Gunsmith.getLoggingDistributor().registerLogger(provider.getLogger(), provider.getLoggerName());
-
-        platformProxy = provider.getPlatformProxy();
-        checkRef(platformProxy);
-        platformProxy.getDataFolder().mkdirs();
-
-        provider.registerConfiguration();
-
-        defaultMaterialRegistry = provider.getDefaultMaterialRegistry();
-        checkRef(defaultMaterialRegistry);
-
-        worldRegistry = provider.getWorldRegistry();
-        checkRef(worldRegistry);
-
-        permissionsProxy = provider.getPermissionProxy();
-        checkRef(permissionsProxy);
-
-        sniperRegistry = provider.getSniperRegistry();
-        checkRef(sniperRegistry);
-
-        provider.registerEventProxies();
-
-        defaultBrushLoader = provider.getDefaultBrushLoader();
-        checkRef(defaultBrushLoader);
-
-        globalBrushManager = provider.getGlobalBrushManager();
-        checkRef(globalBrushManager);
-
-        commandHandler = provider.getCommandHandler();
-        checkRef(commandHandler);
-
-        schedulerProxy = provider.getSchedulerProxy();
-        checkRef(schedulerProxy);
-
-        biomeRegistry = provider.getBiomeRegistry();
-
-        ArgumentParsers.init();
-
-        offlineUndo = new CommonOfflineUndoHandler();
-
-        File config = new File(platformProxy.getDataFolder(), "VoxelSniperConfiguration.json");
-        if (config.exists())
+        synchronized (this.services)
         {
-            try
-            {
-                JsonConfigurationLoader.load(config, configuration, "VoxelSniperConfiguration");
-            } catch (IllegalAccessException e)
-            {
-                getLogger().error(e, "Error loading configuration");
-            } catch (IOException e)
-            {
-                getLogger().error(e, "Error loading configuration");
-            }
-        } else
+            this.services.clear();
+        }
+        this.stoppedServices.clear();
+        this.providers.clear();
+        registerServiceProvider(new CoreServiceProvider());
+        this.state = State.STARTING_REGISTRATION;
+        System.out.println("Starting Gunsmith initialization process. ("
+                + new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z").format(new Date(System.currentTimeMillis())) + ")");
+
+        // load expansions
+
+        synchronized (this.expansions)
         {
-            try
+            for (Expansion ex : this.expansions)
             {
-                getLogger().info("Creating new user configuration file: " + config.getAbsolutePath());
-                JsonConfigurationLoader.save(config, configuration, "VoxelSniperConfiguration");
-            } catch (InstantiationException e)
-            {
-                getLogger().error(e, "Error saving configuration");
-            } catch (IllegalAccessException e)
-            {
-                getLogger().error(e, "Error saving configuration");
-            } catch (IOException e)
-            {
-                getLogger().error(e, "Error saving configuration");
+                ex.init();
             }
         }
 
-        aliasTask = new AliasSaveTask();
-
-        File globalAliases = new File(platformProxy.getDataFolder(), "aliases.json");
-        JsonDataSource data = new JsonDataSource(globalAliases);
-        if (globalAliases.exists())
+        for (ServiceProvider.Type type : this.providers.keySet())
         {
-            try
+            for (ServiceProvider provider : this.providers.get(type))
             {
-                data.read(globalAliasRegistries);
-            } catch (IOException e)
-            {
-                getLogger().error(e, "Error loading global aliases");
+                provider.registerNewServices(this);
             }
-        } else
-        {
-            DefaultAliasBuilder.loadDefaultAliases(globalAliasRegistries);
-            aliasTask.addDirty(globalAliasRegistries);
         }
 
-        schedulerProxy.startSynchronousTask(new ChangeQueueTask(), 100);
-        schedulerProxy.startSynchronousTask(aliasTask, 30000);
-
-        getLogger().info("Gunsmith initialization finalized.");
-        isPluginEnabled = true;
-
-    }
-
-    /**
-     * Checks that Gunsmith is still in the initialization phase.
-     */
-    private static void check()
-    {
-        if (isPluginEnabled)
+        this.state = State.STARTING_BUILDING;
+        synchronized (this.services)
         {
-            throw new IllegalStateException("VoxelSniper is already enabled!");
-        }
-    }
-
-    /**
-     * Checks if a reference is null and throws a state exception if it is.
-     * 
-     * @param ref The reference to check
-     */
-    private static void checkRef(Object ref)
-    {
-        if (ref == null)
-        {
-            isPluginEnabled = false;
-            throw new IllegalStateException("VoxelSniper was not properly setup while loading");
-        }
-    }
-
-    /**
-     * Stops Gunsmith and dereferences all handlers and managers.
-     */
-    public static void stop()
-    {
-        if (!isPluginEnabled)
-        {
-            throw new IllegalStateException("VoxelSniper has not been enabled yet, cannot stop!");
-        }
-
-        File globalAliases = new File(platformProxy.getDataFolder(), "aliases.json");
-        JsonDataSource data = new JsonDataSource(globalAliases);
-
-        try
-        {
-            if (!globalAliases.exists())
+            // search for builders in the order of first core, then plaform,
+            // then expansions
+            for (ServiceProvider provider : this.providers.get(ServiceProvider.Type.CORE))
             {
-                globalAliases.createNewFile();
+                detectBuilders(provider);
             }
-            data.write(getGlobalAliasHandler());
-        } catch (IOException e)
-        {
-            getLogger().error(e, "Error saving global aliases");
-        }
-
-        // save all player's personal aliases
-        for (Player player : sniperRegistry.getAllPlayers())
-        {
-            File playerFolder = new File(Gunsmith.platformProxy.getDataFolder(), "players/" + player.getUniqueId().toString());
-            File aliases = new File(playerFolder, "aliases.json");
-            JsonDataSource playerData = new JsonDataSource(aliases);
-
-            try
+            if (this.providers.containsKey(ServiceProvider.Type.PLATFORM))
             {
-                if (aliases.exists())
+                for (ServiceProvider provider : this.providers.get(ServiceProvider.Type.PLATFORM))
                 {
-                    aliases.createNewFile();
+                    detectBuilders(provider);
                 }
-                playerData.write(player.getPersonalAliasHandler());
-            } catch (IOException e)
-            {
-                Gunsmith.getLogger().error(e, "Error saving player aliases!");
             }
-        }
+            if (this.providers.containsKey(ServiceProvider.Type.EXPANSION))
+            {
+                for (ServiceProvider provider : this.providers.get(ServiceProvider.Type.EXPANSION))
+                {
+                    detectBuilders(provider);
+                }
+            }
 
-        if (eventBusExecutor != null)
-        {
-            eventBusExecutor.shutdownNow();
-            eventBusExecutor = null;
+            this.state = State.STARTING_INITIALIZING;
+            List<Service> toInit = Lists.newArrayList();
+            for (String name : this.services.keySet())
+            {
+                toInit.add(this.services.get(name));
+            }
+            Collections.sort(toInit, new Comparator<Service>()
+            {
+                @Override
+                public int compare(Service o1, Service o2)
+                {
+                    return Integer.signum(o1.getPriority()-o2.getPriority());
+                }
+            });
+            for(Service service: toInit)
+            {
+                service.start();
+                if(this.initHooks.containsKey(service.getName()))
+                {
+                    for(Pair<Object, Method> hook: this.initHooks.get(service.getName()))
+                    {
+                        try
+                        {
+                            hook.getValue().invoke(hook.getKey(), service);
+                        }
+                        catch(Exception e)
+                        {
+                            System.err.println("Error calling init hook for " + service.getName() + " from " + hook.getValue().toGenericString());
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+            if(!this.stoppedServices.isEmpty())
+            {
+                String unbuilt = "";
+                for(String stopped: this.stoppedServices)
+                {
+                    unbuilt += " " + stopped;
+                }
+                getLogger().warn("Finished initialization process with the following services unbuilt:" + unbuilt);
+            }
+            
+            this.state = State.RUNNING;
         }
-
-        isPluginEnabled = false;
-        globalBrushManager = null;
-        defaultBrushLoader = null;
-        commandHandler = null;
-        defaultEventHandler = null;
-        eventBus = null;
-        configuration = null;
-        logDistributor = null;
-        globalAliasRegistries = null;
-        platformProxy = null;
-        mainThread = null;
-        classloader = null;
-        defaultMaterialRegistry = null;
-        worldRegistry = null;
-        permissionsProxy = null;
-        sniperRegistry = null;
-        if (schedulerProxy != null)
-        {
-            schedulerProxy.stopAllTasks();
-        }
-        schedulerProxy = null;
-        aliasTask = null;
-        formatProxy = null;
-        AnnotationHelper.clean();
-        offlineUndo = null;
     }
 
-    private static class DefaultSetupProxy
+    private void detectBuilders(ServiceProvider provider)
+    {
+        for (Method m : provider.getClass().getMethods())
+        {
+            if (m.isAnnotationPresent(ServiceProvider.Builder.class) && validate(m))
+            {
+                ServiceProvider.Builder builder = m.getAnnotation(ServiceProvider.Builder.class);
+                if (this.stoppedServices.contains(builder.value()) || this.services.containsKey(builder.value()))
+                {
+                    try
+                    {
+                        this.services.put(builder.value(), (Service) m.invoke(provider, new Object[0]));
+                        this.stoppedServices.remove(builder.value());
+                    } catch (Exception e)
+                    {
+                        System.err.println("Failed to build " + builder.value() + " from " + m.toGenericString());
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        for (Method m : provider.getClass().getMethods())
+        {
+            if (m.isAnnotationPresent(ServiceProvider.InitHook.class) && m.getParameterTypes().length == 1 && m.getParameterTypes()[0] == Service.class)
+            {
+                ServiceProvider.InitHook hook = m.getAnnotation(ServiceProvider.InitHook.class);
+                List<Pair<Object, Method>> target = null;
+                if(this.initHooks.containsKey(hook.value()))
+                {
+                    target = this.initHooks.get(hook.value());
+                }
+                else
+                {
+                    this.initHooks.put(hook.value(), target = Lists.newArrayList());
+                }
+                target.add(new Pair<Object, Method>(provider, m));
+            }
+        }
+    }
+    
+    private boolean validate(Method m)
+    {
+        if (m.getParameterTypes().length == 0 && Service.class.isAssignableFrom(m.getReturnType()))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void stop()
+    {
+        if (this.state != State.RUNNING)
+        {
+            throw new IllegalStateException();
+        }
+        synchronized (this.services)
+        {
+            this.state = State.STOPPING;
+            List<Service> toStop = Lists.newArrayList();
+            for (String name : this.services.keySet())
+            {
+                toStop.add(this.services.get(name));
+            }
+            Collections.sort(toStop, new Comparator<Service>()
+            {
+                @Override
+                public int compare(Service o1, Service o2)
+                {
+                    return Integer.signum(o2.getPriority()-o1.getPriority());
+                }
+            });
+            for(Service service: toStop)
+            {
+                service.stop();
+                this.stoppedServices.add(service.getName());
+            }
+            this.services.clear();
+
+            this.state = State.STOPPED;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerServiceProvider(ServiceProvider provider)
+    {
+        List<ServiceProvider> target = null;
+        if (this.providers.containsKey(provider.getType()))
+        {
+            target = this.providers.get(provider.getType());
+        } else
+        {
+            this.providers.put(provider.getType(), target = Lists.newArrayList());
+        }
+        if (!target.contains(provider))
+        {
+            target.add(provider);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerService(String service)
+    {
+        if (this.state != State.STARTING_REGISTRATION)
+        {
+            throw new IllegalStateException();
+        }
+        if (!this.stoppedServices.contains(service))
+        {
+            this.stoppedServices.add(service);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasService(String service)
+    {
+        return this.services.containsKey(service) && this.services.get(service).isStarted();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Service> getService(String service)
+    {
+        return Optional.fromNullable(this.services.get(service));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void stopService(Service service)
+    {
+        synchronized (this.services)
+        {
+            service.stop();
+            this.services.remove(service.getName());
+            this.stoppedServices.add(service.getName());
+        }
+    }
+
+    //BEGIN core service provider
+    
+    private class CoreServiceProvider extends ServiceProvider
     {
 
-        public static void setupConfiguration()
+        public CoreServiceProvider()
         {
-            if (configuration != null)
-            {
-                return;
-            }
-            configuration = new ConfigurationManager();
+            super(ServiceProvider.Type.CORE);
+        }
+
+        @Override
+        public void registerNewServices(ServiceManager manager)
+        {
+            manager.registerService("logger");
+            manager.registerService("config");
+            manager.registerService("formatProxy");
+            manager.registerService("eventBus");
+            manager.registerService("aliasRegistry");
+        }
+
+        @Builder("logger")
+        public Service buildLogger()
+        {
+            return new CommonLoggingDistributor();
+        }
+
+        @Builder("config")
+        public Service buildConfig()
+        {
+            return new ConfigurationManager();
+        }
+
+        @Builder("formatProxy")
+        public Service buildFormatProxy()
+        {
+            return new TextFormatProxy.TrivialTextFormatProxy();
+        }
+
+        @Builder("eventBus")
+        public Service buildEventBus()
+        {
+            return new AsyncEventBus();
+        }
+        
+        @Builder("aliasRegistry")
+        public Service buildAliasRegistry()
+        {
+            return new AliasHandler(new AliasOwner.GunsmithAliasOwner());
+        }
+
+        @InitHook("eventBus")
+        public void initEventBus(Service service)
+        {
+            CommonEventHandler defaultEventHandler = new CommonEventHandler();
+            ((EventBus) service).register(defaultEventHandler);
+        }
+
+        @InitHook("config")
+        public void initConfig(Service service)
+        {
+            Configuration configuration = (Configuration) service;
             configuration.registerContainer(BaseConfiguration.class);
             configuration.registerContainer(VoxelSniperConfiguration.class);
         }
-
-        public static void setupLogger()
+        
+        @InitHook("aliasRegistry")
+        public void initAlias(Service service)
         {
-            if (logDistributor != null)
-            {
-                return;
-            }
-            logDistributor = new CommonLoggingDistributor();
+            ((AliasHandler) service).registerTarget("brush");
         }
 
+    }
+
+    // BEGIN ExpansionManager
+    private List<Expansion> expansions;
+
+    private void initExpansionManager()
+    {
+        this.expansions = Lists.newArrayList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerExpansion(Expansion ex)
+    {
+        synchronized (this.expansions)
+        {
+            if (!this.expansions.contains(ex))
+            {
+                this.expansions.add(ex);
+            }
+        }
     }
 
 }

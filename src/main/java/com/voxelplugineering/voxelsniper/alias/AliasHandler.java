@@ -32,8 +32,10 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
 import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.api.service.AbstractService;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
 import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
@@ -41,7 +43,7 @@ import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 /**
  * A handler for targeted {@link AliasRegistry}s.
  */
-public class AliasHandler implements DataSerializable
+public class AliasHandler extends AbstractService implements DataSerializable
 {
 
     private AliasHandler parent;
@@ -66,10 +68,29 @@ public class AliasHandler implements DataSerializable
      */
     public AliasHandler(AliasOwner owner, AliasHandler parent)
     {
+        super(3);
         checkNotNull(owner);
         this.parent = parent;
-        this.aliasTargets = Maps.newHashMap();
         this.owner = owner;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getName()
+    {
+        return "aliasRegistry";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void init()
+    {
+        Gunsmith.getLogger().info("Initializing AliasRegistry service");
+        this.aliasTargets = Maps.newHashMap();
         if (parent != null)
         {
             for (String target : this.parent.getValidTargets())
@@ -77,6 +98,16 @@ public class AliasHandler implements DataSerializable
                 registerTarget(target);
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void destroy()
+    {
+        Gunsmith.getLogger().info("Stopping AliasRegistry service");
+        this.aliasTargets = null;
     }
 
     /**
