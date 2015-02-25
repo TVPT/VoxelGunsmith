@@ -24,9 +24,9 @@
 package com.voxelplugineering.voxelsniper.event;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy.ASYNCHRONOUS;
 
 import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy;
-import static com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy.ASYNCHRONOUS;
 
 /**
  * An event which wraps another event to indicate that it was 'dead'. An event

@@ -24,8 +24,8 @@
 package com.voxelplugineering.voxelsniper.api.alias;
 
 import java.util.Collection;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;

@@ -110,7 +110,7 @@ public final class SniperStats extends Metrics
     @Override
     public File getConfigFile()
     {
-        return Gunsmith.getPlatformProxy().getMetricsFile();
+        return null;// Gunsmith.getPlatformProxy().getMetricsFile();
     }
 
     /**

@@ -195,7 +195,7 @@ public class CommonSchematicLoader implements SchematicLoader
             CompoundTag material = (CompoundTag) tag;
             short key = material.getChildTag("Key", ShortTag.class).get().getValue();
             String mat = material.getChildTag("Name", StringTag.class).get().getValue();
-            materialDict.put(key, Gunsmith.getDefaultMaterialRegistry().getMaterial(mat).or(Gunsmith.getDefaultMaterialRegistry().getAirMaterial()));
+            materialDict.put(key, Gunsmith.getMaterialRegistry().getMaterial(mat).or(Gunsmith.getMaterialRegistry().getAirMaterial()));
         }
         // create region and return
         NamedWorldSection region;

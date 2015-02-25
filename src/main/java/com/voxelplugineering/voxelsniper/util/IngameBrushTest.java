@@ -153,7 +153,7 @@ abstract class BrushTest
 
     public boolean run(Player player) throws Exception
     {
-        player.sendMessage("Starting " + name + " test");
+        player.sendMessage("Starting " + this.name + " test");
         Location target = player.getLocation().add(5, 0, 0);
         execute(player, target);
         player.sendMessage("Waiting on changes.");

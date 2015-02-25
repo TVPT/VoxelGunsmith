@@ -25,13 +25,13 @@ package com.voxelplugineering.voxelsniper.api.alias;
 
 import java.io.File;
 
-import com.voxelplugineering.voxelsniper.Gunsmith;
-
 /**
  * An owner of an alias handler.
  */
 public interface AliasOwner
 {
+
+    //TODO persistence
 
     /**
      * Gets the data file for alias storage.
@@ -52,7 +52,7 @@ public interface AliasOwner
         @Override
         public File getAliasFile()
         {
-            return new File(Gunsmith.getDataFolder(), "aliases.json");
+            return null;// TODO persistence new File(Gunsmith.getDataFolder(), "aliases.json");
         }
 
     }

@@ -29,11 +29,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.commands.CommandRegistrar;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.service.AbstractService;
 
 /**
  * A handler for commands which handles registration of command handlers and
@@ -42,31 +44,53 @@ import com.voxelplugineering.voxelsniper.api.entity.living.Player;
  * <p>
  * TODO: correctly identify and handle commands with overlapping aliases.
  */
-public class CommandHandler
+public class CommandHandler extends AbstractService
 {
 
-    /**
-     * The message sent to players when they lack the required permission for a
-     * command.
-     */
-    private String permissionMessage = Gunsmith.getConfiguration().get("permissionsRequiredMessage", String.class)
-            .or("You lack the required permission for this command.");
+    private String permissionMessage;
 
-    /**
-     * A Map of commands with their primary alias as the key.
-     */
-    private final Map<String, Command> commands;
-    /**
-     * The registrar of the underlying system for registering commands.
-     */
-    private CommandRegistrar registrar;
+    private Map<String, Command> commands;
+    private CommandRegistrar registrar = null;
 
     /**
      * Constructs a command handler
      */
     public CommandHandler()
     {
+        super(10);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getName()
+    {
+        return "commandHandler";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void init()
+    {
+        this.permissionMessage =
+                Gunsmith.getConfiguration().get("permissionsRequiredMessage", String.class).or("You lack the required permission for this command.");
         this.commands = Maps.newHashMap();
+        Gunsmith.getLogger().info("Initialized CommandHandler service");
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void destroy()
+    {
+        this.permissionMessage = null;
+        this.commands = null;
+        Gunsmith.getLogger().info("Stopped CommandHandler service");
     }
 
     /**
@@ -74,10 +98,16 @@ public class CommandHandler
      * 
      * @param registrar the new registrar, cannot be null
      */
-    public void setRegistrar(CommandRegistrar registrar)
+    public synchronized void setRegistrar(CommandRegistrar registrar)
     {
+        check();
         checkNotNull(registrar, "Registrar cannot be null");
         this.registrar = registrar;
+        // Register all existing commands to the registrar
+        for (String name : this.commands.keySet())
+        {
+            this.registrar.registerCommand(this.commands.get(name));
+        }
     }
 
     /**
@@ -86,11 +116,14 @@ public class CommandHandler
      * 
      * @param cmd the new command
      */
-    public void registerCommand(Command cmd)
+    public synchronized void registerCommand(Command cmd)
     {
+        check();
         checkNotNull(cmd, "Cannot register a null command!");
-        checkNotNull(this.registrar, "Cannot register a command without setting the registrar first.");
-        this.registrar.registerCommand(cmd);
+        if (this.registrar != null)
+        {
+            this.registrar.registerCommand(cmd);
+        }
         for (String alias : cmd.getAllAliases())
         {
             this.commands.put(alias, cmd);
@@ -104,8 +137,9 @@ public class CommandHandler
      * @param command the command
      * @param args the command's arguments
      */
-    public void onCommand(CommandSender sender, String command, String[] args)
+    public synchronized void onCommand(CommandSender sender, String command, String[] args)
     {
+        check();
         checkNotNull(sender, "Cannot have a null sniper!");
         checkNotNull(command, "Cannot use a null command!");
         checkNotNull(args, "Command arguments cannot be null!");
@@ -153,6 +187,7 @@ public class CommandHandler
      */
     public void onCommand(Player player, String fullCommand)
     {
+        check();
         checkNotNull(player, "Cannot have a null sniper!");
         checkNotNull(fullCommand, "Cannot use a null command!");
         checkArgument(!fullCommand.isEmpty(), "Command cannot be empty");
@@ -163,11 +198,11 @@ public class CommandHandler
     /**
      * Gets the registrar for this command handler.
      * 
-     * @return The registrar
+     * @return The registrar, if available
      */
-    public CommandRegistrar getRegistrar()
+    public Optional<CommandRegistrar> getRegistrar()
     {
-        return this.registrar;
+        return Optional.fromNullable(this.registrar);
     }
 
 }

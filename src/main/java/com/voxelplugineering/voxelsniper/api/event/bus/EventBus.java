@@ -27,6 +27,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.voxelplugineering.voxelsniper.api.event.EventHandler;
 import com.voxelplugineering.voxelsniper.api.event.EventPriority;
 import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy;
+import com.voxelplugineering.voxelsniper.api.service.Buildable;
 import com.voxelplugineering.voxelsniper.event.DeadEvent;
 import com.voxelplugineering.voxelsniper.event.Event;
 
@@ -82,7 +83,7 @@ import com.voxelplugineering.voxelsniper.event.Event;
  * {@link ThreadingPolicy#ASYNCHRONOUS} will return immediately without waiting.
  * </p>
  */
-public interface EventBus
+public interface EventBus extends Buildable
 {
 
     /**

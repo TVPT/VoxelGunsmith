@@ -55,6 +55,8 @@ import java.util.zip.GZIPOutputStream;
 public abstract class Metrics
 {
 
+    //TODO move to persistence
+
     /**
      * The current revision number
      */
@@ -356,7 +358,7 @@ public abstract class Metrics
      * Enables metrics for the server by setting "opt-out" to false in the
      * config file and starting the metrics task.
      * 
-     * @throws java.io.IOException
+     * @throws java.io.IOException If there is issue loading config
      */
     public void enable() throws IOException
     {
@@ -384,7 +386,7 @@ public abstract class Metrics
      * Disables metrics for the server by setting "opt-out" to true in the
      * config file and canceling the metrics task.
      * 
-     * @throws java.io.IOException
+     * @throws java.io.IOException If there is issue loading config
      */
     public void disable() throws IOException
     {
@@ -590,8 +592,8 @@ public abstract class Metrics
     /**
      * GZip compress a string of bytes
      * 
-     * @param input
-     * @return The gziped string
+     * @param input The input
+     * @return The gziped string The input compressed
      */
     public static byte[] gzip(String input)
     {
@@ -607,13 +609,12 @@ public abstract class Metrics
             e.printStackTrace();
         } finally
         {
-            if (gzos != null)
-                try
-                {
-                    gzos.close();
-                } catch (IOException ignore)
-                {
-                }
+            if (gzos != null) try
+            {
+                gzos.close();
+            } catch (IOException ignore)
+            {
+            }
         }
 
         return baos.toByteArray();

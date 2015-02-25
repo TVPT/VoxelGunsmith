@@ -53,24 +53,18 @@ public class CommonBrushManager implements BrushManager
     /**
      * A map of brushes loaded in this manager.
      */
-    private Map<String, BrushNodeGraph> brushes = Maps.newHashMap();
+    private Map<String, BrushNodeGraph> brushes;
     /**
      * An ordered list of loaders used to load brushes by name.
      */
-    private List<DataSourceProvider> loaders = Lists.newArrayList();
+    private List<DataSourceProvider> loaders;
 
     /**
      * Creates a new CommonBrushManager.
      */
     public CommonBrushManager()
     {
-        if (Gunsmith.getDefaultBrushLoader() != null)
-        {
-            this.loaders.add(Gunsmith.getDefaultBrushLoader());
-        } else
-        {
-            Gunsmith.getLogger().warn("Created Brush Manager before default BrushLoader was set.");
-        }
+        this(null);
     }
 
     /**
@@ -80,8 +74,17 @@ public class CommonBrushManager implements BrushManager
      */
     public CommonBrushManager(BrushManager parent)
     {
-        this();
-        setParent(parent);
+        this.parent = parent;
+        this.brushes = Maps.newHashMap();
+        this.loaders = Lists.newArrayList();
+        if (Gunsmith.getPlatformProxy() != null)
+        {
+            DataSourceProvider loader = Gunsmith.getPlatformProxy().getBrushDataSource();
+            if(loader != null)
+            {
+                this.loaders.add(loader);
+            }
+        }
     }
 
     /**

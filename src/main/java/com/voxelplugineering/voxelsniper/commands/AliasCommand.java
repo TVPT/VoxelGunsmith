@@ -26,7 +26,7 @@ package com.voxelplugineering.voxelsniper.commands;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.alias.AliasHandler;
+import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
@@ -89,7 +89,8 @@ public class AliasCommand extends Command
             String key = arg.substring(0, k).trim();
             String value = arg.substring(k + 1, arg.length()).trim();
             registry.register(key, value);
-            Gunsmith.getAliasSaveHandler().addDirty(alias);
+            //TODO alias save handler
+            //Gunsmith.getAliasSaveHandler().addDirty(alias);
             sniper.sendMessage("Added alias mapping '%s' to '%s'", key, value);
         } else
         {

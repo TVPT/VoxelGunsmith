@@ -94,9 +94,7 @@ public class CommonAliasRegistry implements AliasRegistry
             }
         });
         this.parent = parent;
-        this.caseSensitive = Gunsmith.getConfiguration().get("caseSensitiveAliases", Boolean.class).or(true); // default
-                                                                                                              // to
-                                                                                                              // non-action
+        this.caseSensitive = Gunsmith.getConfiguration().get("caseSensitiveAliases", Boolean.class).or(true);
         this.registryName = name;
     }
 

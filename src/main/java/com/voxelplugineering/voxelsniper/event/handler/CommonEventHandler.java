@@ -23,9 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.event.handler;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.google.common.eventbus.DeadEvent;
 import com.thevoxelbox.vsl.api.variables.VariableScope;
 import com.thevoxelbox.vsl.variables.ParentedVariableScope;
@@ -37,7 +34,6 @@ import com.voxelplugineering.voxelsniper.event.SnipeEvent;
 import com.voxelplugineering.voxelsniper.event.SniperEvent;
 import com.voxelplugineering.voxelsniper.event.SniperEvent.SniperCreateEvent;
 import com.voxelplugineering.voxelsniper.event.SniperEvent.SniperDestroyEvent;
-import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSource;
 import com.voxelplugineering.voxelsniper.util.RayTrace;
 
 /**
@@ -46,8 +42,8 @@ import com.voxelplugineering.voxelsniper.util.RayTrace;
 public class CommonEventHandler
 {
 
-    private final String playerFolderName = Gunsmith.getConfiguration().get("playerDataDirectory", String.class).or("players/");
-    private final String aliasFile = Gunsmith.getConfiguration().get("aliasesFileName", String.class).or("aliases.json");
+    //private final String playerFolderName = Gunsmith.getConfiguration().get("playerDataDirectory", String.class).or("players/");
+    //private final String aliasFile = Gunsmith.getConfiguration().get("aliasesFileName", String.class).or("aliases.json");
     private final String playerSysvar = Gunsmith.getConfiguration().get("playerSysVarName", String.class).or("__PLAYER__");
 
     private final String originVariable = Gunsmith.getConfiguration().get("originVariable", String.class).or("origin");
@@ -77,7 +73,8 @@ public class CommonEventHandler
     public void onPlayerJoin(SniperEvent.SniperCreateEvent event)
     {
         Player player = event.getSniper();
-        File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName + player.getUniqueId().toString());
+        //TODO persistence
+        /*File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName + player.getUniqueId().toString());
         playerFolder.mkdirs();
         File aliases = new File(playerFolder, this.aliasFile);
         JsonDataSource data = new JsonDataSource(aliases);
@@ -90,7 +87,7 @@ public class CommonEventHandler
             {
                 Gunsmith.getLogger().error(e, "Error loading player aliases!");
             }
-        }
+        }*/
         Gunsmith.getOfflineUndoHandler().invalidate(player.getName());
     }
 
@@ -104,7 +101,8 @@ public class CommonEventHandler
     public void onPlayerLeave(SniperEvent.SniperDestroyEvent event)
     {
         Player player = event.getSniper();
-        File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName + player.getUniqueId().toString());
+        // TODO persistence
+        /*File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName + player.getUniqueId().toString());
         playerFolder.mkdirs();
         File aliases = new File(playerFolder, this.aliasFile);
         JsonDataSource data = new JsonDataSource(aliases);
@@ -119,7 +117,7 @@ public class CommonEventHandler
         } catch (IOException e)
         {
             Gunsmith.getLogger().error(e, "Error saving player aliases!");
-        }
+        }*/
 
         Gunsmith.getOfflineUndoHandler().register(player.getName(), player.getUndoHistory());
     }

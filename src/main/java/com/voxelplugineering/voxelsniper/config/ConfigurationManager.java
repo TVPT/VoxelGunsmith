@@ -60,12 +60,18 @@ public class ConfigurationManager extends AbstractService implements Configurati
         super(1);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName()
     {
         return "config";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void init()
     {
@@ -74,6 +80,9 @@ public class ConfigurationManager extends AbstractService implements Configurati
         this.containers = Maps.newHashMap();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void destroy()
     {

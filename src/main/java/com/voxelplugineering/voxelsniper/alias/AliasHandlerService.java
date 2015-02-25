@@ -21,35 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.registry;
+package com.voxelplugineering.voxelsniper.alias;
 
-import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.registry.BiomeRegistry;
+import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
+import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
+import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.api.service.AbstractService;
-import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 
 /**
- * A common biome registry for biomes.
- * 
- * @param <T> The biome type
+ * A service which wraps an {@link AliasHandler}.
  */
-public class CommonBiomeRegistry<T> extends AbstractService implements BiomeRegistry<T>
+public class AliasHandlerService extends AbstractService implements AliasHandler
 {
 
-    private WeakRegistry<T, Biome> registry;
-    private Biome defaultBiome = null;
-    private String defaultBiomeName;
+    private final AliasHandler wrapped;
 
     /**
-     * Creates a new {@link CommonBiomeRegistry}.
+     * Creates a new {@link AliasHandlerService}.
+     * 
+     * @param wrapped The handler to wrap
      */
-    public CommonBiomeRegistry()
+    public AliasHandlerService(AliasHandler wrapped)
     {
-        super(12);
+        super(3);
+        this.wrapped = wrapped;
     }
 
     /**
@@ -58,91 +58,107 @@ public class CommonBiomeRegistry<T> extends AbstractService implements BiomeRegi
     @Override
     public String getName()
     {
-        return "biomeRegistry";
+        return "aliasRegistry";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void init()
+    public void init()
     {
-        this.registry = new WeakRegistry<T, Biome>();
-        this.registry.setCaseSensitiveKeys(false);
-        this.defaultBiomeName = Gunsmith.getConfiguration().get("defaultBiomeName", String.class).or("plains");
-        Gunsmith.getLogger().info("Initialized BiomeRegistry service");
+        this.wrapped.init();
+        Gunsmith.getLogger().info("Initialized AliasRegistry service");
     }
 
     /**
      * {@inheritDoc}
      */
-
     @Override
-    protected void destroy()
+    public void destroy()
     {
-        this.registry = null;
-        this.defaultBiomeName = null;
-        Gunsmith.getLogger().info("Stopped BiomeRegistry service");
+        this.wrapped.destroy();
+        Gunsmith.getLogger().info("Stopping AliasRegistry service");
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Optional<Biome> getBiome(String name)
+    public void fromContainer(DataContainer container)
     {
         check();
-        return this.registry.get(name);
+        this.wrapped.fromContainer(container);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Optional<Biome> getBiome(T biome)
+    public DataContainer toContainer()
     {
         check();
-        return this.registry.get(biome);
+        return this.wrapped.toContainer();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void registerBiome(String name, T object, Biome biome)
+    public boolean exists()
     {
         check();
-        this.registry.register(name, object, biome);
-        if (name.equalsIgnoreCase(this.defaultBiomeName))
-        {
-            this.defaultBiome = biome;
-        }
+        return this.wrapped.exists();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Biome[] getBiomes()
+    public Set<String> getValidTargets()
     {
         check();
-        Set<Map.Entry<T, Biome>> biomeSet = this.registry.getRegisteredValues();
-        Biome[] biomes = new Biome[biomeSet.size()];
-        int i = 0;
-        for (Map.Entry<T, Biome> e : biomeSet)
-        {
-            biomes[i++] = e.getValue();
-        }
-        return biomes;
+        return this.wrapped.getValidTargets();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Biome getDefaultBiome()
+    public AliasOwner getOwner()
     {
-        return this.defaultBiome;
+        check();
+        return this.wrapped.getOwner();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<AliasRegistry> getRegistry(String target)
+    {
+        check();
+        return this.wrapped.getRegistry(target);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasTarget(String target)
+    {
+        check();
+        return this.wrapped.hasTarget(target);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AliasRegistry registerTarget(String string)
+    {
+        check();
+        return this.wrapped.registerTarget(string);
     }
 
 }

@@ -29,6 +29,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.voxelplugineering.voxelsniper.alias.CommonAliasRegistry;
@@ -41,6 +42,18 @@ public class AliasTest
 {
 
     AliasRegistry alias;
+
+    /**
+     * 
+     */
+    @BeforeClass
+    public static void setupGunsmith()
+    {
+        if (!Gunsmith.isEnabled())
+        {
+            Gunsmith.getServiceManager().init();
+        }
+    }
 
     /**
      * Sets up an {@link AliasRegistry} for use during the tests.

@@ -28,6 +28,8 @@ import java.util.concurrent.TimeUnit;
 import com.google.common.base.Optional;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.AbstractService;
 import com.voxelplugineering.voxelsniper.api.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
 
@@ -35,17 +37,46 @@ import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
  * A standard offline undo handler which caches player {@link UndoQueue}s for a
  * period of 60 minutes before discarding.
  */
-public class CommonOfflineUndoHandler implements OfflineUndoHandler
+public class CommonOfflineUndoHandler extends AbstractService implements OfflineUndoHandler
 {
 
-    private final Cache<String, UndoQueue> cache;
+    private Cache<String, UndoQueue> cache;
 
     /**
      * Creates a new {@link CommonOfflineUndoHandler}.
      */
     public CommonOfflineUndoHandler()
     {
+        super(13);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getName()
+    {
+        return "offlineUndoHandler";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void init()
+    {
         this.cache = CacheBuilder.newBuilder().expireAfterAccess(60, TimeUnit.MINUTES).build();
+        Gunsmith.getLogger().info("Initialized OfflineUndoHandler service");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void destroy()
+    {
+        this.cache = null;
+        Gunsmith.getLogger().info("Stopped OfflineUndoHandler service");
     }
 
     /**
@@ -54,6 +85,7 @@ public class CommonOfflineUndoHandler implements OfflineUndoHandler
     @Override
     public void register(String name, UndoQueue undo)
     {
+        check();
         this.cache.put(name, undo);
     }
 
@@ -63,6 +95,7 @@ public class CommonOfflineUndoHandler implements OfflineUndoHandler
     @Override
     public Optional<UndoQueue> get(String name)
     {
+        check();
         return Optional.fromNullable(this.cache.getIfPresent(name));
     }
 
@@ -72,6 +105,7 @@ public class CommonOfflineUndoHandler implements OfflineUndoHandler
     @Override
     public void invalidate(String name)
     {
+        check();
         this.cache.invalidate(name);
     }
 

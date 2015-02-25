@@ -158,7 +158,7 @@ public abstract class AbstractWorld<T> extends WeakWrapper<T> implements World
     @Override
     public MaterialShape getShapeFromWorld(Location origin, Shape shape)
     {
-        MaterialShape mat = new ComplexMaterialShape(shape, Gunsmith.getDefaultMaterialRegistry().getAirMaterial());
+        MaterialShape mat = new ComplexMaterialShape(shape, Gunsmith.getMaterialRegistry().getAirMaterial());
         for (int x = 0; x < shape.getWidth(); x++)
         {
             int ox = x + origin.getFlooredX() - shape.getOrigin().getX();

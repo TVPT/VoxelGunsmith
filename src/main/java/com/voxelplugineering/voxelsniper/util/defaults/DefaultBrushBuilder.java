@@ -255,7 +255,7 @@ public class DefaultBrushBuilder
         }
 
         { // TODO ellipsoid
-            
+
         }
 
         { // TODO entity {type}

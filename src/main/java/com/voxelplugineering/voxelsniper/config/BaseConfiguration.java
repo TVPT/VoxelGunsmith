@@ -39,7 +39,7 @@ public class BaseConfiguration
 
     String playerSysVarName = "__PLAYER__";
     String brushArgumentRegex = "([\\S&&[^\\{]]+)[\\s]*(?:((?:\\{[^\\}]*\\}[\\s]*)+))?";
-    String eventBusThreadPrefix = "AsyncEventBus-executor-";
+    String eventBusThreadPrefix = "VoxelSniperEventBus-";
 
     String originVariable = "origin";
     String yawVariable = "yaw";

@@ -21,26 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api.entity.living;
-
-import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
-import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
-import com.voxelplugineering.voxelsniper.api.brushes.BrushHolder;
-import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
-import com.voxelplugineering.voxelsniper.api.world.queue.ChangeQueueOwner;
+package com.voxelplugineering.voxelsniper.api.service;
 
 /**
- * Representation of a user within Gunsmith. Holds all state information
- * relevant to the user.
+ * Represents something which may be initialized or destroyed independently from
+ * its object constructor.
  */
-public interface Player extends CommandSender, Living, BrushHolder, ChangeQueueOwner, AliasOwner
+public interface Buildable
 {
 
     /**
-     * Returns this sniper's personal alias handler.
-     * 
-     * @return the alias handler
+     * Initialize this object.
      */
-    AliasHandler getPersonalAliasHandler();
+    void init();
+
+    /**
+     * Destroy this object.
+     */
+    void destroy();
+
+    /**
+     * Gets whether this object has been initialized.
+     * 
+     * @return Is initialized
+     */
+    boolean exists();
 
 }

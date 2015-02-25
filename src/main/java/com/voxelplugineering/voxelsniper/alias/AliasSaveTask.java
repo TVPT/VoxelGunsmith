@@ -23,15 +23,16 @@
  */
 package com.voxelplugineering.voxelsniper.alias;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSource;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * A task for saving aliases.

@@ -27,8 +27,10 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.registry.RegistryProvider;
 import com.voxelplugineering.voxelsniper.api.registry.WorldRegistry;
+import com.voxelplugineering.voxelsniper.api.service.AbstractService;
 import com.voxelplugineering.voxelsniper.api.world.World;
 
 /**
@@ -36,10 +38,11 @@ import com.voxelplugineering.voxelsniper.api.world.World;
  * 
  * @param <T> The underlying world type
  */
-public class CommonWorldRegistry<T> implements WorldRegistry<T>
+public class CommonWorldRegistry<T> extends AbstractService implements WorldRegistry<T>
 {
 
-    private final ProvidedWeakRegistry<T, World> registry;
+    private ProvidedWeakRegistry<T, World> registry;
+    private final RegistryProvider<T, World> provider;
 
     /**
      * Creates a new {@link CommonWorldRegistry}.
@@ -48,7 +51,37 @@ public class CommonWorldRegistry<T> implements WorldRegistry<T>
      */
     public CommonWorldRegistry(RegistryProvider<T, World> provider)
     {
-        this.registry = new ProvidedWeakRegistry<T, World>(provider);
+        super(6);
+        this.provider = provider;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getName()
+    {
+        return "worldRegistry";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void init()
+    {
+        this.registry = new ProvidedWeakRegistry<T, World>(this.provider);
+        Gunsmith.getLogger().info("Initialized WorldRegistry service");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void destroy()
+    {
+        this.registry = null;
+        Gunsmith.getLogger().info("Stopped WorldRegistry service");
     }
 
     /**
@@ -57,6 +90,7 @@ public class CommonWorldRegistry<T> implements WorldRegistry<T>
     @Override
     public Optional<World> getWorld(String name)
     {
+        check();
         return this.registry.get(name);
     }
 
@@ -66,6 +100,7 @@ public class CommonWorldRegistry<T> implements WorldRegistry<T>
     @Override
     public Optional<World> getWorld(T world)
     {
+        check();
         return this.registry.get(world);
     }
 
@@ -75,6 +110,7 @@ public class CommonWorldRegistry<T> implements WorldRegistry<T>
     @Override
     public World[] getLoadedWorlds()
     {
+        check();
         Set<Map.Entry<T, World>> worldsSet = this.registry.getRegisteredValues();
         World[] worlds = new World[worldsSet.size()];
         int i = 0;

@@ -21,32 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.registry;
+package com.voxelplugineering.voxelsniper.event.bus;
 
-import com.google.common.base.Optional;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
+import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
 import com.voxelplugineering.voxelsniper.api.service.AbstractService;
-import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.event.Event;
 
 /**
- * A standard material registry for materials.
- * 
- * @param <T> The underlying material type
+ * A service containing an event bus.
  */
-public class CommonMaterialRegistry<T> extends AbstractService implements MaterialRegistry<T>
+public class EventBusService extends AbstractService implements EventBus
 {
 
-    private WeakRegistry<T, Material> registry;
-    private Material air;
-    private String defaultMaterialName;
+    private final EventBus wrapped;
 
     /**
-     * Creates a new {@link CommonMaterialRegistry}.
+     * Create a new {@link EventBusService}
+     * 
+     * @param bus The event bus to use within this service
      */
-    public CommonMaterialRegistry()
+    public EventBusService(EventBus bus)
     {
-        super(5);
+        super(2);
+        this.wrapped = bus;
     }
 
     /**
@@ -55,73 +54,66 @@ public class CommonMaterialRegistry<T> extends AbstractService implements Materi
     @Override
     public String getName()
     {
-        return "materialRegistry";
+        return "eventBus";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void init()
+    public void init()
     {
-        this.registry = new WeakRegistry<T, Material>();
-        this.registry.setCaseSensitiveKeys(false);
-        this.defaultMaterialName = Gunsmith.getConfiguration().get("defaultMaterialName", String.class).or("air");
-        Gunsmith.getLogger().info("Initialized MaterialRegistry service");
+        this.wrapped.init();
+        Gunsmith.getLogger().info("Initialized EventBus service");
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void destroy()
+    public void destroy()
     {
-        this.registry = null;
-        this.defaultMaterialName = null;
-        Gunsmith.getLogger().info("Stopped MaterialRegistry service");
+        this.wrapped.destroy();
+        Gunsmith.getLogger().info("Stopping EventBus service");
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Material getAirMaterial()
-    {
-        return this.air;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<Material> getMaterial(String name)
+    public void register(Object eventHandler)
     {
         check();
-        return this.registry.get(name);
+        this.wrapped.register(eventHandler);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Optional<Material> getMaterial(T material)
+    public void unregister(Object eventHandler)
     {
         check();
-        return this.registry.get(material);
+        this.wrapped.unregister(eventHandler);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void registerMaterial(String name, T object, Material material)
+    public ListenableFuture<Event> post(Event event)
     {
         check();
-        this.registry.register(name, object, material);
-        if (name.equalsIgnoreCase(this.defaultMaterialName))
-        {
-            this.air = material;
-        }
+        return this.wrapped.post(event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean exists()
+    {
+        return this.wrapped.exists();
     }
 
 }

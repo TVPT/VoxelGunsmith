@@ -21,65 +21,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api.service;
+package com.voxelplugineering.voxelsniper.api.alias;
+
+import java.util.Set;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.api.service.Buildable;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
 
 /**
- * A manager for {@link Service}s, handling registration of services and
- * {@link ServiceProvider}s as well as initialization and shutdown of all
- * services.
+ * A handler for targeted {@link AliasRegistry}s.
  */
-public interface ServiceManager
+public interface AliasHandler extends DataSerializable, Buildable
 {
 
     /**
-     * Initializes all services.
-     */
-    void init();
-
-    /**
-     * Shuts down all services.
-     */
-    void stop();
-
-    /**
-     * Registers a {@link ServiceProvider} which provides services.
+     * Returns a Set of all valid targets in this handler.
      * 
-     * @param provider The new provider
+     * @return all valid targets
      */
-    void registerServiceProvider(ServiceProvider provider);
+    Set<String> getValidTargets();
 
     /**
-     * Registers a service by name which may then be referenced by builders and
-     * initialization hooks.
+     * Gets Gets the owner of this alias handler.
      * 
-     * @param service The service name
+     * @return The owner
      */
-    void registerService(String service);
+    AliasOwner getOwner();
 
     /**
-     * Gets whether a service has been built and initialized.
+     * Returns a the {@link AliasRegistry} by the given name.
      * 
-     * @param service The service to check
-     * @return Is started
+     * @param target the name
+     * @return the registry for that name
      */
-    boolean hasService(String service);
+    Optional<AliasRegistry> getRegistry(String target);
 
     /**
-     * Gets the service with the given name. If the service is available then it
-     * is implied to be built but may not be initialized yet.
+     * Returns whether this handler has the given target.
      * 
-     * @param service The service name
-     * @return The service, if available
+     * @param target The target to check
+     * @return Whether the target exists
      */
-    Optional<Service> getService(String service);
+    boolean hasTarget(String target);
 
     /**
-     * Shuts down the given service and dereferences it.
+     * Registers a new target.
      * 
-     * @param service The service
+     * @param target The new target name
+     * @return The newly created {@link AliasRegistry}
      */
-    void stopService(Service service);
+    AliasRegistry registerTarget(String target);
 
 }

@@ -38,7 +38,8 @@ import com.google.common.collect.Maps;
 import com.thevoxelbox.vsl.api.variables.VariableScope;
 import com.thevoxelbox.vsl.variables.ParentedVariableScope;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.alias.AliasHandler;
+import com.voxelplugineering.voxelsniper.alias.CommonAliasHandler;
+import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
@@ -79,7 +80,8 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         this.brushVariables.setCaseSensitive(false);
         this.arguments = Maps.newHashMap();
         this.pending = new LinkedList<ChangeQueue>();
-        this.personalAliasHandler = new AliasHandler(this, Gunsmith.getGlobalAliasHandler());
+        this.personalAliasHandler = new CommonAliasHandler(this, Gunsmith.getGlobalAliasHandler());
+        this.personalAliasHandler.init();
         this.history = new CommonUndoQueue(this);
         resetSettings();
     }
@@ -185,10 +187,10 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         sendMessage("Your brush size was changed to " + Gunsmith.getConfiguration().get("defaultBrushSize").get().toString());
         Optional<String> materialName = Gunsmith.getConfiguration().get("defaultBrushMaterial", String.class);
         Material mat = getWorld().getMaterialRegistry().getAirMaterial();
-        if(materialName.isPresent())
+        if (materialName.isPresent())
         {
             Optional<Material> material = getWorld().getMaterialRegistry().getMaterial(materialName.get());
-            if(material.isPresent())
+            if (material.isPresent())
             {
                 mat = material.get();
             }
@@ -312,8 +314,9 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     @Override
     public File getAliasFile()
     {
-        File aliases = new File(Gunsmith.getDataFolder(), "players/" + getUniqueId().toString() + "/aliases.json");
-        return aliases;
+        //TODO persistence
+        //File aliases = new File(Gunsmith.getDataFolder(), "players/" + getUniqueId().toString() + "/aliases.json");
+        return null;
     }
 
     /**

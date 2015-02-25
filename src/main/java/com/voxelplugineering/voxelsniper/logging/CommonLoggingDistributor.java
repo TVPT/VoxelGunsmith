@@ -53,12 +53,18 @@ public class CommonLoggingDistributor extends AbstractService implements Logging
         this.loggers = Maps.newHashMap();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName()
     {
         return "logger";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void init()
     {
@@ -66,6 +72,9 @@ public class CommonLoggingDistributor extends AbstractService implements Logging
         info("Initializing Logging service");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void destroy()
     {

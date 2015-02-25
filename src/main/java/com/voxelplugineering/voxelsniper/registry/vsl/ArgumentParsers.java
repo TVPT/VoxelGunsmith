@@ -98,7 +98,7 @@ public class ArgumentParsers
             @Override
             public Optional<Material> get(String arg)
             {
-                return Gunsmith.getDefaultMaterialRegistry().getMaterial(arg);
+                return Gunsmith.getMaterialRegistry().getMaterial(arg);
             }
 
         };

@@ -21,32 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.registry;
+package com.voxelplugineering.voxelsniper.brushes;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
+import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.service.AbstractService;
-import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 
 /**
- * A standard material registry for materials.
- * 
- * @param <T> The underlying material type
+ * A service containing a {@link BrushManager}.
  */
-public class CommonMaterialRegistry<T> extends AbstractService implements MaterialRegistry<T>
+public class BrushManagerService extends AbstractService implements BrushManager
 {
 
-    private WeakRegistry<T, Material> registry;
-    private Material air;
-    private String defaultMaterialName;
+    private final BrushManager wrapped;
 
     /**
-     * Creates a new {@link CommonMaterialRegistry}.
+     * Creates a new {@link BrushManagerService}.
+     * 
+     * @param manager The manager to use within this service
      */
-    public CommonMaterialRegistry()
+    public BrushManagerService(BrushManager manager)
     {
-        super(5);
+        super(9);
+        this.wrapped = manager;
     }
 
     /**
@@ -55,7 +54,7 @@ public class CommonMaterialRegistry<T> extends AbstractService implements Materi
     @Override
     public String getName()
     {
-        return "materialRegistry";
+        return "globalBrushManager";
     }
 
     /**
@@ -64,10 +63,7 @@ public class CommonMaterialRegistry<T> extends AbstractService implements Materi
     @Override
     protected void init()
     {
-        this.registry = new WeakRegistry<T, Material>();
-        this.registry.setCaseSensitiveKeys(false);
-        this.defaultMaterialName = Gunsmith.getConfiguration().get("defaultMaterialName", String.class).or("air");
-        Gunsmith.getLogger().info("Initialized MaterialRegistry service");
+        Gunsmith.getLogger().info("Initialized GlobalBrushManager service");
     }
 
     /**
@@ -76,52 +72,57 @@ public class CommonMaterialRegistry<T> extends AbstractService implements Materi
     @Override
     protected void destroy()
     {
-        this.registry = null;
-        this.defaultMaterialName = null;
-        Gunsmith.getLogger().info("Stopped MaterialRegistry service");
+        Gunsmith.getLogger().info("Stopped GlobalBrushManager service");
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Material getAirMaterial()
-    {
-        return this.air;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<Material> getMaterial(String name)
+    public void loadBrush(String identifier, BrushNodeGraph graph)
     {
         check();
-        return this.registry.get(name);
+        this.wrapped.loadBrush(identifier, graph);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Optional<Material> getMaterial(T material)
+    public void loadBrush(String identifier)
     {
         check();
-        return this.registry.get(material);
+        this.wrapped.loadBrush(identifier);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void registerMaterial(String name, T object, Material material)
+    public void addLoader(DataSourceProvider loader)
     {
         check();
-        this.registry.register(name, object, material);
-        if (name.equalsIgnoreCase(this.defaultMaterialName))
-        {
-            this.air = material;
-        }
+        this.wrapped.addLoader(loader);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<BrushNodeGraph> getBrush(String identifier)
+    {
+        check();
+        return this.wrapped.getBrush(identifier);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setParent(BrushManager parent)
+    {
+        check();
+        this.wrapped.setParent(parent);
     }
 
 }

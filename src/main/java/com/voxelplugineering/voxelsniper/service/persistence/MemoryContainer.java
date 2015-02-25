@@ -41,7 +41,7 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializabl
 public class MemoryContainer implements DataContainer
 {
 
-    private final static String PATH_SEPARATOR = ".";
+    private static final String PATH_SEPARATOR = ".";
     private final String path;
     private final Map<String, Object> data;
 

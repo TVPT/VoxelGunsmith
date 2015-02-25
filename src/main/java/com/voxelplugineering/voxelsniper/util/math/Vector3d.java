@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.util.math;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.Serializable;
 
 /**

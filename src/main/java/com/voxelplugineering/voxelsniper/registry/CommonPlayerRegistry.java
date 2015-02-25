@@ -27,22 +27,24 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.registry.PlayerRegistry;
 import com.voxelplugineering.voxelsniper.api.registry.RegistryProvider;
+import com.voxelplugineering.voxelsniper.api.service.AbstractService;
 
 /**
  * A standard player registry for players.
  * 
  * @param <T> The underlying player type
  */
-public class CommonPlayerRegistry<T> implements PlayerRegistry<T>
+public class CommonPlayerRegistry<T> extends AbstractService implements PlayerRegistry<T>
 {
 
-    private final ProvidedWeakRegistry<T, Player> registry;
-
-    private CommandSender console;
+    private ProvidedWeakRegistry<T, Player> registry;
+    private final CommandSender console;
+    private final RegistryProvider<T, Player> provider;
 
     /**
      * Creates a new {@link CommonPlayerRegistry}.
@@ -52,8 +54,38 @@ public class CommonPlayerRegistry<T> implements PlayerRegistry<T>
      */
     public CommonPlayerRegistry(RegistryProvider<T, Player> provider, CommandSender console)
     {
-        this.registry = new ProvidedWeakRegistry<T, Player>(provider);
+        super(8);
         this.console = console;
+        this.provider = provider;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getName()
+    {
+        return "playerRegistry";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void init()
+    {
+        this.registry = new ProvidedWeakRegistry<T, Player>(this.provider);
+        Gunsmith.getLogger().info("Initialized PlayerRegistry service");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void destroy()
+    {
+        this.registry = null;
+        Gunsmith.getLogger().info("Stopped PlayerRegistry service");
     }
 
     /**
@@ -71,6 +103,7 @@ public class CommonPlayerRegistry<T> implements PlayerRegistry<T>
     @Override
     public Optional<Player> getPlayer(String name)
     {
+        check();
         return this.registry.get(name);
     }
 
@@ -80,6 +113,7 @@ public class CommonPlayerRegistry<T> implements PlayerRegistry<T>
     @Override
     public Optional<Player> getPlayer(T player)
     {
+        check();
         return this.registry.get(player);
     }
 
@@ -89,6 +123,7 @@ public class CommonPlayerRegistry<T> implements PlayerRegistry<T>
     @Override
     public Player[] getAllPlayers()
     {
+        check();
         Set<Map.Entry<T, Player>> playerSet = this.registry.getRegisteredValues();
         Player[] players = new Player[playerSet.size()];
         int i = 0;

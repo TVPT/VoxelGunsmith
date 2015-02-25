@@ -46,7 +46,6 @@ import com.voxelplugineering.voxelsniper.api.event.EventHandler;
 import com.voxelplugineering.voxelsniper.api.event.EventPriority;
 import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy;
 import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
-import com.voxelplugineering.voxelsniper.api.service.AbstractService;
 import com.voxelplugineering.voxelsniper.event.DeadEvent;
 import com.voxelplugineering.voxelsniper.event.Event;
 
@@ -58,11 +57,12 @@ import com.voxelplugineering.voxelsniper.event.Event;
  * This class is safe for concurrent use.
  * </p>
  */
-public class AsyncEventBus extends AbstractService implements EventBus
+public class AsyncEventBus implements EventBus
 {
 
     private ListeningExecutorService executor;
     private Map<Class<? extends Event>, SubscriberList> registry;
+    private boolean built;
     private boolean explicitExecutor = false;
 
     /**
@@ -73,7 +73,6 @@ public class AsyncEventBus extends AbstractService implements EventBus
      */
     public AsyncEventBus(ExecutorService executorService)
     {
-        super(2);
         this.executor = MoreExecutors.listeningDecorator(executorService);
         this.explicitExecutor = true;
     }
@@ -84,21 +83,20 @@ public class AsyncEventBus extends AbstractService implements EventBus
      */
     public AsyncEventBus()
     {
-        super(2);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public String getName()
+    public void init()
     {
-        return "eventBus";
-    }
-
-    @Override
-    protected void init()
-    {
-        Gunsmith.getLogger().info("Initializing EventBus service");
+        if (this.built)
+        {
+            return;
+        }
         this.registry = new MapMaker().concurrencyLevel(4).makeMap();
-        if(!this.explicitExecutor)
+        if (!this.explicitExecutor)
         {
             final String prefix = Gunsmith.getConfiguration().get("eventBusThreadPrefix", String.class).or("AsyncEventBus-executor-");
             this.executor = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(new ThreadFactory()
@@ -119,17 +117,35 @@ public class AsyncEventBus extends AbstractService implements EventBus
                 }
             }));
         }
+        this.built = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected void destroy()
+    public void destroy()
     {
-        Gunsmith.getLogger().info("Stopping EventBus service");
+        if (!this.built)
+        {
+            return;
+        }
         this.registry = null;
-        if(!this.explicitExecutor)
+        if (!this.explicitExecutor)
         {
             this.executor = null;
         }
+
+        this.built = false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean exists()
+    {
+        return this.built;
     }
 
     /**
@@ -138,7 +154,6 @@ public class AsyncEventBus extends AbstractService implements EventBus
     @Override
     public void register(Object eventHandler)
     {
-        check();
         Class<?> cls = eventHandler.getClass();
         List<Subscriber> found = Lists.newArrayList();
         for (Method m : cls.getDeclaredMethods())
@@ -194,7 +209,6 @@ public class AsyncEventBus extends AbstractService implements EventBus
     @Override
     public void unregister(Object eventHandler)
     {
-        check();
         Class<?> cls = eventHandler.getClass();
         List<Subscriber> found = Lists.newArrayList();
         for (Method m : cls.getDeclaredMethods())
@@ -234,7 +248,6 @@ public class AsyncEventBus extends AbstractService implements EventBus
     @Override
     public ListenableFuture<Event> post(Event event)
     {
-        check();
         if (event.getThreadingPolicy() == ThreadingPolicy.ASYNCHRONOUS)
         {
             return postAsync(event);

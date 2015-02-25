@@ -23,7 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.api.platform;
 
-import java.io.File;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 
 /**
  * The specific implementation core class, provides direct platform utilities
@@ -38,7 +39,7 @@ public interface PlatformProxy
      * 
      * @return The name of the platform
      */
-    String getName();
+    String getPlatformName();
 
     /**
      * Gets the version of the platform.
@@ -55,25 +56,19 @@ public interface PlatformProxy
     String getFullVersion();
 
     /**
-     * Returns the main thread of VoxelSniper.
+     * Gets the data source provider for obtaining data sources for serialized
+     * brushes.
      * 
-     * @return the thread
+     * @return The data source provider
      */
-    Thread getMainThread();
-
-    /**
-     * Returns the main storage directory for data.
-     * 
-     * @return the data folder
-     */
-    File getDataFolder();
+    DataSourceProvider getBrushDataSource();
 
     /**
      * Gets the Configuration file for Metrics to be used.
      * 
      * @return The file containing the configuration for Metrics
      */
-    File getMetricsFile();
+    DataSource getMetricsFile();
 
     /**
      * Gets the number of players online.

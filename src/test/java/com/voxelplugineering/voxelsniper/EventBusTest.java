@@ -50,6 +50,7 @@ public class EventBusTest
     public void basicTest()
     {
         EventBus bus = new AsyncEventBus();
+        bus.init();
         TestHandler handler = new TestHandler();
         bus.register(handler);
         bus.post(new TestEvent());
@@ -64,6 +65,7 @@ public class EventBusTest
     public void priorityTest()
     {
         EventBus bus = new AsyncEventBus();
+        bus.init();
         PriorityHandler handler = new PriorityHandler();
         bus.register(handler);
         bus.post(new TestEvent());
@@ -78,6 +80,7 @@ public class EventBusTest
     public void superEventhandling()
     {
         EventBus bus = new AsyncEventBus();
+        bus.init();
         SuperHandler handler = new SuperHandler();
         bus.register(handler);
         bus.post(new SubEvent());
@@ -92,6 +95,7 @@ public class EventBusTest
     public void superEventhandling2()
     {
         EventBus bus = new AsyncEventBus();
+        bus.init();
         SuperHandler handler = new SuperHandler();
         bus.register(handler);
         bus.post(new TestEvent());
@@ -106,6 +110,7 @@ public class EventBusTest
     public void testDeadEvent() throws InterruptedException
     {
         EventBus bus = new AsyncEventBus();
+        bus.init();
         DeadEventHandler handler = new DeadEventHandler();
         bus.register(handler);
         bus.post(new TestEvent());
@@ -129,6 +134,7 @@ public class EventBusTest
     public void testNotAsync()
     {
         EventBus bus = new AsyncEventBus();
+        bus.init();
         SyncHandler handler = new SyncHandler();
         bus.register(handler);
         SyncEvent e = new SyncEvent();
@@ -144,6 +150,7 @@ public class EventBusTest
     public void testAsync()
     {
         EventBus bus = new AsyncEventBus();
+        bus.init();
         AsyncHandler handler = new AsyncHandler();
         bus.register(handler);
         bus.post(new AsyncEvent());

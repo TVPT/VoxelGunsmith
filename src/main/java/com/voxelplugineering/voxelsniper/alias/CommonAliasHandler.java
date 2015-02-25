@@ -32,30 +32,29 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
 import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
-import com.voxelplugineering.voxelsniper.api.service.AbstractService;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
 import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 
 /**
- * A handler for targeted {@link AliasRegistry}s.
+ * A standard implementation for {@link AliasHandler}.
  */
-public class AliasHandler extends AbstractService implements DataSerializable
+public class CommonAliasHandler implements AliasHandler
 {
 
     private AliasHandler parent;
     private Map<String, AliasRegistry> aliasTargets;
     private AliasOwner owner;
+    private boolean built;
 
     /**
      * Creates a new {@link AliasHandler}.
      * 
      * @param owner The owner
      */
-    public AliasHandler(AliasOwner owner)
+    public CommonAliasHandler(AliasOwner owner)
     {
         this(owner, null);
     }
@@ -66,55 +65,52 @@ public class AliasHandler extends AbstractService implements DataSerializable
      * @param parent The new parent
      * @param owner The owner
      */
-    public AliasHandler(AliasOwner owner, AliasHandler parent)
+    public CommonAliasHandler(AliasOwner owner, AliasHandler parent)
     {
-        super(3);
         checkNotNull(owner);
         this.parent = parent;
         this.owner = owner;
+        this.built = false;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getName()
+    public boolean exists()
     {
-        return "aliasRegistry";
+        return this.built;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void init()
+    public void init()
     {
-        Gunsmith.getLogger().info("Initializing AliasRegistry service");
         this.aliasTargets = Maps.newHashMap();
-        if (parent != null)
+        if (this.parent != null)
         {
             for (String target : this.parent.getValidTargets())
             {
                 registerTarget(target);
             }
         }
+        this.built = true;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void destroy()
+    public void destroy()
     {
-        Gunsmith.getLogger().info("Stopping AliasRegistry service");
         this.aliasTargets = null;
+        this.built = false;
     }
 
     /**
-     * Registers a new target.
-     * 
-     * @param target The new target name
-     * @return The newly created {@link AliasRegistry}
+     * {@inheritDoc}
      */
     public AliasRegistry registerTarget(String target)
     {
@@ -129,10 +125,7 @@ public class AliasHandler extends AbstractService implements DataSerializable
     }
 
     /**
-     * Returns a the {@link AliasRegistry} by the given name.
-     * 
-     * @param target the name
-     * @return the registry for that name
+     * {@inheritDoc}
      */
     public Optional<AliasRegistry> getRegistry(String target)
     {
@@ -146,9 +139,7 @@ public class AliasHandler extends AbstractService implements DataSerializable
     }
 
     /**
-     * Returns a Set of all valid targets in this handler.
-     * 
-     * @return all valid targets
+     * {@inheritDoc}
      */
     public Set<String> getValidTargets()
     {
@@ -156,10 +147,7 @@ public class AliasHandler extends AbstractService implements DataSerializable
     }
 
     /**
-     * Returns whether this handler has the given target.
-     * 
-     * @param target The target to check
-     * @return Whether the target exists
+     * {@inheritDoc}
      */
     public boolean hasTarget(String target)
     {
@@ -169,9 +157,7 @@ public class AliasHandler extends AbstractService implements DataSerializable
     }
 
     /**
-     * Gets Gets the owner of this alias handler.
-     * 
-     * @return The owner
+     * {@inheritDoc}
      */
     public AliasOwner getOwner()
     {

@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.util.defaults;
 
-import com.voxelplugineering.voxelsniper.alias.AliasHandler;
+import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 
 /**

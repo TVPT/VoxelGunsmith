@@ -23,8 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.api;
 
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.google.common.base.Optional;
 

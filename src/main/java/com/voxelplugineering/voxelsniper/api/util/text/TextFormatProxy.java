@@ -48,6 +48,9 @@ public interface TextFormatProxy extends Service
     public static class TrivialTextFormatProxy extends AbstractService implements TextFormatProxy
     {
 
+        /**
+         * Creates a new {@link TrivialTextFormatProxy}.
+         */
         public TrivialTextFormatProxy()
         {
             super(0);
@@ -62,18 +65,27 @@ public interface TextFormatProxy extends Service
             return "";
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public String getName()
         {
             return "formatProxy";
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         protected void init()
         {
             Gunsmith.getLogger().info("Initialized TextFormat service");
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         protected void destroy()
         {

@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -30,8 +32,6 @@ import com.voxelplugineering.voxelsniper.api.world.queue.ChangeQueueOwner;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueue;
 import com.voxelplugineering.voxelsniper.world.queue.CommonUndoQueue;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * A set of tests for the {@link CommonUndoQueue}.
