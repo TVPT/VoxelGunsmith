@@ -35,6 +35,7 @@ import com.thevoxelbox.vsl.variables.ParentedVariableScope;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.alias.CommonAliasHandler;
 import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
+import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
@@ -77,7 +78,13 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         this.personalAliasHandler = new CommonAliasHandler(this, Gunsmith.getGlobalAliasHandler());
         this.personalAliasHandler.init();
         this.history = new CommonUndoQueue(this);
-        resetSettings();
+        try
+        {
+            resetSettings();
+        } catch (Exception ignored)
+        {
+            //we catch exceptions here so that an issue while resetting settings cannot stop the object from initializing.
+        }
     }
 
     protected AbstractPlayer(T player)
@@ -147,10 +154,15 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     {
         this.brushVariables.clear();
         String brush = Gunsmith.getConfiguration().get("defaultBrush", String.class).or("voxel material");
-        setCurrentBrush(BrushParsing.parse(brush, this.personalBrushManager, this.personalAliasHandler.getRegistry("brush").get()).get());
-        sendMessage("Brush set to " + Gunsmith.getConfiguration().get("defaultBrush").get().toString());
-        this.brushVariables.set("brushSize", Gunsmith.getConfiguration().get("defaultBrushSize", Double.class).or(5.0));
-        sendMessage("Your brush size was changed to " + Gunsmith.getConfiguration().get("defaultBrushSize").get().toString());
+        Optional<BrushChain> current = BrushParsing.parse(brush, this.personalBrushManager, this.personalAliasHandler.getRegistry("brush").orNull());
+        if(current.isPresent())
+        {
+            setCurrentBrush(current.get());
+            sendMessage("Brush set to " + Gunsmith.getConfiguration().get("defaultBrush").get().toString());
+        }
+        double size = Gunsmith.getConfiguration().get("defaultBrushSize", Double.class).or(5.0);
+        this.brushVariables.set("brushSize", size);
+        sendMessage("Your brush size was changed to " + size);
         Optional<String> materialName = Gunsmith.getConfiguration().get("defaultBrushMaterial", String.class);
         Material mat = getWorld().getMaterialRegistry().getAirMaterial();
         if (materialName.isPresent())

@@ -45,7 +45,10 @@ public class BrushParsing
      */
     public static Optional<BrushChain> parse(String cmd, BrushManager manager, AliasRegistry aliases)
     {
-        cmd = aliases.expand(cmd);
+        if(aliases != null)
+        {
+            cmd = aliases.expand(cmd);
+        }
         BrushChain brush = new BrushChain(cmd);
         String br = "";
         String arg = "";
