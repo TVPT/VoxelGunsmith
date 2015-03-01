@@ -55,10 +55,17 @@ public class DefaultAliasBuilder
             alias.register("s", "snipe");
             alias.register("v", "voxel");
             alias.register("vd", "voxeldisc");
+            alias.register("over", "overlay");
+            alias.register("e melt", "ball melt");
+            alias.register("e fill", "ball fill");
+            alias.register("sp", "splatter");
+            alias.register("sb", "ball splatter");
+            alias.register("sd", "disc splatter");
+            alias.register("sover", "splatter overlay");
 
         }
 
-        { // brushes
+        { // materials
 
             if (!registry.hasTarget("material"))
             {
@@ -69,6 +76,8 @@ public class DefaultAliasBuilder
             alias.register("0", "air");
             alias.register("1", "stone");
             alias.register("2", "grass");
+            alias.register("3", "dirt");
+            alias.register("4", "cobblestone");
 
         }
     }

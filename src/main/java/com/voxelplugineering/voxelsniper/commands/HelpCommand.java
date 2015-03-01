@@ -24,9 +24,9 @@
 package com.voxelplugineering.voxelsniper.commands;
 
 import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
-import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 import com.voxelplugineering.voxelsniper.command.Command;
 
 /**
@@ -53,7 +53,7 @@ public class HelpCommand extends Command
     {
         if (args.length > 0)
         {
-            BrushNodeGraph brush;
+            Brush brush;
             if (sender instanceof Player)
             {
                 brush = ((Player) sender).getPersonalBrushManager().getBrush(args[0]).orNull();

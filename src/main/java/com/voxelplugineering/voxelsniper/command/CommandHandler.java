@@ -124,6 +124,7 @@ public class CommandHandler extends AbstractService
         {
             this.registrar.registerCommand(cmd);
         }
+        this.commands.put(cmd.getName(), cmd);
         for (String alias : cmd.getAllAliases())
         {
             this.commands.put(alias, cmd);

@@ -35,6 +35,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
@@ -53,7 +54,7 @@ public class CommonBrushManager implements BrushManager
     /**
      * A map of brushes loaded in this manager.
      */
-    private Map<String, BrushNodeGraph> brushes;
+    private Map<String, Brush> brushes;
     /**
      * An ordered list of loaders used to load brushes by name.
      */
@@ -98,7 +99,7 @@ public class CommonBrushManager implements BrushManager
     /**
      * {@inheritDoc}
      */
-    public void loadBrush(String identifier, BrushNodeGraph graph)
+    public void loadBrush(String identifier, Brush graph)
     {
         checkNotNull(identifier, "Name cannot be null!");
         checkArgument(!identifier.isEmpty(), "Name cannot be empty");
@@ -114,7 +115,7 @@ public class CommonBrushManager implements BrushManager
     {
         checkNotNull(identifier, "Name cannot be null!");
         checkArgument(!identifier.isEmpty(), "Name cannot be empty");
-        BrushNodeGraph graph = null;
+        Brush graph = null;
         for (Iterator<DataSourceProvider> iter = this.loaders.iterator(); iter.hasNext();)
         {
             DataSourceProvider loader = iter.next();
@@ -123,7 +124,7 @@ public class CommonBrushManager implements BrushManager
             {
                 try
                 {
-                    BrushNodeGraph attempt = BrushNodeGraph.buildFromContainer(source.get().read());
+                    Brush attempt = BrushNodeGraph.buildFromContainer(source.get().read());
                     if (attempt != null)
                     {
                         graph = attempt;
@@ -144,11 +145,11 @@ public class CommonBrushManager implements BrushManager
     /**
      * {@inheritDoc}
      */
-    public Optional<BrushNodeGraph> getBrush(String identifier)
+    public Optional<Brush> getBrush(String identifier)
     {
         checkNotNull(identifier, "Name cannot be null!");
         checkArgument(!identifier.isEmpty(), "Name cannot be empty");
-        BrushNodeGraph br = this.brushes.get(identifier);
+        Brush br = this.brushes.get(identifier);
         if (br == null)
         {
             if (this.parent != null)
@@ -157,7 +158,7 @@ public class CommonBrushManager implements BrushManager
             }
             return Optional.absent();
         }
-        return Optional.<BrushNodeGraph>of(br);
+        return Optional.of(br);
     }
 
     /**

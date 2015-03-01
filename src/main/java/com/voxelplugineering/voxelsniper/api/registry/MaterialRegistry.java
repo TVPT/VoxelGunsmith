@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.api.registry;
 
+import java.util.Collection;
+
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 
@@ -67,5 +69,12 @@ public interface MaterialRegistry<T>
      * @param material The material for gunsmith
      */
     void registerMaterial(String name, T object, Material material);
+
+    /**
+     * Gets all materials registered within this registry.
+     * 
+     * @return The materials
+     */
+    Collection<Material> getMaterials();
 
 }

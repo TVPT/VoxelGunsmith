@@ -26,15 +26,10 @@ package com.voxelplugineering.voxelsniper.entity.living;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Maps;
 import com.thevoxelbox.vsl.api.variables.VariableScope;
 import com.thevoxelbox.vsl.variables.ParentedVariableScope;
 import com.voxelplugineering.voxelsniper.Gunsmith;
@@ -44,9 +39,10 @@ import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
-import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
+import com.voxelplugineering.voxelsniper.brushes.BrushChain;
 import com.voxelplugineering.voxelsniper.brushes.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.entity.AbstractEntity;
+import com.voxelplugineering.voxelsniper.util.BrushParsing;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueue;
 import com.voxelplugineering.voxelsniper.world.queue.CommonUndoQueue;
 
@@ -59,11 +55,10 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
 {
 
     private BrushManager personalBrushManager;
-    private BrushNodeGraph currentBrush;
+    private BrushChain currentBrush;
     private VariableScope brushVariables;
     private Queue<ChangeQueue> pending;
     private AliasHandler personalAliasHandler;
-    private Map<String, String> arguments;
     private UndoQueue history;
 
     /**
@@ -78,7 +73,6 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         this.personalBrushManager = new CommonBrushManager(parentBrushManager);
         this.brushVariables = new ParentedVariableScope();
         this.brushVariables.setCaseSensitive(false);
-        this.arguments = Maps.newHashMap();
         this.pending = new LinkedList<ChangeQueue>();
         this.personalAliasHandler = new CommonAliasHandler(this, Gunsmith.getGlobalAliasHandler());
         this.personalAliasHandler.init();
@@ -122,7 +116,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
      * {@inheritDoc}
      */
     @Override
-    public void setCurrentBrush(BrushNodeGraph brush)
+    public void setCurrentBrush(BrushChain brush)
     {
         this.currentBrush = brush;
     }
@@ -131,7 +125,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
      * {@inheritDoc}
      */
     @Override
-    public BrushNodeGraph getCurrentBrush()
+    public BrushChain getCurrentBrush()
     {
         return this.currentBrush;
     }
@@ -151,37 +145,9 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     @Override
     public void resetSettings()
     {
-        this.arguments.clear();
         this.brushVariables.clear();
-        BrushNodeGraph start = null;
-        BrushNodeGraph last = null;
-        Pattern pattern = Pattern.compile("([\\S&&[^\\{]]+) ?(?:(\\{[^\\}]*\\}))?");
-        Matcher match = pattern.matcher(prep(Gunsmith.getConfiguration().get("defaultBrush").get().toString()));
-        while (match.find())
-        {
-            String brushName = match.group(1);
-            Optional<BrushNodeGraph> brush = getPersonalBrushManager().getBrush(brushName);
-            if (!brush.isPresent())
-            {
-                getPersonalBrushManager().loadBrush(brushName);
-                brush = getPersonalBrushManager().getBrush(brushName);
-                if (!brush.isPresent())
-                {
-                    sendMessage("Could not find a brush part named " + brushName);
-                    break;
-                }
-            }
-            if (start == null)
-            {
-                start = brush.get();
-                last = brush.get();
-            } else
-            {
-                last.chain(brush.get());
-                last = brush.get();
-            }
-        }
-        setCurrentBrush(start);
+        String brush = Gunsmith.getConfiguration().get("defaultBrush", String.class).or("voxel material");
+        setCurrentBrush(BrushParsing.parse(brush, this.personalBrushManager, this.personalAliasHandler.getRegistry("brush").get()).get());
         sendMessage("Brush set to " + Gunsmith.getConfiguration().get("defaultBrush").get().toString());
         this.brushVariables.set("brushSize", Gunsmith.getConfiguration().get("defaultBrushSize", Double.class).or(5.0));
         sendMessage("Your brush size was changed to " + Gunsmith.getConfiguration().get("defaultBrushSize").get().toString());
@@ -198,21 +164,6 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         sendMessage("Set material to " + mat.getName());
         getBrushSettings().set("setMaterial", mat);
         getBrushSettings().set("maskmaterial", mat);
-    }
-
-    private static String prep(String s)
-    {
-        s = s.trim();
-        while (s.startsWith("{"))
-        {
-            int index = s.indexOf("}");
-            if (index == -1)
-            {
-                s = s.substring(1);
-            }
-            s = s.substring(index + 1).trim();
-        }
-        return s;
     }
 
     /**
@@ -250,7 +201,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     @Override
     public Optional<ChangeQueue> getNextPendingChange()
     {
-        return (this.pending.isEmpty() ? Optional.<ChangeQueue>absent() : Optional.<ChangeQueue>of(this.pending.peek()));
+        return Optional.fromNullable(this.pending.peek());
     }
 
     /**
@@ -283,29 +234,6 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     public AliasHandler getPersonalAliasHandler()
     {
         return this.personalAliasHandler;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<String, String> getBrushArguments()
-    {
-        return Collections.unmodifiableMap(this.arguments);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setBrushArgument(String brush, String arg)
-    {
-        if (arg == null || arg.isEmpty())
-        {
-            return;// Note: no illegal argument exception as arg is allowed to
-                   // be null
-        }
-        this.arguments.put(brush, arg);
     }
 
     /**

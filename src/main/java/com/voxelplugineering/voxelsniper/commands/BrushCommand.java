@@ -25,18 +25,14 @@ package com.voxelplugineering.voxelsniper.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
-import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
-import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
+import com.voxelplugineering.voxelsniper.brushes.BrushChain;
 import com.voxelplugineering.voxelsniper.command.Command;
+import com.voxelplugineering.voxelsniper.util.BrushParsing;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
 /**
@@ -52,16 +48,9 @@ public class BrushCommand extends Command
     private String brushSizeChangeMessage = Gunsmith.getConfiguration().get("brushSizeChangedMessage", String.class)
             .or("Your brush size was changed to %.1f");
     /**
-     * The message sent to players when a brush is not found.
-     */
-    private String brushNotFoundMessage = Gunsmith.getConfiguration().get("brushNotFoundMessage", String.class)
-            .or("Could not find a brush part named %s");
-    /**
      * The message sent to players when their brush is set.
      */
     private String brushSetMessage = Gunsmith.getConfiguration().get("brushSetMessage", String.class).or("Your brush has been set to %s");
-    private String brushArgumentRegex = Gunsmith.getConfiguration().get("brushArgumentRegex", String.class)
-            .or("([\\S&&[^\\{]]+)[\\s]*(?:((?:\\{[^\\}]*\\}[\\s]*)+))?");
 
     /**
      * Constructs a new BrushCommand
@@ -87,6 +76,11 @@ public class BrushCommand extends Command
             return true;
         }
         Player sniper = (Player) sender;
+        if(!Gunsmith.getPermissionsProxy().hasPermission(sniper, "voxelsniper.command.brush"))
+        {
+            sender.sendMessage("Sorry you lack the required permissions for this command");
+            return true;
+        }
         if (args.length == 1)
         {
             try
@@ -103,129 +97,22 @@ public class BrushCommand extends Command
         if (args.length >= 1)
         {
 
-            Optional<AliasRegistry> alias = sniper.getPersonalAliasHandler().getRegistry("brush");
             String fullBrush = StringUtilities.getSection(args, 0, args.length - 1);
-            if (!validate(fullBrush))
+            Optional<BrushChain> brush = BrushParsing.parse(fullBrush, sniper.getPersonalBrushManager(), sniper.getPersonalAliasHandler().getRegistry("brush").get());
+            if (brush.isPresent())
             {
-                sender.sendMessage(TextFormat.DARK_RED + "Sorry, your brush contained unbalanced or embedded braces.");
-            }
-            if (alias.isPresent())
+                sniper.setCurrentBrush(brush.get());
+                sniper.sendMessage(this.brushSetMessage, fullBrush);
+
+                //TODO non-action check
+            } else
             {
-                fullBrush = alias.get().expand(fullBrush);
-            }
-            BrushNodeGraph start = null;
-            BrushNodeGraph last = null;
-            Pattern pattern = Pattern.compile(this.brushArgumentRegex);
-            Matcher match = pattern.matcher(prep(fullBrush));
-            boolean nonActionCheck = false;
-            while (match.find())
-            {
-                String brushName = match.group(1);
-                BrushNodeGraph brush = sniper.getPersonalBrushManager().getBrush(brushName).orNull();
-                if (brush == null)
-                {
-                    sniper.getPersonalBrushManager().loadBrush(brushName);
-                    brush = sniper.getPersonalBrushManager().getBrush(brushName).orNull();
-                    if (brush == null)
-                    {
-                        sniper.sendMessage(this.brushNotFoundMessage, brushName);
-                        return false;
-                    }
-                }
-                if (brush.getType() == BrushPartType.MISC || brush.getType() == BrushPartType.EFFECT)
-                {
-                    nonActionCheck = true;
-                }
-                if (start == null)
-                {
-                    start = brush;
-                    last = brush;
-                } else
-                {
-                    last.chain(brush);
-                    last = brush;
-                }
-                sniper.setBrushArgument(brushName, normalize(match.group(2)));
+                sniper.sendMessage(TextFormat.RED + "Failed to parse brush, check your brush names!");
             }
 
-            sniper.setCurrentBrush(start);
-            sniper.sendMessage(this.brushSetMessage, fullBrush);
-
-            if (!nonActionCheck)
-            {
-                sniper.sendMessage(TextFormat.RED + "Warning! Your selected chain of brush parts does not have any parts which have any effect!");
-            }
             return true;
         }
         sender.sendMessage(this.getHelpMsg());
         return false;
-    }
-
-    // TODO These methods should be moved or replaced
-
-    private static boolean validate(String fullBrush)
-    {
-        int co = 0;
-        for (char c : fullBrush.toCharArray())
-        {
-            if (c == '{')
-            {
-                if (co > 0)
-                {
-                    return false;
-                }
-                co++;
-            }
-            if (c == '}')
-            {
-                if (co < 0)
-                {
-                    return false;
-                }
-                co--;
-            }
-        }
-        return co == 0;
-    }
-
-    private static String normalize(String s)
-    {
-        if (s == null)
-        {
-            return null;
-        }
-        Pattern p = Pattern.compile("(\\{[^\\}]*\\})[\\s]*");
-        Matcher match = p.matcher(s);
-        String f = "";
-        while (match.find())
-        {
-            String m = match.group(1);
-            m = m.trim().replace(" ", ",");
-            m = m.replace("{,", "{");
-            m = m.replace(",}", "}");
-            while (m.contains(",,"))
-            {
-                m = m.replace(",,", ",");
-            }
-            f += m + " ";
-        }
-        f = f.replaceAll("\\}[\\s]*\\{", ",");
-        f = f.trim();
-        return f;
-    }
-
-    private static String prep(String s)
-    {
-        s = s.trim();
-        while (s.startsWith("{"))
-        {
-            int index = s.indexOf("}");
-            if (index == -1)
-            {
-                s = s.substring(1);
-            }
-            s = s.substring(index + 1).trim();
-        }
-        return s;
     }
 }

@@ -29,6 +29,8 @@ import com.google.common.collect.Maps;
 import com.thevoxelbox.vsl.api.variables.VariableScope;
 import com.thevoxelbox.vsl.variables.ParentedVariableScope;
 import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.alias.CommonAliasRegistry;
+import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
@@ -36,7 +38,7 @@ import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.World;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
+import com.voxelplugineering.voxelsniper.brushes.BrushChain;
 import com.voxelplugineering.voxelsniper.brushes.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
 import com.voxelplugineering.voxelsniper.util.defaults.DefaultBrushBuilder;
@@ -52,10 +54,12 @@ public class IngameBrushTest implements Runnable
     private final Player sender;
     private static final BrushTest[] tests;
     private static final BrushManager manager;
+    private static final AliasRegistry alias;
 
     static
     {
         manager = new CommonBrushManager();
+        alias = new CommonAliasRegistry("brush");
         DefaultBrushBuilder.loadAll(manager);
         tests = new BrushTest[1];
         tests[0] = new BrushTest("voxel")
@@ -70,10 +74,8 @@ public class IngameBrushTest implements Runnable
                 Material material = player.getWorld().getMaterialRegistry().getMaterial("stone").get();
                 vars.set("setMaterial", material);
                 vars.set("maskmaterial", material);
-                BrushNodeGraph voxel = manager.getBrush("voxel").get();
-                BrushNodeGraph mat = manager.getBrush("material").get();
-                voxel.chain(mat);
-                this.executeBrush(player, target, voxel, Maps.<String, String>newHashMap(), vars);
+                BrushChain chain = BrushParsing.parse("voxel material", manager, alias).get();
+                this.executeBrush(player, target, chain, Maps.<String, String>newHashMap(), vars);
             }
 
             @Override
@@ -168,7 +170,7 @@ abstract class BrushTest
 
     public abstract boolean validate(Player player, Location target);
 
-    public void executeBrush(Player player, Location target, BrushNodeGraph brush, Map<String, String> args, VariableScope vars)
+    public void executeBrush(Player player, Location target, BrushChain brush, Map<String, String> args, VariableScope vars)
     {
         player.sendMessage("Executing brush: " + brush.getName());
         VariableScope brushVariables = new ParentedVariableScope(vars);
@@ -179,7 +181,7 @@ abstract class BrushTest
         brushVariables.set(this.targetBlockVariable, target.getWorld().getBlock(target).get());
         brushVariables.set(this.lengthVariable, 5);
         brushVariables.set(this.playerSysvar, player);
-        brush.run(brushVariables, args);
+        brush.run(brushVariables);
     }
 
     protected boolean assertSingleMaterialArea(World world, int x, int y, int z, Location target, Material material)

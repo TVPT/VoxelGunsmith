@@ -88,7 +88,7 @@ public class CommonEventHandler
                 Gunsmith.getLogger().error(e, "Error loading player aliases!");
             }
         }*/
-        Gunsmith.getOfflineUndoHandler().invalidate(player.getName());
+        //Gunsmith.getOfflineUndoHandler().invalidate(player.getName());
     }
 
     /**
@@ -134,6 +134,10 @@ public class CommonEventHandler
     public void onSnipe(SnipeEvent event)
     {
         Player sniper = event.getSniper();
+        if(!Gunsmith.getPermissionsProxy().hasPermission(sniper, "voxelsniper.sniper"))
+        {
+            return;
+        }
         boolean attemptedNullAction = false;
         try
         {
@@ -164,8 +168,8 @@ public class CommonEventHandler
             // TODO support gunpoweder alt action
             brushVariables.set(this.lengthVariable, ray.getLength());
             brushVariables.set(this.playerSysvar, sniper);
-            Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());
-            sniper.getCurrentBrush().run(brushVariables, sniper.getBrushArguments());
+            //Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());
+            sniper.getCurrentBrush().run(brushVariables);
         } catch (Exception e)
         {
             if (!attemptedNullAction)

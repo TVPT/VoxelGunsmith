@@ -56,6 +56,7 @@ import com.voxelplugineering.voxelsniper.event.handler.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.logging.CommonLoggingDistributor;
 import com.voxelplugineering.voxelsniper.registry.vsl.ArgumentParsers;
 import com.voxelplugineering.voxelsniper.util.AnnotationHelper;
+import com.voxelplugineering.voxelsniper.util.defaults.DefaultAliasBuilder;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueTask;
 import com.voxelplugineering.voxelsniper.world.queue.CommonOfflineUndoHandler;
 
@@ -184,6 +185,9 @@ public class CoreServiceProvider extends ServiceProvider
     public void initAlias(Service service)
     {
         ((AliasHandler) service).registerTarget("brush");
+        ((AliasHandler) service).registerTarget("material");
+        
+        DefaultAliasBuilder.loadDefaultAliases(((AliasHandler) service));
     }
 
     /**

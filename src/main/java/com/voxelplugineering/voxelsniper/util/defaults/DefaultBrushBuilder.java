@@ -39,6 +39,7 @@ import com.thevoxelbox.vsl.nodes.vars.ChainedInputNode;
 import com.thevoxelbox.vsl.nodes.vars.ChainedOutputNode;
 import com.thevoxelbox.vsl.nodes.vars.VariableGetNode;
 import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
@@ -47,6 +48,10 @@ import com.voxelplugineering.voxelsniper.api.world.Chunk;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
+import com.voxelplugineering.voxelsniper.brushes.natives.BlendBrush;
+import com.voxelplugineering.voxelsniper.brushes.natives.ErodeBrush;
+import com.voxelplugineering.voxelsniper.brushes.natives.OverlayBrush;
+import com.voxelplugineering.voxelsniper.brushes.natives.SplatterBrush;
 import com.voxelplugineering.voxelsniper.nodes.block.BlockBreakNode;
 import com.voxelplugineering.voxelsniper.nodes.material.MaterialCompareNode;
 import com.voxelplugineering.voxelsniper.nodes.shape.DiscShapeNode;
@@ -80,7 +85,7 @@ public class DefaultBrushBuilder
     /**
      * A map of all graphs created from this temporary utility.
      */
-    private static final Map<String, BrushNodeGraph> graphs = Maps.newHashMap();
+    private static final Map<String, Brush> graphs = Maps.newHashMap();
 
     /**
      * Loads all the graphs from this utility into the global brush manager.
@@ -91,7 +96,7 @@ public class DefaultBrushBuilder
     {
         for (String name : graphs.keySet())
         {
-            BrushNodeGraph brush = graphs.get(name);
+            Brush brush = graphs.get(name);
             manager.loadBrush(name, brush);
         }
     }
@@ -112,7 +117,7 @@ public class DefaultBrushBuilder
             DataOutputStream output = null;
             try
             {
-                BrushNodeGraph brush = graphs.get(name);
+                Brush brush = graphs.get(name);
                 File f = new File(directory, brush.getName() + ".br");
                 if (f.exists())
                 {
@@ -158,9 +163,9 @@ public class DefaultBrushBuilder
             SphereShapeNode shape = new SphereShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
 
-            BrushNodeGraph brush = new BrushNodeGraph("ball", BrushPartType.SHAPE);
+            Brush brush = new BrushNodeGraph("ball", BrushPartType.SHAPE);
             brush.setHelp("Creates a ball shaped volume");
-            brush.setNext(shapeOut);
+            brush.setStartNode(shapeOut);
             graphs.put("ball", brush);
         }
 
@@ -184,7 +189,7 @@ public class DefaultBrushBuilder
             overlap.setNext(chunkForEach);
             chunkForEach.setBody(refresh);
 
-            BrushNodeGraph brush = new BrushNodeGraph("biome", BrushPartType.EFFECT);
+            Brush brush = new BrushNodeGraph("biome", BrushPartType.EFFECT);
             brush.addArgument("biome", ArgumentParsers.BIOME_PARSER, Gunsmith.getBiomeRegistry().getDefaultBiome().getName());
             brush.setArgumentAsPrimary("biome");
             String biomes = "";
@@ -198,12 +203,12 @@ public class DefaultBrushBuilder
             }
             String help = "Sets the biome for the world across the flattened area of a shape\nValid biomes are: " + biomes;
             brush.setHelp(help);
-            brush.setNext(flatten);
+            brush.setStartNode(flatten);
             graphs.put("biome", brush);
         }
 
-        { // TODO blend
-
+        {
+            graphs.put("blend", new BlendBrush());
         }
 
         { // TODO blob {growth, recursion}
@@ -236,9 +241,9 @@ public class DefaultBrushBuilder
             DiscShapeNode shape = new DiscShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
 
-            BrushNodeGraph brush = new BrushNodeGraph("disc", BrushPartType.SHAPE);
+            Brush brush = new BrushNodeGraph("disc", BrushPartType.SHAPE);
             brush.setHelp("Creates a disc shaped area");
-            brush.setNext(shapeOut);
+            brush.setStartNode(shapeOut);
             graphs.put("disc", brush);
         }
 
@@ -267,7 +272,8 @@ public class DefaultBrushBuilder
         }
 
         { // TODO erosion {erode, erodeRecursions, fill, fillRecursions}
-
+            graphs.put("melt", new ErodeBrush(2, 5));
+            graphs.put("fill", new ErodeBrush(5, 2));
         }
 
         { // TODO filldown {from-existing}
@@ -291,7 +297,7 @@ public class DefaultBrushBuilder
         }
 
         { // TODO overlay {height, face}
-
+            graphs.put("overlay", new OverlayBrush());
         }
 
         { // TODO pull {height}
@@ -352,8 +358,8 @@ public class DefaultBrushBuilder
             ifStatement.setBody(set);
             forEach.setNext(shapeOut);
 
-            BrushNodeGraph brush = new BrushNodeGraph("shell", BrushPartType.MASK);
-            brush.setNext(forEach);
+            Brush brush = new BrushNodeGraph("shell", BrushPartType.MASK);
+            brush.setStartNode(forEach);
             graphs.put("shell", brush);
         }
 
@@ -366,8 +372,8 @@ public class DefaultBrushBuilder
 
             ShapeMaterialSetNode setMaterial = new ShapeMaterialSetNode(shapeIn.getValue(), getMaterial.getValue(), blockBreak.getLocation());
 
-            BrushNodeGraph brush = new BrushNodeGraph("material", BrushPartType.EFFECT);
-            brush.setNext(setMaterial);
+            Brush brush = new BrushNodeGraph("material", BrushPartType.EFFECT);
+            brush.setStartNode(setMaterial);
             graphs.put("material", brush);
         }
 
@@ -399,8 +405,8 @@ public class DefaultBrushBuilder
             compare.setBody(set);
             forEach.setNext(shapeOut);
 
-            BrushNodeGraph brush = new BrushNodeGraph("materialmask", BrushPartType.MASK);
-            brush.setNext(forEach);
+            Brush brush = new BrushNodeGraph("materialmask", BrushPartType.MASK);
+            brush.setStartNode(forEach);
             graphs.put("materialmask", brush);
         }
 
@@ -409,8 +415,8 @@ public class DefaultBrushBuilder
             VoxelShapeNode shape = new VoxelShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
 
-            BrushNodeGraph brush = new BrushNodeGraph("snipe", BrushPartType.SHAPE);
-            brush.setNext(shapeOut);
+            Brush brush = new BrushNodeGraph("snipe", BrushPartType.SHAPE);
+            brush.setStartNode(shapeOut);
             graphs.put("snipe", brush);
         }
 
@@ -419,6 +425,7 @@ public class DefaultBrushBuilder
         }
 
         { // TODO splatter {seed, growth, recursion}
+            graphs.put("splatter", new SplatterBrush());
 
         }
 
@@ -447,8 +454,8 @@ public class DefaultBrushBuilder
             VoxelShapeNode shape = new VoxelShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
 
-            BrushNodeGraph brush = new BrushNodeGraph("voxel", BrushPartType.SHAPE);
-            brush.setNext(shapeOut);
+            Brush brush = new BrushNodeGraph("voxel", BrushPartType.SHAPE);
+            brush.setStartNode(shapeOut);
             graphs.put("voxel", brush);
         }
 
@@ -458,8 +465,8 @@ public class DefaultBrushBuilder
             VoxelDiscShapeNode shape = new VoxelDiscShapeNode(radius.getValue());
             ChainedOutputNode<Shape> shapeOut = new ChainedOutputNode<Shape>("shape", shape.getShape());
 
-            BrushNodeGraph brush = new BrushNodeGraph("voxeldisc", BrushPartType.SHAPE);
-            brush.setNext(shapeOut);
+            Brush brush = new BrushNodeGraph("voxeldisc", BrushPartType.SHAPE);
+            brush.setStartNode(shapeOut);
             graphs.put("voxeldisc", brush);
         }
 

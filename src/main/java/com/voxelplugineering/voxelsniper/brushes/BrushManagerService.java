@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper.brushes;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.service.AbstractService;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
@@ -79,7 +80,7 @@ public class BrushManagerService extends AbstractService implements BrushManager
      * {@inheritDoc}
      */
     @Override
-    public void loadBrush(String identifier, BrushNodeGraph graph)
+    public void loadBrush(String identifier, Brush graph)
     {
         check();
         this.wrapped.loadBrush(identifier, graph);
@@ -109,7 +110,7 @@ public class BrushManagerService extends AbstractService implements BrushManager
      * {@inheritDoc}
      */
     @Override
-    public Optional<BrushNodeGraph> getBrush(String identifier)
+    public Optional<Brush> getBrush(String identifier)
     {
         check();
         return this.wrapped.getBrush(identifier);

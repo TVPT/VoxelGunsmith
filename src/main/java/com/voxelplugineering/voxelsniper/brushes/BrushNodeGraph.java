@@ -27,25 +27,25 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
+import com.thevoxelbox.vsl.api.node.Node;
 import com.thevoxelbox.vsl.api.node.NodeGraph;
 import com.thevoxelbox.vsl.api.variables.VariableHolder;
 import com.thevoxelbox.vsl.node.RunnableNodeGraph;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
 import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 
 /**
  * The Gunsmith specific {@link NodeGraph}.
  */
-public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializable
+public class BrushNodeGraph implements Brush
 {
-
-    //TODO NodeGraph's next graph should not be used.
+    
+    private RunnableNodeGraph graph;
 
     /**
      * Attempts to create a {@link BrushNodeGraph} from the given
@@ -54,11 +54,11 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
      * @param container The container
      * @return The graph, or null
      */
-    public static BrushNodeGraph buildFromContainer(DataContainer container)
+    public static Brush buildFromContainer(DataContainer container)
     {
         if (container.contains("name"))
         {
-            BrushNodeGraph brush = new BrushNodeGraph(container.readString("name").get());
+            Brush brush = new BrushNodeGraph(container.readString("name").get());
             brush.fromContainer(container);
             return brush;
         } else
@@ -82,7 +82,7 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
      */
     public BrushNodeGraph(String name, BrushPartType type)
     {
-        super(name);
+        this.graph = new RunnableNodeGraph(name);
         this.arguments = Maps.newHashMap();
         this.argDefaults = Maps.newHashMap();
         this.type = type;
@@ -103,30 +103,21 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
      * 
      * @return The type
      */
+    @Override
     public BrushPartType getType()
     {
         return this.type;
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void run(VariableHolder vars)
-    {
-        run(vars, null);
-    }
-
-    /**
      * Executes this graph with the given arguments.
      * 
-     * @param vars The variables
-     * @param map The arguments
+     * @param state The runtime state
      */
-    public void run(VariableHolder vars, Map<String, String> map)
+    @Override
+    public void run(RuntimeState state)
     {
-        RuntimeState state = new RuntimeState(vars);
-        BrushNodeGraph ng = this;
+        /*Brush ng = this;
         while (ng != null && map != null)
         {
             String inv = ng.parseArguments(map.get(ng.getName()), state.getVars(), vars.<Player>get("__PLAYER__", Player.class).get());
@@ -135,7 +126,7 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
                 vars.<Player>get("__PLAYER__", Player.class).get().sendMessage("Invalid arguments: " + inv);
                 return;
             }
-            ng = (BrushNodeGraph) ng.getNextGraph();
+            ng = (Brush) ng.getNextGraph();
         }
         String missing = "";
         for (String s : this.arguments.keySet())
@@ -160,8 +151,8 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
             vars.<Player>get("__PLAYER__", Player.class).get()
                     .sendMessage("Missing required variable" + (missing.indexOf(" ") != -1 ? "s" : " ") + ": " + missing);
             return;
-        }
-        exec(state);
+        }*/
+        this.graph.exec(state);
     }
 
     /**
@@ -169,6 +160,7 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
      * 
      * @param help The help message
      */
+    @Override
     public void setHelp(String help)
     {
         this.help = help;
@@ -179,6 +171,7 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
      * 
      * @return The help message
      */
+    @Override
     public String getHelp()
     {
         return this.help;
@@ -192,6 +185,7 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
      * @param defaultValue The default value, or null
      * @param aliases Any aliases, optional
      */
+    @Override
     public void addArgument(String name, ArgumentParser<?> parser, String defaultValue, String... aliases)
     {
         if (defaultValue != null && !defaultValue.isEmpty())
@@ -212,6 +206,7 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
      * 
      * @param arg The new primary argument
      */
+    @Override
     public void setArgumentAsPrimary(String arg)
     {
         if (!this.arguments.containsKey(arg))
@@ -222,11 +217,15 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
         this.primary = arg;
     }
 
-    private String parseArguments(String group, VariableHolder vars, Player player)
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void parseArguments(String group, VariableHolder vars)
     {
         if (group == null)
         {
-            return "";
+            return;
         }
         String arg = group.replaceAll("[\\{\\}]", " ").trim();
         String[] args = arg.split(" ");
@@ -235,29 +234,19 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
             vars.set(this.primary, this.arguments.get(this.primary).get(arg).get());
         } else
         {
-            String invalid = "";
             for (String s : args)
             {
                 if (!s.contains("="))
                 {
-                    invalid += s + " ";
                     continue;
                 }
                 String[] kv = s.split("=");
                 if (this.arguments.containsKey(kv[0]))
                 {
                     vars.set(kv[0], this.arguments.get(kv[0]).get(kv[1]));
-                } else
-                {
-                    invalid += kv[0] + " ";
                 }
             }
-            if (!invalid.isEmpty())
-            {
-                return invalid;
-            }
         }
-        return "";
     }
 
     /**
@@ -298,6 +287,24 @@ public class BrushNodeGraph extends RunnableNodeGraph implements DataSerializabl
     {
         // TODO toContainer
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getName()
+    {
+        return this.graph.getName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStartNode(Node node)
+    {
+        this.graph.setNext(node);
     }
 
 }

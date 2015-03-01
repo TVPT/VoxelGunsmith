@@ -23,7 +23,13 @@
  */
 package com.voxelplugineering.voxelsniper.registry;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.api.service.AbstractService;
@@ -122,6 +128,18 @@ public class CommonMaterialRegistry<T> extends AbstractService implements Materi
         {
             this.air = material;
         }
+    }
+
+    @Override
+    public Collection<Material> getMaterials()
+    {
+        Set<Map.Entry<T, Material>> entries = this.registry.getRegisteredValues();
+        List<Material> mats = Lists.newArrayList();
+        for(Map.Entry<T, Material> entry: entries)
+        {
+            mats.add(entry.getValue());
+        }
+        return mats;
     }
 
 }
