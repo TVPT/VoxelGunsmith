@@ -29,59 +29,92 @@ import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
 import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 
+/**
+ * A brush which executes its function by direct java code.
+ */
 public abstract class NativeBrush implements Brush
 {
 
     private final BrushPartType type;
     private String help = "No help provided.";
 
+    /**
+     * Sets up a new {@link NativeBrush} with the given name and type.
+     * 
+     * @param name The brush name
+     * @param type The brush type
+     */
     public NativeBrush(String name, BrushPartType type)
     {
         this.type = type;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BrushPartType getType()
     {
         return this.type;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getHelp()
     {
         return this.help;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setHelp(String help)
     {
         this.help = help;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setStartNode(Node node)
     {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addArgument(String name, ArgumentParser<?> parser, String defaultValue, String... aliases)
     {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setArgumentAsPrimary(String name)
     {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void fromContainer(DataContainer container)
     {
         
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataContainer toContainer()
     {

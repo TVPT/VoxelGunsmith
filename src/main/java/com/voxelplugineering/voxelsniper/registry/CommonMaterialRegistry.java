@@ -130,6 +130,9 @@ public class CommonMaterialRegistry<T> extends AbstractService implements Materi
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<Material> getMaterials()
     {

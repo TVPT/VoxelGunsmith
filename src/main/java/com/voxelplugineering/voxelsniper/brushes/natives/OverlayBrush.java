@@ -23,16 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.brushes.natives;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 import com.thevoxelbox.vsl.api.variables.VariableHolder;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
-import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Location;
@@ -40,17 +34,29 @@ import com.voxelplugineering.voxelsniper.api.world.World;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.brushes.NativeBrush;
 import com.voxelplugineering.voxelsniper.shape.ComplexShape;
-import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
+/**
+ * An implementation of the overlay brush part.
+ * <p>
+ * This brush part is a mask which replaces the selected area with only blocks
+ * on the top layer, eg. blocks visible from the top of the shape.
+ * </p>
+ */
 public class OverlayBrush extends NativeBrush
 {
 
+    /**
+     * default ctor
+     */
     public OverlayBrush()
     {
         super("overlay", BrushPartType.EFFECT);
         setHelp("overlay");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void run(RuntimeState state)
     {
@@ -68,18 +74,18 @@ public class OverlayBrush extends NativeBrush
             {
                 boolean found = false;
                 int height = -1;
-                for (int y = shape.getHeight()-1; y >= 0 && (height == -1 || !found); y--)
+                for (int y = shape.getHeight() - 1; y >= 0 && (height == -1 || !found); y--)
                 {
-                    if(height == -1 && world.getBlock(targetVec.add(x, y, z)).get().getMaterial() != air)
+                    if (height == -1 && world.getBlock(targetVec.add(x, y, z)).get().getMaterial() != air)
                     {
                         height = y;
                     }
-                    if(shape.get(x, y, z, false))
+                    if (shape.get(x, y, z, false))
                     {
                         found = true;
                     }
                 }
-                if(found && height != -1 && world.getBlock(targetVec.add(x, height+1, z)).get().getMaterial() == air)
+                if (found && height != -1 && world.getBlock(targetVec.add(x, height + 1, z)).get().getMaterial() == air)
                 {
                     out.set(x, height, z, false);
                 }
@@ -88,12 +94,18 @@ public class OverlayBrush extends NativeBrush
         vars.set("__CHAINED__shape", out);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName()
     {
         return "overlay";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void parseArguments(String string, VariableHolder vars)
     {

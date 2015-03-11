@@ -53,7 +53,7 @@ public class BrushCommand extends Command
     private String brushSetMessage = Gunsmith.getConfiguration().get("brushSetMessage", String.class).or("Your brush has been set to %s");
 
     /**
-     * Constructs a new BrushCommand
+     * Constructs a new BrushCommand.
      */
     public BrushCommand()
     {

@@ -40,15 +40,29 @@ import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.brushes.NativeBrush;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
+/**
+ * An implementation of the blend brush as a native brush part.
+ * <p>
+ * This brush part is an effect which performs a 'blending' effect by looping
+ * through the area and replacing each block with the most common neighboring
+ * block, if a tie is found then no change is made.
+ * </p>
+ */
 public class BlendBrush extends NativeBrush
 {
 
+    /**
+     * 
+     */
     public BlendBrush()
     {
         super("blend", BrushPartType.EFFECT);
         setHelp("blend");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void run(RuntimeState state)
     {
@@ -68,6 +82,10 @@ public class BlendBrush extends NativeBrush
             {
                 for (int z = 0; z < shape.getLength(); z++)
                 {
+                    if (!shape.get(x, y, z, false))
+                    {
+                        continue;
+                    }
                     freqs.clear();
                     int modeMatCount = 0;
                     Material modeMat = world.getMaterialRegistry().getAirMaterial();
@@ -81,15 +99,14 @@ public class BlendBrush extends NativeBrush
                             {
                                 if (!(m == 0 && n == 0 && o == 0))
                                 {
-                                    Optional<Block> block = world.getBlock(origin.add(x+m, y+n, z+o));
-                                    if(block.isPresent())
+                                    Optional<Block> block = world.getBlock(origin.add(x + m, y + n, z + o));
+                                    if (block.isPresent())
                                     {
                                         Material mat = block.get().getMaterial();
-                                        if(freqs.containsKey(mat))
+                                        if (freqs.containsKey(mat))
                                         {
                                             freqs.put(mat, freqs.get(mat) + 1);
-                                        }
-                                        else
+                                        } else
                                         {
                                             freqs.put(mat, 1);
                                         }
@@ -100,7 +117,7 @@ public class BlendBrush extends NativeBrush
                     }
 
                     // Find most common neighboring material.
-                    for (Map.Entry<Material, Integer> m: freqs.entrySet())
+                    for (Map.Entry<Material, Integer> m : freqs.entrySet())
                     {
                         if (m.getValue() > modeMatCount)
                         {
@@ -109,7 +126,7 @@ public class BlendBrush extends NativeBrush
                         }
                     }
                     // Make sure there'world not a tie for most common
-                    for (Map.Entry<Material, Integer> m: freqs.entrySet())
+                    for (Map.Entry<Material, Integer> m : freqs.entrySet())
                     {
                         if (m.getValue() == modeMatCount)
                         {
@@ -128,12 +145,18 @@ public class BlendBrush extends NativeBrush
         player.addPending(new ShapeChangeQueue(player, target.getLocation(), output));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName()
     {
         return "blend";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void parseArguments(String string, VariableHolder vars)
     {

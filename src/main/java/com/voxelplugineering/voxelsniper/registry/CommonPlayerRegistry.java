@@ -134,4 +134,22 @@ public class CommonPlayerRegistry<T> extends AbstractService implements PlayerRe
         return players;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void remove(String name)
+    {
+        this.registry.remove(name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void remove(T player)
+    {
+        this.registry.remove(player);
+    }
+
 }

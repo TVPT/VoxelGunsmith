@@ -35,7 +35,6 @@ import com.thevoxelbox.vsl.variables.ParentedVariableScope;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.alias.CommonAliasHandler;
 import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
-import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
@@ -81,8 +80,9 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         try
         {
             resetSettings();
-        } catch (Exception ignored)
+        } catch (Exception e)
         {
+            Gunsmith.getLogger().error(e, "Error setting up default player settings.");
             //we catch exceptions here so that an issue while resetting settings cannot stop the object from initializing.
         }
     }

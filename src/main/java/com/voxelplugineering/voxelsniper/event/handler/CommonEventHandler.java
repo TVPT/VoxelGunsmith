@@ -72,9 +72,10 @@ public class CommonEventHandler
     @EventHandler
     public void onPlayerJoin(SniperEvent.SniperCreateEvent event)
     {
-        Player player = event.getSniper();
+        
         //TODO persistence
-        /*File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName + player.getUniqueId().toString());
+        /*Player player = event.getSniper();
+        File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName + player.getUniqueId().toString());
         playerFolder.mkdirs();
         File aliases = new File(playerFolder, this.aliasFile);
         JsonDataSource data = new JsonDataSource(aliases);
@@ -120,6 +121,7 @@ public class CommonEventHandler
         }*/
 
         Gunsmith.getOfflineUndoHandler().register(player.getName(), player.getUndoHistory());
+        Gunsmith.getPlayerRegistry().remove(player.getName());
     }
 
     /**

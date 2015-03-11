@@ -39,7 +39,7 @@ public class ResetCommand extends Command
      */
     public ResetCommand()
     {
-        super("reset", "Resets your brush settings to the defualt values.");
+        super("voxelreset", "Resets your brush settings to the defualt values.");
         setAliases("d");
         setPermissions("voxelsniper.command.reset");
     }

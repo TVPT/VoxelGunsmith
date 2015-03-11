@@ -79,6 +79,7 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void register(String name, K key, V value)
     {
         checkNotNull(key);
@@ -93,6 +94,7 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<V> get(K key)
     {
         checkNotNull(key);
@@ -102,6 +104,7 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<V> get(String name)
     {
         if (!this.caseSensitiveKeys)
@@ -124,6 +127,7 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<String> getNameForValue(V value)
     {
         K key = null;
@@ -151,6 +155,7 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterable<String> getRegisteredNames()
     {
         return this.nameRegistry.keySet();
@@ -159,9 +164,28 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Set<Entry<K, V>> getRegisteredValues()
     {
         return this.registry.entrySet();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void remove(String name)
+    {
+        this.nameRegistry.remove(name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void remove(K key)
+    {
+        this.registry.remove(key);
     }
 
 }

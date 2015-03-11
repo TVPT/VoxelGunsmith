@@ -41,7 +41,8 @@ public class BrushParsing
      * 
      * @param cmd The command
      * @param manager The brush manager
-     * @return The brush chain, if no errors occured
+     * @param aliases The alias registry to use to expand the brush names with
+     * @return The brush chain, if no errors occurred
      */
     public static Optional<BrushChain> parse(String cmd, BrushManager manager, AliasRegistry aliases)
     {
@@ -85,7 +86,7 @@ public class BrushParsing
                 {
                     arg += c;
                     continue;
-                } else
+                } else if(!br.isEmpty())
                 {
                     Optional<Brush> attempt = manager.getBrush(br);
                     if (attempt.isPresent())
