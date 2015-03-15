@@ -415,7 +415,15 @@ public class Gunsmith implements ServiceManager, ExpansionManager
             });
             for (Service service : toInit)
             {
-                service.start();
+                try {
+                    service.start();
+                } catch(Exception e)
+                {
+                    System.err.println(e.getMessage());
+                    service.stop();
+                    this.services.remove(service.getName());
+                    continue;
+                }
                 if (this.initHooks.containsKey(service.getName()))
                 {
                     for (Pair<Object, Method> hook : this.initHooks.get(service.getName()))
