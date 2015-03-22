@@ -138,7 +138,7 @@ public class CommonMaterialRegistry<T> extends AbstractService implements Materi
     {
         Set<Map.Entry<T, Material>> entries = this.registry.getRegisteredValues();
         List<Material> mats = Lists.newArrayList();
-        for(Map.Entry<T, Material> entry: entries)
+        for (Map.Entry<T, Material> entry : entries)
         {
             mats.add(entry.getValue());
         }

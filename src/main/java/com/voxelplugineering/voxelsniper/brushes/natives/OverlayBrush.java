@@ -115,7 +115,7 @@ public class OverlayBrush extends NativeBrush
             vars.set("depth", depth);
         } catch (NumberFormatException e)
         {
-
+            // couldn't parse an integer from the input, ignore
         }
     }
 

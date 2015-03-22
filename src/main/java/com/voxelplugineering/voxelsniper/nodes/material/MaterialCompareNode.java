@@ -53,6 +53,18 @@ public class MaterialCompareNode extends AbstractNode
     }
 
     /**
+     * Creates a new {@link MaterialCompareNode}.
+     * 
+     * @param a The first material
+     * @param b The second material
+     */
+    public MaterialCompareNode(Material a, Provider<Material> b)
+    {
+        this.a = new Provider<Material>(this, a);
+        this.b = b;
+    }
+
+    /**
      * Sets the body of the if-statement formed by this comparison.
      * 
      * @param body the node to execute if the comparison is true

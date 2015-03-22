@@ -44,7 +44,7 @@ import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
  */
 public class BrushNodeGraph implements Brush
 {
-    
+
     private RunnableNodeGraph graph;
 
     /**

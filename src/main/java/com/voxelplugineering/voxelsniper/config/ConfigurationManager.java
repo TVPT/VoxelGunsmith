@@ -194,7 +194,11 @@ public class ConfigurationManager extends AbstractService implements Configurati
         check();
         checkNotNull(containerName, "Name cannot be null!");
         checkArgument(!containerName.isEmpty(), "Name cannot be empty");
-        return this.containers.containsKey(containerName) ? Optional.of(this.containers.get(containerName)) : Optional.absent();
+        if (this.containers.containsKey(containerName))
+        {
+            return Optional.of(this.containers.get(containerName));
+        }
+        return Optional.absent();
     }
 
     /**
@@ -230,12 +234,12 @@ public class ConfigurationManager extends AbstractService implements Configurati
     @Override
     public void fromContainer(DataContainer container)
     {
-        for(String s: container.keySet())
+        for (String s : container.keySet())
         {
-            if(this.containers.containsKey(s))
+            if (this.containers.containsKey(s))
             {
                 Optional<DataContainer> data = container.readContainer(s);
-                if(data.isPresent())
+                if (data.isPresent())
                 {
                     this.containers.get(s).fromContainer(data.get());
                 }
@@ -247,13 +251,11 @@ public class ConfigurationManager extends AbstractService implements Configurati
     public DataContainer toContainer()
     {
         DataContainer container = new MemoryContainer("");
-        for(AbstractConfigurationContainer c: this.getContainers())
+        for (AbstractConfigurationContainer c : this.getContainers())
         {
             container.writeContainer(c.getClass().getName(), c.toContainer());
         }
         return container;
     }
-    
-    
 
 }

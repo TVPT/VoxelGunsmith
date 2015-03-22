@@ -53,6 +53,7 @@ public class GunsmithMain
                 Thread.sleep(1000);
             } catch (InterruptedException ignored)
             {
+                // Interrupted, skip the wait and stop immediately
             }
             System.out.println();
             Gunsmith.getServiceManager().stop();

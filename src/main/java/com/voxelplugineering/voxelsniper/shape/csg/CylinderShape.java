@@ -118,4 +118,13 @@ public class CylinderShape extends OffsetShape
         return new CylinderShape(this.rx, this.height, this.rz, getOrigin());
     }
 
+    /**
+     * 
+     */
+    @Override
+    public String toString()
+    {
+        return String.format("CylinderShape: ( rx=%.2f, height=%d, rz=%.2f, origin=%s )", this.rx, this.height, this.rz, this.getOrigin().toString());
+    }
+
 }

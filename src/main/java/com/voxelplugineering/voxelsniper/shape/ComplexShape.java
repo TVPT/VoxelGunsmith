@@ -498,6 +498,10 @@ public class ComplexShape implements Shape
      */
     public void flatten()
     {
+        if(this.height < 2)
+        {
+            return;
+        }
         for (int x = 0; x < this.width; x++)
         {
             for (int z = 0; z < this.length; z++)

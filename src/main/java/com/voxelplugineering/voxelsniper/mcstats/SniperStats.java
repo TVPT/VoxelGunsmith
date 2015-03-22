@@ -27,8 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import org.mcstats.Metrics;
-
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 

@@ -46,7 +46,7 @@ public class BrushParsing
      */
     public static Optional<BrushChain> parse(String cmd, BrushManager manager, AliasRegistry aliases)
     {
-        if(aliases != null)
+        if (aliases != null)
         {
             cmd = aliases.expand(cmd);
         }
@@ -86,7 +86,7 @@ public class BrushParsing
                 {
                     arg += c;
                     continue;
-                } else if(!br.isEmpty())
+                } else if (!br.isEmpty())
                 {
                     Optional<Brush> attempt = manager.getBrush(br);
                     if (attempt.isPresent())
@@ -106,7 +106,7 @@ public class BrushParsing
                     arg += c;
                 } else
                 {
-                    if(clearOnNext)
+                    if (clearOnNext)
                     {
                         clearOnNext = false;
                         br = "";

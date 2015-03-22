@@ -218,12 +218,18 @@ public class JsonDataSourceReader implements DataSourceReader
         return object;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<String> getName()
     {
         return this.source.getName();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean exists()
     {

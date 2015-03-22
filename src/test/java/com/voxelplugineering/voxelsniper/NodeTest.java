@@ -40,6 +40,11 @@ import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.nodes.block.BlockBreakNode;
+import com.voxelplugineering.voxelsniper.nodes.material.IsLiquidNode;
+import com.voxelplugineering.voxelsniper.nodes.material.MaterialCompareNode;
+import com.voxelplugineering.voxelsniper.nodes.shape.DiscShapeNode;
+import com.voxelplugineering.voxelsniper.util.CheckRunNode;
+import com.voxelplugineering.voxelsniper.util.ShapeValidation;
 
 /**
  * Standard node test class.
@@ -75,8 +80,106 @@ public class NodeTest
         BlockBreakNode node = new BlockBreakNode(new Provider<Block>(Mockito.mock(Node.class), block));
         node.exec(this.state);
 
-        assertEquals(node.getLocation().get(this.state), location);
-        assertEquals(node.getMaterial().get(this.state), material);
+        assertEquals(location, node.getLocation().get(this.state));
+        assertEquals(material, node.getMaterial().get(this.state));
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void testIsLiquidNode()
+    {
+        Material material = mock(Material.class);
+        when(material.isLiquid()).thenReturn(true);
+
+        IsLiquidNode node = new IsLiquidNode(new Provider<Material>(mock(Node.class), material));
+        node.exec(this.state);
+
+        assertEquals(true, node.isLiquid().get(this.state));
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void testMaterialCompareNode()
+    {
+        Provider<Material> a = new Provider<Material>(mock(Node.class), mock(Material.class));
+        Provider<Material> b = new Provider<Material>(mock(Node.class), mock(Material.class));
+
+        MaterialCompareNode node = new MaterialCompareNode(a, b);
+        CheckRunNode check = new CheckRunNode(0);
+        node.setBody(check);
+        node.exec(this.state);
+
+        check.end();
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void testMaterialCompareNode2()
+    {
+        Material mat = mock(Material.class);
+        Provider<Material> a = new Provider<Material>(mock(Node.class), mat);
+        Provider<Material> b = new Provider<Material>(mock(Node.class), mat);
+
+        MaterialCompareNode node = new MaterialCompareNode(a, b);
+        CheckRunNode check = new CheckRunNode(1);
+        node.setBody(check);
+        node.exec(this.state);
+
+        check.end();
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void testMaterialCompareNode3()
+    {
+        Material mat = mock(Material.class);
+        Provider<Material> b = new Provider<Material>(mock(Node.class), mat);
+
+        MaterialCompareNode node = new MaterialCompareNode(mat, b);
+        CheckRunNode check = new CheckRunNode(1);
+        node.setBody(check);
+        node.exec(this.state);
+
+        check.end();
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void testMaterialCompareNode4()
+    {
+        Material mat = mock(Material.class);
+        Provider<Material> b = new Provider<Material>(mock(Node.class), mock(Material.class));
+
+        MaterialCompareNode node = new MaterialCompareNode(mat, b);
+        CheckRunNode check = new CheckRunNode(0);
+        node.setBody(check);
+        node.exec(this.state);
+
+        check.end();
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void testDiscShapeNode()
+    {
+        Provider<Double> rad = new Provider<Double>(mock(Node.class), 5d);
+
+        DiscShapeNode node = new DiscShapeNode(rad);
+        node.exec(this.state);
+
+        assertEquals(true, ShapeValidation.isDisc(node.getShape().get(this.state)));
     }
 
     // TODO remaining node tests

@@ -72,7 +72,7 @@ public class CommonEventHandler
     @EventHandler
     public void onPlayerJoin(SniperEvent.SniperCreateEvent event)
     {
-        
+
         //TODO persistence
         /*Player player = event.getSniper();
         File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName + player.getUniqueId().toString());
@@ -136,7 +136,7 @@ public class CommonEventHandler
     public void onSnipe(SnipeEvent event)
     {
         Player sniper = event.getSniper();
-        if(!Gunsmith.getPermissionsProxy().hasPermission(sniper, "voxelsniper.sniper"))
+        if (!Gunsmith.getPermissionsProxy().hasPermission(sniper, "voxelsniper.sniper"))
         {
             return;
         }

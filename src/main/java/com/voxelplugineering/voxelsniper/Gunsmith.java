@@ -23,17 +23,22 @@
  */
 package com.voxelplugineering.voxelsniper;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
@@ -52,11 +57,11 @@ import com.voxelplugineering.voxelsniper.api.service.Service;
 import com.voxelplugineering.voxelsniper.api.service.ServiceManager;
 import com.voxelplugineering.voxelsniper.api.service.ServiceProvider;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceFactory;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 import com.voxelplugineering.voxelsniper.api.service.scheduler.Scheduler;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormatProxy;
 import com.voxelplugineering.voxelsniper.api.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
+import com.voxelplugineering.voxelsniper.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.util.Pair;
 
 /**
@@ -146,6 +151,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
      * Gets the {@link MaterialRegistry} service which holds the registry of
      * global materials not specific to any world.
      * 
+     * @param <T> The material type
      * @return The material registry
      */
     @SuppressWarnings("unchecked")
@@ -191,6 +197,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
      * Gets the {@link WorldRegistry} service which is a registry for all worlds
      * within the system.
      * 
+     * @param <T> The world type
      * @return The world registry
      */
     @SuppressWarnings("unchecked")
@@ -203,6 +210,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
      * Gets the {@link PlayerRegistry} which is a registry for all users within
      * the system.
      * 
+     * @param <T> The player type
      * @return The player registry
      */
     @SuppressWarnings("unchecked")
@@ -258,6 +266,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     /**
      * Gets the {@link BiomeRegistry} service which holds biomes.
      * 
+     * @param <T> The biome type
      * @return The biome registry
      */
     @SuppressWarnings("unchecked")
@@ -266,6 +275,16 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         return (BiomeRegistry<T>) Holder.INSTANCE.getService("biomeRegistry").orNull();
     }
 
+    /**
+     * Gets the {@link CommandHandler} service.
+     * 
+     * @return The command handler
+     */
+    public static CommandHandler getCommandHandler()
+    {
+        return (CommandHandler) Holder.INSTANCE.getService("commandHandler").orNull();
+    }
+    
     /**
      * Gets the Persistence service.
      * 
@@ -296,7 +315,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     private Thread mainThread;
     private ClassLoader classloader;
 
-    protected Gunsmith()
+    private Gunsmith()
     {
         this.mainThread = Thread.currentThread();
         this.classloader = Gunsmith.class.getClassLoader();
@@ -330,12 +349,98 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     }
 
     /**
+     * A method annotation cache to assist with locating methods during startup.
+     */
+    @SuppressWarnings("rawtypes")
+    private static class StartupHelper
+    {
+
+        private Map<Class<?>, Map<Class, List<Method>>> cache;
+
+        public StartupHelper()
+        {
+            this.cache = new MapMaker().weakKeys().makeMap();
+        }
+
+        /**
+         * Builds the cache for the given class.
+         * 
+         * @param target The target class
+         */
+        public void build(Class<?> target)
+        {
+            if (this.cache.containsKey(target))
+            {
+                return;
+            }
+            Map<Class, List<Method>> anno = new MapMaker().weakKeys().makeMap();
+            for (Method m : target.getMethods())
+            {
+                for (Annotation a : m.getAnnotations())
+                {
+                    if (!anno.containsKey(a.annotationType()))
+                    {
+                        anno.put(a.annotationType(), Lists.<Method>newArrayList());
+                    }
+                    anno.get(a.annotationType()).add(m);
+                }
+            }
+            this.cache.put(target, anno);
+        }
+
+        /**
+         * Gets all methods from the target class with the given annotation.
+         * 
+         * @param target The target class
+         * @param annotation The requested annotation
+         * @return All methods with the given annotation
+         */
+        public List<Method> get(Class<?> target, Class<?> annotation)
+        {
+            if (!annotation.isAnnotation())
+            {
+                return new ArrayList<Method>(0);
+            }
+            build(target);
+            List<Method> methods = this.cache.get(target).get(annotation);
+            if (methods == null)
+            {
+                return new ArrayList<Method>(0);
+            }
+            return methods;
+        }
+
+        /**
+         * Gets all methods from the target class with the given annotation.
+         * Returns all methods which also pass the given function.
+         * 
+         * @param target The target class
+         * @param annotation The requested annotation
+         * @param valid A function to check method validity
+         * @return All applicable methods
+         */
+        public List<Method> get(Class<?> target, Class<?> annotation, Function<Method, Boolean> valid)
+        {
+            List<Method> methods = get(target, annotation);
+            for (Iterator<Method> iter = methods.iterator(); iter.hasNext();)
+            {
+                if (!valid.apply(iter.next()))
+                {
+                    iter.remove();
+                }
+            }
+            return methods;
+        }
+
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public void init()
     {
-        // TODO cache reflection methods + cleanup
+        StartupHelper startup = new StartupHelper();
         if (this.state != State.STOPPED)
         {
             throw new IllegalStateException();
@@ -348,8 +453,19 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         this.providers.clear();
         registerServiceProvider(new CoreServiceProvider());
         this.state = State.STARTING_REGISTRATION;
-        System.out.println("Starting Gunsmith initialization process. ("
-                + new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z").format(new Date(System.currentTimeMillis())) + ")");
+        String startTime = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z").format(new Date(System.currentTimeMillis()));
+        System.out.printf("Starting Gunsmith initialization process. (%s)\n", startTime);
+
+        Function<Method, Boolean> noParamTest = new Function<Method, Boolean>()
+        {
+
+            @Override
+            public Boolean apply(Method input)
+            {
+                return input.getParameterTypes().length == 0;
+            }
+
+        };
 
         // load expansions
 
@@ -372,24 +488,24 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         this.state = State.STARTING_BUILDING;
         synchronized (this.services)
         {
-            // search for builders in the order of first core, then plaform,
+            // search for builders in the order of first core, then platform,
             // then expansions
             for (ServiceProvider provider : this.providers.get(ServiceProvider.Type.CORE))
             {
-                detectBuilders(provider);
+                detectBuilders(provider, startup);
             }
             if (this.providers.containsKey(ServiceProvider.Type.PLATFORM))
             {
                 for (ServiceProvider provider : this.providers.get(ServiceProvider.Type.PLATFORM))
                 {
-                    detectBuilders(provider);
+                    detectBuilders(provider, startup);
                 }
             }
             if (this.providers.containsKey(ServiceProvider.Type.EXPANSION))
             {
                 for (ServiceProvider provider : this.providers.get(ServiceProvider.Type.EXPANSION))
                 {
-                    detectBuilders(provider);
+                    detectBuilders(provider, startup);
                 }
             }
 
@@ -398,18 +514,15 @@ public class Gunsmith implements ServiceManager, ExpansionManager
             {
                 for (ServiceProvider provider : this.providers.get(type))
                 {
-                    for (Method m : provider.getClass().getMethods())
-                    { // cache
-                        if (m.isAnnotationPresent(ServiceProvider.PreInit.class) && m.getParameterTypes().length == 0)
+                    for (Method m : startup.get(provider.getClass(), ServiceProvider.PreInit.class, noParamTest))
+                    {
+                        try
                         {
-                            try
-                            {
-                                m.invoke(provider, new Object[0]);
-                            } catch (Exception e)
-                            {
-                                System.err.println("Error calling pre init hook from " + m.toGenericString());
-                                e.printStackTrace();
-                            }
+                            m.invoke(provider, new Object[0]);
+                        } catch (Exception e)
+                        {
+                            System.err.println("Error calling pre init hook from " + m.toGenericString());
+                            e.printStackTrace();
                         }
                     }
                 }
@@ -459,18 +572,16 @@ public class Gunsmith implements ServiceManager, ExpansionManager
             {
                 for (ServiceProvider provider : this.providers.get(type))
                 {
-                    for (Method m : provider.getClass().getMethods())
-                    { // cache
-                        if (m.isAnnotationPresent(ServiceProvider.PostInit.class) && m.getParameterTypes().length == 0)
+
+                    for (Method m : startup.get(provider.getClass(), ServiceProvider.PostInit.class, noParamTest))
+                    {
+                        try
                         {
-                            try
-                            {
-                                m.invoke(provider, new Object[0]);
-                            } catch (Exception e)
-                            {
-                                System.err.println("Error calling post init hook from " + m.toGenericString());
-                                e.printStackTrace();
-                            }
+                            m.invoke(provider, new Object[0]);
+                        } catch (Exception e)
+                        {
+                            System.err.println("Error calling post init hook from " + m.toGenericString());
+                            e.printStackTrace();
                         }
                     }
                 }
@@ -483,59 +594,68 @@ public class Gunsmith implements ServiceManager, ExpansionManager
                     unbuilt += " " + stopped;
                 }
                 getLogger().warn("Finished initialization process with the following services unbuilt:" + unbuilt);
+            } else
+            {
+                getLogger().info("Finished Gunsmith initialization process.");
             }
 
             this.state = State.RUNNING;
         }
     }
 
-    private void detectBuilders(ServiceProvider provider)
+    private void detectBuilders(ServiceProvider provider, StartupHelper startup)
     {
-        for (Method m : provider.getClass().getMethods())
-        { // cache
-            if (m.isAnnotationPresent(ServiceProvider.Builder.class) && validate(m))
-            {
-                ServiceProvider.Builder builder = m.getAnnotation(ServiceProvider.Builder.class);
-                if (this.stoppedServices.contains(builder.value()) || this.services.containsKey(builder.value()))
-                {
-                    try
-                    {
-                        this.services.put(builder.value(), (Service) m.invoke(provider, new Object[0]));
-                        this.stoppedServices.remove(builder.value());
-                    } catch (Exception e)
-                    {
-                        System.err.println("Failed to build " + builder.value() + " from " + m.toGenericString());
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        for (Method m : provider.getClass().getMethods())
-        { // cache
-            if (m.isAnnotationPresent(ServiceProvider.InitHook.class) && m.getParameterTypes().length == 1
-                    && m.getParameterTypes()[0] == Service.class)
-            {
-                ServiceProvider.InitHook hook = m.getAnnotation(ServiceProvider.InitHook.class);
-                List<Pair<Object, Method>> target = null;
-                if (this.initHooks.containsKey(hook.value()))
-                {
-                    target = this.initHooks.get(hook.value());
-                } else
-                {
-                    this.initHooks.put(hook.value(), target = Lists.newArrayList());
-                }
-                target.add(new Pair<Object, Method>(provider, m));
-            }
-        }
-    }
 
-    private boolean validate(Method m)
-    {
-        if (m.getParameterTypes().length == 0 && Service.class.isAssignableFrom(m.getReturnType()))
+        Function<Method, Boolean> builderTest = new Function<Method, Boolean>()
         {
-            return true;
+
+            @Override
+            public Boolean apply(Method input)
+            {
+                return input.getParameterTypes().length == 0 && Service.class.isAssignableFrom(input.getReturnType());
+            }
+
+        };
+        for (Method m : startup.get(provider.getClass(), ServiceProvider.Builder.class, builderTest))
+        {
+            ServiceProvider.Builder builder = m.getAnnotation(ServiceProvider.Builder.class);
+            if (this.stoppedServices.contains(builder.value()) || this.services.containsKey(builder.value()))
+            {
+                try
+                {
+                    this.services.put(builder.value(), (Service) m.invoke(provider, new Object[0]));
+                    this.stoppedServices.remove(builder.value());
+                } catch (Exception e)
+                {
+                    System.err.println("Failed to build " + builder.value() + " from " + m.toGenericString());
+                    e.printStackTrace();
+                }
+            }
         }
-        return false;
+        Function<Method, Boolean> initTest = new Function<Method, Boolean>()
+        {
+
+            @Override
+            public Boolean apply(Method input)
+            {
+                return input.getParameterTypes().length == 1 && input.getParameterTypes()[0] == Service.class;
+            }
+
+        };
+
+        for (Method m : startup.get(provider.getClass(), ServiceProvider.InitHook.class, initTest))
+        {
+            ServiceProvider.InitHook hook = m.getAnnotation(ServiceProvider.InitHook.class);
+            List<Pair<Object, Method>> target = null;
+            if (this.initHooks.containsKey(hook.value()))
+            {
+                target = this.initHooks.get(hook.value());
+            } else
+            {
+                this.initHooks.put(hook.value(), target = Lists.newArrayList());
+            }
+            target.add(new Pair<Object, Method>(provider, m));
+        }
     }
 
     /**
@@ -554,7 +674,8 @@ public class Gunsmith implements ServiceManager, ExpansionManager
             for (ServiceProvider provider : this.providers.get(type))
             {
                 for (Method m : provider.getClass().getMethods())
-                { // cache
+
+                {
                     if (m.isAnnotationPresent(ServiceProvider.PreStop.class) && m.getParameterTypes().length == 0)
                     {
                         try
@@ -649,7 +770,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     public Optional<Service> getService(String name)
     {
         Service service = this.services.get(name);
-        if(service == null && this.testing)
+        if (service == null && this.testing)
         {
             return Optional.fromNullable(createServiceForTesting(name));
         }
@@ -669,38 +790,41 @@ public class Gunsmith implements ServiceManager, ExpansionManager
             this.stoppedServices.add(service.getName());
         }
     }
-    
+
     private Service createServiceForTesting(String name)
     {
-        if(!this.testing)
+        if (!this.testing)
         {
             return null;
         }
-        if(this.testingServices.containsKey(name))
+        if (this.testingServices.containsKey(name))
         {
             return this.testingServices.get(name);
         }
         Service service = null;
         for (Method m : this.testingProvider.getClass().getMethods())
-        { // cache
-            if (m.isAnnotationPresent(ServiceProvider.Builder.class) && validate(m))
+        {
+            if (m.isAnnotationPresent(ServiceProvider.Builder.class))
             {
-                ServiceProvider.Builder builder = m.getAnnotation(ServiceProvider.Builder.class);
-                if (builder.value().equals(name))
+                if (m.getParameterTypes().length == 0 && Service.class.isAssignableFrom(m.getReturnType()))
                 {
-                    try
+                    ServiceProvider.Builder builder = m.getAnnotation(ServiceProvider.Builder.class);
+                    if (builder.value().equals(name))
                     {
-                        service = (Service) m.invoke(this.testingProvider, new Object[0]);
-                    } catch (Exception e)
-                    {
-                        System.err.println("Failed to build for testing " + builder.value() + " from " + m.toGenericString());
-                        e.printStackTrace();
+                        try
+                        {
+                            service = (Service) m.invoke(this.testingProvider, new Object[0]);
+                        } catch (Exception e)
+                        {
+                            System.err.println("Failed to build for testing " + builder.value() + " from " + m.toGenericString());
+                            e.printStackTrace();
+                        }
+                        break;
                     }
-                    break;
                 }
             }
         }
-        if(service == null)
+        if (service == null)
         {
             return null;
         }
@@ -711,7 +835,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
                     && m.getParameterTypes()[0] == Service.class)
             {
                 ServiceProvider.InitHook hook = m.getAnnotation(ServiceProvider.InitHook.class);
-                if(hook.value().equals(name))
+                if (hook.value().equals(name))
                 {
                     try
                     {
@@ -735,7 +859,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     @Override
     public void setTesting(ServiceProvider provider)
     {
-        if(this.testing)
+        if (this.testing)
         {
             return;
         }

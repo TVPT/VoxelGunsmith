@@ -420,10 +420,6 @@ public class DefaultBrushBuilder
             graphs.put("snipe", brush);
         }
 
-        { // TODO snowcone
-
-        }
-
         { // TODO splatter {seed, growth, recursion}
             graphs.put("splatter", new SplatterBrush());
 

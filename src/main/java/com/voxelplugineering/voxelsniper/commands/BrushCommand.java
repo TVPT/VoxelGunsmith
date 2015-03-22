@@ -76,7 +76,7 @@ public class BrushCommand extends Command
             return true;
         }
         Player sniper = (Player) sender;
-        if(!Gunsmith.getPermissionsProxy().hasPermission(sniper, "voxelsniper.command.brush"))
+        if (!Gunsmith.getPermissionsProxy().hasPermission(sniper, "voxelsniper.command.brush"))
         {
             sender.sendMessage("Sorry you lack the required permissions for this command");
             return true;
@@ -98,7 +98,8 @@ public class BrushCommand extends Command
         {
 
             String fullBrush = StringUtilities.getSection(args, 0, args.length - 1);
-            Optional<BrushChain> brush = BrushParsing.parse(fullBrush, sniper.getPersonalBrushManager(), sniper.getPersonalAliasHandler().getRegistry("brush").get());
+            Optional<BrushChain> brush =
+                    BrushParsing.parse(fullBrush, sniper.getPersonalBrushManager(), sniper.getPersonalAliasHandler().getRegistry("brush").get());
             if (brush.isPresent())
             {
                 sniper.setCurrentBrush(brush.get());

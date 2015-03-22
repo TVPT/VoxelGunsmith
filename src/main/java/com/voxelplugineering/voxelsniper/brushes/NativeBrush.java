@@ -109,7 +109,7 @@ public abstract class NativeBrush implements Brush
     @Override
     public void fromContainer(DataContainer container)
     {
-        
+
     }
 
     /**

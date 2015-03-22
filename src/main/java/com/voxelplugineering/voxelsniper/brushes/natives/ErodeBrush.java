@@ -47,7 +47,8 @@ import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
  * This brush part is an effect which, depending on the settings, loops through
  * the area and for each erode iteration removes all blocks with exposed faces
  * below a threshold, and for each fill iteration adds all blocks above a
- * threshold.</p>
+ * threshold.
+ * </p>
  */
 public class ErodeBrush extends NativeBrush
 {

@@ -62,7 +62,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     private UndoQueue history;
 
     /**
-     * Creates a new CommonPlayer with a weak reference to the player.
+     * Creates a new {@link AbstractPlayer} with a weak reference to the player.
      * 
      * @param player the player object
      * @param parentBrushManager The parent brush manager
@@ -88,6 +88,12 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         }
     }
 
+    /**
+     * Creates a new {@link AbstractPlayer} with a weak reference to the player.
+     * The player will use the global brush manager as its parent brush manager.
+     * 
+     * @param player the player object
+     */
     protected AbstractPlayer(T player)
     {
         this(player, Gunsmith.getGlobalBrushManager());

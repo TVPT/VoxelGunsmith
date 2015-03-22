@@ -202,7 +202,7 @@ public class SplatterBrush extends NativeBrush
             vars.set("depth", depth);
         } catch (NumberFormatException e)
         {
-
+            // couldn't parse an integer from the arg, ignore
         }
     }
 
