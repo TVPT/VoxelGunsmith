@@ -24,6 +24,8 @@
 package com.voxelplugineering.voxelsniper.api.service;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.CoreServiceProvider;
+import com.voxelplugineering.voxelsniper.api.logging.Logger;
 
 /**
  * A manager for {@link Service}s, handling registration of services and
@@ -81,5 +83,14 @@ public interface ServiceManager
      * @param service The service
      */
     void stopService(Service service);
+
+    /**
+     * Sets this service to 'testing mode' where any requests for services which
+     * are not found are created on the fly using the
+     * {@link CoreServiceProvider}. This is so that classes using services such
+     * as the {@link Logger} to not error out due to Gunsmith not having been
+     * initialized.
+     */
+    void setTesting(ServiceProvider provider);
 
 }

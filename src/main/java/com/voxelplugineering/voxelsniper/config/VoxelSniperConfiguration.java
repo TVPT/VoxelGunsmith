@@ -23,12 +23,13 @@
  */
 package com.voxelplugineering.voxelsniper.config;
 
+import com.voxelplugineering.voxelsniper.api.config.AbstractConfigurationContainer;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 
 /**
  * A configuration container which is exposed for user settings.
  */
-public class VoxelSniperConfiguration
+public class VoxelSniperConfiguration extends AbstractConfigurationContainer
 {
 
     // Default constants

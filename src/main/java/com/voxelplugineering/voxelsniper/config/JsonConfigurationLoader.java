@@ -41,7 +41,7 @@ import com.voxelplugineering.voxelsniper.api.config.Configuration;
 
 /**
  * A configuration loader for loading and saving configuration containers to
- * json flat files.
+ * json flat files. TODO replace with persistence
  */
 public class JsonConfigurationLoader
 {

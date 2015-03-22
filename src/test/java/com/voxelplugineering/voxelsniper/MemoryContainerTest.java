@@ -31,7 +31,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
-import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSource;
+import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSourceReader;
 import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 
 /**
@@ -94,7 +94,7 @@ public class MemoryContainerTest
         container.writeCustom("j", test);
         container.writeContainer("k", test.toContainer());
 
-        JsonDataSource json = new JsonDataSource(null);
+        JsonDataSourceReader json = new JsonDataSourceReader(null);
         JsonElement element = json.fromContainer(container);
         String data = element.toString();
 

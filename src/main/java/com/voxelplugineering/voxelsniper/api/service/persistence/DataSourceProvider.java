@@ -26,14 +26,14 @@ package com.voxelplugineering.voxelsniper.api.service.persistence;
 import com.google.common.base.Optional;
 
 /**
- * A provider for {@link DataSource}s from a common root.
+ * A provider for {@link DataSourceReader}s from a common root.
  */
 public interface DataSourceProvider
 {
 
     /**
-     * Gets whether this provider has a {@link DataSource} within it matching
-     * the given identifier.
+     * Gets whether this provider has a {@link DataSourceReader} within it
+     * matching the given identifier.
      * 
      * @param identifier The identifier
      * @return Whether the source exists
@@ -41,12 +41,20 @@ public interface DataSourceProvider
     boolean has(String identifier);
 
     /**
-     * Gets the {@link DataSource} matching the given identifier if it is
+     * Gets the {@link DataSourceReader} matching the given identifier if it is
      * available.
      * 
      * @param identifier The identifier
      * @return The source, if available
      */
     Optional<DataSource> get(String identifier);
+    
+    Optional<? extends DataSourceProvider> getInternalProvider(String identifier);
+
+    void setReaderType(Class<? extends DataSourceReader> reader, DataContainer args);
+
+    Optional<DataSourceReader> getWithReader(String identifier);
+
+    <T extends DataSourceReader> Optional<T> getWithReader(String identifier, Class<T> reader, DataContainer args);
 
 }

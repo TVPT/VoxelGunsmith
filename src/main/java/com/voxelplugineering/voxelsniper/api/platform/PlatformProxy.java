@@ -23,7 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.api.platform;
 
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
+import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 
 /**
@@ -62,13 +64,20 @@ public interface PlatformProxy
      * @return The data source provider
      */
     DataSourceProvider getBrushDataSource();
+    
+    /**
+     * Gets the root data source provider.
+     * 
+     * @return The root data source provider
+     */
+    DataSourceProvider getRootDataSourceProvider();
 
     /**
      * Gets the Configuration file for Metrics to be used.
      * 
      * @return The file containing the configuration for Metrics
      */
-    DataSource getMetricsFile();
+    DataSourceReader getMetricsFile();
 
     /**
      * Gets the number of players online.
@@ -76,5 +85,12 @@ public interface PlatformProxy
      * @return The number of players online
      */
     int getNumberOfPlayersOnline();
+
+    String getConfigDataSourceName();
+
+    DataContainer getConfigDataSourceArgs();
+
+    BrushLoader getBrushLoader();
+
 
 }

@@ -24,17 +24,36 @@
 package com.voxelplugineering.voxelsniper.service.persistence;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.google.common.base.Optional;
+import com.google.common.io.Files;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceBuilder;
 
 /**
  * An abstract data source based on a {@link File}.
  */
-public abstract class FileDataSource implements DataSource
+public class FileDataSource extends StreamDataSource
 {
 
-    protected final File file;
+    public static final DataSourceBuilder BUILDER = new DataSourceBuilder()
+    {
+        
+        @Override
+        public Optional<DataSource> build(DataContainer args)
+        {
+            if(!args.contains("path"))
+            {
+                return Optional.absent();
+            }
+            String path = args.readString("path").get();
+            return Optional.<DataSource>of(new FileDataSource(new File(path)));
+        }
+    };
+    
+    private final File file;
 
     /**
      * Sets up this {@link FileDataSource}
@@ -65,19 +84,22 @@ public abstract class FileDataSource implements DataSource
         return Optional.of(this.file.getName());
     }
 
-    /**
-     * A builder for {@link DataSource}s from a file.
-     */
-    public static interface Builder
+    @Override
+    public byte[] read() throws IOException
     {
+        return Files.toByteArray(this.file);
+    }
 
-        /**
-         * Creates a new {@link DataSource} for the given file.
-         * 
-         * @param file The file
-         * @return The {@link DataSource}
-         */
-        DataSource build(File file);
+    @Override
+    public void write(byte[] data) throws IOException
+    {
+        Files.write(data, this.file);
+    }
+
+    @Override
+    public boolean exists()
+    {
+        return this.file.exists();
     }
 
 }

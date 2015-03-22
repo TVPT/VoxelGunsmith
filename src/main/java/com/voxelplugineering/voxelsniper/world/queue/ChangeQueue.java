@@ -35,7 +35,7 @@ public abstract class ChangeQueue
 {
 
     /**
-     * The sniper which this queue is attached to.
+     * The owner of this queue.
      */
     protected ChangeQueueOwner owner;
     /**

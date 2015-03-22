@@ -26,9 +26,9 @@ package com.voxelplugineering.voxelsniper.brushes;
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
+import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.service.AbstractService;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 
 /**
  * A service containing a {@link BrushManager}.
@@ -97,10 +97,10 @@ public class BrushManagerService extends AbstractService implements BrushManager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}    
      */
     @Override
-    public void addLoader(DataSourceProvider loader)
+    public void addLoader(BrushLoader loader)
     {
         check();
         this.wrapped.addLoader(loader);

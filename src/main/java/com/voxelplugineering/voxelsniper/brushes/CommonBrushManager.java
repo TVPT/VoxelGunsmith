@@ -26,7 +26,6 @@ package com.voxelplugineering.voxelsniper.brushes;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -36,9 +35,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
+import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 
 /**
  * A standard brush manager.
@@ -58,7 +56,7 @@ public class CommonBrushManager implements BrushManager
     /**
      * An ordered list of loaders used to load brushes by name.
      */
-    private List<DataSourceProvider> loaders;
+    private List<BrushLoader> loaders;
 
     /**
      * Creates a new CommonBrushManager.
@@ -80,7 +78,7 @@ public class CommonBrushManager implements BrushManager
         this.loaders = Lists.newArrayList();
         if (Gunsmith.getPlatformProxy() != null)
         {
-            DataSourceProvider loader = Gunsmith.getPlatformProxy().getBrushDataSource();
+            BrushLoader loader = Gunsmith.getPlatformProxy().getBrushLoader();
             if(loader != null)
             {
                 this.loaders.add(loader);
@@ -91,7 +89,7 @@ public class CommonBrushManager implements BrushManager
     /**
      * {@inheritDoc}
      */
-    public void addLoader(DataSourceProvider loader)
+    public void addLoader(BrushLoader loader)
     {
         this.loaders.add(0, loader);
     }
@@ -116,24 +114,14 @@ public class CommonBrushManager implements BrushManager
         checkNotNull(identifier, "Name cannot be null!");
         checkArgument(!identifier.isEmpty(), "Name cannot be empty");
         Brush graph = null;
-        for (Iterator<DataSourceProvider> iter = this.loaders.iterator(); iter.hasNext();)
+        for (Iterator<BrushLoader> iter = this.loaders.iterator(); iter.hasNext();)
         {
-            DataSourceProvider loader = iter.next();
-            Optional<DataSource> source = loader.get(identifier);
-            if (source.isPresent())
+            BrushLoader loader = iter.next();
+            Optional<Brush> brush = loader.loadBrush(identifier);
+            if(brush.isPresent())
             {
-                try
-                {
-                    Brush attempt = BrushNodeGraph.buildFromContainer(source.get().read());
-                    if (attempt != null)
-                    {
-                        graph = attempt;
-                        break;
-                    }
-                } catch (IOException e)
-                {
-                    continue;
-                }
+                graph = brush.get();
+                break;
             }
         }
         if (graph != null)

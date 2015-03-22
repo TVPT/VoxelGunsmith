@@ -34,7 +34,7 @@ import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.entity.MessageReceiver;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.util.schematic.SchematicLoader;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
@@ -71,7 +71,7 @@ public class CommonSchematicLoader implements SchematicLoader
      * {@inheritDoc}
      */
     @Override
-    public MaterialShape load(DataSource data) throws IOException
+    public MaterialShape load(DataSourceReader data) throws IOException
     {
         DataContainer schematicTag = data.read();
         if (!schematicTag.contains("Blocks"))
@@ -239,7 +239,7 @@ public class CommonSchematicLoader implements SchematicLoader
      * {@inheritDoc}
      */
     @Override
-    public void save(DataSource data, MaterialShape shape, MessageReceiver owner) throws IOException
+    public void save(DataSourceReader data, MaterialShape shape, MessageReceiver owner) throws IOException
     {
         int width = shape.getWidth();
         int height = shape.getHeight();

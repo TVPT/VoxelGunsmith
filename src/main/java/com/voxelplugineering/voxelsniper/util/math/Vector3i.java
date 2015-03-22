@@ -34,6 +34,12 @@ public class Vector3i implements Serializable, Cloneable
 {
 
     private static final long serialVersionUID = 2185038435585259289L;
+
+    /**
+     * Returns an instance of the zero vector.
+     */
+    public static final Vector3i ZERO = new Vector3i(0, 0, 0);
+    
     /**
      * The vector data.
      */

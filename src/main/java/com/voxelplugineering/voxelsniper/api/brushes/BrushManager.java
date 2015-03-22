@@ -65,7 +65,7 @@ public interface BrushManager
      * 
      * @param loader the new loader, cannot be null
      */
-    void addLoader(DataSourceProvider loader);
+    void addLoader(BrushLoader loader);
 
     /**
      * Returns a new instance of the brush with the given name if it has been

@@ -25,7 +25,6 @@ package com.voxelplugineering.voxelsniper.entity.living;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.File;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -37,6 +36,7 @@ import com.voxelplugineering.voxelsniper.alias.CommonAliasHandler;
 import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
 import com.voxelplugineering.voxelsniper.brushes.BrushChain;
@@ -83,7 +83,8 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         } catch (Exception e)
         {
             Gunsmith.getLogger().error(e, "Error setting up default player settings.");
-            //we catch exceptions here so that an issue while resetting settings cannot stop the object from initializing.
+            // we catch exceptions here so that an issue while resetting
+            // settings cannot stop the object from initializing.
         }
     }
 
@@ -155,7 +156,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         this.brushVariables.clear();
         String brush = Gunsmith.getConfiguration().get("defaultBrush", String.class).or("voxel material");
         Optional<BrushChain> current = BrushParsing.parse(brush, this.personalBrushManager, this.personalAliasHandler.getRegistry("brush").orNull());
-        if(current.isPresent())
+        if (current.isPresent())
         {
             setCurrentBrush(current.get());
             sendMessage("Brush set to " + Gunsmith.getConfiguration().get("defaultBrush").get().toString());
@@ -242,21 +243,18 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     /**
      * {@inheritDoc}
      */
-    @Override
-    public AliasHandler getPersonalAliasHandler()
+    public DataSourceReader getAliasFile()
     {
-        return this.personalAliasHandler;
+        return null; // TODO persistence
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public File getAliasFile()
+    public AliasHandler getPersonalAliasHandler()
     {
-        //TODO persistence
-        //File aliases = new File(Gunsmith.getDataFolder(), "players/" + getUniqueId().toString() + "/aliases.json");
-        return null;
+        return this.personalAliasHandler;
     }
 
     /**

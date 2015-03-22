@@ -34,8 +34,11 @@ import java.util.Set;
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.config.AbstractConfigurationContainer;
 import com.voxelplugineering.voxelsniper.api.config.Configuration;
 import com.voxelplugineering.voxelsniper.api.service.AbstractService;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 
 /**
  * The configuration storage.
@@ -50,7 +53,7 @@ public class ConfigurationManager extends AbstractService implements Configurati
     /**
      * A Map of containers imported to this configuration storage.
      */
-    private Map<String, Object> containers;
+    private Map<String, AbstractConfigurationContainer> containers;
 
     /**
      * Constructs a new Configuration
@@ -140,7 +143,7 @@ public class ConfigurationManager extends AbstractService implements Configurati
      * {@inheritDoc}
      */
     @Override
-    public void registerContainer(Class<?> container)
+    public <T extends AbstractConfigurationContainer> void registerContainer(Class<T> container)
     {
         check();
         checkNotNull(container, "Container cannot be null!");
@@ -150,7 +153,7 @@ public class ConfigurationManager extends AbstractService implements Configurati
             throw new IllegalArgumentException("Cannot register an already registered container");
         }
         // Load default values from the container
-        Object obj;
+        T obj;
         try
         {
             obj = container.newInstance();
@@ -186,7 +189,7 @@ public class ConfigurationManager extends AbstractService implements Configurati
      * {@inheritDoc}
      */
     @Override
-    public Optional<Object> getContainer(String containerName)
+    public Optional<AbstractConfigurationContainer> getContainer(String containerName)
     {
         check();
         checkNotNull(containerName, "Name cannot be null!");
@@ -198,13 +201,13 @@ public class ConfigurationManager extends AbstractService implements Configurati
      * {@inheritDoc}
      */
     @Override
-    public Object[] getContainers()
+    public AbstractConfigurationContainer[] getContainers()
     {
         check();
-        Set<Entry<String, Object>> entries = this.containers.entrySet();
-        Object[] containers = new Object[entries.size()];
+        Set<Entry<String, AbstractConfigurationContainer>> entries = this.containers.entrySet();
+        AbstractConfigurationContainer[] containers = new AbstractConfigurationContainer[entries.size()];
         int i = 0;
-        for (Entry<String, Object> e : entries)
+        for (Entry<String, AbstractConfigurationContainer> e : entries)
         {
             containers[i++] = e.getValue();
         }
@@ -220,5 +223,37 @@ public class ConfigurationManager extends AbstractService implements Configurati
         check();
         return this.config.containsKey(name);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void fromContainer(DataContainer container)
+    {
+        for(String s: container.keySet())
+        {
+            if(this.containers.containsKey(s))
+            {
+                Optional<DataContainer> data = container.readContainer(s);
+                if(data.isPresent())
+                {
+                    this.containers.get(s).fromContainer(data.get());
+                }
+            }
+        }
+    }
+
+    @Override
+    public DataContainer toContainer()
+    {
+        DataContainer container = new MemoryContainer("");
+        for(AbstractConfigurationContainer c: this.getContainers())
+        {
+            container.writeContainer(c.getClass().getName(), c.toContainer());
+        }
+        return container;
+    }
+    
+    
 
 }

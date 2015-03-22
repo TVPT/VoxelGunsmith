@@ -34,7 +34,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.util.nbt.ByteArrayTag;
 import com.voxelplugineering.voxelsniper.util.nbt.ByteTag;
 import com.voxelplugineering.voxelsniper.util.nbt.CompoundTag;
@@ -50,7 +50,7 @@ import com.voxelplugineering.voxelsniper.util.nbt.StringTag;
 import com.voxelplugineering.voxelsniper.util.nbt.Tag;
 
 /**
- * A {@link DataSource} which reads from a file as NBT.
+ * A {@link DataSourceReader} which reads from a file as NBT.
  */
 @SuppressWarnings("rawtypes")
 public class NBTDataSource extends FileDataSource
@@ -63,7 +63,7 @@ public class NBTDataSource extends FileDataSource
     {
 
         @Override
-        public DataSource build(File f)
+        public DataSourceReader build(File f)
         {
             return new NBTDataSource(f);
         }

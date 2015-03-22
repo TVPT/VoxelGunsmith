@@ -24,11 +24,12 @@
 package com.voxelplugineering.voxelsniper.api.config;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
 
 /**
  * A storage space for configuration.
  */
-public interface Configuration
+public interface Configuration extends DataSerializable
 {
 
     /**
@@ -81,10 +82,11 @@ public interface Configuration
      * If any of the fields have names matching keys already stored within this
      * configuration storage the values in this configuration storage will be
      * overwritten.
+     * </p>
      * 
      * @param container the new container to load, cannot be null
      */
-    void registerContainer(Class<?> container);
+    <T extends AbstractConfigurationContainer> void registerContainer(Class<T> container);
 
     /**
      * Returns the Class of a previously registered container. Returns null if
@@ -93,13 +95,13 @@ public interface Configuration
      * @param containerName the name of the container, cannot be null or empty
      * @return the container class
      */
-    Optional<Object> getContainer(String containerName);
+    Optional<AbstractConfigurationContainer> getContainer(String containerName);
 
     /**
      * Returns an array of the Classes all previously registered containers.
      * 
      * @return an array of Classes
      */
-    Object[] getContainers();
+    AbstractConfigurationContainer[] getContainers();
 
 }

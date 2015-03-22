@@ -49,7 +49,7 @@ public class CommonLoggingDistributor extends AbstractService implements Logging
      */
     public CommonLoggingDistributor()
     {
-        super(-1);
+        super(-2);
         this.loggers = Maps.newHashMap();
     }
 

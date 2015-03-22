@@ -23,10 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.config;
 
+import com.voxelplugineering.voxelsniper.api.config.AbstractConfigurationContainer;
+
 /**
  * Default base configuration values.
  */
-public class BaseConfiguration
+public class BaseConfiguration extends AbstractConfigurationContainer
 {
 
     double playerEyeHeight = 1.62;
@@ -46,5 +48,8 @@ public class BaseConfiguration
     String pitchVariable = "pitch";
     String targetBlockVariable = "targetBlock";
     String lengthVariable = "length";
+    
+    int aliasInterval = 30000;
+    int changeInterval = 100;
 
 }

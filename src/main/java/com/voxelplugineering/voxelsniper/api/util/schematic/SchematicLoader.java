@@ -26,7 +26,7 @@ package com.voxelplugineering.voxelsniper.api.util.schematic;
 import java.io.IOException;
 
 import com.voxelplugineering.voxelsniper.api.entity.MessageReceiver;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 
 /**
@@ -38,23 +38,23 @@ public interface SchematicLoader
 {
 
     /**
-     * Loads a world region from the given {@link DataSource}.
+     * Loads a world region from the given {@link DataSourceReader}.
      * 
      * @param data The data
      * @return The world region
      * @throws IOException If there is an error loading
      */
-    MaterialShape load(DataSource data) throws IOException;
+    MaterialShape load(DataSourceReader data) throws IOException;
 
     /**
-     * Saves a world region to the given {@link DataSource}.
+     * Saves a world region to the given {@link DataSourceReader}.
      * 
      * @param data The source to save to
      * @param shape The region to save
      * @param owner The message receiver to post results to
      * @throws IOException If there is an error saving
      */
-    void save(DataSource data, MaterialShape shape, MessageReceiver owner) throws IOException;
+    void save(DataSourceReader data, MaterialShape shape, MessageReceiver owner) throws IOException;
 
     /**
      * A schematic format converter.
@@ -83,7 +83,7 @@ public interface SchematicLoader
          * 
          * @param stencil The stencil file
          */
-        public StencilConverter(DataSource stencil)
+        public StencilConverter(DataSourceReader stencil)
         {
             // TODO StencilConverter
         }

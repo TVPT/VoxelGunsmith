@@ -23,56 +23,72 @@
  */
 package com.voxelplugineering.voxelsniper.service.persistence;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.common.base.Optional;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
-import com.google.gson.stream.JsonReader;
+import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceBuilder;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 
 /**
  * A data source which serializes data to a file as Json.
  */
-public class JsonDataSource extends FileDataSource
+public class JsonDataSourceReader implements DataSourceReader
 {
 
     /**
-     * A {@link FileDataSource.Builder} for json data sources.
+     * A {@link DataSourceBuilder} for json data sources.
      */
-    public static Builder BUILDER = new Builder()
+    public static final DataSourceBuilder BUILDER = new DataSourceBuilder()
     {
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
-        public DataSource build(File f)
+        public Optional<DataSource> build(DataContainer args)
         {
-            return new JsonDataSource(f);
+            if(!args.contains("source") || !args.contains("sourceArgs"))
+            {
+                Gunsmith.getLogger().warn("Failed to build JsonDataSourceReader, invalid args");
+                return Optional.absent();
+            }
+            String sourceName = args.readString("source").get();
+            Optional<DataSource> source = Gunsmith.getPersistence().build(sourceName, args.readContainer("sourceArgs").get());
+            if(!source.isPresent())
+            {
+                Gunsmith.getLogger().warn("Failed to build data source for JsonDataSourceReader");
+                return Optional.absent();
+            }
+            if(!StreamDataSource.class.isAssignableFrom(source.get().getClass()))
+            {
+                Gunsmith.getLogger().warn("Failed to build JsonDataSourceReader: Source was not a StreamDataSource");
+                return Optional.absent();
+            }
+            StreamDataSource stream = (StreamDataSource) source.get();
+            return Optional.<DataSource>of(new JsonDataSourceReader(stream));
         }
 
     };
 
+    private final StreamDataSource source;
+
     /**
-     * Creates a new {@link JsonDataSource} based on the given file.
+     * Creates a new {@link JsonDataSourceReader} based on the given file.
      * 
      * @param file The file
      */
-    public JsonDataSource(File file)
+    public JsonDataSourceReader(StreamDataSource source)
     {
-        super(file);
+        this.source = source;
     }
 
     /**
@@ -81,28 +97,11 @@ public class JsonDataSource extends FileDataSource
     @Override
     public void write(DataContainer container) throws IOException
     {
-        if (this.file.exists())
-        {
-            this.file.delete();
-        }
-        Writer writer = null;
-        try
-        {
-            this.file.createNewFile();
+        Gson gson = new GsonBuilder().create();
+        JsonObject json = fromContainer(container);
 
-            writer = new FileWriter(this.file);
-
-            Gson gson = new GsonBuilder().create();
-            JsonObject json = fromContainer(container);
-
-            gson.toJson(json, writer);
-        } finally
-        {
-            if (writer != null)
-            {
-                writer.close();
-            }
-        }
+        String data = gson.toJson(json);
+        this.source.write(data.getBytes("UTF-8"));
     }
 
     /**
@@ -150,22 +149,11 @@ public class JsonDataSource extends FileDataSource
     @Override
     public DataContainer read() throws IOException
     {
-        JsonReader reader = null;
         DataContainer container = null;
-        try
-        {
-            reader = new JsonReader(new FileReader(this.file));
-            JsonParser parser = new JsonParser();
-            JsonElement rootelement = parser.parse(reader);
-            container = toContainer(rootelement);
-
-        } finally
-        {
-            if (reader != null)
-            {
-                reader.close();
-            }
-        }
+        String data = new String(this.source.read(), "UTF-8");
+        JsonParser parser = new JsonParser();
+        JsonElement rootelement = parser.parse(data);
+        container = toContainer(rootelement);
         return container;
     }
 
@@ -228,6 +216,18 @@ public class JsonDataSource extends FileDataSource
     {
         object.fromContainer(read());
         return object;
+    }
+
+    @Override
+    public Optional<String> getName()
+    {
+        return this.source.getName();
+    }
+
+    @Override
+    public boolean exists()
+    {
+        return this.source.exists();
     }
 
 }

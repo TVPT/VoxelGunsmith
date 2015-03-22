@@ -31,8 +31,11 @@ import com.google.common.base.Optional;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 
 /**
  * A {@link DataSourceProvider} for files within a directory. Builds child data
@@ -41,11 +44,12 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvi
 public class DirectoryDataSourceProvider implements DataSourceProvider
 {
 
-    final File directory;
+    private final File directory;
     // Decided to use a cache due to how often has and read will be called close
     // together looking for the same file.
     private final LoadingCache<String, File> cache;
-    private final FileDataSource.Builder builder;
+    private Class<? extends DataSourceReader> reader = null;
+    private DataContainer readerArgs = null;
 
     /**
      * Creates a new {@link DirectoryDataSourceProvider}.
@@ -53,7 +57,7 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
      * @param dir The directory
      * @param builder The data source builder
      */
-    public DirectoryDataSourceProvider(File dir, FileDataSource.Builder builder)
+    public DirectoryDataSourceProvider(File dir)
     {
         this.directory = dir;
         this.cache = CacheBuilder.newBuilder().expireAfterAccess(60, TimeUnit.SECONDS).build(new CacheLoader<String, File>()
@@ -66,7 +70,6 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
             }
 
         });
-        this.builder = builder;
     }
 
     /**
@@ -77,7 +80,7 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
     {
         try
         {
-            return this.cache.get(identifier).exists();
+            return this.cache.get(identifier).isFile();
         } catch (ExecutionException e)
         {
             e.printStackTrace();
@@ -100,11 +103,59 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
             e.printStackTrace();
             return Optional.absent();
         }
-        if (file.exists())
+        if(file.isFile())
         {
-            return Optional.of(this.builder.build(file));
+            return Optional.<DataSource> of(new FileDataSource(file));
         }
         return Optional.absent();
+    }
+
+    @Override
+    public void setReaderType(Class<? extends DataSourceReader> reader, DataContainer args)
+    {
+        this.reader = reader;
+        this.readerArgs = args;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Optional<DataSourceReader> getWithReader(String identifier)
+    {
+        if(this.reader == null || this.readerArgs == null)
+        {
+            return Optional.absent();
+        }
+        return (Optional<DataSourceReader>) getWithReader(identifier, this.reader, this.readerArgs);
+    }
+
+    @Override
+    public <T extends DataSourceReader> Optional<T> getWithReader(String identifier, Class<T> reader, DataContainer args)
+    {
+        File file;
+        try
+        {
+            file = this.cache.get(identifier);
+        } catch (ExecutionException e)
+        {
+            e.printStackTrace();
+            return Optional.absent();
+        }
+        if(file.isFile())
+        {
+            DataContainer sourceArgs = new MemoryContainer("");
+            sourceArgs.writeString("path", file.getAbsolutePath());
+            args.writeString("source", "file");
+            args.writeContainer("sourceArgs", sourceArgs);
+            return Gunsmith.getPersistence().build(reader, args);
+        }
+        return Optional.absent();
+    }
+
+    @Override
+    public Optional<? extends DataSourceProvider> getInternalProvider(String identifier)
+    {
+        //TODO
+        return null;
     }
 
 }
