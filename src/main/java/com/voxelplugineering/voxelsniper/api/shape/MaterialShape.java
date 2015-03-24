@@ -105,6 +105,13 @@ public interface MaterialShape extends Shape
     boolean hasExtraData();
 
     /**
+     * Sets the default material.
+     * 
+     * @param material The new material
+     */
+    void setDefaultMaterial(Material material);
+
+    /**
      * Gets the material dictionary for this shape. This dictionary is a mapping
      * of shorts to the materials that they represent.
      * 

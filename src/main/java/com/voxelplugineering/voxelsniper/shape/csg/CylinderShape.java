@@ -97,8 +97,18 @@ public class CylinderShape extends OffsetShape
      * {@inheritDoc}
      */
     @Override
+    public boolean isMutable()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void set(int x, int y, int z, boolean relative)
     {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -107,6 +117,7 @@ public class CylinderShape extends OffsetShape
     @Override
     public void unset(int x, int y, int z, boolean relative)
     {
+        throw new UnsupportedOperationException();
     }
 
     /**

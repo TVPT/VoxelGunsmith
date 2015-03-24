@@ -61,7 +61,7 @@ public class ToComplexShapeNode extends AbstractNode
     public void exec(RuntimeState state)
     {
         Shape s = this.input.get(state);
-        if (s.supportsChanges())
+        if (s.isMutable())
         {
             this.output.set(s, state.getUUID());
         } else

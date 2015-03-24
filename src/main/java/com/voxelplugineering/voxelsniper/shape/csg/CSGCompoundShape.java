@@ -176,6 +176,15 @@ public class CSGCompoundShape extends OffsetShape
      * {@inheritDoc}
      */
     @Override
+    public boolean isMutable()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void set(int x, int y, int z, boolean relative)
     {
         throw new UnsupportedOperationException();

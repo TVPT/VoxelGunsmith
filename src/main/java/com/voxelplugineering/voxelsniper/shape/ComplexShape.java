@@ -154,7 +154,7 @@ public class ComplexShape implements Shape
      * {@inheritDoc}
      */
     @Override
-    public boolean supportsChanges()
+    public boolean isMutable()
     {
         return true;
     }

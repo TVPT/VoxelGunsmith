@@ -82,7 +82,7 @@ public class ComplexMaterialShape implements MaterialShape
      * {@inheritDoc}
      */
     @Override
-    public boolean supportsChanges()
+    public boolean isMutable()
     {
         return true;
     }
@@ -151,7 +151,7 @@ public class ComplexMaterialShape implements MaterialShape
     public void setMaterial(int x, int y, int z, boolean relative, Material material)
     {
         checkNotNull(material);
-        if (!this.shape.supportsChanges())
+        if (!this.shape.isMutable())
         {
             this.shape = new ComplexShape(this.shape);
         }
@@ -181,7 +181,7 @@ public class ComplexMaterialShape implements MaterialShape
      */
     public void unsetMaterial(int x, int y, int z, boolean relative)
     {
-        if (!this.shape.supportsChanges())
+        if (!this.shape.isMutable())
         {
             this.shape = new ComplexShape(this.shape);
         }
@@ -442,6 +442,52 @@ public class ComplexMaterialShape implements MaterialShape
     {
         this.materialDictionary.put(key, material);
         this.nextId = (short) Math.max(this.nextId, key);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDefaultMaterial(Material material)
+    {
+        if (this.defaultMaterial.equals(material))
+        {
+            return;
+        }
+        Material existing = this.defaultMaterial;
+        this.defaultMaterial = material;
+        short other = getOrRegisterMaterial(material);
+        this.materialDictionary.put((short) 0, material);
+        this.materialDictionary.put(other, existing);
+        this.inverseDictionary.put(material, (short) 0);
+        this.inverseDictionary.put(existing, other);
+        if (this.materialsB != null)
+        {
+            for (int i = 0; i < this.materialsA.length; i++)
+            {
+                if (this.materialsA[i] == (other & 0xff) && this.materialsB[i] == (other & 0xff00 >> 8))
+                {
+                    this.materialsA[i] = 0;
+                    this.materialsB[i] = 0;
+                } else if (this.materialsA[i] == 0 && this.materialsB[i] == 0)
+                {
+                    this.materialsA[i] = (byte) (other & 0xff);
+                    this.materialsB[i] = (byte) (other & 0xff00 >> 8);
+                }
+            }
+        } else
+        {
+            for (int i = 0; i < this.materialsA.length; i++)
+            {
+                if (this.materialsA[i] == (other & 0xff))
+                {
+                    this.materialsA[i] = 0;
+                } else if (this.materialsA[i] == 0)
+                {
+                    this.materialsA[i] = (byte) (other & 0xff);
+                }
+            }
+        }
     }
 
 }

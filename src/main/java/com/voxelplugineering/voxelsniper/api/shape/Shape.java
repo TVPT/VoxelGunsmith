@@ -63,7 +63,9 @@ public interface Shape
      * 
      * @return Supports changes
      */
-    boolean supportsChanges();
+    boolean isMutable();
+    
+    //TODO split mutable and immutable shapes into two types
 
     /**
      * Gets if the shape covers the given position.

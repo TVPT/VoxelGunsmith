@@ -84,7 +84,7 @@ public class SingleMaterialShape implements MaterialShape
      * {@inheritDoc}
      */
     @Override
-    public boolean supportsChanges()
+    public boolean isMutable()
     {
         return true;
     }
@@ -113,7 +113,7 @@ public class SingleMaterialShape implements MaterialShape
     @Override
     public void set(int x, int y, int z, boolean relative)
     {
-        if (!this.shape.supportsChanges())
+        if (!this.shape.isMutable())
         {
             this.shape = new ComplexShape(this.shape);
         }
@@ -126,7 +126,7 @@ public class SingleMaterialShape implements MaterialShape
     @Override
     public void unset(int x, int y, int z, boolean relative)
     {
-        if (!this.shape.supportsChanges())
+        if (!this.shape.isMutable())
         {
             this.shape = new ComplexShape(this.shape);
         }
@@ -246,6 +246,15 @@ public class SingleMaterialShape implements MaterialShape
     public int getMaxMaterialId()
     {
         return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDefaultMaterial(Material material)
+    {
+        this.material = material;
     }
 
 }
