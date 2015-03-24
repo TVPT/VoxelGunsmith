@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.service.persistence;
 
+import java.util.Iterator;
 import java.util.Map;
 
 import com.google.common.base.Optional;
@@ -150,6 +151,40 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
         {
             return Optional.absent();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean remove(String name)
+    {
+        check();
+        if(this.builders.containsKey(name))
+        {
+            this.builders.remove(name);
+            for(Iterator<Map.Entry<Class<? extends DataSource>, String>> iter = this.names.entrySet().iterator(); iter.hasNext(); )
+            {
+                Map.Entry<Class<? extends DataSource>, String> entry = iter.next();
+                if(entry.getValue().equals(name))
+                {
+                    iter.remove();
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear()
+    {
+        check();
+        this.names.clear();
+        this.builders.clear();
     }
 
 }

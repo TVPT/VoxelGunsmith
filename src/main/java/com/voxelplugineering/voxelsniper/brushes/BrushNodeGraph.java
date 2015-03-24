@@ -56,7 +56,7 @@ public class BrushNodeGraph implements Brush
      */
     public static Brush buildFromContainer(DataContainer container)
     {
-        if (container.contains("name"))
+        if (container.containsKey("name"))
         {
             Brush brush = new BrushNodeGraph(container.readString("name").get());
             brush.fromContainer(container);

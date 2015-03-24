@@ -200,6 +200,13 @@ public interface DataView
      * @param path The path to check
      * @return Whether it exists
      */
-    boolean contains(String path);
+    boolean containsKey(String path);
+    
+    /**
+     * Gets whether there is any data within this data view.
+     * 
+     * @return Is empty
+     */
+    boolean isEmpty();
 
 }

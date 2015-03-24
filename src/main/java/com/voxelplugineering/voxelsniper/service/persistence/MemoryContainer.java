@@ -759,7 +759,7 @@ public class MemoryContainer implements DataContainer
      * {@inheritDoc}
      */
     @Override
-    public boolean contains(String path)
+    public boolean containsKey(String path)
     {
         if (path.contains(PATH_SEPARATOR))
         {
@@ -767,7 +767,7 @@ public class MemoryContainer implements DataContainer
             Optional<DataContainer> container = this.readContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                return container.get().contains(path.substring(index + 1));
+                return container.get().containsKey(path.substring(index + 1));
             } else
             {
                 return false;
@@ -902,6 +902,45 @@ public class MemoryContainer implements DataContainer
         {
             writeBoolean(path, (Boolean) value);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEmpty()
+    {
+        return this.data.isEmpty();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void writeAll(DataContainer container)
+    {
+        for(Map.Entry<String, Object> entry: container.entrySet())
+        {
+            write(entry.getKey(), entry.getValue());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean remove(String path)
+    {
+        return this.data.remove(path) != null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear()
+    {
+        this.data.clear();
     }
 
 }

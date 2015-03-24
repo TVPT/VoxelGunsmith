@@ -74,11 +74,11 @@ public class CommonSchematicLoader implements SchematicLoader
     public MaterialShape load(DataSourceReader data) throws IOException
     {
         DataContainer schematicTag = data.read();
-        if (!schematicTag.contains("Blocks"))
+        if (!schematicTag.containsKey("Blocks"))
         {
             throw new UnsupportedOperationException("Schematic file is missing a \"Blocks\" tag");
         }
-        if (!schematicTag.contains("MaterialDictionary"))
+        if (!schematicTag.containsKey("MaterialDictionary"))
         {
             return new LegacyConverter(schematicTag).convert();
         }
@@ -96,7 +96,7 @@ public class CommonSchematicLoader implements SchematicLoader
         byte[] blockId = schematicTag.readByteArray("Blocks").get();
         byte[] addId = new byte[0];
         short[] blocks = new short[blockId.length];
-        if (schematicTag.contains("AddBlocks"))
+        if (schematicTag.containsKey("AddBlocks"))
         {
             addId = schematicTag.readByteArray("AddBlocks").get();
         }
@@ -199,7 +199,7 @@ public class CommonSchematicLoader implements SchematicLoader
         }
         // create region and return
         NamedWorldSection region;
-        if (schematicTag.contains("WEOffsetX") && schematicTag.contains("WEOffsetY") && schematicTag.contains("WEOffsetZ"))
+        if (schematicTag.containsKey("WEOffsetX") && schematicTag.containsKey("WEOffsetY") && schematicTag.containsKey("WEOffsetZ"))
         {
             int offsetX = schematicTag.readInt("WEOffsetX").get();
             int offsetY = schematicTag.readInt("WEOffsetY").get();
@@ -210,7 +210,7 @@ public class CommonSchematicLoader implements SchematicLoader
             region = new NamedWorldSection(new CuboidShape(width, height, length, new Vector3i(0, 0, 0)), materialDict);
         }
         String name = null;
-        if (schematicTag.contains("name"))
+        if (schematicTag.containsKey("name"))
         {
             name = schematicTag.readString("name").get();
         } else

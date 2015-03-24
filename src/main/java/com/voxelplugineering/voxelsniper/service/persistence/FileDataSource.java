@@ -46,7 +46,7 @@ public class FileDataSource extends StreamDataSource
         @Override
         public Optional<FileDataSource> build(DataContainer args)
         {
-            if (!args.contains("path"))
+            if (!args.containsKey("path"))
             {
                 return Optional.absent();
             }

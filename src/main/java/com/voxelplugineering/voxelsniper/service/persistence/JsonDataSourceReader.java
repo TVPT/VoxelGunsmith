@@ -56,7 +56,7 @@ public class JsonDataSourceReader implements DataSourceReader
         @Override
         public Optional<JsonDataSourceReader> build(DataContainer args)
         {
-            if (!args.contains("source") || !args.contains("sourceArgs"))
+            if (!args.containsKey("source") || !args.containsKey("sourceArgs"))
             {
                 Gunsmith.getLogger().warn("Failed to build JsonDataSourceReader, invalid args");
                 return Optional.absent();

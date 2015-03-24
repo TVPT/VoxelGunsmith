@@ -33,6 +33,14 @@ public interface DataSourceFactory
 {
 
     /**
+     * Requests a new instance of a {@link DataSource} by name.
+     * 
+     * @param name The source name
+     * @return A new instance of the data source, if successful
+     */
+    Optional<DataSource> build(String name);
+
+    /**
      * Requests a new instance of a {@link DataSource} by name with the given
      * arguments.
      * 
@@ -41,14 +49,6 @@ public interface DataSourceFactory
      * @return A new instance of the data source, if successful
      */
     Optional<DataSource> build(String name, DataContainer args);
-
-    /**
-     * Requests a new instance of a {@link DataSource} by name.
-     * 
-     * @param name The source name
-     * @return A new instance of the data source, if successful
-     */
-    Optional<DataSource> build(String name);
 
     /**
      * Requests a new instance of a {@link DataSource} from a class reference.
@@ -80,5 +80,18 @@ public interface DataSourceFactory
      * @param builder The data source builder
      */
     <T extends DataSource> void register(String name, Class<T> type, DataSourceBuilder<T> builder);
+
+    /**
+     * Removes a {@link DataSource} from this factory by name.
+     * 
+     * @param name The name
+     * @return If the factory contained the source
+     */
+    boolean remove(String name);
+
+    /**
+     * Clears all {@link DataSource}s from this factory.
+     */
+    void clear();
 
 }

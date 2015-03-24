@@ -161,5 +161,25 @@ public interface DataContainer extends DataView
      * @param value The value
      */
     void write(String path, Object value);
+    
+    /**
+     * Writes all values from the given container to this container.
+     * 
+     * @param container The source container
+     */
+    void writeAll(DataContainer container);
+
+    /**
+     * Removes the given path from this container.
+     * 
+     * @param path The path
+     * @return If the path was set within this container
+     */
+    boolean remove(String path);
+
+    /**
+     * Clears all data from this container.
+     */
+    void clear();
 
 }

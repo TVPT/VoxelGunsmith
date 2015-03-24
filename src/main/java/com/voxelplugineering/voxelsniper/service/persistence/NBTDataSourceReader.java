@@ -71,7 +71,7 @@ public class NBTDataSourceReader implements DataSourceReader
         @Override
         public Optional<DataSource> build(DataContainer args)
         {
-            if (!args.contains("source") || !args.contains("sourceArgs"))
+            if (!args.containsKey("source") || !args.containsKey("sourceArgs"))
             {
                 Gunsmith.getLogger().warn("Failed to build NBTDataSourceReader, invalid args");
                 return Optional.absent();
