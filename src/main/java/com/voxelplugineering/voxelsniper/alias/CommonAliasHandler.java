@@ -195,4 +195,22 @@ public class CommonAliasHandler implements AliasHandler
         return container;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean removeTarget(String target)
+    {
+        return this.aliasTargets.remove(target) != null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clearTargets()
+    {
+        this.aliasTargets.clear();
+    }
+
 }

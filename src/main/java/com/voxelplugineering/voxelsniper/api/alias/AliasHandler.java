@@ -36,18 +36,18 @@ public interface AliasHandler extends DataSerializable, Buildable
 {
 
     /**
-     * Returns a Set of all valid targets in this handler.
-     * 
-     * @return all valid targets
-     */
-    Set<String> getValidTargets();
-
-    /**
      * Gets Gets the owner of this alias handler.
      * 
      * @return The owner
      */
     AliasOwner getOwner();
+
+    /**
+     * Returns a Set of all valid targets in this handler.
+     * 
+     * @return all valid targets
+     */
+    Set<String> getValidTargets();
 
     /**
      * Returns a the {@link AliasRegistry} by the given name.
@@ -58,19 +58,32 @@ public interface AliasHandler extends DataSerializable, Buildable
     Optional<AliasRegistry> getRegistry(String target);
 
     /**
-     * Returns whether this handler has the given target.
-     * 
-     * @param target The target to check
-     * @return Whether the target exists
-     */
-    boolean hasTarget(String target);
-
-    /**
      * Registers a new target.
      * 
      * @param target The new target name
      * @return The newly created {@link AliasRegistry}
      */
     AliasRegistry registerTarget(String target);
+
+    /**
+     * Returns whether this handler has the given target.
+     * 
+     * @param target The target to check
+     * @return Whether the target exists
+     */
+    boolean hasTarget(String target);
+    
+    /**
+     * Removes the given target from this handler.
+     * 
+     * @param target The target to remove
+     * @return If the handler contained the target
+     */
+    boolean removeTarget(String target);
+    
+    /**
+     * Clears all targets from this handler.
+     */
+    void clearTargets();
 
 }

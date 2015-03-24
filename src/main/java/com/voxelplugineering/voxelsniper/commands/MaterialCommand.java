@@ -89,9 +89,9 @@ public class MaterialCommand extends Command
         if (args.length >= 1)
         {
             materialName = args[0];
-            if (sniper.getPersonalAliasHandler().hasTarget("material"))
+            if (sniper.getAliasHandler().hasTarget("material"))
             {
-                materialName = sniper.getPersonalAliasHandler().getRegistry("material").get().expand(materialName);
+                materialName = sniper.getAliasHandler().getRegistry("material").get().expand(materialName);
             }
             Optional<Material> material = sniper.getWorld().getMaterialRegistry().getMaterial(materialName);
             if (!material.isPresent())

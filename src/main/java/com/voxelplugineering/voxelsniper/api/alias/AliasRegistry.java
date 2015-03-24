@@ -37,12 +37,36 @@ public interface AliasRegistry extends DataSerializable
 {
 
     /**
+     * Recursively expands all aliases found within the given string.
+     * 
+     * @param string the string to expand
+     * @return the result expansion
+     */
+    String expand(String string);
+
+    /**
      * Returns the alias value for the given alias key.
      * 
      * @param alias the key
      * @return the value
      */
     Optional<String> getAlias(String alias);
+
+    /**
+     * Registers a new alias with this registry.
+     * 
+     * @param alias the new alias, cannot be null or empty
+     * @param value the new value for this alias, cannot be null or empty
+     */
+    void register(String alias, String value);
+    
+    /**
+     * Removes the given alias from the registry.
+     * 
+     * @param alias The alias to remove
+     * @return Whether the registry contained the alias
+     */
+    boolean remove(String alias);
 
     /**
      * Returns all keys of this collection. Including, if the deep flag is set,
@@ -52,14 +76,6 @@ public interface AliasRegistry extends DataSerializable
      * @return the keys
      */
     Collection<? extends String> getKeys(boolean deep);
-
-    /**
-     * Registers a new alias with this registry.
-     * 
-     * @param alias the new alias, cannot be null or empty
-     * @param value the new value for this alias, cannot be null or empty
-     */
-    void register(String alias, String value);
 
     /**
      * Returns a Set of all entries in this registry. Intended for use in
@@ -74,14 +90,6 @@ public interface AliasRegistry extends DataSerializable
      * Clears all aliases in this registry.
      */
     void clear();
-
-    /**
-     * Recursively expands all aliases found within the given string.
-     * 
-     * @param string the string to expand
-     * @return the result expansion
-     */
-    String expand(String string);
 
     /**
      * Returns the parent registry

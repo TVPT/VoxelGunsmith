@@ -161,4 +161,24 @@ public class AliasHandlerService extends AbstractService implements AliasHandler
         return this.wrapped.registerTarget(string);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean removeTarget(String target)
+    {
+        check();
+        return this.wrapped.removeTarget(target);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clearTargets()
+    {
+        check();
+        this.wrapped.clearTargets();
+    }
+
 }

@@ -258,7 +258,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
      * {@inheritDoc}
      */
     @Override
-    public AliasHandler getPersonalAliasHandler()
+    public AliasHandler getAliasHandler()
     {
         return this.personalAliasHandler;
     }

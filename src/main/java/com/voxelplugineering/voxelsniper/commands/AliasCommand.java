@@ -70,7 +70,7 @@ public class AliasCommand extends Command
         }
         String target = args[0];
         boolean global = args[1].equalsIgnoreCase("-g") && Gunsmith.getPermissionsProxy().hasPermission(sniper, "voxelsniper.command.alias.global");
-        AliasHandler alias = global ? Gunsmith.getGlobalAliasHandler() : sniper.getPersonalAliasHandler();
+        AliasHandler alias = global ? Gunsmith.getGlobalAliasHandler() : sniper.getAliasHandler();
         int n = global ? 2 : 1;
         if (alias.hasTarget(target))
         {

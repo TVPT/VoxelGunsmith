@@ -341,4 +341,13 @@ public class CommonAliasRegistry implements AliasRegistry
         return container;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean remove(String alias)
+    {
+        return this.aliases.remove(alias) != null;
+    }
+
 }
