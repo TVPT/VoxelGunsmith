@@ -70,6 +70,16 @@ public class Vector3i implements Serializable, Cloneable
     }
 
     /**
+     * Constructs a new vector from the given vector.
+     * 
+     * @param vec The source vector
+     */
+    public Vector3i(Vector3d vec)
+    {
+        this(vec.getX(), vec.getY(), vec.getZ());
+    }
+
+    /**
      * Returns the x-axis value
      * 
      * @return x value

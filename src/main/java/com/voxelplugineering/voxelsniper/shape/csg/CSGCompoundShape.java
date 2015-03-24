@@ -79,7 +79,7 @@ public class CSGCompoundShape extends OffsetShape
      * {@inheritDoc}
      */
     @Override
-    public boolean supportsChanges()
+    public boolean isMutable()
     {
         return false;
     }
@@ -170,15 +170,6 @@ public class CSGCompoundShape extends OffsetShape
     public int getLength()
     {
         return this.length;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isMutable()
-    {
-        return false;
     }
 
     /**

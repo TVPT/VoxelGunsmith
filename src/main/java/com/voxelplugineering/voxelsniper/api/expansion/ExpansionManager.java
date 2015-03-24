@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.api.expansion;
 
+import java.util.Collection;
+
 /**
  * A manager for expansions. Handles the registration of expansions.
  */
@@ -36,5 +38,12 @@ public interface ExpansionManager
      * @param ex The expansion
      */
     void registerExpansion(Expansion ex);
+
+    /**
+     * Gets a collection of all registered expansions.
+     * 
+     * @return The expansions
+     */
+    Collection<Expansion> getExpansions();
 
 }

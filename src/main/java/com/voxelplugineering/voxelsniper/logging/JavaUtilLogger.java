@@ -26,12 +26,54 @@ package com.voxelplugineering.voxelsniper.logging;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.voxelplugineering.voxelsniper.api.logging.LogLevel;
+
 /**
  * A wrapper for a {@link java.util.logging.Logger} to receive logging messages
  * from gunsmith.
  */
 public class JavaUtilLogger implements com.voxelplugineering.voxelsniper.api.logging.Logger
 {
+
+    private static LogLevel toLevel(Level level)
+    {
+        if (level == Level.CONFIG || level == Level.FINE || level == Level.FINER || level == Level.FINEST)
+        {
+            return LogLevel.DEBUG;
+        }
+        if (level == Level.OFF)
+        {
+            return LogLevel.OFF;
+        }
+        if (level == Level.WARNING)
+        {
+            return LogLevel.WARN;
+        }
+        if (level == Level.SEVERE || level == Level.ALL)
+        {
+            return LogLevel.ERROR;
+        }
+        return LogLevel.INFO;
+    }
+
+    private static Level fromLevel(LogLevel level)
+    {
+        switch (level)
+        {
+        case OFF:
+            return Level.OFF;
+        case DEBUG:
+            return Level.FINE;
+        case INFO:
+            return Level.INFO;
+        case WARN:
+            return Level.WARNING;
+        case ERROR:
+            return Level.SEVERE;
+        default:
+            return Level.INFO;
+        }
+    }
 
     private final Logger logger;
 
@@ -43,6 +85,33 @@ public class JavaUtilLogger implements com.voxelplugineering.voxelsniper.api.log
     public JavaUtilLogger(Logger logger)
     {
         this.logger = logger;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LogLevel getLevel()
+    {
+        return toLevel(this.logger.getLevel());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLevel(LogLevel level)
+    {
+        this.logger.setLevel(fromLevel(level));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void log(LogLevel level, String msg)
+    {
+        this.logger.log(fromLevel(level), msg);
     }
 
     /**

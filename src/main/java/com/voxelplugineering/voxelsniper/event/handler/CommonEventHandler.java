@@ -121,7 +121,7 @@ public class CommonEventHandler
         }*/
 
         Gunsmith.getOfflineUndoHandler().register(player.getName(), player.getUndoHistory());
-        Gunsmith.getPlayerRegistry().remove(player.getName());
+        Gunsmith.getPlayerRegistry().invalidate(player.getName());
     }
 
     /**

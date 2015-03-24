@@ -161,7 +161,7 @@ public interface DataContainer extends DataView
      * @param value The value
      */
     void write(String path, Object value);
-    
+
     /**
      * Writes all values from the given container to this container.
      * 

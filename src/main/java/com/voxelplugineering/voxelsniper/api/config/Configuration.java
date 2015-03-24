@@ -33,14 +33,6 @@ public interface Configuration extends DataSerializable
 {
 
     /**
-     * Sets a value in configuration.
-     * 
-     * @param name the name of the configuration key, cannot be null or empty
-     * @param value the new value, cannot be null
-     */
-    void set(String name, Object value);
-
-    /**
      * Returns a value from configuration.
      * 
      * @param name the name or key to search and return from the configuration
@@ -65,12 +57,29 @@ public interface Configuration extends DataSerializable
     <T> Optional<T> get(String name, Class<T> expectedType);
 
     /**
+     * Sets a value in configuration.
+     * 
+     * @param name the name of the configuration key, cannot be null or empty
+     * @param value the new value, cannot be null
+     */
+    void set(String name, Object value);
+
+    /**
      * Returns whether the given key exists within this configuration registry.
      * 
      * @param name the key to check, cannot be null or empty
      * @return whether the key exists
      */
     boolean has(String name);
+
+    /**
+     * Returns the Class of a previously registered container. Returns null if
+     * no container matching the given name has been registered previously.
+     * 
+     * @param containerName the name of the container, cannot be null or empty
+     * @return the container class
+     */
+    Optional<AbstractConfigurationContainer> getContainer(String containerName);
 
     /**
      * Attempts to register the container with this configuration storage. This
@@ -90,20 +99,18 @@ public interface Configuration extends DataSerializable
     <T extends AbstractConfigurationContainer> void registerContainer(Class<T> container);
 
     /**
-     * Returns the Class of a previously registered container. Returns null if
-     * no container matching the given name has been registered previously.
-     * 
-     * @param containerName the name of the container, cannot be null or empty
-     * @return the container class
-     */
-    Optional<AbstractConfigurationContainer> getContainer(String containerName);
-
-    /**
      * Returns an array of the Classes all previously registered containers.
      * 
      * @return an array of Classes
      */
     AbstractConfigurationContainer[] getContainers();
+
+    /**
+     * Refreshes the given container.
+     * 
+     * @param containerName The container to refresh
+     */
+    void refreshContainer(String containerName);
 
     /**
      * Refreshes the values of all registered configuration containers.
@@ -112,12 +119,5 @@ public interface Configuration extends DataSerializable
      * </p>
      */
     void refreshAllContainers();
-
-    /**
-     * Refreshes the given container.
-     * 
-     * @param containerName The container to refresh
-     */
-    void refreshContainer(String containerName);
 
 }

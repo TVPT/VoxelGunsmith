@@ -98,8 +98,7 @@ public class BrushCommand extends Command
         {
 
             String fullBrush = StringUtilities.getSection(args, 0, args.length - 1);
-            Optional<BrushChain> brush =
-                    BrushParsing.parse(fullBrush, sniper.getBrushManager(), sniper.getAliasHandler().getRegistry("brush").get());
+            Optional<BrushChain> brush = BrushParsing.parse(fullBrush, sniper.getBrushManager(), sniper.getAliasHandler().getRegistry("brush").get());
             if (brush.isPresent())
             {
                 sniper.setCurrentBrush(brush.get());

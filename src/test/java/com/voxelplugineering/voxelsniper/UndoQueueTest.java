@@ -51,6 +51,7 @@ public class UndoQueueTest
             Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
         }
     }
+
     /**
      * 
      */

@@ -55,6 +55,20 @@ public interface WorldRegistry<T>
      * 
      * @return The worlds
      */
-    World[] getLoadedWorlds();
+    Iterable<World> getLoadedWorlds();
+
+    /**
+     * Removes the world from the registry by name.
+     * 
+     * @param name The name
+     */
+    void invalidate(String name);
+
+    /**
+     * Removes the given world from the registry.
+     * 
+     * @param world The key
+     */
+    void invalidate(T world);
 
 }

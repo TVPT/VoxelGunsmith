@@ -65,20 +65,20 @@ public interface PlayerRegistry<T>
      * 
      * @return The players
      */
-    Player[] getAllPlayers();
+    Iterable<Player> getPlayers();
 
     /**
      * Removes the player from the registry by name.
      * 
      * @param name The name
      */
-    void remove(String name);
+    void invalidate(String name);
 
     /**
      * Removes the given player from the registry.
      * 
      * @param player The key
      */
-    void remove(T player);
+    void invalidate(T player);
 
 }

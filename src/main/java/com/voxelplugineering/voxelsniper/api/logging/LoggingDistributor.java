@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.api.logging;
 
+import java.util.Collection;
+
 /**
  * A distributor for logging messages to a collection of {@link Logger}s.
  */
@@ -43,5 +45,12 @@ public interface LoggingDistributor extends Logger
      * @param name the name of the logger to remove, cannot be null or empty
      */
     void removeLogger(String name);
+
+    /**
+     * Gets all currently register loggers.
+     * 
+     * @return The loggers
+     */
+    Collection<Logger> getLoggers();
 
 }

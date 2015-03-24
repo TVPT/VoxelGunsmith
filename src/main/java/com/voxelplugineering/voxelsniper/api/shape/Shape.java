@@ -64,7 +64,7 @@ public interface Shape
      * @return Supports changes
      */
     boolean isMutable();
-    
+
     //TODO split mutable and immutable shapes into two types
 
     /**

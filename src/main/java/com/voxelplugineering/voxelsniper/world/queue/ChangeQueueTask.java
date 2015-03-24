@@ -40,7 +40,7 @@ public class ChangeQueueTask implements Runnable
     {
         // long start = System.currentTimeMillis();
         int n = 0;
-        for (Player p : Gunsmith.getPlayerRegistry().getAllPlayers())
+        for (Player p : Gunsmith.getPlayerRegistry().getPlayers())
         {
             if (p.hasPendingChanges())
             {
@@ -53,7 +53,7 @@ public class ChangeQueueTask implements Runnable
         }
         int remaining = (Integer) Gunsmith.getConfiguration().get("blockChangesPerSecond").get();
         remaining /= 10;
-        for (Player p : Gunsmith.getPlayerRegistry().getAllPlayers())
+        for (Player p : Gunsmith.getPlayerRegistry().getPlayers())
         {
             if (!p.hasPendingChanges())
             {

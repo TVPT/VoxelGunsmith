@@ -24,7 +24,6 @@
 package com.voxelplugineering.voxelsniper.api.service.scheduler;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.scheduler.Task;
 
 /**
  * A proxy for a specific implementations scheduler.
@@ -55,5 +54,12 @@ public interface Scheduler
      * Halts all the currently running tasks.
      */
     void stopAllTasks();
+
+    /**
+     * Gets all currently running tasks.
+     * 
+     * @return The tasks
+     */
+    Iterable<? extends Task> getAllTasks();
 
 }

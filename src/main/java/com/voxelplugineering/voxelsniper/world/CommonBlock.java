@@ -25,10 +25,12 @@ package com.voxelplugineering.voxelsniper.world;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.World;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * A combination location and material representation of a single voxel. The
@@ -85,6 +87,25 @@ public class CommonBlock implements Block
     public World getWorld()
     {
         return this.location.getWorld();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Vector3i getPosition()
+    {
+        return this.location.getFlooredPosition();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Block> withOffset(Vector3i offset)
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

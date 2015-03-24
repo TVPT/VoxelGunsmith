@@ -100,6 +100,19 @@ public class Vector3d implements Serializable, Cloneable
     }
 
     /**
+     * Returns a new vector representing this vector added to the given values.
+     * 
+     * @param x The x value
+     * @param y The y value
+     * @param z The z value
+     * @return the new vector
+     */
+    public Vector3d add(double x, double y, double z)
+    {
+        return new Vector3d(getX() + x, getY() + y, getZ() + z);
+    }
+
+    /**
      * Returns a new vector representing this vector scaled by the given scalar
      * quantity.
      * 

@@ -72,7 +72,7 @@ public interface AliasHandler extends DataSerializable, Buildable
      * @return Whether the target exists
      */
     boolean hasTarget(String target);
-    
+
     /**
      * Removes the given target from this handler.
      * 
@@ -80,7 +80,7 @@ public interface AliasHandler extends DataSerializable, Buildable
      * @return If the handler contained the target
      */
     boolean removeTarget(String target);
-    
+
     /**
      * Clears all targets from this handler.
      */

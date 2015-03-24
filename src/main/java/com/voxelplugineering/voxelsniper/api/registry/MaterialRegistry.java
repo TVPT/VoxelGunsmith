@@ -23,8 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.api.registry;
 
-import java.util.Collection;
-
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 
@@ -75,6 +73,6 @@ public interface MaterialRegistry<T>
      * 
      * @return The materials
      */
-    Collection<Material> getMaterials();
+    Iterable<Material> getMaterials();
 
 }

@@ -47,7 +47,7 @@ public class GunsmithMain
         } else if (args.length == 1 && args[0].equalsIgnoreCase("--testinit"))
         {
             System.out.println("Starting init -> stop cycle test.");
-            Gunsmith.getServiceManager().init();
+            Gunsmith.getServiceManager().initializeServices();
             try
             {
                 Thread.sleep(1000);
@@ -56,7 +56,7 @@ public class GunsmithMain
                 // Interrupted, skip the wait and stop immediately
             }
             System.out.println();
-            Gunsmith.getServiceManager().stop();
+            Gunsmith.getServiceManager().stopServices();
         } else
         {
             System.out.println("Usage: java -jar Gunsmith.jar <command> [args]\n"

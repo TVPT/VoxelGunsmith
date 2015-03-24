@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.scheduler;
+package com.voxelplugineering.voxelsniper.api.service.scheduler;
 
 /**
  * An abstract task for the scheduler proxy.

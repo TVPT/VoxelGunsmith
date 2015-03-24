@@ -23,10 +23,11 @@
  */
 package com.voxelplugineering.voxelsniper.registry;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.registry.RegistryProvider;
 import com.voxelplugineering.voxelsniper.api.registry.WorldRegistry;
@@ -108,17 +109,35 @@ public class CommonWorldRegistry<T> extends AbstractService implements WorldRegi
      * {@inheritDoc}
      */
     @Override
-    public World[] getLoadedWorlds()
+    public Iterable<World> getLoadedWorlds()
     {
         check();
-        Set<Map.Entry<T, World>> worldsSet = this.registry.getRegisteredValues();
-        World[] worlds = new World[worldsSet.size()];
-        int i = 0;
-        for (Map.Entry<T, World> e : worldsSet)
+        List<World> worlds = Lists.newArrayList();
+        for (Map.Entry<T, World> e : this.registry.getRegisteredValues())
         {
-            worlds[i++] = e.getValue();
+            worlds.add(e.getValue());
         }
         return worlds;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void invalidate(String name)
+    {
+        check();
+        this.registry.remove(name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void invalidate(T world)
+    {
+        check();
+        this.registry.remove(world);
     }
 
 }

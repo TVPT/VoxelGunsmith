@@ -23,7 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.api.world;
 
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * Represents a material at a location in a world.
@@ -32,26 +34,43 @@ public interface Block
 {
 
     /**
-     * Gets the world that this voxel is within.
+     * Gets the world that this block is within.
      * 
      * @return The world
      */
     World getWorld();
 
     /**
-     * Gets the location of this voxel.
+     * Gets the location of this block.
      * 
      * @return The location
      */
     Location getLocation();
 
     /**
-     * Gets the material currently at the location of this voxel. Unless
+     * Gets the position of this block within the world.
+     * 
+     * @return The position
+     */
+    Vector3i getPosition();
+
+    /**
+     * Gets the material currently at the location of this block. Unless
      * overridden by the specific implementation this material may be out of
      * date to the underlying world.
      * 
      * @return The material
      */
     Material getMaterial();
+
+    /**
+     * Gets the block at the given offset relative to this block.
+     * 
+     * @param offset The offset
+     * @return The block, if available
+     */
+    Optional<Block> withOffset(Vector3i offset);
+
+    //TODO block states?
 
 }

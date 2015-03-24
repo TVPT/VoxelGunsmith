@@ -27,19 +27,13 @@ import java.util.UUID;
 
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.World;
+import com.voxelplugineering.voxelsniper.util.math.Vector3d;
 
 /**
  * Represents an entity within a world.
  */
 public interface Entity
 {
-
-    /**
-     * Gets the world that this player is currently within.
-     * 
-     * @return this player's world
-     */
-    World getWorld();
 
     /**
      * Gets the name of the entity, may be a generic name if the entity has no
@@ -55,6 +49,13 @@ public interface Entity
      * @return The UUID
      */
     UUID getUniqueId();
+
+    /**
+     * Gets the world that this player is currently within.
+     * 
+     * @return this player's world
+     */
+    World getWorld();
 
     /**
      * Gets the EntityType for this entity.
@@ -76,5 +77,28 @@ public interface Entity
      * @param newLocation The new location
      */
     void setLocation(Location newLocation);
+
+    /**
+     * Gets the rotation of this entity. The vector components represent yaw,
+     * pitch, and roll in order.
+     * 
+     * @return The rotation
+     */
+    Vector3d getRotation();
+
+    /**
+     * Sets the rotation of this entity. The vector components represent yaw,
+     * pitch, and roll in order.
+     * 
+     * @param rotation The new rotation
+     */
+    void setRotation(Vector3d rotation);
+
+    /**
+     * Attempts to remove this entity from the world.
+     * 
+     * @return Was successful
+     */
+    boolean remove();
 
 }

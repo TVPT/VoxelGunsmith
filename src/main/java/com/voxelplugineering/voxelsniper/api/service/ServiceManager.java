@@ -37,12 +37,12 @@ public interface ServiceManager
     /**
      * Initializes all services.
      */
-    void init();
+    void initializeServices();
 
     /**
      * Shuts down all services.
      */
-    void stop();
+    void stopServices();
 
     /**
      * Registers a {@link ServiceProvider} which provides services.
@@ -75,6 +75,13 @@ public interface ServiceManager
      * @return The service, if available
      */
     Optional<Service> getService(String service);
+
+    /**
+     * Gets all services managed by this service manager.
+     * 
+     * @return The services
+     */
+    Iterable<Service> getServices();
 
     /**
      * Shuts down the given service and dereferences it.

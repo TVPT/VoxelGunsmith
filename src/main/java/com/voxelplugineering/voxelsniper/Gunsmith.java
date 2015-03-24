@@ -27,6 +27,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -438,7 +439,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
      * {@inheritDoc}
      */
     @Override
-    public void init()
+    public void initializeServices()
     {
         StartupHelper startup = new StartupHelper();
         if (this.state != State.STOPPED)
@@ -662,7 +663,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
      * {@inheritDoc}
      */
     @Override
-    public void stop()
+    public void stopServices()
     {
         if (this.state != State.RUNNING)
         {
@@ -877,6 +878,15 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         return this.testing;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Iterable<Service> getServices()
+    {
+        return this.services.values();
+    }
+
     // BEGIN ExpansionManager
     private List<Expansion> expansions;
 
@@ -898,6 +908,15 @@ public class Gunsmith implements ServiceManager, ExpansionManager
                 this.expansions.add(ex);
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection<Expansion> getExpansions()
+    {
+        return this.expansions;
     }
 
 }

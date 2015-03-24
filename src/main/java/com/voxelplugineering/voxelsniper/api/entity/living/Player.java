@@ -41,6 +41,6 @@ public interface Player extends CommandSender, Living, BrushHolder, ChangeQueueO
      * 
      * @return the alias handler
      */
-    AliasHandler getPersonalAliasHandler();
+    AliasHandler getAliasHandler();
 
 }

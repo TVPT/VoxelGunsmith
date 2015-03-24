@@ -23,13 +23,56 @@
  */
 package com.voxelplugineering.voxelsniper.logging;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
+
+import com.voxelplugineering.voxelsniper.api.logging.LogLevel;
 
 /**
  * A wrapper for a {@link org.apache.logging.log4j.Logger}.
  */
 public class Log4jLogger implements com.voxelplugineering.voxelsniper.api.logging.Logger
 {
+
+    private static LogLevel toLevel(Level level)
+    {
+        if (level == Level.DEBUG || level == Level.TRACE)
+        {
+            return LogLevel.DEBUG;
+        }
+        if (level == Level.OFF)
+        {
+            return LogLevel.OFF;
+        }
+        if (level == Level.WARN)
+        {
+            return LogLevel.WARN;
+        }
+        if (level == Level.ERROR || level == Level.ALL || level == Level.FATAL)
+        {
+            return LogLevel.ERROR;
+        }
+        return LogLevel.INFO;
+    }
+
+    private static Level fromLevel(LogLevel level)
+    {
+        switch (level)
+        {
+        case OFF:
+            return Level.OFF;
+        case DEBUG:
+            return Level.DEBUG;
+        case INFO:
+            return Level.INFO;
+        case WARN:
+            return Level.WARN;
+        case ERROR:
+            return Level.ERROR;
+        default:
+            return Level.INFO;
+        }
+    }
 
     private final Logger logger;
 
@@ -41,6 +84,33 @@ public class Log4jLogger implements com.voxelplugineering.voxelsniper.api.loggin
     public Log4jLogger(Logger logger)
     {
         this.logger = logger;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LogLevel getLevel()
+    {
+        return toLevel(this.logger.getLevel());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLevel(LogLevel level)
+    {
+        // TODO set log4j logger level ?
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void log(LogLevel level, String msg)
+    {
+        this.logger.log(fromLevel(level), msg);
     }
 
     /**

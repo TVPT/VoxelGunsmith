@@ -23,10 +23,11 @@
  */
 package com.voxelplugineering.voxelsniper.registry;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.living.Player;
@@ -121,15 +122,13 @@ public class CommonPlayerRegistry<T> extends AbstractService implements PlayerRe
      * {@inheritDoc}
      */
     @Override
-    public Player[] getAllPlayers()
+    public Iterable<Player> getPlayers()
     {
         check();
-        Set<Map.Entry<T, Player>> playerSet = this.registry.getRegisteredValues();
-        Player[] players = new Player[playerSet.size()];
-        int i = 0;
-        for (Map.Entry<T, Player> e : playerSet)
+        List<Player> players = Lists.newArrayList();
+        for (Map.Entry<T, Player> e : this.registry.getRegisteredValues())
         {
-            players[i++] = e.getValue();
+            players.add(e.getValue());
         }
         return players;
     }
@@ -138,7 +137,7 @@ public class CommonPlayerRegistry<T> extends AbstractService implements PlayerRe
      * {@inheritDoc}
      */
     @Override
-    public void remove(String name)
+    public void invalidate(String name)
     {
         check();
         this.registry.remove(name);
@@ -148,7 +147,7 @@ public class CommonPlayerRegistry<T> extends AbstractService implements PlayerRe
      * {@inheritDoc}
      */
     @Override
-    public void remove(T player)
+    public void invalidate(T player)
     {
         check();
         this.registry.remove(player);

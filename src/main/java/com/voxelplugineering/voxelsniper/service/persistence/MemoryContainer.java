@@ -919,7 +919,7 @@ public class MemoryContainer implements DataContainer
     @Override
     public void writeAll(DataContainer container)
     {
-        for(Map.Entry<String, Object> entry: container.entrySet())
+        for (Map.Entry<String, Object> entry : container.entrySet())
         {
             write(entry.getKey(), entry.getValue());
         }

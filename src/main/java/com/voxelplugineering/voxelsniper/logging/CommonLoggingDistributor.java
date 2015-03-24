@@ -26,9 +26,11 @@ package com.voxelplugineering.voxelsniper.logging;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Collection;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
+import com.voxelplugineering.voxelsniper.api.logging.LogLevel;
 import com.voxelplugineering.voxelsniper.api.logging.Logger;
 import com.voxelplugineering.voxelsniper.api.logging.LoggingDistributor;
 import com.voxelplugineering.voxelsniper.api.service.AbstractService;
@@ -43,6 +45,7 @@ public class CommonLoggingDistributor extends AbstractService implements Logging
      * The collection of loggers to distribute the logging messages to.
      */
     private Map<String, Logger> loggers = null;
+    private LogLevel root = LogLevel.DEBUG;
 
     /**
      * Creates a new logging distributor.
@@ -86,10 +89,60 @@ public class CommonLoggingDistributor extends AbstractService implements Logging
      * {@inheritDoc}
      */
     @Override
+    public LogLevel getLevel()
+    {
+        return this.root;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLevel(LogLevel level)
+    {
+        this.root = level;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void log(LogLevel level, String msg)
+    {
+
+        check();
+        if (msg == null || msg.isEmpty() || !level.isGEqual(this.root))
+        {
+            return;
+        }
+        if (this.loggers.isEmpty())
+        {
+            System.out.println("[" + level.name() + "] " + msg);
+        }
+        for (String n : this.loggers.keySet())
+        {
+            Logger l = this.loggers.get(n);
+            l.log(level, msg);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection<Logger> getLoggers()
+    {
+        return this.loggers.values();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void debug(String msg)
     {
         check();
-        if (msg == null || msg.isEmpty())
+        if (msg == null || msg.isEmpty() || !LogLevel.DEBUG.isGEqual(this.root))
         {
             return;
         }
@@ -107,7 +160,7 @@ public class CommonLoggingDistributor extends AbstractService implements Logging
     public void info(String msg)
     {
         check();
-        if (msg == null || msg.isEmpty())
+        if (msg == null || msg.isEmpty() || !LogLevel.INFO.isGEqual(this.root))
         {
             return;
         }
@@ -129,7 +182,7 @@ public class CommonLoggingDistributor extends AbstractService implements Logging
     public void warn(String msg)
     {
         check();
-        if (msg == null || msg.isEmpty())
+        if (msg == null || msg.isEmpty() || !LogLevel.WARN.isGEqual(this.root))
         {
             return;
         }

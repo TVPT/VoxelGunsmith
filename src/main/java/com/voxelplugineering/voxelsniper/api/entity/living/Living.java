@@ -38,4 +38,19 @@ public interface Living extends Entity
      */
     double getHealth();
 
+    /**
+     * Sets the health of the entity to the given value. The new health will be
+     * clamped between zero and {@link #getMaxHealth()}.
+     * 
+     * @param health The new health
+     */
+    void setHealth(double health);
+
+    /**
+     * Gets the maximum health of the entity.
+     * 
+     * @return The max health
+     */
+    double getMaxHealth();
+
 }

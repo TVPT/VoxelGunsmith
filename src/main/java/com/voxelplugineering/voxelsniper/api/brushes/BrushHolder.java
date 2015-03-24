@@ -38,7 +38,7 @@ public interface BrushHolder
      * @return the sniper's brush manager
      */
     BrushManager getBrushManager();
-    
+
     /**
      * Sets this user's personal brush manager.
      * 

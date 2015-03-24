@@ -30,6 +30,30 @@ public interface Logger
 {
 
     /**
+     * Gets the current logging level of this logger. Messages at or above this
+     * level will be logged.
+     * 
+     * @return The logging level
+     */
+    LogLevel getLevel();
+
+    /**
+     * Sets the {@link LogLevel} of this logger. Messages at or above this level
+     * will be logged.
+     * 
+     * @param level The new logging level
+     */
+    void setLevel(LogLevel level);
+
+    /**
+     * Log a message at the given {@link LogLevel}.
+     * 
+     * @param level The log level
+     * @param msg The message
+     */
+    void log(LogLevel level, String msg);
+
+    /**
      * Logs a debug message to the output. Will not be displayed unless the
      * output's logging level is set to debug.
      * 

@@ -59,7 +59,7 @@ public interface AliasRegistry extends DataSerializable
      * @param value the new value for this alias, cannot be null or empty
      */
     void register(String alias, String value);
-    
+
     /**
      * Removes the given alias from the registry.
      * 

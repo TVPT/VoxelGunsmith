@@ -23,10 +23,11 @@
  */
 package com.voxelplugineering.voxelsniper.registry;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.registry.BiomeRegistry;
 import com.voxelplugineering.voxelsniper.api.service.AbstractService;
@@ -123,15 +124,13 @@ public class CommonBiomeRegistry<T> extends AbstractService implements BiomeRegi
      * {@inheritDoc}
      */
     @Override
-    public Biome[] getBiomes()
+    public Iterable<Biome> getBiomes()
     {
         check();
-        Set<Map.Entry<T, Biome>> biomeSet = this.registry.getRegisteredValues();
-        Biome[] biomes = new Biome[biomeSet.size()];
-        int i = 0;
-        for (Map.Entry<T, Biome> e : biomeSet)
+        List<Biome> biomes = Lists.newArrayList();
+        for (Map.Entry<T, Biome> e : this.registry.getRegisteredValues())
         {
-            biomes[i++] = e.getValue();
+            biomes.add(e.getValue());
         }
         return biomes;
     }

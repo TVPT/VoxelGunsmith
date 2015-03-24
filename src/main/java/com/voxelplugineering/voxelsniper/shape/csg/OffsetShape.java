@@ -55,7 +55,7 @@ public abstract class OffsetShape implements CSGShape
      * {@inheritDoc}
      */
     @Override
-    public boolean supportsChanges()
+    public boolean isMutable()
     {
         return false;
     }

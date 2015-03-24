@@ -37,6 +37,8 @@ import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 public interface SchematicLoader
 {
 
+    //TODO redo with persistence proper
+
     /**
      * Loads a world region from the given {@link DataSourceReader}.
      * 

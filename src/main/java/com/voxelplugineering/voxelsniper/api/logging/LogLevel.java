@@ -21,56 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api.registry;
-
-import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
+package com.voxelplugineering.voxelsniper.api.logging;
 
 /**
- * A registry for biome type.s
- * 
- * @param <T> The biome type
+ * An enumeration of all logging levels.
  */
-public interface BiomeRegistry<T>
+@SuppressWarnings("javadoc")
+public enum LogLevel
 {
 
-    /**
-     * Gets the {@link Biome} with the given name.
-     * 
-     * @param name The name
-     * @return The biome
-     */
-    Optional<Biome> getBiome(String name);
+    OFF(-1), DEBUG(0), INFO(1), WARN(2), ERROR(3);
+
+    LogLevel(int level)
+    {
+        this.value = level;
+    }
+
+    private final int value;
 
     /**
-     * Gets the {@link Biome} which represents the given underlying type.
+     * Gets whether the given LogLevel has a value which is greater than or
+     * equal to this log level's value.
      * 
-     * @param biome The underlying biome
-     * @return The gunsmith biome
+     * @param other The other LogLevel
+     * @return Is greater than or equal
      */
-    Optional<Biome> getBiome(T biome);
-
-    /**
-     * Registers a biome type.
-     * 
-     * @param name The name
-     * @param object The underlying biome object
-     * @param biome The gunsmith biome object
-     */
-    void registerBiome(String name, T object, Biome biome);
-
-    /**
-     * Gets a collection of all registered biomes.
-     * 
-     * @return The biomes
-     */
-    Iterable<Biome> getBiomes();
-
-    /**
-     * Gets the default biome.
-     * 
-     * @return The default biome
-     */
-    Biome getDefaultBiome();
+    public boolean isGEqual(LogLevel other)
+    {
+        return this.value >= other.value;
+    }
 
 }

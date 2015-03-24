@@ -160,13 +160,13 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
     public boolean remove(String name)
     {
         check();
-        if(this.builders.containsKey(name))
+        if (this.builders.containsKey(name))
         {
             this.builders.remove(name);
-            for(Iterator<Map.Entry<Class<? extends DataSource>, String>> iter = this.names.entrySet().iterator(); iter.hasNext(); )
+            for (Iterator<Map.Entry<Class<? extends DataSource>, String>> iter = this.names.entrySet().iterator(); iter.hasNext();)
             {
                 Map.Entry<Class<? extends DataSource>, String> entry = iter.next();
-                if(entry.getValue().equals(name))
+                if (entry.getValue().equals(name))
                 {
                     iter.remove();
                 }

@@ -41,6 +41,13 @@ public interface Location
     World getWorld();
 
     /**
+     * Gets the position of this location as a vector.
+     * 
+     * @return The position
+     */
+    Vector3i getFlooredPosition();
+
+    /**
      * The x-axis position within the world.
      * 
      * @return the X position.

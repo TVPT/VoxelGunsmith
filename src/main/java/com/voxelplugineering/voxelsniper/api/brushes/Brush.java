@@ -36,6 +36,7 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializabl
  */
 public interface Brush extends DataSerializable
 {
+
     //TODO versioning
 
     /**
@@ -65,7 +66,7 @@ public interface Brush extends DataSerializable
      * @param help The new help
      */
     void setHelp(String help);
-    
+
     /**
      * Gets the starting node of this brush.
      * 
