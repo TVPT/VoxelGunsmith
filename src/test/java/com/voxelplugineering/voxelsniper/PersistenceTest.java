@@ -10,9 +10,16 @@ import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSourceReade
 import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 import com.voxelplugineering.voxelsniper.service.persistence.StandardOutDataSource;
 
+/**
+ * A test for various aspects of the persistence service.
+ */
 public class PersistenceTest
 {
 
+    /**
+     * 
+     * @throws IOException On error
+     */
     @Test
     public void test() throws IOException
     {
@@ -25,6 +32,10 @@ public class PersistenceTest
         reader.write(data);
     }
 
+    /**
+     * 
+     * @throws IOException On error
+     */
     @Test
     public void testFactory() throws IOException
     {

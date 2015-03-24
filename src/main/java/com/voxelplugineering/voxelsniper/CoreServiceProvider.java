@@ -23,12 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper;
 
-import java.io.File;
 import java.io.IOException;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.alias.AliasHandlerService;
-import com.voxelplugineering.voxelsniper.alias.AliasSaveTask;
 import com.voxelplugineering.voxelsniper.alias.CommonAliasHandler;
 import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
@@ -36,12 +34,13 @@ import com.voxelplugineering.voxelsniper.api.config.AbstractConfigurationContain
 import com.voxelplugineering.voxelsniper.api.config.Configuration;
 import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
 import com.voxelplugineering.voxelsniper.api.platform.PlatformProxy;
+import com.voxelplugineering.voxelsniper.api.platform.TrivialPlatformProxy;
 import com.voxelplugineering.voxelsniper.api.service.Service;
 import com.voxelplugineering.voxelsniper.api.service.ServiceManager;
 import com.voxelplugineering.voxelsniper.api.service.ServiceProvider;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceFactory;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.api.service.scheduler.Scheduler;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormatProxy;
@@ -58,8 +57,7 @@ import com.voxelplugineering.voxelsniper.commands.ResetCommand;
 import com.voxelplugineering.voxelsniper.commands.UndoCommand;
 import com.voxelplugineering.voxelsniper.commands.VSCommand;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
-import com.voxelplugineering.voxelsniper.config.ConfigurationManager;
-import com.voxelplugineering.voxelsniper.config.JsonConfigurationLoader;
+import com.voxelplugineering.voxelsniper.config.ConfigurationService;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.event.bus.AsyncEventBus;
 import com.voxelplugineering.voxelsniper.event.bus.EventBusService;
@@ -73,7 +71,6 @@ import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 import com.voxelplugineering.voxelsniper.service.persistence.StandardOutDataSource;
 import com.voxelplugineering.voxelsniper.util.AnnotationHelper;
 import com.voxelplugineering.voxelsniper.util.defaults.DefaultAliasBuilder;
-import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueTask;
 import com.voxelplugineering.voxelsniper.world.queue.CommonOfflineUndoHandler;
 
 /**
@@ -144,7 +141,7 @@ public class CoreServiceProvider extends ServiceProvider
     @Builder("config")
     public Service buildConfig()
     {
-        return new ConfigurationManager();
+        return new ConfigurationService();
     }
 
     /**
@@ -287,6 +284,17 @@ public class CoreServiceProvider extends ServiceProvider
     }
 
     /**
+     * Builder
+     * 
+     * @return The service
+     */
+    @Builder("platformProxy")
+    public Service getTrivialPlatform()
+    {
+        return new TrivialPlatformProxy();
+    }
+
+    /**
      * Post init
      */
     @PostInit
@@ -296,61 +304,80 @@ public class CoreServiceProvider extends ServiceProvider
 
         PlatformProxy proxy = Gunsmith.getPlatformProxy();
         Configuration configuration = Gunsmith.getConfiguration();
-        Optional<DataSource> oconfig = Gunsmith.getPersistence().build(proxy.getConfigDataSourceName(), proxy.getConfigDataSourceArgs());
+        Optional<DataSourceReader> oconfig = proxy.getConfigDataSource();
         DataSourceReader config = null;
 
         if (!oconfig.isPresent())
         {
+            DataSourceProvider provider = Gunsmith.getPlatformProxy().getRootDataSourceProvider();
             DataContainer args = new MemoryContainer("");
-            config = (DataSourceReader) Gunsmith.getPlatformProxy().getRootDataSourceProvider()
-                    .getWithReader("VoxelSniperConfiguration.json", JsonDataSourceReader.class, args);
+            DataSourceReader reader = provider.getWithReader("VoxelSniperConfiguration.json", JsonDataSourceReader.class, args).orNull();
+            if (reader != null)
+            {
+                ((JsonDataSourceReader) reader).setPrettyOutput(true);
+                config = reader;
+            }
         } else
         {
             config = (DataSourceReader) oconfig.get();
         }
-        try
+        if (config != null)
         {
-            if (config.exists())
+            try
             {
-                DataContainer values = config.read();
-                Optional<AbstractConfigurationContainer> container = configuration.getContainer("VoxelSniperConfiguration");
-                if (container.isPresent())
+                if (config.exists())
                 {
-                    container.get().fromContainer(values);
-                }
-            } else
-            {
+                    Gunsmith.getLogger().info("Loading config from " + config.getName().or("an unknown source"));
+                    DataContainer values = config.read();
+                    Optional<AbstractConfigurationContainer> container = configuration.getContainer("VoxelSniperConfiguration");
+                    if (container.isPresent())
+                    {
+                        container.get().fromContainer(values);
+                        configuration.refreshContainer("VoxelSniperConfiguration");
+                    } else
+                    {
+                        Gunsmith.getLogger().warn("Could not find config container for VoxelSniperConfiguration");
+                    }
+                } else
+                {
 
-                Optional<AbstractConfigurationContainer> container = configuration.getContainer("VoxelSniperConfiguration");
-                if (container.isPresent())
-                {
-                    config.write(container.get());
+                    Optional<AbstractConfigurationContainer> container = configuration.getContainer("VoxelSniperConfiguration");
+                    if (container.isPresent())
+                    {
+                        Gunsmith.getLogger().info("Saving config to " + config.getName().or("an unknown source"));
+                        config.write(container.get());
+                    }
                 }
+            } catch (IOException e)
+            {
+                Gunsmith.getLogger().error(e, "Error loading configuration values.");
             }
-        } catch (IOException e)
+        } else
         {
-            Gunsmith.getLogger().error(e, "Error loading configuration values.");
+            Gunsmith.getLogger().warn("Could not find the configuration data source, and no fallback could be created.");
         }
-
-        Runnable aliasTask = new AliasSaveTask();
+        /*Runnable aliasTask = new AliasSaveTask();
 
         String aliasSource = configuration.get("aliasDataSource", String.class).or("json");
         Optional<DataContainer> aliasSourceArgs = configuration.get("aliasDataSourceArgs", DataContainer.class);
         DataContainer args = null;
-        if(!aliasSourceArgs.isPresent())
+        if (!aliasSourceArgs.isPresent())
         {
             args = new MemoryContainer("");
-            
+        } else
+        {
+            args = aliasSourceArgs.get();
         }
-        
-        Optional<DataSource> aliassave = Gunsmith.getPersistence().build(aliasSource, proxy.getConfigDataSourceArgs());
+
+        Optional<DataSource> aliassave = Gunsmith.getPersistence().build(aliasSource, args);
         DataSourceReader aliassource = null;
 
         if (!oconfig.isPresent())
         {
             DataContainer aliasargs = new MemoryContainer("");
-            config = (DataSourceReader) Gunsmith.getPlatformProxy().getRootDataSourceProvider()
-                    .getWithReader("VoxelSniperConfiguration.json", JsonDataSourceReader.class, args);
+            config =
+                    (DataSourceReader) Gunsmith.getPlatformProxy().getRootDataSourceProvider()
+                            .getWithReader("VoxelSniperConfiguration.json", JsonDataSourceReader.class, args);
         } else
         {
             config = (DataSourceReader) oconfig.get();
@@ -378,8 +405,8 @@ public class CoreServiceProvider extends ServiceProvider
         {
             Gunsmith.getLogger().error(e, "Error loading configuration values.");
         }
-        
-        /*File globalAliases = new File(platformProxy.getDataFolder(), "aliases.json");
+
+        File globalAliases = new File(platformProxy.getDataFolder(), "aliases.json");
         JsonDataSource data = new JsonDataSource(globalAliases);
         if (globalAliases.exists())
         {

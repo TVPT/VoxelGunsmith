@@ -48,13 +48,44 @@ public interface DataSourceProvider
      * @return The source, if available
      */
     Optional<DataSource> get(String identifier);
-    
+
+    /**
+     * Attempts to get another provider from within this providers scope. Allows
+     * for {@link DataSourceProvider}s to be nested recursively as it is within
+     * for example: a filesystem.
+     * 
+     * @param identifier The identifier
+     * @return The provider, if available
+     */
     Optional<? extends DataSourceProvider> getInternalProvider(String identifier);
 
+    /**
+     * Sets a default reader type for this provider to construct any
+     * {@link DataSource}s fetched from it within.
+     * 
+     * @param reader The reader type
+     * @param args The reader arguments
+     */
     void setReaderType(Class<? extends DataSourceReader> reader, DataContainer args);
 
+    /**
+     * Gets a new {@link DataSource} from within this provider wrapped within
+     * the default reader (See {@link #setReaderType(Class, DataContainer)}).
+     * 
+     * @param identifier The identifier
+     * @return The data source, if available
+     */
     Optional<DataSourceReader> getWithReader(String identifier);
 
+    /**
+     * Gets a new {@link DataSource} from within this provider wrapped within
+     * the given reader.
+     * 
+     * @param identifier The identifier
+     * @param reader The reader type
+     * @param args The reader arguments
+     * @return The data source, if available
+     */
     <T extends DataSourceReader> Optional<T> getWithReader(String identifier, Class<T> reader, DataContainer args);
 
 }

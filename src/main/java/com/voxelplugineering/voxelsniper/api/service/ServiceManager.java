@@ -24,7 +24,6 @@
 package com.voxelplugineering.voxelsniper.api.service;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.CoreServiceProvider;
 import com.voxelplugineering.voxelsniper.api.logging.Logger;
 
 /**
@@ -86,10 +85,11 @@ public interface ServiceManager
 
     /**
      * Sets this service to 'testing mode' where any requests for services which
-     * are not found are created on the fly using the
-     * {@link CoreServiceProvider}. This is so that classes using services such
-     * as the {@link Logger} to not error out due to Gunsmith not having been
-     * initialized.
+     * are not found are created on the fly using the given provider. This is so
+     * that classes using services such as the {@link Logger} to not error out
+     * due to Gunsmith not having been initialized.
+     * 
+     * @param provider The provider to use for on the fly construction
      */
     void setTesting(ServiceProvider provider);
 

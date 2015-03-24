@@ -33,6 +33,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataType;
 
 /**
  * An in-memory {@link DataContainer} implementation which is backed by a
@@ -44,6 +45,14 @@ public class MemoryContainer implements DataContainer
     private static final String PATH_SEPARATOR = ".";
     private final String path;
     private final Map<String, Object> data;
+
+    /**
+     * Creates a new {@link MemoryContainer}.
+     */
+    public MemoryContainer()
+    {
+        this("");
+    }
 
     /**
      * Creates a new {@link MemoryContainer}.
@@ -720,7 +729,7 @@ public class MemoryContainer implements DataContainer
      * {@inheritDoc}
      */
     @Override
-    public Set<Map.Entry<String, Object>> extrySet()
+    public Set<Map.Entry<String, Object>> entrySet()
     {
         return this.data.entrySet();
     }
@@ -838,6 +847,60 @@ public class MemoryContainer implements DataContainer
         } else
         {
             this.data.put(path, data);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @SuppressWarnings("rawtypes")
+    public void write(String path, Object value)
+    {
+        Class<?> type = value.getClass();
+        if (!DataType.isValidType(type))
+        {
+            throw new UnsupportedOperationException(type.getName() + " is not a valid data type.");
+        }
+        if (DataType.CONTAINER.isOfType(type))
+        {
+            writeContainer(path, (DataContainer) value);
+        } else if (DataType.CUSTOM.isOfType(type))
+        {
+            writeCustom(path, (DataSerializable) value);
+        } else if (DataType.BYTE.isOfType(type))
+        {
+            writeByte(path, (byte) value);
+        } else if (DataType.SHORT.isOfType(type))
+        {
+            writeShort(path, (short) value);
+        } else if (DataType.INT.isOfType(type))
+        {
+            writeInt(path, (int) value);
+        } else if (DataType.LONG.isOfType(type))
+        {
+            writeLong(path, (long) value);
+        } else if (DataType.CHAR.isOfType(type))
+        {
+            writeChar(path, (char) value);
+        } else if (DataType.FLOAT.isOfType(type))
+        {
+            writeFloat(path, (float) value);
+        } else if (DataType.DOUBLE.isOfType(type))
+        {
+            writeDouble(path, (double) value);
+        } else if (DataType.LIST.isOfType(type))
+        {
+            writeList(path, (List) value);
+        } else if (DataType.STRING.isOfType(type))
+        {
+            writeString(path, (String) value);
+        } else if (DataType.BYTE_ARRAY.isOfType(type))
+        {
+            writeByteArray(path, (byte[]) value);
+        } else if (DataType.BOOLEAN.isOfType(type))
+        {
+            writeBoolean(path, (boolean) value);
         }
     }
 

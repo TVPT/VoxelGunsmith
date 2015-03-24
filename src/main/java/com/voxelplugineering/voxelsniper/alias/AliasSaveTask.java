@@ -32,7 +32,6 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
-import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSourceReader;
 
 /**
  * A task for saving aliases.

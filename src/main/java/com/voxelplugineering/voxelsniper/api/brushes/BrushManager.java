@@ -25,7 +25,7 @@ package com.voxelplugineering.voxelsniper.api.brushes;
 
 import com.google.common.base.Optional;
 import com.thevoxelbox.vsl.api.node.NodeGraph;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 
 /**
  * Handles the registration of {@link NodeGraph}s. Also contains an ordered list
@@ -65,7 +65,7 @@ public interface BrushManager
      * 
      * @param loader the new loader, cannot be null
      */
-    void addLoader(BrushLoader loader);
+    void addLoader(DataSourceReader loader);
 
     /**
      * Returns a new instance of the brush with the given name if it has been

@@ -154,4 +154,12 @@ public interface DataContainer extends DataView
      */
     void writeList(String path, List<?> data);
 
+    /**
+     * Attempts to write the given object to the container.
+     * 
+     * @param path The path
+     * @param value The value
+     */
+    void write(String path, Object value);
+
 }

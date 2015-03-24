@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.service.persistence;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -38,8 +40,7 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvi
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 
 /**
- * A {@link DataSourceProvider} for files within a directory. Builds child data
- * sources using a {@link FileDataSource.Builder}.
+ * A {@link DataSourceProvider} for files within a directory.
  */
 public class DirectoryDataSourceProvider implements DataSourceProvider
 {
@@ -55,10 +56,10 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
      * Creates a new {@link DirectoryDataSourceProvider}.
      * 
      * @param dir The directory
-     * @param builder The data source builder
      */
     public DirectoryDataSourceProvider(File dir)
     {
+        checkArgument(dir.isDirectory(), "File passed to DirectoryDataSource was not a directory.");
         this.directory = dir;
         this.cache = CacheBuilder.newBuilder().expireAfterAccess(60, TimeUnit.SECONDS).build(new CacheLoader<String, File>()
         {
@@ -110,6 +111,9 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
         return Optional.absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setReaderType(Class<? extends DataSourceReader> reader, DataContainer args)
     {
@@ -117,6 +121,9 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
         this.readerArgs = args;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public Optional<DataSourceReader> getWithReader(String identifier)
@@ -128,6 +135,9 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
         return (Optional<DataSourceReader>) getWithReader(identifier, this.reader, this.readerArgs);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T extends DataSourceReader> Optional<T> getWithReader(String identifier, Class<T> reader, DataContainer args)
     {
@@ -140,7 +150,7 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
             e.printStackTrace();
             return Optional.absent();
         }
-        if(file.isFile())
+        if(file.isFile() || !file.exists())
         {
             DataContainer sourceArgs = new MemoryContainer("");
             sourceArgs.writeString("path", file.getAbsolutePath());
@@ -151,6 +161,9 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
         return Optional.absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<? extends DataSourceProvider> getInternalProvider(String identifier)
     {

@@ -104,4 +104,19 @@ public interface Configuration extends DataSerializable
      */
     AbstractConfigurationContainer[] getContainers();
 
+    /**
+     * Refreshes the values of all registered configuration containers.
+     * <P>
+     * TODO need a priority for containers, probably just the registration order
+     * </p>
+     */
+    void refreshAllContainers();
+
+    /**
+     * Refreshes the given container.
+     * 
+     * @param containerName The container to refresh
+     */
+    void refreshContainer(String containerName);
+
 }

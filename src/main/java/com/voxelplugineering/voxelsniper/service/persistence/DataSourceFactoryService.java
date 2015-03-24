@@ -11,23 +11,35 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceBuilder;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceFactory;
 
+/**
+ * A {@link DataSourceFactory} service.
+ */
 public class DataSourceFactoryService extends AbstractService implements DataSourceFactory
 {
 
-    private Map<String, DataSourceBuilder> builders;
+    private Map<String, DataSourceBuilder<?>> builders;
     private Map<Class<? extends DataSource>, String> names;
 
+    /**
+     * Creates a new {@link DataSourceFactoryService}.
+     */
     public DataSourceFactoryService()
     {
         super(-1);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName()
     {
         return "persistence";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void init()
     {
@@ -36,6 +48,9 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
         Gunsmith.getLogger().info("Initialized Persistence service");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void destroy()
     {
@@ -44,33 +59,46 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
         Gunsmith.getLogger().info("Stopped Persistence service");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public <T extends DataSource> void register(String name, Class<T> type, DataSourceBuilder builder)
+    public <T extends DataSource> void register(String name, Class<T> type, DataSourceBuilder<T> builder)
     {
         check();
         this.builders.put(name, builder);
         this.names.put(type, name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @SuppressWarnings("unchecked")
     public Optional<DataSource> build(String name, DataContainer args)
     {
         check();
         if (this.builders.containsKey(name))
         {
-            return this.builders.get(name).build(args);
+            return (Optional<DataSource>) this.builders.get(name).build(args);
         }
         return Optional.absent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<DataSource> build(String name)
     {
         return build(name, new MemoryContainer(""));
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @SuppressWarnings("unchecked")
     public <T extends DataSource> Optional<T> build(Class<T> type)
     {
         if(this.names.containsKey(type))
@@ -83,8 +111,11 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
         }
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @SuppressWarnings("unchecked")
     public <T extends DataSource> Optional<T> build(Class<T> type, DataContainer args)
     {
         if(this.names.containsKey(type))

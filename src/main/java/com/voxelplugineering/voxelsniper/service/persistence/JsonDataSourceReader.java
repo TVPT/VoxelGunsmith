@@ -50,45 +50,57 @@ public class JsonDataSourceReader implements DataSourceReader
     /**
      * A {@link DataSourceBuilder} for json data sources.
      */
-    public static final DataSourceBuilder BUILDER = new DataSourceBuilder()
+    public static final DataSourceBuilder<JsonDataSourceReader> BUILDER = new DataSourceBuilder<JsonDataSourceReader>()
     {
 
         @Override
-        public Optional<DataSource> build(DataContainer args)
+        public Optional<JsonDataSourceReader> build(DataContainer args)
         {
-            if(!args.contains("source") || !args.contains("sourceArgs"))
+            if (!args.contains("source") || !args.contains("sourceArgs"))
             {
                 Gunsmith.getLogger().warn("Failed to build JsonDataSourceReader, invalid args");
                 return Optional.absent();
             }
             String sourceName = args.readString("source").get();
             Optional<DataSource> source = Gunsmith.getPersistence().build(sourceName, args.readContainer("sourceArgs").get());
-            if(!source.isPresent())
+            if (!source.isPresent())
             {
                 Gunsmith.getLogger().warn("Failed to build data source for JsonDataSourceReader");
                 return Optional.absent();
             }
-            if(!StreamDataSource.class.isAssignableFrom(source.get().getClass()))
+            if (!StreamDataSource.class.isAssignableFrom(source.get().getClass()))
             {
                 Gunsmith.getLogger().warn("Failed to build JsonDataSourceReader: Source was not a StreamDataSource");
                 return Optional.absent();
             }
             StreamDataSource stream = (StreamDataSource) source.get();
-            return Optional.<DataSource>of(new JsonDataSourceReader(stream));
+            return Optional.of(new JsonDataSourceReader(stream));
         }
 
     };
 
     private final StreamDataSource source;
+    private boolean pretty = false;
 
     /**
-     * Creates a new {@link JsonDataSourceReader} based on the given file.
+     * Creates a new {@link JsonDataSourceReader} based on the given stream
+     * source.
      * 
-     * @param file The file
+     * @param source The source
      */
     public JsonDataSourceReader(StreamDataSource source)
     {
         this.source = source;
+    }
+
+    /**
+     * Sets whether this data source reader should output pretty json.
+     * 
+     * @param pretty Pretty json
+     */
+    public void setPrettyOutput(boolean pretty)
+    {
+        this.pretty = pretty;
     }
 
     /**
@@ -97,7 +109,14 @@ public class JsonDataSourceReader implements DataSourceReader
     @Override
     public void write(DataContainer container) throws IOException
     {
-        Gson gson = new GsonBuilder().create();
+        Gson gson;
+        if (this.pretty)
+        {
+            gson = new GsonBuilder().setPrettyPrinting().create();
+        } else
+        {
+            gson = new GsonBuilder().create();
+        }
         JsonObject json = fromContainer(container);
 
         String data = gson.toJson(json);
@@ -115,7 +134,7 @@ public class JsonDataSourceReader implements DataSourceReader
     {
         JsonObject json = new JsonObject();
 
-        for (Map.Entry<String, Object> entry : container.extrySet())
+        for (Map.Entry<String, Object> entry : container.entrySet())
         {
             Class<?> type = entry.getValue().getClass();
             if (type == Byte.class || type == byte.class || type == Short.class || type == short.class || type == Integer.class || type == int.class

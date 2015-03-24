@@ -26,7 +26,6 @@ package com.voxelplugineering.voxelsniper.config;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -43,7 +42,7 @@ import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 /**
  * The configuration storage.
  */
-public class ConfigurationManager extends AbstractService implements Configuration
+public class ConfigurationService extends AbstractService implements Configuration
 {
 
     /**
@@ -58,7 +57,7 @@ public class ConfigurationManager extends AbstractService implements Configurati
     /**
      * Constructs a new Configuration
      */
-    public ConfigurationManager()
+    public ConfigurationService()
     {
         super(1);
     }
@@ -104,6 +103,7 @@ public class ConfigurationManager extends AbstractService implements Configurati
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         checkNotNull(value, "Value cannot be null!");
+        System.out.println("Setting " + name + " to " + value.toString());
         this.config.put(name, value);
     }
 
@@ -159,21 +159,10 @@ public class ConfigurationManager extends AbstractService implements Configurati
             obj = container.newInstance();
             this.containers.put(name, obj);
             Gunsmith.getLogger().info("Loading configuration container: " + name);
-            for (Field f : container.getDeclaredFields())
+            DataContainer data = obj.toContainer();
+            for (Map.Entry<String, Object> entry : data.entrySet())
             {
-                String n = f.getName();
-                try
-                {
-                    Object v = f.get(obj);
-                    set(n, v);
-                    //Gunsmith.getLogger().info("Set configuration value " + n + " to " + v.toString());
-                } catch (IllegalArgumentException e)
-                {
-                    Gunsmith.getLogger().error(e, "Error setting configuration value.");
-                } catch (IllegalAccessException e)
-                {
-                    Gunsmith.getLogger().error(e, "Error setting configuration value.");
-                }
+                set(entry.getKey(), entry.getValue());
             }
         } catch (InstantiationException e1)
         {
@@ -194,11 +183,7 @@ public class ConfigurationManager extends AbstractService implements Configurati
         check();
         checkNotNull(containerName, "Name cannot be null!");
         checkArgument(!containerName.isEmpty(), "Name cannot be empty");
-        if (this.containers.containsKey(containerName))
-        {
-            return Optional.of(this.containers.get(containerName));
-        }
-        return Optional.absent();
+        return Optional.fromNullable(this.containers.get(containerName));
     }
 
     /**
@@ -247,15 +232,53 @@ public class ConfigurationManager extends AbstractService implements Configurati
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataContainer toContainer()
     {
         DataContainer container = new MemoryContainer("");
-        for (AbstractConfigurationContainer c : this.getContainers())
+        for (String key : this.containers.keySet())
         {
+            AbstractConfigurationContainer c = this.containers.get(key);
             container.writeContainer(c.getClass().getName(), c.toContainer());
         }
         return container;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void refreshAllContainers()
+    {
+        for (String key : this.containers.keySet())
+        {
+            AbstractConfigurationContainer c = this.containers.get(key);
+            DataContainer data = c.toContainer();
+            for (Map.Entry<String, Object> entry : data.entrySet())
+            {
+                set(entry.getKey(), entry.getValue());
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void refreshContainer(String containerName)
+    {
+        Optional<AbstractConfigurationContainer> container = getContainer(containerName);
+        if (container.isPresent())
+        {
+            DataContainer data = container.get().toContainer();
+            for (Map.Entry<String, Object> entry : data.entrySet())
+            {
+                set(entry.getKey(), entry.getValue());
+            }
+        }
     }
 
 }

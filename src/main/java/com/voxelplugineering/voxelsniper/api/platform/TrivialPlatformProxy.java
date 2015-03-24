@@ -21,32 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brushes;
+package com.voxelplugineering.voxelsniper.api.platform;
+
+import java.io.File;
+import java.net.URISyntaxException;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.brushes.Brush;
-import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.service.AbstractService;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
+import com.voxelplugineering.voxelsniper.service.persistence.DirectoryDataSourceProvider;
 
 /**
- * A service containing a {@link BrushManager}.
+ * A trivial {@link PlatformProxy} which is used in the case of no platform
+ * being present, such as when tests are being run.
  */
-public class BrushManagerService extends AbstractService implements BrushManager
+public class TrivialPlatformProxy extends AbstractService implements PlatformProxy
 {
 
-    private final BrushManager wrapped;
-
     /**
-     * Creates a new {@link BrushManagerService}.
-     * 
-     * @param manager The manager to use within this service
+     * Creates a new {@link TrivialPlatformProxy}.
      */
-    public BrushManagerService(BrushManager manager)
+    public TrivialPlatformProxy()
     {
-        super(9);
-        this.wrapped = manager;
+        super(4);
     }
 
     /**
@@ -55,7 +54,7 @@ public class BrushManagerService extends AbstractService implements BrushManager
     @Override
     public String getName()
     {
-        return "globalBrushManager";
+        return "platformProxy";
     }
 
     /**
@@ -64,66 +63,96 @@ public class BrushManagerService extends AbstractService implements BrushManager
     @Override
     protected void init()
     {
-        Gunsmith.getLogger().info("Initialized GlobalBrushManager service");
+
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void destroy()
     {
-        Gunsmith.getLogger().info("Stopped GlobalBrushManager service");
+
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void loadBrush(String identifier, Brush graph)
+    public String getPlatformName()
     {
-        check();
-        this.wrapped.loadBrush(identifier, graph);
+        return "none";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void loadBrush(String identifier)
+    public String getVersion()
     {
-        check();
-        this.wrapped.loadBrush(identifier);
-    }
-
-    /**
-     * {@inheritDoc}    
-     */
-    @Override
-    public void addLoader(DataSourceReader loader)
-    {
-        check();
-        this.wrapped.addLoader(loader);
+        return "none";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Optional<Brush> getBrush(String identifier)
+    public String getFullVersion()
     {
-        check();
-        return this.wrapped.getBrush(identifier);
+        return "none";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setParent(BrushManager parent)
+    public DataSourceProvider getBrushDataSource()
     {
-        check();
-        this.wrapped.setParent(parent);
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataSourceProvider getRootDataSourceProvider()
+    {
+        try
+        {
+            File directory = new File(Gunsmith.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+            if (!directory.isDirectory())
+            {
+                directory = directory.getParentFile();
+            }
+            return new DirectoryDataSourceProvider(directory);
+        } catch (URISyntaxException ignored)
+        {
+            throw new RuntimeException("Could not create trivial root data source");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataSourceReader getMetricsFile()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getNumberOfPlayersOnline()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<DataSourceReader> getConfigDataSource()
+    {
+        return Optional.absent();
     }
 
 }

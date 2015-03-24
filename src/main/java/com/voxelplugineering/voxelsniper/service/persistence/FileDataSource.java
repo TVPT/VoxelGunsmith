@@ -29,7 +29,6 @@ import java.io.IOException;
 import com.google.common.base.Optional;
 import com.google.common.io.Files;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceBuilder;
 
 /**
@@ -38,21 +37,24 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceBuild
 public class FileDataSource extends StreamDataSource
 {
 
-    public static final DataSourceBuilder BUILDER = new DataSourceBuilder()
+    /**
+     * A builder for {@link FileDataSource}s.
+     */
+    public static final DataSourceBuilder<FileDataSource> BUILDER = new DataSourceBuilder<FileDataSource>()
     {
-        
+
         @Override
-        public Optional<DataSource> build(DataContainer args)
+        public Optional<FileDataSource> build(DataContainer args)
         {
-            if(!args.contains("path"))
+            if (!args.contains("path"))
             {
                 return Optional.absent();
             }
             String path = args.readString("path").get();
-            return Optional.<DataSource>of(new FileDataSource(new File(path)));
+            return Optional.of(new FileDataSource(new File(path)));
         }
     };
-    
+
     private final File file;
 
     /**
@@ -84,18 +86,36 @@ public class FileDataSource extends StreamDataSource
         return Optional.of(this.file.getName());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public byte[] read() throws IOException
     {
+        if (!exists())
+        {
+            return new byte[0];
+        }
         return Files.toByteArray(this.file);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void write(byte[] data) throws IOException
     {
+        if (!exists())
+        {
+            this.file.getParentFile().mkdirs();
+            this.file.createNewFile();
+        }
         Files.write(data, this.file);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean exists()
     {

@@ -192,7 +192,7 @@ public interface DataView
      * 
      * @return The entries
      */
-    Set<Map.Entry<String, Object>> extrySet();
+    Set<Map.Entry<String, Object>> entrySet();
 
     /**
      * Gets whether the given path exists.

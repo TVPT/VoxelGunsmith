@@ -23,10 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.api.platform;
 
-import com.voxelplugineering.voxelsniper.api.brushes.BrushLoader;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 
 /**
  * The specific implementation core class, provides direct platform utilities
@@ -64,7 +63,7 @@ public interface PlatformProxy
      * @return The data source provider
      */
     DataSourceProvider getBrushDataSource();
-    
+
     /**
      * Gets the root data source provider.
      * 
@@ -86,11 +85,12 @@ public interface PlatformProxy
      */
     int getNumberOfPlayersOnline();
 
-    String getConfigDataSourceName();
-
-    DataContainer getConfigDataSourceArgs();
-
-    BrushLoader getBrushLoader();
-
+    /**
+     * Gets a {@link DataSourceReader} representing the basic configuration
+     * location.
+     * 
+     * @return The config data source
+     */
+    Optional<DataSourceReader> getConfigDataSource();
 
 }

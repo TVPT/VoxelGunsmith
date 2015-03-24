@@ -199,6 +199,7 @@ public class CommonAliasRegistry implements AliasRegistry
         return expand_(finalBrush);
     }
 
+    //TODO cleanup these methods
     private static boolean validate(String fullBrush)
     {
         int co = 0;

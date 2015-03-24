@@ -142,7 +142,7 @@ public class NBTDataSourceReader implements DataSourceReader
     {
         Map<String, Tag> tags = Maps.newHashMap();
 
-        for (Map.Entry<String, Object> entry : container.extrySet())
+        for (Map.Entry<String, Object> entry : container.entrySet())
         {
             String key = entry.getKey();
             Object value = entry.getValue();
