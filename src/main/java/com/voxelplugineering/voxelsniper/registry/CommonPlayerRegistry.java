@@ -140,6 +140,7 @@ public class CommonPlayerRegistry<T> extends AbstractService implements PlayerRe
     @Override
     public void remove(String name)
     {
+        check();
         this.registry.remove(name);
     }
 
@@ -149,6 +150,7 @@ public class CommonPlayerRegistry<T> extends AbstractService implements PlayerRe
     @Override
     public void remove(T player)
     {
+        check();
         this.registry.remove(player);
     }
 

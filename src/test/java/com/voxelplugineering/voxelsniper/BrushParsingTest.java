@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.thevoxelbox.vsl.api.node.Node;
@@ -47,6 +48,18 @@ import com.voxelplugineering.voxelsniper.util.BrushParsing;
  */
 public class BrushParsingTest
 {
+
+    /**
+     * 
+     */
+    @BeforeClass
+    public static void setupGunsmith()
+    {
+        if (!Gunsmith.getServiceManager().isTesting())
+        {
+            Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
+        }
+    }
 
     /**
      * 
@@ -107,8 +120,8 @@ class RunCheckBrush implements Brush
     @Override
     public void run(RuntimeState state)
     {
-        hasRun = true;
-        runtimes++;
+        this.hasRun = true;
+        this.runtimes++;
     }
 
     @Override

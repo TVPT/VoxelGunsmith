@@ -93,4 +93,12 @@ public interface ServiceManager
      */
     void setTesting(ServiceProvider provider);
 
+    /**
+     * Gets whether this service manager has 'on the fly' service building
+     * enabled.
+     * 
+     * @return Is testing
+     */
+    boolean isTesting();
+
 }

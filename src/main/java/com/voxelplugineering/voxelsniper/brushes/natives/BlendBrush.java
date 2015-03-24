@@ -160,7 +160,7 @@ public class BlendBrush extends NativeBrush
     @Override
     public void parseArguments(String string, VariableHolder vars)
     {
-
+        //TODO
     }
 
 }

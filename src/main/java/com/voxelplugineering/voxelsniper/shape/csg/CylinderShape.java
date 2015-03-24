@@ -119,7 +119,9 @@ public class CylinderShape extends OffsetShape
     }
 
     /**
+     * Returns a string representation of this shape.
      * 
+     * @return The string
      */
     @Override
     public String toString()

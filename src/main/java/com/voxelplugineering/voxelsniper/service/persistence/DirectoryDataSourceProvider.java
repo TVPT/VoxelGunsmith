@@ -104,9 +104,9 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
             e.printStackTrace();
             return Optional.absent();
         }
-        if(file.isFile())
+        if (file.isFile())
         {
-            return Optional.<DataSource> of(new FileDataSource(file));
+            return Optional.<DataSource>of(new FileDataSource(file));
         }
         return Optional.absent();
     }
@@ -128,11 +128,20 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
     @Override
     public Optional<DataSourceReader> getWithReader(String identifier)
     {
-        if(this.reader == null || this.readerArgs == null)
+        if (this.reader == null || this.readerArgs == null)
         {
             return Optional.absent();
         }
         return (Optional<DataSourceReader>) getWithReader(identifier, this.reader, this.readerArgs);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends DataSourceReader> Optional<T> getWithReader(String identifier, Class<T> reader)
+    {
+        return getWithReader(identifier, reader, new MemoryContainer());
     }
 
     /**
@@ -150,7 +159,7 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
             e.printStackTrace();
             return Optional.absent();
         }
-        if(file.isFile() || !file.exists())
+        if (file.isFile() || !file.exists())
         {
             DataContainer sourceArgs = new MemoryContainer("");
             sourceArgs.writeString("path", file.getAbsolutePath());

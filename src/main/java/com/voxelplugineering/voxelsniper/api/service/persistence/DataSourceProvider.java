@@ -84,8 +84,20 @@ public interface DataSourceProvider
      * @param identifier The identifier
      * @param reader The reader type
      * @param args The reader arguments
+     * @param <T> The type
      * @return The data source, if available
      */
     <T extends DataSourceReader> Optional<T> getWithReader(String identifier, Class<T> reader, DataContainer args);
+
+    /**
+     * Gets a new {@link DataSource} from within this provider wrapped within
+     * the given reader.
+     * 
+     * @param identifier The identifier
+     * @param reader The reader type
+     * @param <T> The type
+     * @return The data source, if available
+     */
+    <T extends DataSourceReader> Optional<T>  getWithReader(String identifier, Class<T> reader);
 
 }

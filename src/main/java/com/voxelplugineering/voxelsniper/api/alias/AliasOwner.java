@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.api.alias;
 
 import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSourceReader;
 import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
@@ -39,7 +40,7 @@ public interface AliasOwner
      * 
      * @return The data folder
      */
-    public DataSourceReader getAliasFile();
+    public DataSourceReader getAliasSource();
 
     /**
      * The alias owner for gunsmith's global alias handler.
@@ -51,9 +52,10 @@ public interface AliasOwner
          * {@inheritDoc}
          */
         @Override
-        public DataSourceReader getAliasFile()
+        public DataSourceReader getAliasSource()
         {
-            return Gunsmith.getPlatformProxy().getRootDataSourceProvider().getWithReader("aliases.json", JsonDataSourceReader.class, new MemoryContainer("")).get();
+            DataSourceProvider provider = Gunsmith.getPlatformProxy().getRootDataSourceProvider();
+            return provider.getWithReader("aliases.json", JsonDataSourceReader.class, new MemoryContainer("")).get();
         }
 
     }

@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -39,6 +40,17 @@ import com.voxelplugineering.voxelsniper.world.queue.CommonUndoQueue;
 public class UndoQueueTest
 {
 
+    /**
+     * 
+     */
+    @BeforeClass
+    public static void setupGunsmith()
+    {
+        if (!Gunsmith.getServiceManager().isTesting())
+        {
+            Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
+        }
+    }
     /**
      * 
      */

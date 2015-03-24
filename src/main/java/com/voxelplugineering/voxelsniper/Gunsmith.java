@@ -284,7 +284,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     {
         return (CommandHandler) Holder.INSTANCE.getService("commandHandler").orNull();
     }
-    
+
     /**
      * Gets the Persistence service.
      * 
@@ -830,7 +830,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         }
         service.start();
         for (Method m : this.testingProvider.getClass().getMethods())
-        { // cache
+        {
             if (m.isAnnotationPresent(ServiceProvider.InitHook.class) && m.getParameterTypes().length == 1
                     && m.getParameterTypes()[0] == Service.class)
             {
@@ -866,6 +866,15 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         this.testing = true;
         this.testingProvider = provider;
         this.testingServices = Maps.newHashMap();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isTesting()
+    {
+        return this.testing;
     }
 
     // BEGIN ExpansionManager

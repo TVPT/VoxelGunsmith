@@ -56,7 +56,7 @@ public class HelpCommand extends Command
             Brush brush;
             if (sender instanceof Player)
             {
-                brush = ((Player) sender).getPersonalBrushManager().getBrush(args[0]).orNull();
+                brush = ((Player) sender).getBrushManager().getBrush(args[0]).orNull();
             } else
             {
                 brush = Gunsmith.getGlobalBrushManager().getBrush(args[0]).orNull();

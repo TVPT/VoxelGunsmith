@@ -870,25 +870,25 @@ public class MemoryContainer implements DataContainer
             writeCustom(path, (DataSerializable) value);
         } else if (DataType.BYTE.isOfType(type))
         {
-            writeByte(path, (byte) value);
+            writeByte(path, (Byte) value);
         } else if (DataType.SHORT.isOfType(type))
         {
-            writeShort(path, (short) value);
+            writeShort(path, (Short) value);
         } else if (DataType.INT.isOfType(type))
         {
-            writeInt(path, (int) value);
+            writeInt(path, (Integer) value);
         } else if (DataType.LONG.isOfType(type))
         {
-            writeLong(path, (long) value);
+            writeLong(path, (Long) value);
         } else if (DataType.CHAR.isOfType(type))
         {
-            writeChar(path, (char) value);
+            writeChar(path, (Character) value);
         } else if (DataType.FLOAT.isOfType(type))
         {
-            writeFloat(path, (float) value);
+            writeFloat(path, (Float) value);
         } else if (DataType.DOUBLE.isOfType(type))
         {
-            writeDouble(path, (double) value);
+            writeDouble(path, (Double) value);
         } else if (DataType.LIST.isOfType(type))
         {
             writeList(path, (List) value);
@@ -900,7 +900,7 @@ public class MemoryContainer implements DataContainer
             writeByteArray(path, (byte[]) value);
         } else if (DataType.BOOLEAN.isOfType(type))
         {
-            writeBoolean(path, (boolean) value);
+            writeBoolean(path, (Boolean) value);
         }
     }
 

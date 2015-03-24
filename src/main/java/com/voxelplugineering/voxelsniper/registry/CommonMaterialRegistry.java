@@ -136,6 +136,7 @@ public class CommonMaterialRegistry<T> extends AbstractService implements Materi
     @Override
     public Collection<Material> getMaterials()
     {
+        check();
         Set<Map.Entry<T, Material>> entries = this.registry.getRegisteredValues();
         List<Material> mats = Lists.newArrayList();
         for (Map.Entry<T, Material> entry : entries)

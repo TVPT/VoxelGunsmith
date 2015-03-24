@@ -26,6 +26,8 @@ package com.voxelplugineering.voxelsniper;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.voxelplugineering.voxelsniper.api.event.EventHandler;
@@ -42,6 +44,18 @@ import com.voxelplugineering.voxelsniper.event.bus.AsyncEventBus;
  */
 public class EventBusTest
 {
+
+    /**
+     * 
+     */
+    @BeforeClass
+    public static void setupGunsmith()
+    {
+        if (!Gunsmith.getServiceManager().isTesting())
+        {
+            Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
+        }
+    }
 
     /**
      * 

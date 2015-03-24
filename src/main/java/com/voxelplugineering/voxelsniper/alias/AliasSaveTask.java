@@ -74,7 +74,7 @@ public class AliasSaveTask implements Runnable
             AliasHandler alias = it.next();
             try
             {
-                alias.getOwner().getAliasFile().write(alias);
+                alias.getOwner().getAliasSource().write(alias);
             } catch (IOException e)
             {
                 Gunsmith.getLogger().error(e, "Error saving aliases");

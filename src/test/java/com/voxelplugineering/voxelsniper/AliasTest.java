@@ -49,9 +49,9 @@ public class AliasTest
     @BeforeClass
     public static void setupGunsmith()
     {
-        if (!Gunsmith.isEnabled())
+        if (!Gunsmith.getServiceManager().isTesting())
         {
-            Gunsmith.getServiceManager().init();
+            Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
         }
     }
 
@@ -61,7 +61,6 @@ public class AliasTest
     @Before
     public void setup()
     {
-        System.out.println(Gunsmith.getConfiguration());
         this.alias = new CommonAliasRegistry("test");
     }
 

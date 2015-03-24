@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.gson.JsonElement;
@@ -39,6 +40,18 @@ import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
  */
 public class MemoryContainerTest
 {
+
+    /**
+     * 
+     */
+    @BeforeClass
+    public static void setupGunsmith()
+    {
+        if (!Gunsmith.getServiceManager().isTesting())
+        {
+            Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
+        }
+    }
 
     /**
      * 

@@ -219,6 +219,7 @@ public class ConfigurationService extends AbstractService implements Configurati
     @Override
     public void fromContainer(DataContainer container)
     {
+        check();
         for (String s : container.keySet())
         {
             if (this.containers.containsKey(s))
@@ -238,6 +239,7 @@ public class ConfigurationService extends AbstractService implements Configurati
     @Override
     public DataContainer toContainer()
     {
+        check();
         DataContainer container = new MemoryContainer("");
         for (String key : this.containers.keySet())
         {
@@ -253,6 +255,7 @@ public class ConfigurationService extends AbstractService implements Configurati
     @Override
     public void refreshAllContainers()
     {
+        check();
         for (String key : this.containers.keySet())
         {
             AbstractConfigurationContainer c = this.containers.get(key);
@@ -270,6 +273,7 @@ public class ConfigurationService extends AbstractService implements Configurati
     @Override
     public void refreshContainer(String containerName)
     {
+        check();
         Optional<AbstractConfigurationContainer> container = getContainer(containerName);
         if (container.isPresent())
         {

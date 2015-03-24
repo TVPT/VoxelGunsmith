@@ -178,6 +178,7 @@ public class CSGCompoundShape extends OffsetShape
     @Override
     public void set(int x, int y, int z, boolean relative)
     {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -186,6 +187,7 @@ public class CSGCompoundShape extends OffsetShape
     @Override
     public void unset(int x, int y, int z, boolean relative)
     {
+        throw new UnsupportedOperationException();
     }
 
     /**

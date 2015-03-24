@@ -498,7 +498,7 @@ public class ComplexShape implements Shape
      */
     public void flatten()
     {
-        if(this.height < 2)
+        if (this.height < 2)
         {
             return;
         }

@@ -30,6 +30,7 @@ import static org.mockito.Mockito.when;
 import java.util.UUID;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -51,6 +52,18 @@ import com.voxelplugineering.voxelsniper.util.ShapeValidation;
  */
 public class NodeTest
 {
+
+    /**
+     * 
+     */
+    @BeforeClass
+    public static void setupGunsmith()
+    {
+        if (!Gunsmith.getServiceManager().isTesting())
+        {
+            Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
+        }
+    }
 
     RuntimeState state;
 

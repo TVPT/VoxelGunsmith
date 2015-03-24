@@ -319,7 +319,7 @@ public class CoreServiceProvider extends ServiceProvider
             }
         } else
         {
-            config = (DataSourceReader) oconfig.get();
+            config = oconfig.get();
         }
         if (config != null)
         {

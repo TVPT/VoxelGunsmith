@@ -85,6 +85,7 @@ public interface Configuration extends DataSerializable
      * </p>
      * 
      * @param container the new container to load, cannot be null
+     * @param <T> The container type
      */
     <T extends AbstractConfigurationContainer> void registerContainer(Class<T> container);
 

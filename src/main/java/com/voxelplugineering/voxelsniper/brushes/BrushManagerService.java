@@ -97,7 +97,7 @@ public class BrushManagerService extends AbstractService implements BrushManager
     }
 
     /**
-     * {@inheritDoc}    
+     * {@inheritDoc}
      */
     @Override
     public void addLoader(DataSourceReader loader)

@@ -60,7 +60,7 @@ public abstract class Metrics
     /**
      * The current revision number
      */
-    private final static int REVISION = 7;
+    private static final int REVISION = 7;
 
     /**
      * The base url of the metrics domain
@@ -80,12 +80,12 @@ public abstract class Metrics
     /**
      * Debug mode
      */
-    final boolean debug;
+    private final boolean debug;
 
     /**
      * All of the custom graphs to submit to metrics
      */
-    final Set<Graph> graphs = Collections.synchronizedSet(new HashSet<Graph>());
+    private final Set<Graph> graphs = Collections.synchronizedSet(new HashSet<Graph>());
 
     /**
      * The plugin configuration file
@@ -115,12 +115,12 @@ public abstract class Metrics
     /**
      * Lock for synchronization
      */
-    final Object optOutLock = new Object();
+    private final Object optOutLock = new Object();
 
     /**
      * The thread submission is running on
      */
-    Thread thread = null;
+    private Thread thread = null;
 
     /**
      * Creates a new Metrics manager.
@@ -318,6 +318,7 @@ public abstract class Metrics
                             Thread.sleep(100L);
                         } catch (InterruptedException e)
                         {
+                            //ignored
                         }
                     }
                 }
@@ -437,7 +438,7 @@ public abstract class Metrics
         String osname = System.getProperty("os.name");
         String osarch = System.getProperty("os.arch");
         String osversion = System.getProperty("os.version");
-        String java_version = System.getProperty("java.version");
+        String javaVersion = System.getProperty("java.version");
         int coreCount = Runtime.getRuntime().availableProcessors();
 
         // normalize os arch .. amd64 -> x86_64
@@ -451,7 +452,7 @@ public abstract class Metrics
         appendJSONPair(json, "osversion", osversion);
         appendJSONPair(json, "cores", Integer.toString(coreCount));
         // appendJSONPair(json, "auth_mode", onlineMode ? "1" : "0");
-        appendJSONPair(json, "java_version", java_version);
+        appendJSONPair(json, "java_version", javaVersion);
 
         // If we're pinging, append it
         if (isPing)
@@ -609,11 +610,15 @@ public abstract class Metrics
             e.printStackTrace();
         } finally
         {
-            if (gzos != null) try
+            if (gzos != null)
             {
-                gzos.close();
-            } catch (IOException ignore)
-            {
+                try
+                {
+                    gzos.close();
+                } catch (IOException ignore)
+                {
+                    //ignored
+                }
             }
         }
 
@@ -682,8 +687,8 @@ public abstract class Metrics
     /**
      * Escape a string to create a valid JSON string
      * 
-     * @param text
-     * @return
+     * @param text The text to escape
+     * @return The escaped text
      */
     private static String escapeJSON(String text)
     {
@@ -839,7 +844,7 @@ public abstract class Metrics
     /**
      * Interface used to collect custom data for a plugin
      */
-    public static abstract class Plotter
+    public abstract static class Plotter
     {
 
         /**

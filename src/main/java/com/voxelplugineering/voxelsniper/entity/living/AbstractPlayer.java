@@ -121,7 +121,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
      * {@inheritDoc}
      */
     @Override
-    public BrushManager getPersonalBrushManager()
+    public BrushManager getBrushManager()
     {
         return this.personalBrushManager;
     }
@@ -249,7 +249,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     /**
      * {@inheritDoc}
      */
-    public DataSourceReader getAliasFile()
+    public DataSourceReader getAliasSource()
     {
         return null; // TODO persistence
     }

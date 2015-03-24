@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.api.platform;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 
@@ -76,7 +77,7 @@ public interface PlatformProxy
      * 
      * @return The file containing the configuration for Metrics
      */
-    DataSourceReader getMetricsFile();
+    DataSource getMetricsFile();
 
     /**
      * Gets the number of players online.
