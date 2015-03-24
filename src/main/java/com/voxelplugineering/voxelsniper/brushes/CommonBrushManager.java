@@ -89,6 +89,7 @@ public class CommonBrushManager implements BrushManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addLoader(DataSourceReader loader)
     {
         this.loaders.add(0, loader);
@@ -97,6 +98,7 @@ public class CommonBrushManager implements BrushManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadBrush(String identifier, Brush graph)
     {
         checkNotNull(identifier, "Name cannot be null!");
@@ -109,6 +111,7 @@ public class CommonBrushManager implements BrushManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadBrush(String identifier)
     {
         checkNotNull(identifier, "Name cannot be null!");
@@ -135,6 +138,7 @@ public class CommonBrushManager implements BrushManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<Brush> getBrush(String identifier)
     {
         checkNotNull(identifier, "Name cannot be null!");
@@ -154,9 +158,37 @@ public class CommonBrushManager implements BrushManager
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setParent(BrushManager parent)
     {
         this.parent = parent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BrushManager getParent()
+    {
+        return this.parent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<DataSourceReader> getAllLoaders()
+    {
+        return this.loaders;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clearLoaders()
+    {
+        this.loaders.clear();
     }
 
 }

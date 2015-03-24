@@ -38,13 +38,13 @@ public interface BrushHolder
      * @return the sniper's brush manager
      */
     BrushManager getBrushManager();
-
+    
     /**
-     * Sets the current brush of this sniper.
+     * Sets this user's personal brush manager.
      * 
-     * @param brush the new brush, cannot be null
+     * @param manager The new brush manager
      */
-    void setCurrentBrush(BrushChain brush);
+    void setBrushManager(BrushManager manager);
 
     /**
      * Returns the currently selected brush of this sniper.
@@ -52,6 +52,13 @@ public interface BrushHolder
      * @return the brush
      */
     BrushChain getCurrentBrush();
+
+    /**
+     * Sets the current brush of this sniper.
+     * 
+     * @param brush the new brush, cannot be null
+     */
+    void setCurrentBrush(BrushChain brush);
 
     /**
      * Returns this sniper's current brush settings.

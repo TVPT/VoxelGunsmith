@@ -36,6 +36,14 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializabl
  */
 public interface Brush extends DataSerializable
 {
+    //TODO versioning
+
+    /**
+     * Gets the name of this brush, otherwise known as the primary alias.
+     * 
+     * @return The name
+     */
+    String getName();
 
     /**
      * Gets the type of this brush.
@@ -52,25 +60,18 @@ public interface Brush extends DataSerializable
     String getHelp();
 
     /**
-     * Executes this brush within the context of the given {@link RuntimeState}.
-     * 
-     * @param state The runtime state
-     */
-    void run(RuntimeState state);
-
-    /**
-     * Gets the name of this brush, otherwise known as the primary alias.
-     * 
-     * @return The name
-     */
-    String getName();
-
-    /**
      * Sets the help message for this brush.
      * 
      * @param help The new help
      */
     void setHelp(String help);
+    
+    /**
+     * Gets the starting node of this brush.
+     * 
+     * @return The start node
+     */
+    Node getStartNode();
 
     /**
      * Sets the starting node for this brush.
@@ -78,6 +79,13 @@ public interface Brush extends DataSerializable
      * @param node The starting node
      */
     void setStartNode(Node node);
+
+    /**
+     * Executes this brush within the context of the given {@link RuntimeState}.
+     * 
+     * @param state The runtime state
+     */
+    void run(RuntimeState state);
 
     /**
      * Adds an argument to this node.

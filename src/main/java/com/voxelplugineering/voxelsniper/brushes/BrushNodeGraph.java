@@ -307,4 +307,13 @@ public class BrushNodeGraph implements Brush
         this.graph.setNext(node);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Node getStartNode()
+    {
+        return this.graph.getStart();
+    }
+
 }

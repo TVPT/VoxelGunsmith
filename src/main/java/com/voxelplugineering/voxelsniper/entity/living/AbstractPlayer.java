@@ -130,6 +130,15 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
      * {@inheritDoc}
      */
     @Override
+    public void setBrushManager(BrushManager manager)
+    {
+        this.personalBrushManager = manager;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setCurrentBrush(BrushChain brush)
     {
         this.currentBrush = brush;

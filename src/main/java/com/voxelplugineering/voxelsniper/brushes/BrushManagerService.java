@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.brushes;
 
+import java.util.List;
+
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
@@ -124,6 +126,36 @@ public class BrushManagerService extends AbstractService implements BrushManager
     {
         check();
         this.wrapped.setParent(parent);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BrushManager getParent()
+    {
+        check();
+        return this.wrapped.getParent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<DataSourceReader> getAllLoaders()
+    {
+        check();
+        return this.wrapped.getAllLoaders();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clearLoaders()
+    {
+        check();
+        this.wrapped.clearLoaders();
     }
 
 }

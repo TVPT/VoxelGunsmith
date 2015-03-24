@@ -160,4 +160,10 @@ class RunCheckBrush implements Brush
 
     }
 
+    @Override
+    public Node getStartNode()
+    {
+        return null;
+    }
+
 }

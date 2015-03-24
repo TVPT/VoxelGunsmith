@@ -80,6 +80,15 @@ public abstract class NativeBrush implements Brush
      * {@inheritDoc}
      */
     @Override
+    public Node getStartNode()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setStartNode(Node node)
     {
         throw new UnsupportedOperationException();
