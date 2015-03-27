@@ -26,8 +26,7 @@ package com.voxelplugineering.voxelsniper.commands;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
-import com.voxelplugineering.voxelsniper.command.Command;
+import com.voxelplugineering.voxelsniper.api.entity.Player;
 
 /**
  * A command get fetching the help information for a brush.

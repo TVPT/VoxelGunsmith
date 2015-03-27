@@ -28,10 +28,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 import com.voxelplugineering.voxelsniper.brushes.BrushChain;
-import com.voxelplugineering.voxelsniper.command.Command;
 import com.voxelplugineering.voxelsniper.util.BrushParsing;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
@@ -102,7 +101,7 @@ public class BrushCommand extends Command
             if (brush.isPresent())
             {
                 sniper.setCurrentBrush(brush.get());
-                sniper.sendMessage(this.brushSetMessage, fullBrush);
+                sniper.sendMessage(this.brushSetMessage, brush.get().getName());
 
                 //TODO non-action check
             } else

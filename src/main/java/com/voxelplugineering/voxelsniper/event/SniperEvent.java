@@ -26,8 +26,9 @@ package com.voxelplugineering.voxelsniper.event;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy.ASYNCHRONOUS;
 
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy;
+import com.voxelplugineering.voxelsniper.service.eventbus.Event;
 
 /**
  * An abstract event for any event focused on a particular player.

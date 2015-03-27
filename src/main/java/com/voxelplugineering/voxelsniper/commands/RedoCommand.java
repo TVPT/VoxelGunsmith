@@ -24,9 +24,8 @@
 package com.voxelplugineering.voxelsniper.commands;
 
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
-import com.voxelplugineering.voxelsniper.command.Command;
 
 /**
  * A command get fetching the help information for a brush.

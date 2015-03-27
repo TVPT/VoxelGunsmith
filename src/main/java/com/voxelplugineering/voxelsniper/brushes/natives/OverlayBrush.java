@@ -26,7 +26,7 @@ package com.voxelplugineering.voxelsniper.brushes.natives;
 import com.thevoxelbox.vsl.api.variables.VariableHolder;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Location;
@@ -68,6 +68,7 @@ public class OverlayBrush extends NativeBrush
         Location targetVec = target.getLocation().add(-shape.getOrigin().getX(), -shape.getOrigin().getY(), -shape.getOrigin().getZ());
         Material air = world.getMaterialRegistry().getAirMaterial();
         ComplexShape out = new ComplexShape(shape.getWidth(), shape.getHeight(), shape.getLength(), shape.getOrigin());
+        int depth = vars.get("depth", Integer.class).or(1);
         for (int x = 0; x < shape.getWidth(); x++)
         {
             for (int z = 0; z < shape.getLength(); z++)
@@ -85,9 +86,22 @@ public class OverlayBrush extends NativeBrush
                         found = true;
                     }
                 }
+                /*
+                 * The check of height+1 here is for the case of the first block
+                 * being not air, but the block above it (the one outside of the
+                 * shape) being not air, say you sniped into a wall. In these
+                 * cases we don't want to apply the overlay.
+                 */
                 if (found && height != -1 && world.getBlock(targetVec.add(x, height + 1, z)).get().getMaterial() == air)
                 {
-                    out.set(x, height, z, false);
+                    if (height - depth < 0)
+                    {
+                        out.grow(0, height - depth, 0);
+                    }
+                    for (int y = height; y > height - depth; y--)
+                    {
+                        out.set(x, y, z, false);
+                    }
                 }
             }
         }
@@ -115,7 +129,14 @@ public class OverlayBrush extends NativeBrush
             vars.set("depth", depth);
         } catch (NumberFormatException e)
         {
-            // couldn't parse an integer from the input, ignore
+            try
+            {
+                double depth = Double.parseDouble(string);
+                vars.set("depth", ((Double) depth).intValue());
+            } catch (NumberFormatException i)
+            {
+                // couldn't parse an integer or a double from the input, ignore
+            }
         }
     }
 

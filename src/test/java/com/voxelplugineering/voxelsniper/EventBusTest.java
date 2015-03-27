@@ -34,9 +34,9 @@ import com.voxelplugineering.voxelsniper.api.event.EventPriority;
 import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy;
 import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy;
 import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
-import com.voxelplugineering.voxelsniper.event.DeadEvent;
-import com.voxelplugineering.voxelsniper.event.Event;
-import com.voxelplugineering.voxelsniper.event.bus.AsyncEventBus;
+import com.voxelplugineering.voxelsniper.service.eventbus.AsyncEventBus;
+import com.voxelplugineering.voxelsniper.service.eventbus.DeadEvent;
+import com.voxelplugineering.voxelsniper.service.eventbus.Event;
 
 /**
  * Tests for the {@link AsyncEventBus} implementation.

@@ -71,7 +71,7 @@ public class WeakRegistry<K, V> implements Registry<K, V>
      * 
      * @param c is case sensitive
      */
-    protected void setCaseSensitiveKeys(boolean c)
+    public void setCaseSensitiveKeys(boolean c)
     {
         this.caseSensitiveKeys = c;
     }

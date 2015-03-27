@@ -24,7 +24,7 @@
 package com.voxelplugineering.voxelsniper.world.queue;
 
 import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.entity.Player;
 
 /**
  * A task for executing pending change queues.

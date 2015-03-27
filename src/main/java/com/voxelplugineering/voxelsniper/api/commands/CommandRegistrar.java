@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.api.commands;
 
-import com.voxelplugineering.voxelsniper.command.Command;
+import com.voxelplugineering.voxelsniper.commands.Command;
 
 /**
  * Implemented by the specific implementations the command registrar handles the

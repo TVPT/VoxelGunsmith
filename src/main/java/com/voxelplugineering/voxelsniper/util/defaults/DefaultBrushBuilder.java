@@ -47,6 +47,7 @@ import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Chunk;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.brushes.ArgumentParsers;
 import com.voxelplugineering.voxelsniper.brushes.BrushNodeGraph;
 import com.voxelplugineering.voxelsniper.brushes.natives.BlendBrush;
 import com.voxelplugineering.voxelsniper.brushes.natives.ErodeBrush;
@@ -73,7 +74,6 @@ import com.voxelplugineering.voxelsniper.nodes.world.GetOverlappingChunksNode;
 import com.voxelplugineering.voxelsniper.nodes.world.RefreshChunkNode;
 import com.voxelplugineering.voxelsniper.nodes.world.ShapeMaterialSetNode;
 import com.voxelplugineering.voxelsniper.nodes.world.biome.SetBiomeNode;
-import com.voxelplugineering.voxelsniper.registry.vsl.ArgumentParsers;
 
 /**
  * In lieu of having flat file brushes this will temporarily serve as a builder

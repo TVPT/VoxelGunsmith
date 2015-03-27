@@ -32,8 +32,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.voxelplugineering.voxelsniper.alias.CommonAliasRegistry;
 import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.service.alias.CommonAliasRegistry;
 
 /**
  * A test suite for the alias system

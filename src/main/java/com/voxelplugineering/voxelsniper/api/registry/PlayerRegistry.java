@@ -25,7 +25,7 @@ package com.voxelplugineering.voxelsniper.api.registry;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.entity.Player;
 
 /**
  * A factory for creating instances of {@link Player} from the specific

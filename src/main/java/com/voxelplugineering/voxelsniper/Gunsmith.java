@@ -59,10 +59,10 @@ import com.voxelplugineering.voxelsniper.api.service.ServiceManager;
 import com.voxelplugineering.voxelsniper.api.service.ServiceProvider;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceFactory;
 import com.voxelplugineering.voxelsniper.api.service.scheduler.Scheduler;
-import com.voxelplugineering.voxelsniper.api.util.text.TextFormatProxy;
+import com.voxelplugineering.voxelsniper.api.util.text.TextFormatParser;
 import com.voxelplugineering.voxelsniper.api.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
-import com.voxelplugineering.voxelsniper.command.CommandHandler;
+import com.voxelplugineering.voxelsniper.service.CommandHandlerService;
 import com.voxelplugineering.voxelsniper.util.Pair;
 
 /**
@@ -118,14 +118,14 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     }
 
     /**
-     * Gets the {@link TextFormatProxy} service which provides the platform
+     * Gets the {@link TextFormatParser} service which provides the platform
      * specific formatting codes.
      * 
      * @return The text format proxy
      */
-    public static TextFormatProxy getTextFormatProxy()
+    public static TextFormatParser getTextFormatProxy()
     {
-        return (TextFormatProxy) Holder.INSTANCE.getService("formatProxy").orNull();
+        return (TextFormatParser) Holder.INSTANCE.getService("formatProxy").orNull();
     }
 
     /**
@@ -277,13 +277,13 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     }
 
     /**
-     * Gets the {@link CommandHandler} service.
+     * Gets the {@link CommandHandlerService} service.
      * 
      * @return The command handler
      */
-    public static CommandHandler getCommandHandler()
+    public static CommandHandlerService getCommandHandler()
     {
-        return (CommandHandler) Holder.INSTANCE.getService("commandHandler").orNull();
+        return (CommandHandlerService) Holder.INSTANCE.getService("commandHandler").orNull();
     }
 
     /**

@@ -26,8 +26,6 @@ package com.voxelplugineering.voxelsniper;
 import java.io.IOException;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.alias.AliasHandlerService;
-import com.voxelplugineering.voxelsniper.alias.CommonAliasHandler;
 import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
 import com.voxelplugineering.voxelsniper.api.config.AbstractConfigurationContainer;
@@ -43,10 +41,9 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceFacto
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.api.service.scheduler.Scheduler;
-import com.voxelplugineering.voxelsniper.api.util.text.TextFormatProxy;
-import com.voxelplugineering.voxelsniper.brushes.BrushManagerService;
+import com.voxelplugineering.voxelsniper.api.util.text.TextFormatParser;
+import com.voxelplugineering.voxelsniper.brushes.ArgumentParsers;
 import com.voxelplugineering.voxelsniper.brushes.CommonBrushManager;
-import com.voxelplugineering.voxelsniper.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.commands.AliasCommand;
 import com.voxelplugineering.voxelsniper.commands.BrushCommand;
 import com.voxelplugineering.voxelsniper.commands.HelpCommand;
@@ -57,21 +54,24 @@ import com.voxelplugineering.voxelsniper.commands.ResetCommand;
 import com.voxelplugineering.voxelsniper.commands.UndoCommand;
 import com.voxelplugineering.voxelsniper.commands.VSCommand;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
-import com.voxelplugineering.voxelsniper.config.ConfigurationService;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
-import com.voxelplugineering.voxelsniper.event.bus.AsyncEventBus;
-import com.voxelplugineering.voxelsniper.event.bus.EventBusService;
 import com.voxelplugineering.voxelsniper.event.handler.CommonEventHandler;
-import com.voxelplugineering.voxelsniper.logging.CommonLoggingDistributor;
-import com.voxelplugineering.voxelsniper.registry.vsl.ArgumentParsers;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceFactoryService;
+import com.voxelplugineering.voxelsniper.service.AliasHandlerService;
+import com.voxelplugineering.voxelsniper.service.BrushManagerService;
+import com.voxelplugineering.voxelsniper.service.CommandHandlerService;
+import com.voxelplugineering.voxelsniper.service.ConfigurationService;
+import com.voxelplugineering.voxelsniper.service.DataSourceFactoryService;
+import com.voxelplugineering.voxelsniper.service.EventBusService;
+import com.voxelplugineering.voxelsniper.service.LoggingDistributorService;
+import com.voxelplugineering.voxelsniper.service.OfflineUndoHandlerService;
+import com.voxelplugineering.voxelsniper.service.alias.CommonAliasHandler;
+import com.voxelplugineering.voxelsniper.service.eventbus.AsyncEventBus;
 import com.voxelplugineering.voxelsniper.service.persistence.FileDataSource;
 import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSourceReader;
 import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 import com.voxelplugineering.voxelsniper.service.persistence.StandardOutDataSource;
 import com.voxelplugineering.voxelsniper.util.AnnotationHelper;
 import com.voxelplugineering.voxelsniper.util.defaults.DefaultAliasBuilder;
-import com.voxelplugineering.voxelsniper.world.queue.CommonOfflineUndoHandler;
 
 /**
  * The core service provider.
@@ -119,7 +119,7 @@ public class CoreServiceProvider extends ServiceProvider
     @Builder("logger")
     public Service buildLogger()
     {
-        return new CommonLoggingDistributor();
+        return new LoggingDistributorService();
     }
 
     /**
@@ -152,7 +152,7 @@ public class CoreServiceProvider extends ServiceProvider
     @Builder("formatProxy")
     public Service buildFormatProxy()
     {
-        return new TextFormatProxy.TrivialTextFormatProxy();
+        return new TextFormatParser.TrivialTextFormatParser();
     }
 
     /**
@@ -248,7 +248,7 @@ public class CoreServiceProvider extends ServiceProvider
     @Builder("commandHandler")
     public Service getCommandHandler()
     {
-        return new CommandHandler();
+        return new CommandHandlerService();
     }
 
     /**
@@ -259,7 +259,7 @@ public class CoreServiceProvider extends ServiceProvider
     @InitHook("commandHandler")
     public void registerCommands(Service service)
     {
-        CommandHandler cmd = (CommandHandler) service;
+        CommandHandlerService cmd = (CommandHandlerService) service;
 
         cmd.registerCommand(new BrushCommand());
         cmd.registerCommand(new MaterialCommand());
@@ -280,7 +280,7 @@ public class CoreServiceProvider extends ServiceProvider
     @Builder("offlineUndoHandler")
     public Service getOfflineUndo()
     {
-        return new CommonOfflineUndoHandler();
+        return new OfflineUndoHandlerService();
     }
 
     /**

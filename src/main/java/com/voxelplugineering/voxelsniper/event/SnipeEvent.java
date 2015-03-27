@@ -25,7 +25,7 @@ package com.voxelplugineering.voxelsniper.event;
 
 import static com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy.ASYNCHRONOUS;
 
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy;
 
 /**

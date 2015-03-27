@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.api.permissions;
 
-import com.voxelplugineering.voxelsniper.api.entity.living.Player;
+import com.voxelplugineering.voxelsniper.api.entity.Player;
 
 /**
  * A proxy for the permission system of the specific implementation. TODO: group

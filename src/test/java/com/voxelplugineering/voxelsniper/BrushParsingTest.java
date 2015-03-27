@@ -32,7 +32,6 @@ import com.thevoxelbox.vsl.api.node.Node;
 import com.thevoxelbox.vsl.api.variables.VariableHolder;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.thevoxelbox.vsl.variables.ParentedVariableScope;
-import com.voxelplugineering.voxelsniper.alias.CommonAliasRegistry;
 import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
@@ -41,6 +40,7 @@ import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.brushes.BrushChain;
 import com.voxelplugineering.voxelsniper.brushes.CommonBrushManager;
+import com.voxelplugineering.voxelsniper.service.alias.CommonAliasRegistry;
 import com.voxelplugineering.voxelsniper.util.BrushParsing;
 
 /**
