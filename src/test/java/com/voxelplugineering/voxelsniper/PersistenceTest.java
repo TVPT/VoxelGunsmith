@@ -30,9 +30,11 @@ import org.junit.Test;
 
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceFactory;
-import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSourceReader;
-import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
-import com.voxelplugineering.voxelsniper.service.persistence.StandardOutDataSource;
+import com.voxelplugineering.voxelsniper.core.CoreServiceProvider;
+import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.core.service.persistence.JsonDataSourceReader;
+import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
+import com.voxelplugineering.voxelsniper.core.service.persistence.StandardOutDataSource;
 
 /**
  * A test for various aspects of the persistence service.

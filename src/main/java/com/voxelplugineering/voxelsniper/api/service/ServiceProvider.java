@@ -34,8 +34,8 @@ import java.lang.annotation.Target;
  * <p>
  * <strong>@Builder(value=[name])</strong> - A hook for providing the
  * implementation of a service. Only one builder per service will be called
- * which will be chosen by the highest builder available in order of Core ->
- * Platform -> Expansion. At this time the ordering within each level is
+ * which will be chosen by the highest builder available in order of Core then
+ * Platform then Expansion. At this time the ordering within each level is
  * undefined, but a priority system may be added if required.
  * </p>
  * <p>
@@ -47,7 +47,7 @@ import java.lang.annotation.Target;
  * <p>
  * <strong>@InitHook(value=[name])</strong> - A hook called when a service is
  * initialized. Multiple initialization hooks may exist for each service.
- * Initialization hooks will be called in order of Core -> Platform ->
+ * Initialization hooks will be called in order of Core then Platform then
  * Expansion. At this time the ordering within each level is undefined, but a
  * priority system may be added if required.
  * </p>
@@ -86,7 +86,7 @@ public abstract class ServiceProvider
     /**
      * Initializes this {@link ServiceProvider}. The given type will affect the
      * priority that the methods within this provider are called. The typical
-     * ordering is Core -> Platform -> Expansion.
+     * ordering is Core then Platform then Expansion.
      * 
      * @param type The provider type
      */

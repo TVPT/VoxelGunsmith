@@ -28,8 +28,8 @@ import com.voxelplugineering.voxelsniper.api.event.EventHandler;
 import com.voxelplugineering.voxelsniper.api.event.EventPriority;
 import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy;
 import com.voxelplugineering.voxelsniper.api.service.Buildable;
-import com.voxelplugineering.voxelsniper.service.eventbus.DeadEvent;
-import com.voxelplugineering.voxelsniper.service.eventbus.Event;
+import com.voxelplugineering.voxelsniper.core.service.eventbus.DeadEvent;
+import com.voxelplugineering.voxelsniper.core.service.eventbus.Event;
 
 /**
  * An event bus handles the posting of events and the registration of handlers

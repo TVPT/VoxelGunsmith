@@ -24,7 +24,7 @@
 package com.voxelplugineering.voxelsniper.api.registry;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.util.Pair;
+import com.voxelplugineering.voxelsniper.core.util.Pair;
 
 /**
  * A provider for values in a registry which is referenced when a key is not

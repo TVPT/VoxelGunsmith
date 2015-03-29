@@ -25,7 +25,7 @@ package com.voxelplugineering.voxelsniper.api.world;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
 
 /**
  * Represents a material at a location in a world.

@@ -23,8 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.api.util.text;
 
-import com.voxelplugineering.voxelsniper.Gunsmith;
-import com.voxelplugineering.voxelsniper.service.AbstractService;
+import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.core.service.AbstractService;
 
 /**
  * A proxy for platform specific format codes.

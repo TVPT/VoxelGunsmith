@@ -23,10 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.api.alias;
 
-import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
-import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSourceReader;
+import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.core.service.persistence.JsonDataSourceReader;
 
 /**
  * An owner of an alias handler.

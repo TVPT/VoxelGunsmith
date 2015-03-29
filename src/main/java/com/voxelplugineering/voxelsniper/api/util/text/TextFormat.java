@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.api.util.text;
 
-import com.voxelplugineering.voxelsniper.Gunsmith;
+import com.voxelplugineering.voxelsniper.core.Gunsmith;
 
 /**
  * Format codes for text formatting.

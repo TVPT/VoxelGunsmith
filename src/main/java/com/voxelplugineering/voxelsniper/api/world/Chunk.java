@@ -24,7 +24,7 @@
 package com.voxelplugineering.voxelsniper.api.world;
 
 import com.voxelplugineering.voxelsniper.api.entity.Entity;
-import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
 
 /**
  * Represents a section of a world.

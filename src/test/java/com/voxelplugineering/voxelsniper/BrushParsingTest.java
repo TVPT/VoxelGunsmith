@@ -38,10 +38,12 @@ import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
 import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.brushes.BrushChain;
-import com.voxelplugineering.voxelsniper.brushes.CommonBrushManager;
-import com.voxelplugineering.voxelsniper.service.alias.CommonAliasRegistry;
-import com.voxelplugineering.voxelsniper.util.BrushParsing;
+import com.voxelplugineering.voxelsniper.core.CoreServiceProvider;
+import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.core.brushes.BrushChain;
+import com.voxelplugineering.voxelsniper.core.brushes.CommonBrushManager;
+import com.voxelplugineering.voxelsniper.core.service.alias.CommonAliasRegistry;
+import com.voxelplugineering.voxelsniper.core.util.BrushParsing;
 
 /**
  * A test for the {@link BrushParsing} utility.

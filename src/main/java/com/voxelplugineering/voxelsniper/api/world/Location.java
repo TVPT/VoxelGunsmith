@@ -23,9 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.api.world;
 
-import com.voxelplugineering.voxelsniper.util.math.Vector3d;
-import com.voxelplugineering.voxelsniper.util.math.Vector3i;
-import com.voxelplugineering.voxelsniper.world.CommonLocation;
+import com.voxelplugineering.voxelsniper.core.util.math.Vector3d;
+import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.core.world.CommonLocation;
 
 /**
  * Represents a location within a world.

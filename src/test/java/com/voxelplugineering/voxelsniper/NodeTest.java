@@ -40,12 +40,14 @@ import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.nodes.block.BlockBreakNode;
-import com.voxelplugineering.voxelsniper.nodes.material.IsLiquidNode;
-import com.voxelplugineering.voxelsniper.nodes.material.MaterialCompareNode;
-import com.voxelplugineering.voxelsniper.nodes.shape.DiscShapeNode;
+import com.voxelplugineering.voxelsniper.core.CoreServiceProvider;
+import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.core.nodes.block.BlockBreakNode;
+import com.voxelplugineering.voxelsniper.core.nodes.material.IsLiquidNode;
+import com.voxelplugineering.voxelsniper.core.nodes.material.MaterialCompareNode;
+import com.voxelplugineering.voxelsniper.core.nodes.shape.DiscShapeNode;
+import com.voxelplugineering.voxelsniper.core.util.ShapeValidation;
 import com.voxelplugineering.voxelsniper.util.CheckRunNode;
-import com.voxelplugineering.voxelsniper.util.ShapeValidation;
 
 /**
  * Standard node test class.

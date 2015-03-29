@@ -26,10 +26,10 @@ package com.voxelplugineering.voxelsniper.api.config;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
-import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
+import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
 
 /**
  * An abstract configuration container which supports serializing configuration

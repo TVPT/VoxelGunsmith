@@ -24,7 +24,7 @@
 package com.voxelplugineering.voxelsniper.api.brushes;
 
 import com.thevoxelbox.vsl.api.variables.VariableScope;
-import com.voxelplugineering.voxelsniper.brushes.BrushChain;
+import com.voxelplugineering.voxelsniper.core.brushes.BrushChain;
 
 /**
  * An interface for anything which may have a brush selected.

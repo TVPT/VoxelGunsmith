@@ -27,7 +27,7 @@ import java.util.UUID;
 
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.World;
-import com.voxelplugineering.voxelsniper.util.math.Vector3d;
+import com.voxelplugineering.voxelsniper.core.util.math.Vector3d;
 
 /**
  * Represents an entity within a world.
