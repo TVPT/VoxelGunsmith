@@ -29,8 +29,8 @@ package com.voxelplugineering.voxelsniper.api.entity;
 public enum Action
 {
     /**
-     * When the user has left-clicked air, usually pointing in a direction and
-     * not within range of targeting a block.
+     * When the user has left-clicked air, usually pointing in a direction and not within range of
+     * targeting a block.
      */
     LEFT_CLICK_AIR,
     /**
@@ -38,8 +38,8 @@ public enum Action
      */
     LEFT_CLICK_BLOCK,
     /**
-     * When the user has middle-clicked air, usually pointing in a direction and
-     * not within range of targeting a block.
+     * When the user has middle-clicked air, usually pointing in a direction and not within range of
+     * targeting a block.
      */
     MIDDLE_CLICK_AIR,
     /**
@@ -47,8 +47,8 @@ public enum Action
      */
     MIDDLE_CLICK_BLOCK,
     /**
-     * When the user has right-clicked air, usually pointing in a direction and
-     * not within range of targeting a block.
+     * When the user has right-clicked air, usually pointing in a direction and not within range of
+     * targeting a block.
      */
     RIGHT_CLICK_AIR,
     /**

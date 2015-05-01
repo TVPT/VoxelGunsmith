@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.util;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +45,7 @@ public class AnnotationHelper
             .makeMap();
 
     /**
-     * Gets whether the given annotation is applied to the given class, or any
-     * of its super classes.
+     * Gets whether the given annotation is applied to the given class, or any of its super classes.
      * 
      * @param cls The class to check
      * @param annotation The annotation class to check for
@@ -52,6 +53,8 @@ public class AnnotationHelper
      */
     public static boolean doesSuperHaveAnotation(Class<?> cls, Class<? extends Annotation> annotation)
     {
+        checkNotNull(cls);
+        checkNotNull(annotation);
         if (!annotationCache.containsKey(cls))
         {
             List<Class<? extends Annotation>> list = Lists.newArrayList();
@@ -75,8 +78,7 @@ public class AnnotationHelper
     }
 
     /**
-     * Gets the annotation value of the given annotation type for the given
-     * class.
+     * Gets the annotation value of the given annotation type for the given class.
      * 
      * @param cls The class to check
      * @param annotation The annotation type
@@ -86,6 +88,8 @@ public class AnnotationHelper
     @SuppressWarnings("unchecked")
     public static <T extends Annotation> Optional<T> getSuperAnnotation(Class<?> cls, Class<T> annotation)
     {
+        checkNotNull(cls);
+        checkNotNull(annotation);
         Map<Class<? extends Annotation>, Annotation> map;
         if (!annotationValueCache.containsKey(cls))
         {
@@ -105,18 +109,16 @@ public class AnnotationHelper
                     map.put(annotation, a);
                 }
                 return Optional.fromNullable(a);
-            } else
-            {
-                return Optional.<T>fromNullable((T) map.get(annotation));
             }
-        } else
-        {
-            return Optional.absent();
+            return Optional.<T>fromNullable((T) map.get(annotation));
         }
+        return Optional.absent();
     }
 
     private static <T extends Annotation> T getSuperAnnotation_(Class<?> cls, Class<T> annotation)
     {
+        checkNotNull(cls);
+        checkNotNull(annotation);
         Class<?> next = cls;
         while (next != null)
         {

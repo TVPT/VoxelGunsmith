@@ -64,9 +64,6 @@ public class ShapeForEachNode extends AbstractNode
         this.next = node;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

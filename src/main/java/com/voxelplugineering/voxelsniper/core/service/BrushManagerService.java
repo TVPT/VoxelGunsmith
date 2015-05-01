@@ -46,40 +46,28 @@ public class BrushManagerService extends AbstractService implements BrushManager
      */
     public BrushManagerService(BrushManager manager)
     {
-        super(9);
+        super(BrushManager.class, 9);
         this.wrapped = manager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
-        return "globalBrushManager";
+        return "GlobalBrushManager";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void init()
     {
         Gunsmith.getLogger().info("Initialized GlobalBrushManager service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void destroy()
     {
         Gunsmith.getLogger().info("Stopped GlobalBrushManager service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void loadBrush(String identifier, Brush graph)
     {
@@ -87,9 +75,6 @@ public class BrushManagerService extends AbstractService implements BrushManager
         this.wrapped.loadBrush(identifier, graph);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void loadBrush(String identifier)
     {
@@ -97,9 +82,6 @@ public class BrushManagerService extends AbstractService implements BrushManager
         this.wrapped.loadBrush(identifier);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addLoader(DataSourceReader loader)
     {
@@ -107,9 +89,6 @@ public class BrushManagerService extends AbstractService implements BrushManager
         this.wrapped.addLoader(loader);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Brush> getBrush(String identifier)
     {
@@ -117,9 +96,6 @@ public class BrushManagerService extends AbstractService implements BrushManager
         return this.wrapped.getBrush(identifier);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setParent(BrushManager parent)
     {
@@ -127,9 +103,6 @@ public class BrushManagerService extends AbstractService implements BrushManager
         this.wrapped.setParent(parent);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public BrushManager getParent()
     {
@@ -137,9 +110,6 @@ public class BrushManagerService extends AbstractService implements BrushManager
         return this.wrapped.getParent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<DataSourceReader> getAllLoaders()
     {
@@ -147,9 +117,6 @@ public class BrushManagerService extends AbstractService implements BrushManager
         return this.wrapped.getAllLoaders();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void clearLoaders()
     {

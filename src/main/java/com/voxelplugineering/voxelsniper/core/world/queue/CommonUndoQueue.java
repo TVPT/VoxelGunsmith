@@ -40,8 +40,7 @@ public class CommonUndoQueue implements UndoQueue
     private Entry first = null;
 
     /**
-     * Creates a new {@link CommonUndoQueue} associated with the given
-     * {@link ChangeQueueOwner}.
+     * Creates a new {@link CommonUndoQueue} associated with the given {@link ChangeQueueOwner}.
      * 
      * @param owner The owner
      */
@@ -56,9 +55,6 @@ public class CommonUndoQueue implements UndoQueue
         this.first = this.pointer = new Entry(change, reverse);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addHistory(ChangeQueue change, ChangeQueue reverse)
     {
@@ -76,9 +72,6 @@ public class CommonUndoQueue implements UndoQueue
         enforceCapacity();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int undo(int n)
     {
@@ -93,9 +86,6 @@ public class CommonUndoQueue implements UndoQueue
         return count;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int redo(int n)
     {
@@ -113,7 +103,7 @@ public class CommonUndoQueue implements UndoQueue
         }
         while (this.pointer.next != null && n > 0)
         {
-            System.out.println("reset");
+            //System.out.println("reset");
             this.pointer = this.pointer.next;
             this.owner.addPending(this.pointer.redo);
             n--;
@@ -122,27 +112,18 @@ public class CommonUndoQueue implements UndoQueue
         return count;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ChangeQueueOwner getOwner()
     {
         return this.owner;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaxBufferSize()
     {
         return this.capacity;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMaxBufferSize(int n)
     {
@@ -150,18 +131,12 @@ public class CommonUndoQueue implements UndoQueue
         enforceCapacity();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void clearHistory()
     {
         this.first = this.pointer = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void movePointer(int n)
     {
@@ -192,9 +167,7 @@ public class CommonUndoQueue implements UndoQueue
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public int size()
     {
         int count = 0;

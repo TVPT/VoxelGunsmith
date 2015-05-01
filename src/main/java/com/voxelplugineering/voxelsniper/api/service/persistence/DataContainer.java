@@ -33,9 +33,6 @@ import com.google.common.base.Optional;
 public interface DataContainer extends DataView
 {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     Optional<DataContainer> readContainer(String path);
 
@@ -120,9 +117,8 @@ public interface DataContainer extends DataView
     void writeBoolean(String path, boolean data);
 
     /**
-     * Writes a type extending {@link DataSerializable} to the given path. The
-     * type is written as if by calling {@link DataSerializable#toContainer()}
-     * and passing it to {@link #writeContainer}.
+     * Writes a type extending {@link DataSerializable} to the given path. The type is written as if
+     * by calling {@link DataSerializable#toContainer()} and passing it to {@link #writeContainer}.
      * 
      * @param path The path
      * @param data The value

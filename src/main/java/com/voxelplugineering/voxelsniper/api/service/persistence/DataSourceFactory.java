@@ -41,8 +41,7 @@ public interface DataSourceFactory
     Optional<DataSource> build(String name);
 
     /**
-     * Requests a new instance of a {@link DataSource} by name with the given
-     * arguments.
+     * Requests a new instance of a {@link DataSource} by name with the given arguments.
      * 
      * @param name The source name
      * @param args The source arguments
@@ -60,8 +59,8 @@ public interface DataSourceFactory
     <T extends DataSource> Optional<T> build(Class<T> type);
 
     /**
-     * Requests a new instance of a {@link DataSource} from a class reference,
-     * with the given arguments.
+     * Requests a new instance of a {@link DataSource} from a class reference, with the given
+     * arguments.
      * 
      * @param type The data source type
      * @param args The source arguments

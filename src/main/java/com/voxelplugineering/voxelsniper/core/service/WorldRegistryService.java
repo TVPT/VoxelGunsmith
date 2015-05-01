@@ -52,22 +52,16 @@ public class WorldRegistryService<T> extends AbstractService implements WorldReg
      */
     public WorldRegistryService(RegistryProvider<T, World> provider)
     {
-        super(6);
+        super(WorldRegistry.class, 6);
         this.provider = provider;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return "worldRegistry";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void init()
     {
@@ -75,9 +69,6 @@ public class WorldRegistryService<T> extends AbstractService implements WorldReg
         Gunsmith.getLogger().info("Initialized WorldRegistry service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void destroy()
     {
@@ -85,9 +76,6 @@ public class WorldRegistryService<T> extends AbstractService implements WorldReg
         Gunsmith.getLogger().info("Stopped WorldRegistry service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<World> getWorld(String name)
     {
@@ -95,9 +83,6 @@ public class WorldRegistryService<T> extends AbstractService implements WorldReg
         return this.registry.get(name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<World> getWorld(T world)
     {
@@ -105,9 +90,6 @@ public class WorldRegistryService<T> extends AbstractService implements WorldReg
         return this.registry.get(world);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Iterable<World> getLoadedWorlds()
     {
@@ -120,9 +102,6 @@ public class WorldRegistryService<T> extends AbstractService implements WorldReg
         return worlds;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void invalidate(String name)
     {
@@ -130,9 +109,6 @@ public class WorldRegistryService<T> extends AbstractService implements WorldReg
         this.registry.remove(name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void invalidate(T world)
     {

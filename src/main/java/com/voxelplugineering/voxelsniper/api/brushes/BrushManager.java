@@ -29,26 +29,24 @@ import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 
 /**
- * Handles the registration of {@link Brush}es. Also contains an ordered list of
- * loaders which is traversed to load named brushes. A brush manager may be
- * connected to a particular user in a multi-user environment.
+ * Handles the registration of {@link Brush}es. Also contains an ordered list of loaders which is
+ * traversed to load named brushes. A brush manager may be connected to a particular user in a
+ * multi-user environment.
  */
 public interface BrushManager
 {
 
     /**
-     * Gets the parent {@link BrushManager}. When a request for a brush instance
-     * is made and it is not found within this manager the request is passed up
-     * to the parent manager.
+     * Gets the parent {@link BrushManager}. When a request for a brush instance is made and it is
+     * not found within this manager the request is passed up to the parent manager.
      * 
      * @return The parent brush manager
      */
     BrushManager getParent();
 
     /**
-     * Sets the parent {@link BrushManager}. When a request for a brush instance
-     * is made and it is not found within this manager the request is passed up
-     * to the parent manager.
+     * Sets the parent {@link BrushManager}. When a request for a brush instance is made and it is
+     * not found within this manager the request is passed up to the parent manager.
      * 
      * @param parent the parent brush loader
      */
@@ -62,9 +60,8 @@ public interface BrushManager
     List<DataSourceReader> getAllLoaders();
 
     /**
-     * Adds a loader to the list of loaders used by this manager for loading
-     * brushes by name. The loader is added top the end of the existing list of
-     * loaders.
+     * Adds a loader to the list of loaders used by this manager for loading brushes by name. The
+     * loader is added top the end of the existing list of loaders.
      * 
      * @param loader the new loader, cannot be null
      */
@@ -76,17 +73,15 @@ public interface BrushManager
     void clearLoaders();
 
     /**
-     * Walks through registered loaders in order and attempts to load the brush
-     * with the given name.
+     * Walks through registered loaders in order and attempts to load the brush with the given name.
      * 
      * @param identifier the brush name, cannot be null or empty
      */
     void loadBrush(String identifier);
 
     /**
-     * Loads the given brush into this manager. If the brush had been previously
-     * loaded then a check is done of the brush version and the copy with the
-     * higher version is kept loaded.
+     * Loads the given brush into this manager. If the brush had been previously loaded then a check
+     * is done of the brush version and the copy with the higher version is kept loaded.
      * 
      * @param identifier the brush name, cannot be null or empty
      * @param graph The node graph
@@ -94,9 +89,9 @@ public interface BrushManager
     void loadBrush(String identifier, Brush graph);
 
     /**
-     * Returns a new instance of the brush with the given name if it has been
-     * previously loaded into this manager. If the brush is not found in this
-     * manager the request is passed up to the parent brush manager.
+     * Returns a new instance of the brush with the given name if it has been previously loaded into
+     * this manager. If the brush is not found in this manager the request is passed up to the
+     * parent brush manager.
      * 
      * @param identifier the brush name to be loaded, cannot be null or empty
      * @return an instance of the brush

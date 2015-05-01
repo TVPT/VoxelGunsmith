@@ -32,8 +32,8 @@ public interface DataSourceProvider
 {
 
     /**
-     * Gets whether this provider has a {@link DataSourceReader} within it
-     * matching the given identifier.
+     * Gets whether this provider has a {@link DataSourceReader} within it matching the given
+     * identifier.
      * 
      * @param identifier The identifier
      * @return Whether the source exists
@@ -41,8 +41,7 @@ public interface DataSourceProvider
     boolean has(String identifier);
 
     /**
-     * Gets the {@link DataSourceReader} matching the given identifier if it is
-     * available.
+     * Gets the {@link DataSourceReader} matching the given identifier if it is available.
      * 
      * @param identifier The identifier
      * @return The source, if available
@@ -50,9 +49,9 @@ public interface DataSourceProvider
     Optional<DataSource> get(String identifier);
 
     /**
-     * Attempts to get another provider from within this providers scope. Allows
-     * for {@link DataSourceProvider}s to be nested recursively as it is within
-     * for example: a filesystem.
+     * Attempts to get another provider from within this providers scope. Allows for
+     * {@link DataSourceProvider}s to be nested recursively as it is within for example: a
+     * filesystem.
      * 
      * @param identifier The identifier
      * @return The provider, if available
@@ -60,8 +59,8 @@ public interface DataSourceProvider
     Optional<? extends DataSourceProvider> getInternalProvider(String identifier);
 
     /**
-     * Sets a default reader type for this provider to construct any
-     * {@link DataSource}s fetched from it within.
+     * Sets a default reader type for this provider to construct any {@link DataSource}s fetched
+     * from it within.
      * 
      * @param reader The reader type
      * @param args The reader arguments
@@ -69,8 +68,8 @@ public interface DataSourceProvider
     void setReaderType(Class<? extends DataSourceReader> reader, DataContainer args);
 
     /**
-     * Gets a new {@link DataSource} from within this provider wrapped within
-     * the default reader (See {@link #setReaderType(Class, DataContainer)}).
+     * Gets a new {@link DataSource} from within this provider wrapped within the default reader
+     * (See {@link #setReaderType(Class, DataContainer)}).
      * 
      * @param identifier The identifier
      * @return The data source, if available
@@ -78,8 +77,7 @@ public interface DataSourceProvider
     Optional<DataSourceReader> getWithReader(String identifier);
 
     /**
-     * Gets a new {@link DataSource} from within this provider wrapped within
-     * the given reader.
+     * Gets a new {@link DataSource} from within this provider wrapped within the given reader.
      * 
      * @param identifier The identifier
      * @param reader The reader type
@@ -89,8 +87,7 @@ public interface DataSourceProvider
     <T extends DataSourceReader> Optional<T> getWithReader(String identifier, Class<T> reader);
 
     /**
-     * Gets a new {@link DataSource} from within this provider wrapped within
-     * the given reader.
+     * Gets a new {@link DataSource} from within this provider wrapped within the given reader.
      * 
      * @param identifier The identifier
      * @param reader The reader type

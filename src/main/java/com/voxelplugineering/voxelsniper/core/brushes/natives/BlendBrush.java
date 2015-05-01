@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.brushes.natives;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Map;
 
 import com.google.common.base.Optional;
@@ -41,12 +43,9 @@ import com.voxelplugineering.voxelsniper.core.brushes.NativeBrush;
 import com.voxelplugineering.voxelsniper.core.world.queue.ShapeChangeQueue;
 
 /**
- * An implementation of the blend brush as a native brush part.
- * <p>
- * This brush part is an effect which performs a 'blending' effect by looping
- * through the area and replacing each block with the most common neighboring
- * block, if a tie is found then no change is made.
- * </p>
+ * An implementation of the blend brush as a native brush part. <p> This brush part is an effect
+ * which performs a 'blending' effect by looping through the area and replacing each block with the
+ * most common neighboring block, if a tie is found then no change is made. </p>
  */
 public class BlendBrush extends NativeBrush
 {
@@ -60,12 +59,10 @@ public class BlendBrush extends NativeBrush
         setHelp("blend");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void run(RuntimeState state)
     {
+        checkNotNull(state);
         VariableHolder vars = state.getVars();
         Player player = vars.get("__PLAYER__", Player.class).get();
         World world = player.getWorld();
@@ -145,18 +142,12 @@ public class BlendBrush extends NativeBrush
         player.addPending(new ShapeChangeQueue(player, target.getLocation(), output));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return "blend";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void parseArguments(String string, VariableHolder vars)
     {

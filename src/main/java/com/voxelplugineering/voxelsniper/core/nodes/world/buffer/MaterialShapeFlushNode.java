@@ -50,9 +50,6 @@ public class MaterialShapeFlushNode extends MaterialShapeNode
         this.target = target;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

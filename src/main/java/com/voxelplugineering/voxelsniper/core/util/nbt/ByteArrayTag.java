@@ -81,18 +81,12 @@ public final class ByteArrayTag extends Tag
         this.value = value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public byte[] getValue()
     {
         return this.value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {

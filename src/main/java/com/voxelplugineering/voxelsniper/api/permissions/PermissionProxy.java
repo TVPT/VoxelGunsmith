@@ -26,8 +26,8 @@ package com.voxelplugineering.voxelsniper.api.permissions;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
 
 /**
- * A proxy for the permission system of the specific implementation. TODO: group
- * support within gunsmith
+ * A proxy for the permission system of the specific implementation. TODO: group support within
+ * gunsmith
  */
 public interface PermissionProxy
 {
@@ -41,8 +41,8 @@ public interface PermissionProxy
     boolean isOp(final Player sniper);
 
     /**
-     * Checks if the user has the given permission node. Supports wildcards as
-     * permission nodes are made of a dot-separated sequence of nodes.
+     * Checks if the user has the given permission node. Supports wildcards as permission nodes are
+     * made of a dot-separated sequence of nodes.
      * 
      * @param sniper the user to check, cannot be null
      * @param permission the permission node, cannot be null or empty

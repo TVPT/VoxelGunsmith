@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.util;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
 
@@ -40,6 +42,7 @@ public class ShapeValidation
      */
     public static boolean isDisc(Shape shape)
     {
+        checkNotNull(shape);
         if (shape.getHeight() != 1)
         {
             return false;

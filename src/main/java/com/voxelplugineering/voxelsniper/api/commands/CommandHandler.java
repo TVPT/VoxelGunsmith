@@ -23,20 +23,52 @@
  */
 package com.voxelplugineering.voxelsniper.api.commands;
 
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.core.commands.Command;
 
 /**
- * Implemented by the specific implementations the command registrar handles the registering of
- * commands within the underlying APIs.
+ * Represents a handler for command execution and registration.
  */
-public interface CommandRegistrar
+public interface CommandHandler
 {
 
     /**
-     * Registers the command with the underlying API.
+     * Gets this handler's {@link CommandRegistrar} if it has one.
      * 
-     * @param command the command to be registered, cannot be null
+     * @return The command registrar
      */
-    void registerCommand(Command command);
+    Optional<CommandRegistrar> getRegistrar();
+
+    /**
+     * Sets this handler's {@link CommandRegistrar}.
+     * 
+     * @param registrar The new command registrar
+     */
+    void setRegistrar(CommandRegistrar registrar);
+
+    /**
+     * Registers the given command with this handler, and its {@link CommandRegistrar} if it has
+     * one.
+     * 
+     * @param cmd The command to register
+     */
+    void registerCommand(Command cmd);
+
+    /**
+     * Executes the given command from the given sender.
+     * 
+     * @param sender The command sender
+     * @param fullCommand The full command string including args
+     */
+    void onCommand(CommandSender sender, String fullCommand);
+
+    /**
+     * Executes the given command with arguments from the given sender.
+     * 
+     * @param sender The command sender
+     * @param command The command name
+     * @param args The command arguments
+     */
+    void onCommand(CommandSender sender, String command, String[] args);
 
 }

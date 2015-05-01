@@ -81,18 +81,12 @@ public final class IntArrayTag extends Tag
         this.value = value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int[] getValue()
     {
         return this.value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {

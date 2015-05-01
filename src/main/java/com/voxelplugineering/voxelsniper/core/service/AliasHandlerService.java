@@ -47,22 +47,16 @@ public class AliasHandlerService extends AbstractService implements AliasHandler
      */
     public AliasHandlerService(AliasHandler wrapped)
     {
-        super(3);
+        super(AliasHandler.class, 3);
         this.wrapped = wrapped;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return "aliasRegistry";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void init()
     {
@@ -70,9 +64,6 @@ public class AliasHandlerService extends AbstractService implements AliasHandler
         Gunsmith.getLogger().info("Initialized AliasRegistry service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void destroy()
     {
@@ -80,9 +71,6 @@ public class AliasHandlerService extends AbstractService implements AliasHandler
         Gunsmith.getLogger().info("Stopping AliasRegistry service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void fromContainer(DataContainer container)
     {
@@ -90,9 +78,6 @@ public class AliasHandlerService extends AbstractService implements AliasHandler
         this.wrapped.fromContainer(container);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataContainer toContainer()
     {
@@ -100,9 +85,6 @@ public class AliasHandlerService extends AbstractService implements AliasHandler
         return this.wrapped.toContainer();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean exists()
     {
@@ -110,9 +92,6 @@ public class AliasHandlerService extends AbstractService implements AliasHandler
         return this.wrapped.exists();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Set<String> getValidTargets()
     {
@@ -120,9 +99,6 @@ public class AliasHandlerService extends AbstractService implements AliasHandler
         return this.wrapped.getValidTargets();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AliasOwner getOwner()
     {
@@ -130,9 +106,6 @@ public class AliasHandlerService extends AbstractService implements AliasHandler
         return this.wrapped.getOwner();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<AliasRegistry> getRegistry(String target)
     {
@@ -140,9 +113,6 @@ public class AliasHandlerService extends AbstractService implements AliasHandler
         return this.wrapped.getRegistry(target);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean hasTarget(String target)
     {
@@ -150,9 +120,6 @@ public class AliasHandlerService extends AbstractService implements AliasHandler
         return this.wrapped.hasTarget(target);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AliasRegistry registerTarget(String string)
     {
@@ -160,9 +127,6 @@ public class AliasHandlerService extends AbstractService implements AliasHandler
         return this.wrapped.registerTarget(string);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean removeTarget(String target)
     {
@@ -170,9 +134,6 @@ public class AliasHandlerService extends AbstractService implements AliasHandler
         return this.wrapped.removeTarget(target);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void clearTargets()
     {

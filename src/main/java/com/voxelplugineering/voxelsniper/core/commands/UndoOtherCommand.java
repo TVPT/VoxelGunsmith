@@ -46,9 +46,6 @@ public class UndoOtherCommand extends Command
         setPermissions("voxelsniper.command.undoother");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {

@@ -29,15 +29,14 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvi
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 
 /**
- * The specific implementation core class, provides direct platform utilities
- * and versioning for Gunsmith.
+ * The specific implementation core class, provides direct platform utilities and versioning for
+ * Gunsmith.
  */
 public interface PlatformProxy
 {
 
     /**
-     * Gets the name of the platform, examples may include "Bukkit", "Spigot",
-     * "Sponge", etc.
+     * Gets the name of the platform, examples may include "Bukkit", "Spigot", "Sponge", etc.
      * 
      * @return The name of the platform
      */
@@ -58,8 +57,7 @@ public interface PlatformProxy
     String getFullVersion();
 
     /**
-     * Gets the data source provider for obtaining data sources for serialized
-     * brushes.
+     * Gets the data source provider for obtaining data sources for serialized brushes.
      * 
      * @return The data source provider
      */
@@ -87,8 +85,7 @@ public interface PlatformProxy
     int getNumberOfPlayersOnline();
 
     /**
-     * Gets a {@link DataSourceReader} representing the basic configuration
-     * location.
+     * Gets a {@link DataSourceReader} representing the basic configuration location.
      * 
      * @return The config data source
      */

@@ -98,6 +98,7 @@ public class Subscriber
     /**
      * @return The string representation
      */
+    @Override
     public String toString()
     {
         return "Subscriber " + this.exec.getName() + " (" + this.eventType.getName() + " - " + this.priority.name() + ")";

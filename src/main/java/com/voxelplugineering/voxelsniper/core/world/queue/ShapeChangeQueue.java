@@ -36,22 +36,10 @@ import com.voxelplugineering.voxelsniper.api.world.queue.ChangeQueueOwner;
 public class ShapeChangeQueue extends ChangeQueue
 {
 
-    /**
-     * The shape to change.
-     */
-    private MaterialShape shape;
-    /**
-     * The origin to set the shape relative to.
-     */
-    private Location originOffset;
-    private Location origin;
-    /**
-     * The current execution state of this change queue.
-     */
+    private final MaterialShape shape;
+    private final Location originOffset;
+    private final Location origin;
     private ExecutionState state;
-    /**
-     * The position of this queue's execution.
-     */
     private long position = 0;
     private int ticks = 0;
     private boolean reported = false;
@@ -72,9 +60,6 @@ public class ShapeChangeQueue extends ChangeQueue
         this.shape = shape;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isFinished()
     {
@@ -85,9 +70,6 @@ public class ShapeChangeQueue extends ChangeQueue
         return this.state == ExecutionState.DONE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void flush()
     {
@@ -106,9 +88,6 @@ public class ShapeChangeQueue extends ChangeQueue
         this.getOwner().addPending(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int perform(int next)
     {
@@ -204,9 +183,6 @@ public class ShapeChangeQueue extends ChangeQueue
         return count;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void reset()
     {

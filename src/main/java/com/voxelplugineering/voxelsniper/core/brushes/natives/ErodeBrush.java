@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.brushes.natives;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Map;
 
 import com.google.common.base.Optional;
@@ -42,13 +44,9 @@ import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.core.world.queue.ShapeChangeQueue;
 
 /**
- * A native implementation of the Erode brush.
- * <p>
- * This brush part is an effect which, depending on the settings, loops through
- * the area and for each erode iteration removes all blocks with exposed faces
- * below a threshold, and for each fill iteration adds all blocks above a
- * threshold.
- * </p>
+ * A native implementation of the Erode brush. <p> This brush part is an effect which, depending on
+ * the settings, loops through the area and for each erode iteration removes all blocks with exposed
+ * faces below a threshold, and for each fill iteration adds all blocks above a threshold. </p>
  */
 public class ErodeBrush extends NativeBrush
 {
@@ -73,12 +71,10 @@ public class ErodeBrush extends NativeBrush
         this.fill = fill;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void run(RuntimeState state)
     {
+        checkNotNull(state);
         VariableHolder vars = state.getVars();
         Player player = vars.get("__PLAYER__", Player.class).get();
         World world = player.getWorld();
@@ -197,18 +193,12 @@ public class ErodeBrush extends NativeBrush
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return "melt";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void parseArguments(String string, VariableHolder vars)
     {

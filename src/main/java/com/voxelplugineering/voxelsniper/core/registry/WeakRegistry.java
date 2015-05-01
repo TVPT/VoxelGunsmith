@@ -34,9 +34,9 @@ import com.google.common.collect.MapMaker;
 import com.voxelplugineering.voxelsniper.api.registry.Registry;
 
 /**
- * A registry for values which are referenced both by a name and a custom key.
- * The key is only weakly referenced and in the event that it is garbage
- * collected the associated value is dereferenced from this registry as well.
+ * A registry for values which are referenced both by a name and a custom key. The key is only
+ * weakly referenced and in the event that it is garbage collected the associated value is
+ * dereferenced from this registry as well.
  * 
  * @param <K> the key type
  * @param <V> the value type
@@ -65,9 +65,8 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     }
 
     /**
-     * Sets whether the keys of this registry are case sensitive. If the keys
-     * are case insensitive then all keys in all operations are cast to upper
-     * case.
+     * Sets whether the keys of this registry are case sensitive. If the keys are case insensitive
+     * then all keys in all operations are cast to upper case.
      * 
      * @param c is case sensitive
      */
@@ -76,9 +75,6 @@ public class WeakRegistry<K, V> implements Registry<K, V>
         this.caseSensitiveKeys = c;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void register(String name, K key, V value)
     {
@@ -91,9 +87,6 @@ public class WeakRegistry<K, V> implements Registry<K, V>
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<V> get(K key)
     {
@@ -101,12 +94,10 @@ public class WeakRegistry<K, V> implements Registry<K, V>
         return Optional.fromNullable(this.registry.get(key));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<V> get(String name)
     {
+        checkNotNull(name);
         if (!this.caseSensitiveKeys)
         {
             name = name.toUpperCase();
@@ -124,12 +115,10 @@ public class WeakRegistry<K, V> implements Registry<K, V>
         return Optional.of(this.registry.get(key));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<String> getNameForValue(V value)
     {
+        checkNotNull(value);
         K key = null;
         for (Map.Entry<K, V> entry : this.registry.entrySet())
         {
@@ -152,39 +141,29 @@ public class WeakRegistry<K, V> implements Registry<K, V>
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Iterable<String> getRegisteredNames()
     {
         return this.nameRegistry.keySet();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Set<Entry<K, V>> getRegisteredValues()
     {
         return this.registry.entrySet();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void remove(String name)
     {
+        checkNotNull(name);
         this.nameRegistry.remove(name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void remove(K key)
     {
+        checkNotNull(key);
         this.registry.remove(key);
     }
 

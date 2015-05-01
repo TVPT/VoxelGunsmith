@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.brushes.natives;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.thevoxelbox.vsl.api.variables.VariableHolder;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
@@ -36,10 +38,8 @@ import com.voxelplugineering.voxelsniper.core.brushes.NativeBrush;
 import com.voxelplugineering.voxelsniper.core.shape.ComplexShape;
 
 /**
- * An implementation of the overlay brush part.
- * <p>
- * This brush part is a mask which replaces the selected area with only blocks
- * on the top layer, eg. blocks visible from the top of the shape.
+ * An implementation of the overlay brush part. <p> This brush part is a mask which replaces the
+ * selected area with only blocks on the top layer, eg. blocks visible from the top of the shape.
  * </p>
  */
 public class OverlayBrush extends NativeBrush
@@ -54,12 +54,10 @@ public class OverlayBrush extends NativeBrush
         setHelp("overlay");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void run(RuntimeState state)
     {
+        checkNotNull(state);
         VariableHolder vars = state.getVars();
         Player player = vars.get("__PLAYER__", Player.class).get();
         World world = player.getWorld();
@@ -108,18 +106,12 @@ public class OverlayBrush extends NativeBrush
         vars.set("__CHAINED__shape", out);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return "overlay";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void parseArguments(String string, VariableHolder vars)
     {

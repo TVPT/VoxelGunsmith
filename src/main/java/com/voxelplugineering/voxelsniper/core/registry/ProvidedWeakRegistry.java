@@ -23,13 +23,15 @@
  */
 package com.voxelplugineering.voxelsniper.core.registry;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.registry.RegistryProvider;
 import com.voxelplugineering.voxelsniper.core.util.Pair;
 
 /**
- * A {@link WeakRegistry} which takes a custom provider which is referenced to
- * get the value when a key is not found within the registry.
+ * A {@link WeakRegistry} which takes a custom provider which is referenced to get the value when a
+ * key is not found within the registry.
  * 
  * @param <K> the key type
  * @param <V> the value type
@@ -50,14 +52,13 @@ public class ProvidedWeakRegistry<K, V> extends WeakRegistry<K, V>
     public ProvidedWeakRegistry(RegistryProvider<K, V> provider)
     {
         super();
-        this.provider = provider;
+        this.provider = checkNotNull(provider);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Optional<V> get(String name)
     {
+        checkNotNull(name);
         Optional<V> value = super.get(name);
         if (!value.isPresent())
         {
@@ -79,7 +80,7 @@ public class ProvidedWeakRegistry<K, V> extends WeakRegistry<K, V>
      */
     public void setProvider(RegistryProvider<K, V> provider)
     {
-        this.provider = provider;
+        this.provider = checkNotNull(provider);
     }
 
 }

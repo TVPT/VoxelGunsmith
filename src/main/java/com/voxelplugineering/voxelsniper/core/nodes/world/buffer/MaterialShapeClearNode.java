@@ -43,9 +43,6 @@ public class MaterialShapeClearNode extends MaterialShapeNode
         super(shape);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

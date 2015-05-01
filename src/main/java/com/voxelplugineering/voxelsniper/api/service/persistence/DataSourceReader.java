@@ -32,9 +32,8 @@ public interface DataSourceReader extends DataSource
 {
 
     /**
-     * Writes the given object which implements {@link DataSerializable} to this
-     * source as if by passing {@link DataSerializable#toContainer()} into
-     * {@link #write(DataContainer)} .
+     * Writes the given object which implements {@link DataSerializable} to this source as if by
+     * passing {@link DataSerializable#toContainer()} into {@link #write(DataContainer)} .
      * 
      * @param serial The object
      * @throws IOException If there is a problem writing to the source
@@ -50,8 +49,8 @@ public interface DataSourceReader extends DataSource
     void write(DataContainer container) throws IOException;
 
     /**
-     * Reads this source entirely into a DataContainer. This will attempt to
-     * read the entire source into a single {@link DataContainer}.
+     * Reads this source entirely into a DataContainer. This will attempt to read the entire source
+     * into a single {@link DataContainer}.
      * 
      * @return The new data container
      * @throws IOException If there is a problem writing to the source
@@ -59,8 +58,7 @@ public interface DataSourceReader extends DataSource
     DataContainer read() throws IOException;
 
     /**
-     * Reads this source into a {@link DataContainer} and loads it into the
-     * given object by calling
+     * Reads this source into a {@link DataContainer} and loads it into the given object by calling
      * {@link DataSerializable#fromContainer(DataContainer)}.
      * 
      * @param object The object to load the data into

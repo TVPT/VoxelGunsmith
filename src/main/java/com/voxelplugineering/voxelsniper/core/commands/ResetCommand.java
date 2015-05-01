@@ -43,9 +43,6 @@ public class ResetCommand extends Command
         setPermissions("voxelsniper.command.reset");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {
@@ -53,11 +50,9 @@ public class ResetCommand extends Command
         {
             ((Player) sender).resetSettings();
             return true;
-        } else
-        {
-            sender.sendMessage(TextFormat.RED + "Sorry, this is a player only command.");
-            return true;
         }
+        sender.sendMessage(TextFormat.RED + "Sorry, this is a player only command.");
+        return true;
     }
 
 }

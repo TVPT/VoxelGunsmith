@@ -69,32 +69,28 @@ public interface Location
     double getZ();
 
     /**
-     * Returns the x-axis position of this location rounded down to the nearest
-     * integer increment.
+     * Returns the x-axis position of this location rounded down to the nearest integer increment.
      * 
      * @return the integer position
      */
     int getFlooredX();
 
     /**
-     * Returns the y-axis position of this location rounded down to the nearest
-     * integer increment.
+     * Returns the y-axis position of this location rounded down to the nearest integer increment.
      * 
      * @return the integer position
      */
     int getFlooredY();
 
     /**
-     * Returns the z-axis position of this location rounded down to the nearest
-     * integer increment.
+     * Returns the z-axis position of this location rounded down to the nearest integer increment.
      * 
      * @return the integer position
      */
     int getFlooredZ();
 
     /**
-     * Returns a new location representing this location offset by the given
-     * vector.
+     * Returns a new location representing this location offset by the given vector.
      * 
      * @param vector The vector offset
      * @return The new location
@@ -102,8 +98,7 @@ public interface Location
     Location add(Vector3i vector);
 
     /**
-     * Returns a new location representing this location offset by the given
-     * location.
+     * Returns a new location representing this location offset by the given location.
      * 
      * @param location The vector offset
      * @return The new location
@@ -111,8 +106,7 @@ public interface Location
     Location add(Location location);
 
     /**
-     * Returns a new location representing this location offset by the given
-     * vector.
+     * Returns a new location representing this location offset by the given vector.
      * 
      * @param vector The vector offset
      * @return The new location
@@ -120,8 +114,8 @@ public interface Location
     Location add(Vector3d vector);
 
     /**
-     * Returns a new {@link CommonLocation} which represents this position
-     * offset by the given amounts.
+     * Returns a new {@link CommonLocation} which represents this position offset by the given
+     * amounts.
      * 
      * @param x the X offset
      * @param y the Y offset
@@ -149,6 +143,7 @@ public interface Location
      * 
      * @return The string
      */
+    @Override
     String toString();
 
 }

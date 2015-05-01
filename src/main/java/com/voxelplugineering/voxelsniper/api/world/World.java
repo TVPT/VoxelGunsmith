@@ -59,8 +59,7 @@ public interface World extends BlockVolume
     Iterable<Entity> getLoadedEntities();
 
     /**
-     * Gets the chunk at the given xyz position. In minecraft the y position is
-     * ignored.
+     * Gets the chunk at the given xyz position. In minecraft the y position is ignored.
      * 
      * @param x The X position
      * @param y The Y position
@@ -70,8 +69,8 @@ public interface World extends BlockVolume
     Optional<Chunk> getChunk(int x, int y, int z);
 
     /**
-     * Gets the chunk at the given vector position. In minecraft the Y value of
-     * the vector is ignored.
+     * Gets the chunk at the given vector position. In minecraft the Y value of the vector is
+     * ignored.
      * 
      * @param vector The vector position
      * @return The chunk
@@ -131,8 +130,7 @@ public interface World extends BlockVolume
     void setBiome(Biome biome, Vector3i vector);
 
     /**
-     * Creates a new {@link MaterialShape} and populates it with the current
-     * contents of the world.
+     * Creates a new {@link MaterialShape} and populates it with the current contents of the world.
      * 
      * @param origin The origin
      * @param shape The shape

@@ -36,9 +36,8 @@ public interface DataView
 {
 
     /**
-     * Reads from the given path. If the path does not exist, or if the type at
-     * the path is not compatible then {@link Optional#absent()} will be
-     * returned instead.
+     * Reads from the given path. If the path does not exist, or if the type at the path is not
+     * compatible then {@link Optional#absent()} will be returned instead.
      * 
      * @param path The path to read from
      * @return The data
@@ -46,9 +45,8 @@ public interface DataView
     Optional<Byte> readByte(String path);
 
     /**
-     * Reads from the given path. If the path does not exist, or if the type at
-     * the path is not compatible then {@link Optional#absent()} will be
-     * returned instead.
+     * Reads from the given path. If the path does not exist, or if the type at the path is not
+     * compatible then {@link Optional#absent()} will be returned instead.
      * 
      * @param path The path to read from
      * @return The data
@@ -56,9 +54,8 @@ public interface DataView
     Optional<byte[]> readByteArray(String path);
 
     /**
-     * Reads from the given path. If the path does not exist, or if the type at
-     * the path is not compatible then {@link Optional#absent()} will be
-     * returned instead.
+     * Reads from the given path. If the path does not exist, or if the type at the path is not
+     * compatible then {@link Optional#absent()} will be returned instead.
      * 
      * @param path The path to read from
      * @return The data
@@ -66,9 +63,8 @@ public interface DataView
     Optional<Short> readShort(String path);
 
     /**
-     * Reads from the given path. If the path does not exist, or if the type at
-     * the path is not compatible then {@link Optional#absent()} will be
-     * returned instead.
+     * Reads from the given path. If the path does not exist, or if the type at the path is not
+     * compatible then {@link Optional#absent()} will be returned instead.
      * 
      * @param path The path to read from
      * @return The data
@@ -76,9 +72,8 @@ public interface DataView
     Optional<Integer> readInt(String path);
 
     /**
-     * Reads from the given path. If the path does not exist, or if the type at
-     * the path is not compatible then {@link Optional#absent()} will be
-     * returned instead.
+     * Reads from the given path. If the path does not exist, or if the type at the path is not
+     * compatible then {@link Optional#absent()} will be returned instead.
      * 
      * @param path The path to read from
      * @return The data
@@ -86,9 +81,8 @@ public interface DataView
     Optional<Long> readLong(String path);
 
     /**
-     * Reads from the given path. If the path does not exist, or if the type at
-     * the path is not compatible then {@link Optional#absent()} will be
-     * returned instead.
+     * Reads from the given path. If the path does not exist, or if the type at the path is not
+     * compatible then {@link Optional#absent()} will be returned instead.
      * 
      * @param path The path to read from
      * @return The data
@@ -96,9 +90,8 @@ public interface DataView
     Optional<Character> readChar(String path);
 
     /**
-     * Reads from the given path. If the path does not exist, or if the type at
-     * the path is not compatible then {@link Optional#absent()} will be
-     * returned instead.
+     * Reads from the given path. If the path does not exist, or if the type at the path is not
+     * compatible then {@link Optional#absent()} will be returned instead.
      * 
      * @param path The path to read from
      * @return The data
@@ -106,9 +99,8 @@ public interface DataView
     Optional<Float> readFloat(String path);
 
     /**
-     * Reads from the given path. If the path does not exist, or if the type at
-     * the path is not compatible then {@link Optional#absent()} will be
-     * returned instead.
+     * Reads from the given path. If the path does not exist, or if the type at the path is not
+     * compatible then {@link Optional#absent()} will be returned instead.
      * 
      * @param path The path to read from
      * @return The data
@@ -116,9 +108,8 @@ public interface DataView
     Optional<Double> readDouble(String path);
 
     /**
-     * Reads from the given path. If the path does not exist, or if the type at
-     * the path is not compatible then {@link Optional#absent()} will be
-     * returned instead.
+     * Reads from the given path. If the path does not exist, or if the type at the path is not
+     * compatible then {@link Optional#absent()} will be returned instead.
      * 
      * @param path The path to read from
      * @return The data
@@ -126,9 +117,8 @@ public interface DataView
     Optional<String> readString(String path);
 
     /**
-     * Reads from the given path. If the path does not exist, or if the type at
-     * the path is not compatible then {@link Optional#absent()} will be
-     * returned instead.
+     * Reads from the given path. If the path does not exist, or if the type at the path is not
+     * compatible then {@link Optional#absent()} will be returned instead.
      * 
      * @param path The path to read from
      * @return The data
@@ -136,12 +126,11 @@ public interface DataView
     Optional<Boolean> readBoolean(String path);
 
     /**
-     * Reads from the given path. If the path does not exist, or if the type at
-     * the path is not compatible then {@link Optional#absent()} will be
-     * returned instead. If the data at the path is a {@link DataContainer}
-     * rather than the given type then the type will be checked for a builder
-     * method (as defined here: {@link DataSerializable}) which will be used to
-     * create a new instance of the type.
+     * Reads from the given path. If the path does not exist, or if the type at the path is not
+     * compatible then {@link Optional#absent()} will be returned instead. If the data at the path
+     * is a {@link DataContainer} rather than the given type then the type will be checked for a
+     * builder method (as defined here: {@link DataSerializable}) which will be used to create a new
+     * instance of the type.
      * 
      * @param path The path to read from
      * @param type The type to read as
@@ -151,9 +140,8 @@ public interface DataView
     <T extends DataSerializable> Optional<T> readCustom(String path, Class<T> type);
 
     /**
-     * Reads from the given path. If the path does not exist, or if the type at
-     * the path is not compatible then {@link Optional#absent()} will be
-     * returned instead.
+     * Reads from the given path. If the path does not exist, or if the type at the path is not
+     * compatible then {@link Optional#absent()} will be returned instead.
      * 
      * @param path The path to read from
      * @return The data
@@ -161,9 +149,8 @@ public interface DataView
     Optional<? extends DataView> readContainer(String path);
 
     /**
-     * Reads from the given path. If the path does not exist, or if the type at
-     * the path is not compatible then {@link Optional#absent()} will be
-     * returned instead.
+     * Reads from the given path. If the path does not exist, or if the type at the path is not
+     * compatible then {@link Optional#absent()} will be returned instead.
      * 
      * @param path The path to read from
      * @return The data
@@ -179,16 +166,15 @@ public interface DataView
     String getPath();
 
     /**
-     * Gets a set of all keys in this data view. This does not include keys of
-     * contained views.
+     * Gets a set of all keys in this data view. This does not include keys of contained views.
      * 
      * @return The keyset
      */
     Set<String> keySet();
 
     /**
-     * Gets a set of all entries in this data view. The returned values are
-     * returned as an instance of {@link java.util.Map.Entry}.
+     * Gets a set of all entries in this data view. The returned values are returned as an instance
+     * of {@link java.util.Map.Entry}.
      * 
      * @return The entries
      */

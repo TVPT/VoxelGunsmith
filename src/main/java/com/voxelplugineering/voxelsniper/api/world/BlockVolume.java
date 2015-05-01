@@ -44,8 +44,8 @@ public interface BlockVolume
     Optional<Block> getBlock(int x, int y, int z);
 
     /**
-     * Gets the block at the given location. or {@link Optional#absent()} if the
-     * location is not in this volume.
+     * Gets the block at the given location. or {@link Optional#absent()} if the location is not in
+     * this volume.
      * 
      * @param location The location
      * @return The block

@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.shape.csg;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
 
 /**
@@ -48,7 +50,7 @@ public class CSGCompoundShape extends OffsetShape
     {
         super(offset);
         base.offset(offset.multipy(-1));
-        this.a = base;
+        this.a = checkNotNull(base);
         this.b = null;
         this.operation = null;
         this.width = 0;
@@ -66,18 +68,15 @@ public class CSGCompoundShape extends OffsetShape
     public CSGCompoundShape(CSGShape a, CSGShape b, CSGOperation o)
     {
         super(a.getOrigin());
-        this.a = a;
+        this.a = checkNotNull(a);
+        this.b = checkNotNull(b);
+        this.operation = checkNotNull(o);
         b.offset(a.getOrigin().multipy(-1));
-        this.b = b;
-        this.operation = o;
         this.width = 0;
         this.height = 0;
         this.length = 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isMutable()
     {
@@ -85,8 +84,7 @@ public class CSGCompoundShape extends OffsetShape
     }
 
     /**
-     * Creates a new {@link CSGCompoundShape} representing the other shape added
-     * to this one.
+     * Creates a new {@link CSGCompoundShape} representing the other shape added to this one.
      * 
      * @param other The other shape
      * @return The new CSGShape
@@ -97,8 +95,7 @@ public class CSGCompoundShape extends OffsetShape
     }
 
     /**
-     * Creates a new {@link CSGCompoundShape} representing the other shape
-     * subtracted from this one.
+     * Creates a new {@link CSGCompoundShape} representing the other shape subtracted from this one.
      * 
      * @param other The other shape
      * @return The new CSGShape
@@ -109,8 +106,7 @@ public class CSGCompoundShape extends OffsetShape
     }
 
     /**
-     * Creates a new {@link CSGCompoundShape} representing the other shape
-     * xor'ed with this one.
+     * Creates a new {@link CSGCompoundShape} representing the other shape xor'ed with this one.
      * 
      * @param other The other shape
      * @return The new CSGShape
@@ -120,88 +116,64 @@ public class CSGCompoundShape extends OffsetShape
         return new CSGCompoundShape(this, other, CSGOperation.XOR);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean get(int x, int y, int z, boolean relative)
     {
         if (this.b == null)
         {
             return this.a.get(x, y, z, relative);
-        } else
+        }
+        switch (this.operation)
         {
-            switch (this.operation)
-            {
-            case ADD:
-                return this.a.get(x, y, z, relative) || this.b.get(x, y, z, relative);
-            case SUBTRACT:
-                return this.a.get(x, y, z, relative) && !this.b.get(x, y, z, relative);
-            case XOR:
-                return this.a.get(x, y, z, relative) ^ this.b.get(x, y, z, relative);
-            default:
-                return false;
-            }
+        case ADD:
+            return this.a.get(x, y, z, relative) || this.b.get(x, y, z, relative);
+        case SUBTRACT:
+            return this.a.get(x, y, z, relative) && !this.b.get(x, y, z, relative);
+        case XOR:
+            return this.a.get(x, y, z, relative) ^ this.b.get(x, y, z, relative);
+        default:
+            return false;
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getWidth()
     {
         return this.width;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getHeight()
     {
         return this.height;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getLength()
     {
         return this.length;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void set(int x, int y, int z, boolean relative)
     {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unset(int x, int y, int z, boolean relative)
     {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public CSGCompoundShape clone()
     {
         if (this.b == null)
         {
             return new CSGCompoundShape(this.a.clone(), this.getOrigin());
-        } else
-        {
-            return new CSGCompoundShape(this.a.clone(), this.b.clone(), this.operation);
         }
+        return new CSGCompoundShape(this.a.clone(), this.b.clone(), this.operation);
     }
 
 }

@@ -81,18 +81,12 @@ public final class StringTag extends Tag
         this.value = value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getValue()
     {
         return this.value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {

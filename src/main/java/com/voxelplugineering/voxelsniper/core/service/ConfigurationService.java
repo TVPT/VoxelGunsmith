@@ -58,21 +58,15 @@ public class ConfigurationService extends AbstractService implements Configurati
      */
     public ConfigurationService()
     {
-        super(1);
+        super(Configuration.class, 1);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return "config";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void init()
     {
@@ -81,9 +75,6 @@ public class ConfigurationService extends AbstractService implements Configurati
         this.containers = Maps.newHashMap();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void destroy()
     {
@@ -92,9 +83,6 @@ public class ConfigurationService extends AbstractService implements Configurati
         this.containers = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void set(String name, Object value)
     {
@@ -105,9 +93,6 @@ public class ConfigurationService extends AbstractService implements Configurati
         this.config.put(name, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Object> get(String name)
     {
@@ -117,9 +102,6 @@ public class ConfigurationService extends AbstractService implements Configurati
         return has(name) ? Optional.of(this.config.get(name)) : Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T> Optional<T> get(String name, Class<T> expectedType)
     {
@@ -137,14 +119,12 @@ public class ConfigurationService extends AbstractService implements Configurati
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends AbstractConfigurationContainer> void registerContainer(Class<T> container)
     {
         check();
         checkNotNull(container, "Container cannot be null!");
+        Gunsmith.getLogger().info("Registering config values from " + container.getName());
         String name = container.getSimpleName();
         if (this.containers.containsKey(name))
         {
@@ -172,9 +152,6 @@ public class ConfigurationService extends AbstractService implements Configurati
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<AbstractConfigurationContainer> getContainer(String containerName)
     {
@@ -184,9 +161,6 @@ public class ConfigurationService extends AbstractService implements Configurati
         return Optional.fromNullable(this.containers.get(containerName));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AbstractConfigurationContainer[] getContainers()
     {
@@ -201,9 +175,6 @@ public class ConfigurationService extends AbstractService implements Configurati
         return containers;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean has(String name)
     {
@@ -211,9 +182,6 @@ public class ConfigurationService extends AbstractService implements Configurati
         return this.config.containsKey(name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void fromContainer(DataContainer container)
     {
@@ -231,9 +199,6 @@ public class ConfigurationService extends AbstractService implements Configurati
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataContainer toContainer()
     {
@@ -247,9 +212,6 @@ public class ConfigurationService extends AbstractService implements Configurati
         return container;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void refreshAllContainers()
     {
@@ -265,9 +227,6 @@ public class ConfigurationService extends AbstractService implements Configurati
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void refreshContainer(String containerName)
     {

@@ -77,18 +77,12 @@ public class FileDataSource extends StreamDataSource
         return this.file;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<String> getName()
     {
         return Optional.of(this.file.getName());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public byte[] read() throws IOException
     {
@@ -99,9 +93,6 @@ public class FileDataSource extends StreamDataSource
         return Files.toByteArray(this.file);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void write(byte[] data) throws IOException
     {
@@ -113,9 +104,6 @@ public class FileDataSource extends StreamDataSource
         Files.write(data, this.file);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean exists()
     {

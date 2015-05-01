@@ -101,18 +101,12 @@ public final class ListTag extends Tag
         return this.type;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Tag> getValue()
     {
         return this.value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {

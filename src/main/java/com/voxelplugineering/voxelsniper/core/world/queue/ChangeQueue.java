@@ -51,10 +51,8 @@ public abstract class ChangeQueue
      */
     public ChangeQueue(ChangeQueueOwner sniper, World world)
     {
-        checkNotNull(world, "World cannot be null");
-        checkNotNull(sniper, "Sniper cannot be null");
-        this.world = world;
-        this.owner = sniper;
+        this.world = checkNotNull(world, "World cannot be null");
+        this.owner = checkNotNull(sniper, "Sniper cannot be null");
     }
 
     /**

@@ -65,8 +65,7 @@ public abstract class Event
     }
 
     /**
-     * Gets the {@link ThreadingPolicy} for the delegation of this event to its
-     * handlers.
+     * Gets the {@link ThreadingPolicy} for the delegation of this event to its handlers.
      * 
      * @return The threading policy
      */

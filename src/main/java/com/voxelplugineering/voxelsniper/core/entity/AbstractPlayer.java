@@ -88,8 +88,8 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     }
 
     /**
-     * Creates a new {@link AbstractPlayer} with a weak reference to the player.
-     * The player will use the global brush manager as its parent brush manager.
+     * Creates a new {@link AbstractPlayer} with a weak reference to the player. The player will use
+     * the global brush manager as its parent brush manager.
      * 
      * @param player the player object
      */
@@ -98,72 +98,48 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         this(player, Gunsmith.getGlobalBrushManager());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isPlayer()
     {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void sendMessage(String format, Object... args)
     {
         sendMessage(String.format(format, args));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public BrushManager getBrushManager()
     {
         return this.personalBrushManager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setBrushManager(BrushManager manager)
     {
         this.personalBrushManager = manager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setCurrentBrush(BrushChain brush)
     {
         this.currentBrush = brush;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public BrushChain getCurrentBrush()
     {
         return this.currentBrush;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public VariableScope getBrushSettings()
     {
         return this.brushVariables;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void resetSettings()
     {
@@ -193,9 +169,6 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         getBrushSettings().set("maskmaterial", mat);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void undoHistory(int n)
     {
@@ -203,9 +176,6 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         this.sendMessage("%d changes undone.", c);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void redoHistory(int n)
     {
@@ -213,27 +183,18 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         this.sendMessage("%d changes re-applied.", c);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean hasPendingChanges()
     {
         return this.pending.size() != 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<ChangeQueue> getNextPendingChange()
     {
         return Optional.fromNullable(this.pending.peek());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addPending(ChangeQueue queue)
     {
@@ -242,9 +203,6 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         this.pending.add(queue);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void clearNextPending()
     {
@@ -254,26 +212,18 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public DataSourceReader getAliasSource()
     {
         return null; // TODO persistence
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AliasHandler getAliasHandler()
     {
         return this.personalAliasHandler;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public UndoQueue getUndoHistory()
     {

@@ -36,8 +36,7 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializabl
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataType;
 
 /**
- * An in-memory {@link DataContainer} implementation which is backed by a
- * {@link Map}.
+ * An in-memory {@link DataContainer} implementation which is backed by a {@link Map}.
  */
 public class MemoryContainer implements DataContainer
 {
@@ -73,9 +72,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getPath()
     {
@@ -93,9 +89,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Byte> readByte(String path)
     {
@@ -120,9 +113,6 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Short> readShort(String path)
     {
@@ -147,9 +137,6 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Integer> readInt(String path)
     {
@@ -174,9 +161,6 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Long> readLong(String path)
     {
@@ -201,9 +185,6 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Character> readChar(String path)
     {
@@ -233,9 +214,6 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Float> readFloat(String path)
     {
@@ -260,9 +238,6 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Double> readDouble(String path)
     {
@@ -287,9 +262,6 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<String> readString(String path)
     {
@@ -308,9 +280,6 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Boolean> readBoolean(String path)
     {
@@ -329,9 +298,6 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DataSerializable> Optional<T> readCustom(String path, Class<T> type)
     {
@@ -360,10 +326,8 @@ public class MemoryContainer implements DataContainer
                         if (built != null)
                         {
                             return safeCast(built, type);
-                        } else
-                        {
-                            return Optional.absent();
                         }
+                        return Optional.absent();
                     }
                 } catch (Exception e)
                 {
@@ -395,9 +359,6 @@ public class MemoryContainer implements DataContainer
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<DataContainer> readContainer(String path)
     {
@@ -416,9 +377,6 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void writeByte(String path, byte data)
     {
@@ -441,9 +399,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void writeShort(String path, short data)
     {
@@ -466,9 +421,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void writeInt(String path, int data)
     {
@@ -491,9 +443,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void writeLong(String path, long data)
     {
@@ -516,9 +465,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void writeChar(String path, char data)
     {
@@ -541,9 +487,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void writeFloat(String path, float data)
     {
@@ -566,9 +509,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void writeDouble(String path, double data)
     {
@@ -591,9 +531,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void writeString(String path, String data)
     {
@@ -616,9 +553,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void writeBoolean(String path, boolean data)
     {
@@ -641,9 +575,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void writeNumber(String key, Number data)
     {
@@ -666,9 +597,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DataSerializable> void writeCustom(String path, T data)
     {
@@ -691,9 +619,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void writeContainer(String path, DataContainer data)
     {
@@ -716,27 +641,18 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Set<String> keySet()
     {
         return this.data.keySet();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Set<Map.Entry<String, Object>> entrySet()
     {
         return this.data.entrySet();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<byte[]> readByteArray(String path)
     {
@@ -755,9 +671,6 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean containsKey(String path)
     {
@@ -768,19 +681,12 @@ public class MemoryContainer implements DataContainer
             if (container.isPresent())
             {
                 return container.get().containsKey(path.substring(index + 1));
-            } else
-            {
-                return false;
             }
-        } else
-        {
-            return this.data.containsKey(path);
+            return false;
         }
+        return this.data.containsKey(path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void writeByteArray(String path, byte[] data)
     {
@@ -803,9 +709,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @SuppressWarnings("rawtypes")
     @Override
     public Optional<List> readList(String path)
@@ -825,9 +728,6 @@ public class MemoryContainer implements DataContainer
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void writeList(String path, List<?> data)
     {
@@ -850,9 +750,6 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @SuppressWarnings("rawtypes")
     public void write(String path, Object value)
@@ -904,18 +801,12 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isEmpty()
     {
         return this.data.isEmpty();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void writeAll(DataContainer container)
     {
@@ -925,18 +816,12 @@ public class MemoryContainer implements DataContainer
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean remove(String path)
     {
         return this.data.remove(path) != null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void clear()
     {

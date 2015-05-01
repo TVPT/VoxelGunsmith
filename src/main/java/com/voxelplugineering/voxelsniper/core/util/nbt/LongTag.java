@@ -81,18 +81,12 @@ public final class LongTag extends Tag
         this.value = value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Long getValue()
     {
         return this.value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {

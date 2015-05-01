@@ -69,8 +69,8 @@ public interface AliasRegistry extends DataSerializable
     boolean remove(String alias);
 
     /**
-     * Returns all keys of this collection. Including, if the deep flag is set,
-     * all keys of its parent registries as well.
+     * Returns all keys of this collection. Including, if the deep flag is set, all keys of its
+     * parent registries as well.
      * 
      * @param deep whether to include keys from parent registries as well
      * @return the keys
@@ -78,9 +78,8 @@ public interface AliasRegistry extends DataSerializable
     Collection<? extends String> getKeys(boolean deep);
 
     /**
-     * Returns a Set of all entries in this registry. Intended for use in
-     * serialization only, nor for fetching aliases, use
-     * {@link #getAlias(String)} instead.
+     * Returns a Set of all entries in this registry. Intended for use in serialization only, nor
+     * for fetching aliases, use {@link #getAlias(String)} instead.
      * 
      * @return the set of entries
      */

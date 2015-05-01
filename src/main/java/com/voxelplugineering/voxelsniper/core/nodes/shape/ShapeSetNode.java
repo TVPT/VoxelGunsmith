@@ -50,9 +50,6 @@ public class ShapeSetNode extends AbstractNode
         this.target = target;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

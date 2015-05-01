@@ -39,10 +39,8 @@ import com.voxelplugineering.voxelsniper.core.util.Direction;
 public class BlockNeighboursNode extends AbstractNode
 {
 
-    @Input
-    private final Provider<Block> blockProvider;
-    @Output
-    private final Provider<Block[]> blockArrayProvider;
+    @Input private final Provider<Block> blockProvider;
+    @Output private final Provider<Block[]> blockArrayProvider;
 
     /**
      * Creates a new BlockNeighboursNode.
@@ -65,9 +63,6 @@ public class BlockNeighboursNode extends AbstractNode
         return this.blockArrayProvider;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

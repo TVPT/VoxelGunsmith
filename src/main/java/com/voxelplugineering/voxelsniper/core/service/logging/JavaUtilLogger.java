@@ -23,14 +23,15 @@
  */
 package com.voxelplugineering.voxelsniper.core.service.logging;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.voxelplugineering.voxelsniper.api.logging.LogLevel;
 
 /**
- * A wrapper for a {@link java.util.logging.Logger} to receive logging messages
- * from gunsmith.
+ * A wrapper for a {@link java.util.logging.Logger} to receive logging messages from gunsmith.
  */
 public class JavaUtilLogger implements com.voxelplugineering.voxelsniper.api.logging.Logger
 {
@@ -84,84 +85,58 @@ public class JavaUtilLogger implements com.voxelplugineering.voxelsniper.api.log
      */
     public JavaUtilLogger(Logger logger)
     {
-        this.logger = logger;
+        this.logger = checkNotNull(logger);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public LogLevel getLevel()
     {
         return toLevel(this.logger.getLevel());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLevel(LogLevel level)
     {
+        checkNotNull(level);
         this.logger.setLevel(fromLevel(level));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void log(LogLevel level, String msg)
     {
         this.logger.log(fromLevel(level), msg);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void debug(String msg)
     {
         this.logger.log(Level.FINE, msg);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void info(String msg)
     {
         this.logger.log(Level.INFO, msg);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void warn(String msg)
     {
         this.logger.log(Level.WARNING, msg);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void error(String msg)
     {
         this.logger.log(Level.SEVERE, msg);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void error(Exception e)
     {
         this.logger.log(Level.SEVERE, e.getMessage(), e);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void error(Exception e, String msg)
     {

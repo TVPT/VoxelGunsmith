@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.registry;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.lang.ref.WeakReference;
 
 /**
@@ -45,6 +47,7 @@ public abstract class WeakWrapper<T>
      */
     public WeakWrapper(T value)
     {
+        checkNotNull(value);
         this.reference = new WeakReference<T>(value);
     }
 

@@ -40,8 +40,8 @@ public enum LogLevel
     private final int value;
 
     /**
-     * Gets whether the given LogLevel has a value which is greater than or
-     * equal to this log level's value.
+     * Gets whether the given LogLevel has a value which is greater than or equal to this log
+     * level's value.
      * 
      * @param other The other LogLevel
      * @return Is greater than or equal

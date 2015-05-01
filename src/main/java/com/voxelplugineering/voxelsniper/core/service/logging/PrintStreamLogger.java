@@ -23,13 +23,15 @@
  */
 package com.voxelplugineering.voxelsniper.core.service.logging;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.PrintStream;
 
 import com.voxelplugineering.voxelsniper.api.logging.LogLevel;
 
 /**
- * A logger wrapping a {@link PrintStream}. Designed for use for logging to
- * consoles such as standard out.
+ * A logger wrapping a {@link PrintStream}. Designed for use for logging to consoles such as
+ * standard out.
  */
 public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.logging.Logger
 {
@@ -45,8 +47,8 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.
      */
     public PrintStreamLogger(PrintStream stream, LogLevel level)
     {
-        this.stream = stream;
-        this.level = level;
+        this.stream = checkNotNull(stream);
+        this.level = checkNotNull(level);
     }
 
     /**
@@ -59,27 +61,19 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.
         this(stream, LogLevel.INFO);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public LogLevel getLevel()
     {
         return this.level;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLevel(LogLevel level)
     {
+        checkNotNull(level);
         this.level = level;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void log(LogLevel level, String msg)
     {
@@ -89,9 +83,6 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void debug(String msg)
     {
@@ -101,9 +92,6 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void info(String msg)
     {
@@ -113,9 +101,6 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void warn(String msg)
     {
@@ -125,27 +110,18 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void error(String msg)
     {
         printWithPrefix("[ERROR]", msg);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void error(Exception e)
     {
         e.printStackTrace();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void error(Exception e, String msg)
     {

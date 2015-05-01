@@ -26,16 +26,16 @@ package com.voxelplugineering.voxelsniper.api.expansion;
 import com.voxelplugineering.voxelsniper.api.service.ServiceProvider;
 
 /**
- * Represents an expansion to the functionality of Gunsmith. An expansion can be
- * thought of as a plugin and may register a {@link ServiceProvider} in order to
- * expand or modify the functionality of services.
+ * Represents an expansion to the functionality of Gunsmith. An expansion can be thought of as a
+ * plugin and may register a {@link ServiceProvider} in order to expand or modify the functionality
+ * of services.
  */
 public interface Expansion
 {
 
     /**
-     * Initializes this expansion. This is the only time during which
-     * {@link ServiceProvider}s may be registered.
+     * Initializes this expansion. This is the only time during which {@link ServiceProvider}s may
+     * be registered.
      */
     void init();
 

@@ -50,9 +50,6 @@ public class SetBiomeNode extends AbstractNode
         this.location = location;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

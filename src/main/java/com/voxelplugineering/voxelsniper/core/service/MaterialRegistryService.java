@@ -52,21 +52,15 @@ public class MaterialRegistryService<T> extends AbstractService implements Mater
      */
     public MaterialRegistryService()
     {
-        super(5);
+        super(MaterialRegistry.class, 5);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return "materialRegistry";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void init()
     {
@@ -76,9 +70,6 @@ public class MaterialRegistryService<T> extends AbstractService implements Mater
         Gunsmith.getLogger().info("Initialized MaterialRegistry service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void destroy()
     {
@@ -87,18 +78,12 @@ public class MaterialRegistryService<T> extends AbstractService implements Mater
         Gunsmith.getLogger().info("Stopped MaterialRegistry service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Material getAirMaterial()
     {
         return this.air;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Material> getMaterial(String name)
     {
@@ -106,9 +91,6 @@ public class MaterialRegistryService<T> extends AbstractService implements Mater
         return this.registry.get(name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Material> getMaterial(T material)
     {
@@ -116,9 +98,6 @@ public class MaterialRegistryService<T> extends AbstractService implements Mater
         return this.registry.get(material);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerMaterial(String name, T object, Material material)
     {
@@ -130,9 +109,6 @@ public class MaterialRegistryService<T> extends AbstractService implements Mater
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Collection<Material> getMaterials()
     {

@@ -32,15 +32,13 @@ import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.core.Gunsmith;
 
 /**
- * Standard brush command to select a brush and provide the necessary arguments
- * to said brush.
+ * Standard brush command to select a brush and provide the necessary arguments to said brush.
  */
 public class MaskMaterialCommand extends Command
 {
 
     /**
-     * The message sent to players if their chosen material is not found within
-     * the registry.
+     * The message sent to players if their chosen material is not found within the registry.
      */
     private String materialNotFoundMessage = Gunsmith.getConfiguration().get("materialNotFoundMessage", String.class)
             .or("Could not find that material.");
@@ -59,14 +57,10 @@ public class MaskMaterialCommand extends Command
         setPermissions("voxelsniper.command.materialmask");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {
         checkNotNull(sender, "Cannot have a null sniper!");
-
         if (!sender.isPlayer())
         {
             sender.sendMessage("Sorry this is a player-only command.");

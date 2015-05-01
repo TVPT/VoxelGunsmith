@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.brushes;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Queue;
@@ -34,8 +36,8 @@ import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 
 /**
- * Represents a chain of brushes. Unlike {@link Brush} this should be a unique
- * instance per player and should not be shared between users.
+ * Represents a chain of brushes. Unlike {@link Brush} this should be a unique instance per player
+ * and should not be shared between users.
  */
 public class BrushChain
 {
@@ -62,13 +64,16 @@ public class BrushChain
      */
     public BrushChain(String cmd, Brush... brushes)
     {
-        this.cmd = cmd;
+        this.cmd = checkNotNull(cmd);
         this.brushes = Queues.newArrayDeque();
-        for (Brush b : brushes)
-        {
-            this.brushes.add(b);
-        }
         this.args = Maps.newHashMap();
+        if (brushes != null)
+        {
+            for (Brush b : brushes)
+            {
+                this.brushes.add(b);
+            }
+        }
     }
 
     /**
@@ -88,6 +93,7 @@ public class BrushChain
      */
     public void run(VariableScope brushVariables)
     {
+        checkNotNull(brushVariables);
         RuntimeState state = new RuntimeState(brushVariables);
         for (Iterator<Brush> it = this.brushes.iterator(); it.hasNext();)
         {
@@ -108,6 +114,8 @@ public class BrushChain
      */
     public void setBrushArgument(String brush, String arg)
     {
+        checkNotNull(brush);
+        checkNotNull(arg);
         this.args.put(brush, arg);
     }
 
@@ -118,6 +126,7 @@ public class BrushChain
      */
     public void chain(Brush brush)
     {
+        checkNotNull(brush);
         this.brushes.add(brush);
     }
 

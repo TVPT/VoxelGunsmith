@@ -85,16 +85,16 @@ public interface Registry<K, V>
     Set<Entry<K, V>> getRegisteredValues();
 
     /**
-     * Removes a value from this registry by name. If no value exists in this
-     * registry with the given name then nothing will happen.
+     * Removes a value from this registry by name. If no value exists in this registry with the
+     * given name then nothing will happen.
      * 
      * @param name The name
      */
     void remove(String name);
 
     /**
-     * Removes a value from this registry by the key object. If no value exists
-     * in this registry with the given key then nothing will happen.
+     * Removes a value from this registry by the key object. If no value exists in this registry
+     * with the given key then nothing will happen.
      * 
      * @param key The key object
      */

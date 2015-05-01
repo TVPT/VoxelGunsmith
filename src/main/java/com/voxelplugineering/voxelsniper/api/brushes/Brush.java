@@ -30,9 +30,8 @@ import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
 
 /**
- * Represents a brush which may be run, only one brush instance should exist and
- * be shared among all users. A users individual runtime settings are stored
- * within the {@link RuntimeState}.
+ * Represents a brush which may be run, only one brush instance should exist and be shared among all
+ * users. A users individual runtime settings are stored within the {@link RuntimeState}.
  */
 public interface Brush extends DataSerializable
 {
@@ -99,8 +98,8 @@ public interface Brush extends DataSerializable
     void addArgument(String name, ArgumentParser<?> parser, String defaultValue, String... aliases);
 
     /**
-     * Sets an argument by name as the primary argument. If only a single
-     * argument is provided it is assumed to be this argument.
+     * Sets an argument by name as the primary argument. If only a single argument is provided it is
+     * assumed to be this argument.
      * 
      * @param name The argument to set as primary
      */

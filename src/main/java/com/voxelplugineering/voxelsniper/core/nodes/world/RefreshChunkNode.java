@@ -46,9 +46,6 @@ public class RefreshChunkNode extends AbstractNode
         this.chunk = chunk;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

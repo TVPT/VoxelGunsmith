@@ -24,12 +24,18 @@
 package com.voxelplugineering.voxelsniper.api.service;
 
 /**
- * Represents a service, which is a portion of the system which may be started
- * and stopped. It has priority and implicit dependencies (TODO to be made
- * explicit).
+ * Represents a service, which is a portion of the system which may be started and stopped. It has
+ * priority and implicit dependencies (TODO to be made explicit).
  */
 public interface Service
 {
+
+    /**
+     * Gets the targeted class of this service.
+     * 
+     * @return The target class
+     */
+    Class<?> getTargetedService();
 
     /**
      * Gets the name of the service.
@@ -39,8 +45,8 @@ public interface Service
     String getName();
 
     /**
-     * Gets the priority of this service. Services will be sorted lowest to
-     * highest for initialization and the inverse for shutdown.
+     * Gets the priority of this service. Services will be sorted lowest to highest for
+     * initialization and the inverse for shutdown.
      * 
      * @return The priority
      */

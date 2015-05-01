@@ -66,16 +66,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>
- * This class reads <strong>NBT</strong>, or <strong>Named Binary Tag</strong>
- * streams, and produces an object graph of subclasses of the <code>Tag</code>
- * object.
- * </p>
- * <p>
- * The NBT format was created by Markus Persson, and the specification may be
- * found at <a href="http://www.minecraft.net/docs/NBT.txt">
- * http://www.minecraft.net/docs/NBT.txt</a>.
- * </p>
+ * <p> This class reads <strong>NBT</strong>, or <strong>Named Binary Tag</strong> streams, and
+ * produces an object graph of subclasses of the <code>Tag</code> object. </p> <p> The NBT format
+ * was created by Markus Persson, and the specification may be found at <a
+ * href="http://www.minecraft.net/docs/NBT.txt"> http://www.minecraft.net/docs/NBT.txt</a>. </p>
  * 
  * @author Graham Edgecombe
  */
@@ -88,8 +82,8 @@ public final class NBTInputStream implements Closeable
     private final DataInputStream input;
 
     /**
-     * Creates a new <code>NBTInputStream</code>, which will source its data
-     * from the specified input stream.
+     * Creates a new <code>NBTInputStream</code>, which will source its data from the specified
+     * input stream.
      * 
      * @param is The input stream.
      * @throws IOException if an I/O error occurs.
@@ -153,10 +147,8 @@ public final class NBTInputStream implements Closeable
             if (depth == 0)
             {
                 throw new IOException("TAG_End found without a TAG_Compound/TAG_List tag preceding it.");
-            } else
-            {
-                return new EndTag();
             }
+            return new EndTag();
         case NBTConstants.TYPE_BYTE:
             return new ByteTag(name, this.input.readByte());
         case NBTConstants.TYPE_SHORT:
@@ -203,10 +195,8 @@ public final class NBTInputStream implements Closeable
                 if (tag instanceof EndTag)
                 {
                     break;
-                } else
-                {
-                    tagMap.put(tag.getName(), tag);
                 }
+                tagMap.put(tag.getName(), tag);
             }
 
             return new CompoundTag(name, tagMap);
@@ -223,9 +213,6 @@ public final class NBTInputStream implements Closeable
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void close() throws IOException
     {

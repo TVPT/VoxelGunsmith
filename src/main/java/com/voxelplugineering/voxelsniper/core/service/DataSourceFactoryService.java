@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.service;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Iterator;
 import java.util.Map;
 
@@ -49,21 +51,15 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
      */
     public DataSourceFactoryService()
     {
-        super(-1);
+        super(DataSourceFactory.class, -1);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return "persistence";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void init()
     {
@@ -72,9 +68,6 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
         Gunsmith.getLogger().info("Initialized Persistence service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void destroy()
     {
@@ -83,25 +76,21 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
         Gunsmith.getLogger().info("Stopped Persistence service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DataSource> void register(String name, Class<T> type, DataSourceBuilder<T> builder)
     {
         check();
+        Gunsmith.getLogger().info("Registering DataSourceBuilder " + name + " " + type.getName());
         this.builders.put(name, builder);
         this.names.put(type, name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @SuppressWarnings("unchecked")
     public Optional<DataSource> build(String name, DataContainer args)
     {
         check();
+        checkNotNull(name);
         if (this.builders.containsKey(name))
         {
             return (Optional<DataSource>) this.builders.get(name).build(args);
@@ -109,19 +98,12 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<DataSource> build(String name)
     {
-        check();
         return build(name, new MemoryContainer(""));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @SuppressWarnings("unchecked")
     public <T extends DataSource> Optional<T> build(Class<T> type)
@@ -130,15 +112,10 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
         if (this.names.containsKey(type))
         {
             return (Optional<T>) build(this.names.get(type));
-        } else
-        {
-            return Optional.absent();
         }
+        return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @SuppressWarnings("unchecked")
     public <T extends DataSource> Optional<T> build(Class<T> type, DataContainer args)
@@ -147,15 +124,10 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
         if (this.names.containsKey(type))
         {
             return (Optional<T>) build(this.names.get(type), args);
-        } else
-        {
-            return Optional.absent();
         }
+        return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean remove(String name)
     {
@@ -176,9 +148,6 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void clear()
     {

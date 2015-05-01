@@ -51,9 +51,6 @@ public class CuboidShape extends OffsetShape
         this.l = l;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean get(int x, int y, int z, boolean relative)
     {
@@ -66,63 +63,42 @@ public class CuboidShape extends OffsetShape
         return x >= 0 && x < this.w && y >= 0 && y < this.h && z >= 0 && z < this.l;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getWidth()
     {
         return this.w;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getHeight()
     {
         return this.h;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getLength()
     {
         return this.l;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isMutable()
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void set(int x, int y, int z, boolean relative)
     {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unset(int x, int y, int z, boolean relative)
     {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public CuboidShape clone()
     {

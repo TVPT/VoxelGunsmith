@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.shape;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Map;
 
 import com.google.common.base.Optional;
@@ -49,67 +51,46 @@ public class SingleMaterialShape implements MaterialShape
      */
     public SingleMaterialShape(Shape shape, Material material)
     {
-        this.shape = shape;
-        this.material = material;
+        this.shape = checkNotNull(shape);
+        this.material = checkNotNull(material);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getWidth()
     {
         return this.shape.getWidth();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getHeight()
     {
         return this.shape.getHeight();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getLength()
     {
         return this.shape.getLength();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isMutable()
     {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean get(int x, int y, int z, boolean relative)
     {
         return this.shape.get(x, y, z, relative);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Vector3i getOrigin()
     {
         return this.shape.getOrigin();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void set(int x, int y, int z, boolean relative)
     {
@@ -120,9 +101,6 @@ public class SingleMaterialShape implements MaterialShape
         this.shape.set(x, y, z, relative);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unset(int x, int y, int z, boolean relative)
     {
@@ -133,18 +111,12 @@ public class SingleMaterialShape implements MaterialShape
         this.shape.unset(x, y, z, relative);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape getShape()
     {
         return this.shape;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Material> getMaterial(int x, int y, int z, boolean relative)
     {
@@ -155,27 +127,18 @@ public class SingleMaterialShape implements MaterialShape
         return Optional.of(this.material);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMaterial(int x, int y, int z, boolean b, Material material)
     {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void flood(Material material)
     {
         this.material = material;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void reset()
     {
@@ -187,50 +150,36 @@ public class SingleMaterialShape implements MaterialShape
      * 
      * @return The copy
      */
+    @Override
     public MaterialShape clone()
     {
         return new SingleMaterialShape(this.shape.clone(), this.material);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Material getDefaultMaterial()
     {
         return this.material;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public byte[] getLowerMaterialData()
     {
         return new byte[this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength()];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public byte[] getUpperMaterialData()
     {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean hasExtraData()
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Map<Short, Material> getMaterialsDictionary()
     {
@@ -239,18 +188,12 @@ public class SingleMaterialShape implements MaterialShape
         return ret;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaxMaterialId()
     {
         return 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setDefaultMaterial(Material material)
     {

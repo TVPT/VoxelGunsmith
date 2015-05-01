@@ -48,9 +48,6 @@ public class IsLiquidNode extends AbstractNode
         this.bool = new Provider<Boolean>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

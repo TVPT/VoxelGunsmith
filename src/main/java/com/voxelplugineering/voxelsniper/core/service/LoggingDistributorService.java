@@ -51,22 +51,16 @@ public class LoggingDistributorService extends AbstractService implements Loggin
      */
     public LoggingDistributorService()
     {
-        super(-2);
+        super(LoggingDistributor.class, -2);
         this.loggers = Maps.newHashMap();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return "logger";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void init()
     {
@@ -74,9 +68,6 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         info("Initializing Logging service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void destroy()
     {
@@ -84,27 +75,18 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         this.loggers = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public LogLevel getLevel()
     {
         return this.root;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLevel(LogLevel level)
     {
         this.root = level;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void log(LogLevel level, String msg)
     {
@@ -125,18 +107,12 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Collection<Logger> getLoggers()
     {
         return this.loggers.values();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void debug(String msg)
     {
@@ -152,9 +128,6 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void info(String msg)
     {
@@ -174,9 +147,6 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void warn(String msg)
     {
@@ -196,9 +166,6 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void error(String msg)
     {
@@ -218,9 +185,6 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void error(Exception e)
     {
@@ -240,9 +204,6 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void error(Exception e, String msg)
     {
@@ -263,9 +224,6 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerLogger(Logger logger, String name)
     {
@@ -276,9 +234,6 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         this.loggers.put(name, logger);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLogger(String name)
     {

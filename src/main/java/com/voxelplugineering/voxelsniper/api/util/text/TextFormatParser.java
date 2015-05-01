@@ -41,8 +41,7 @@ public interface TextFormatParser
     String getFormat(TextFormat format);
 
     /**
-     * A trivial {@link TextFormatParser} which simply returns the name of the
-     * {@link TextFormat}.
+     * A trivial {@link TextFormatParser} which simply returns the name of the {@link TextFormat}.
      */
     public static class TrivialTextFormatParser extends AbstractService implements TextFormatParser
     {
@@ -52,39 +51,27 @@ public interface TextFormatParser
          */
         public TrivialTextFormatParser()
         {
-            super(0);
+            super(TextFormatParser.class, 0);
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public String getFormat(TextFormat format)
         {
             return "";
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public String getName()
         {
-            return "formatProxy";
+            return "TrivialFormatProxy";
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         protected void init()
         {
             Gunsmith.getLogger().info("Initialized TextFormat service");
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         protected void destroy()
         {

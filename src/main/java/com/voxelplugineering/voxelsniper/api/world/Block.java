@@ -55,9 +55,8 @@ public interface Block
     Vector3i getPosition();
 
     /**
-     * Gets the material currently at the location of this block. Unless
-     * overridden by the specific implementation this material may be out of
-     * date to the underlying world.
+     * Gets the material currently at the location of this block. Unless overridden by the specific
+     * implementation this material may be out of date to the underlying world.
      * 
      * @return The material
      */

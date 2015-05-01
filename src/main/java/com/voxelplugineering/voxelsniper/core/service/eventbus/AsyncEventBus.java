@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.service.eventbus;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
@@ -48,12 +50,9 @@ import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
 import com.voxelplugineering.voxelsniper.core.Gunsmith;
 
 /**
- * An {@link EventBus} implementation supporting all {@link ThreadingPolicy}
- * types. Optionally takes an {@link ExecutorService} to use for asynchronous
- * task delegation.
- * <p>
- * This class is safe for concurrent use.
- * </p>
+ * An {@link EventBus} implementation supporting all {@link ThreadingPolicy} types. Optionally takes
+ * an {@link ExecutorService} to use for asynchronous task delegation. <p> This class is safe for
+ * concurrent use. </p>
  */
 public class AsyncEventBus implements EventBus
 {
@@ -66,11 +65,11 @@ public class AsyncEventBus implements EventBus
     /**
      * Creates a new {@link AsyncEventBus}.
      * 
-     * @param executorService The {@link ExecutorService} to use for
-     *            asynchronous task delegation
+     * @param executorService The {@link ExecutorService} to use for asynchronous task delegation
      */
     public AsyncEventBus(ExecutorService executorService)
     {
+        checkNotNull(executorService);
         this.executor = MoreExecutors.listeningDecorator(executorService);
         this.explicitExecutor = true;
     }
@@ -83,9 +82,6 @@ public class AsyncEventBus implements EventBus
     {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void init()
     {
@@ -118,9 +114,6 @@ public class AsyncEventBus implements EventBus
         this.built = true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void destroy()
     {
@@ -137,21 +130,16 @@ public class AsyncEventBus implements EventBus
         this.built = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean exists()
     {
         return this.built;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void register(Object eventHandler)
     {
+        checkNotNull(eventHandler);
         Class<?> cls = eventHandler.getClass();
         List<Subscriber> found = Lists.newArrayList();
         for (Method m : cls.getDeclaredMethods())
@@ -162,8 +150,7 @@ public class AsyncEventBus implements EventBus
                 if (parameters.length == 1 && Event.class.isAssignableFrom(parameters[0]))
                 {
                     EventPriority pri = m.getAnnotation(EventHandler.class).value();
-                    @SuppressWarnings("unchecked")
-                    Subscriber s = new Subscriber(eventHandler, m, (Class<? extends Event>) parameters[0], pri);
+                    @SuppressWarnings("unchecked") Subscriber s = new Subscriber(eventHandler, m, (Class<? extends Event>) parameters[0], pri);
                     found.add(s);
                 }
             }
@@ -183,6 +170,7 @@ public class AsyncEventBus implements EventBus
 
     private SubscriberList getListForEventType(Class<? extends Event> event)
     {
+        checkNotNull(event);
         if (this.registry.containsKey(event))
         {
             return this.registry.get(event);
@@ -192,21 +180,16 @@ public class AsyncEventBus implements EventBus
             SubscriberList list = new SubscriberList();
             this.registry.put(event, list);
             return list;
-        } else
-        {
-            @SuppressWarnings("unchecked")
-            SubscriberList list = new SubscriberList(getListForEventType((Class<? extends Event>) event.getSuperclass()));
-            this.registry.put(event, list);
-            return list;
         }
+        @SuppressWarnings("unchecked") SubscriberList list = new SubscriberList(getListForEventType((Class<? extends Event>) event.getSuperclass()));
+        this.registry.put(event, list);
+        return list;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unregister(Object eventHandler)
     {
+        checkNotNull(eventHandler);
         Class<?> cls = eventHandler.getClass();
         List<Subscriber> found = Lists.newArrayList();
         for (Method m : cls.getDeclaredMethods())
@@ -217,8 +200,7 @@ public class AsyncEventBus implements EventBus
                 if (parameters.length == 1 && Event.class.isAssignableFrom(parameters[0]))
                 {
                     EventPriority pri = m.getAnnotation(EventHandler.class).value();
-                    @SuppressWarnings("unchecked")
-                    Subscriber s = new Subscriber(eventHandler, m, (Class<? extends Event>) parameters[0], pri);
+                    @SuppressWarnings("unchecked") Subscriber s = new Subscriber(eventHandler, m, (Class<? extends Event>) parameters[0], pri);
                     found.add(s);
                 }
             }
@@ -240,12 +222,10 @@ public class AsyncEventBus implements EventBus
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ListenableFuture<Event> post(Event event)
     {
+        checkNotNull(event);
         if (event.getThreadingPolicy() == ThreadingPolicy.ASYNCHRONOUS)
         {
             return postAsync(event);

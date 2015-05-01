@@ -47,10 +47,7 @@ import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContaine
 import com.voxelplugineering.voxelsniper.core.util.StringUtilities;
 
 /**
- * A registry for aliases.
- * <p>
- * TODO: clean up {@link #expand(String)}
- * </p>
+ * A registry for aliases. <p> TODO: clean up {@link #expand(String)} </p>
  */
 public class CommonAliasRegistry implements AliasRegistry
 {
@@ -71,14 +68,14 @@ public class CommonAliasRegistry implements AliasRegistry
     }
 
     /**
-     * Creates a new {@link AliasRegistry} with the given registry as its
-     * parent.
+     * Creates a new {@link AliasRegistry} with the given registry as its parent.
      * 
      * @param name The registry name
      * @param parent the parent registry
      */
     public CommonAliasRegistry(String name, AliasRegistry parent)
     {
+        checkNotNull(name);
         this.aliases = Maps.newTreeMap(new Comparator<String>()
         {
 
@@ -108,17 +105,13 @@ public class CommonAliasRegistry implements AliasRegistry
         this.caseSensitive = cs;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public AliasRegistry getParent()
     {
         return this.parent;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void register(String alias, String value)
     {
         checkNotNull(alias, "Alias cannot be null.");
@@ -133,17 +126,13 @@ public class CommonAliasRegistry implements AliasRegistry
         this.aliases.put(alias, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void clear()
     {
         this.aliases.clear();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Optional<String> getAlias(String alias)
     {
         checkNotNull(alias, "Alias cannot be null.");
@@ -159,15 +148,11 @@ public class CommonAliasRegistry implements AliasRegistry
                 return this.parent.getAlias(alias);
             }
             return Optional.absent();
-        } else
-        {
-            return Optional.of(this.aliases.get(alias));
         }
+        return Optional.of(this.aliases.get(alias));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Collection<String> getKeys(boolean deep)
     {
         Set<String> keys = new HashSet<String>();
@@ -179,9 +164,7 @@ public class CommonAliasRegistry implements AliasRegistry
         return keys;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String expand(String string)
     {
         checkNotNull(string, "Alias cannot be null.");
@@ -303,17 +286,12 @@ public class CommonAliasRegistry implements AliasRegistry
         return s;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Set<Entry<String, String>> getEntries()
     {
         return Collections.unmodifiableSet(this.aliases.entrySet());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void fromContainer(DataContainer container)
     {
@@ -327,9 +305,6 @@ public class CommonAliasRegistry implements AliasRegistry
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataContainer toContainer()
     {
@@ -341,9 +316,6 @@ public class CommonAliasRegistry implements AliasRegistry
         return container;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean remove(String alias)
     {

@@ -39,12 +39,10 @@ public class RedoCommand extends Command
     public RedoCommand()
     {
         super("redo", "Redoes your last n undone changes. Usage: /redo [n]");
+        setAliases("vredo");
         setPermissions("voxelsniper.command.redo");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {
@@ -67,10 +65,8 @@ public class RedoCommand extends Command
         {
             ((Player) sender).redoHistory(n);
             return true;
-        } else
-        {
-            sender.sendMessage(TextFormat.RED + "Sorry, this is a player only command.");
-            return true;
         }
+        sender.sendMessage(TextFormat.RED + "Sorry, this is a player only command.");
+        return true;
     }
 }

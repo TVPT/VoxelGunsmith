@@ -60,9 +60,6 @@ public class MaterialShapeFloodNode extends MaterialShapeNode
         this.fill = new Provider<Material>(this, fill);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

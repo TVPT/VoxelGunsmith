@@ -52,9 +52,6 @@ public class MaterialShapeSetNode extends MaterialShapeNode
         this.material = material;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

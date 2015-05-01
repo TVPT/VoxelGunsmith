@@ -67,24 +67,17 @@ public class CommonAliasHandler implements AliasHandler
      */
     public CommonAliasHandler(AliasOwner owner, AliasHandler parent)
     {
-        checkNotNull(owner);
+        this.owner = checkNotNull(owner);
         this.parent = parent;
-        this.owner = owner;
         this.built = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean exists()
     {
         return this.built;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void init()
     {
@@ -99,9 +92,6 @@ public class CommonAliasHandler implements AliasHandler
         this.built = true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void destroy()
     {
@@ -109,9 +99,7 @@ public class CommonAliasHandler implements AliasHandler
         this.built = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public AliasRegistry registerTarget(String target)
     {
         checkNotNull(target);
@@ -124,9 +112,7 @@ public class CommonAliasHandler implements AliasHandler
         return this.aliasTargets.get(target);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Optional<AliasRegistry> getRegistry(String target)
     {
         checkNotNull(target);
@@ -138,17 +124,13 @@ public class CommonAliasHandler implements AliasHandler
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Set<String> getValidTargets()
     {
         return Collections.unmodifiableSet(this.aliasTargets.keySet());
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean hasTarget(String target)
     {
         checkNotNull(target);
@@ -156,17 +138,12 @@ public class CommonAliasHandler implements AliasHandler
         return this.aliasTargets.containsKey(target);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public AliasOwner getOwner()
     {
         return this.owner;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void fromContainer(DataContainer container)
     {
@@ -181,9 +158,6 @@ public class CommonAliasHandler implements AliasHandler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataContainer toContainer()
     {
@@ -195,18 +169,12 @@ public class CommonAliasHandler implements AliasHandler
         return container;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean removeTarget(String target)
     {
         return this.aliasTargets.remove(target) != null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void clearTargets()
     {

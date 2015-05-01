@@ -32,16 +32,13 @@ import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.core.shape.ComplexShape;
 
 /**
- * A node to convert a shape which does not support changes to a
- * {@link ComplexShape}.
+ * A node to convert a shape which does not support changes to a {@link ComplexShape}.
  */
 public class ToComplexShapeNode extends AbstractNode
 {
 
-    @Input
-    private final Provider<Shape> input;
-    @Output
-    private final Provider<Shape> output;
+    @Input private final Provider<Shape> input;
+    @Output private final Provider<Shape> output;
 
     /**
      * Creates a new {@link ToComplexShapeNode}.
@@ -54,9 +51,6 @@ public class ToComplexShapeNode extends AbstractNode
         this.output = new Provider<Shape>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

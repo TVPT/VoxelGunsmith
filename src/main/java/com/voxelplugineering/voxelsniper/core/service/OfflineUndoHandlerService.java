@@ -33,8 +33,8 @@ import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
 import com.voxelplugineering.voxelsniper.core.Gunsmith;
 
 /**
- * A standard offline undo handler which caches player {@link UndoQueue}s for a
- * period of 60 minutes before discarding.
+ * A standard offline undo handler which caches player {@link UndoQueue}s for a period of 60 minutes
+ * before discarding.
  */
 public class OfflineUndoHandlerService extends AbstractService implements OfflineUndoHandler
 {
@@ -46,21 +46,15 @@ public class OfflineUndoHandlerService extends AbstractService implements Offlin
      */
     public OfflineUndoHandlerService()
     {
-        super(13);
+        super(OfflineUndoHandler.class, 13);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return "offlineUndoHandler";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void init()
     {
@@ -68,9 +62,6 @@ public class OfflineUndoHandlerService extends AbstractService implements Offlin
         Gunsmith.getLogger().info("Initialized OfflineUndoHandler service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void destroy()
     {
@@ -78,9 +69,6 @@ public class OfflineUndoHandlerService extends AbstractService implements Offlin
         Gunsmith.getLogger().info("Stopped OfflineUndoHandler service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void register(String name, UndoQueue undo)
     {
@@ -88,9 +76,6 @@ public class OfflineUndoHandlerService extends AbstractService implements Offlin
         this.cache.put(name, undo);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<UndoQueue> get(String name)
     {
@@ -98,9 +83,6 @@ public class OfflineUndoHandlerService extends AbstractService implements Offlin
         return Optional.fromNullable(this.cache.getIfPresent(name));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void invalidate(String name)
     {

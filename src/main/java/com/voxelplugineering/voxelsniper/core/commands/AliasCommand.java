@@ -33,8 +33,7 @@ import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.util.StringUtilities;
 
 /**
- * Standard brush command to select a brush and provide the necessary arguments
- * to said brush.
+ * Standard brush command to select a brush and provide the necessary arguments to said brush.
  */
 public class AliasCommand extends Command
 {
@@ -45,12 +44,10 @@ public class AliasCommand extends Command
     public AliasCommand()
     {
         super("alias", "Sets an alias: /alias [target] [-g] alias=value");
+        setAliases("voxelalias");
         setPermissions("voxelsniper.command.alias");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {

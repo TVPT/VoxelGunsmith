@@ -32,8 +32,7 @@ public interface Scheduler
 {
 
     /**
-     * Starts a new task synchronized to the main thread of the underlying
-     * platform.
+     * Starts a new task synchronized to the main thread of the underlying platform.
      * 
      * @param runnable The task runnable, cannot be null
      * @param interval The interval, in milliseconds

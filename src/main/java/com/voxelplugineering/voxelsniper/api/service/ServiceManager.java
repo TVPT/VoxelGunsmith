@@ -27,9 +27,8 @@ import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.logging.Logger;
 
 /**
- * A manager for {@link Service}s, handling registration of services and
- * {@link ServiceProvider}s as well as initialization and shutdown of all
- * services.
+ * A manager for {@link Service}s, handling registration of services and {@link ServiceProvider}s as
+ * well as initialization and shutdown of all services.
  */
 public interface ServiceManager
 {
@@ -52,12 +51,12 @@ public interface ServiceManager
     void registerServiceProvider(ServiceProvider provider);
 
     /**
-     * Registers a service by name which may then be referenced by builders and
-     * initialization hooks.
+     * Registers a service by name which may then be referenced by builders and initialization
+     * hooks.
      * 
      * @param service The service name
      */
-    void registerService(String service);
+    void registerService(Class<?> service);
 
     /**
      * Gets whether a service has been built and initialized.
@@ -65,16 +64,17 @@ public interface ServiceManager
      * @param service The service to check
      * @return Is started
      */
-    boolean hasService(String service);
+    boolean hasService(Class<?> service);
 
     /**
-     * Gets the service with the given name. If the service is available then it
-     * is implied to be built but may not be initialized yet.
+     * Gets the service with the given name. If the service is available then it is implied to be
+     * built but may not be initialized yet.
      * 
      * @param service The service name
      * @return The service, if available
+     * @param <T> The service type
      */
-    Optional<Service> getService(String service);
+    <T> Optional<T> getService(Class<T> service);
 
     /**
      * Gets all services managed by this service manager.
@@ -91,18 +91,16 @@ public interface ServiceManager
     void stopService(Service service);
 
     /**
-     * Sets this service to 'testing mode' where any requests for services which
-     * are not found are created on the fly using the given provider. This is so
-     * that classes using services such as the {@link Logger} to not error out
-     * due to Gunsmith not having been initialized.
+     * Sets this service to 'testing mode' where any requests for services which are not found are
+     * created on the fly using the given provider. This is so that classes using services such as
+     * the {@link Logger} to not error out due to Gunsmith not having been initialized.
      * 
      * @param provider The provider to use for on the fly construction
      */
     void setTesting(ServiceProvider provider);
 
     /**
-     * Gets whether this service manager has 'on the fly' service building
-     * enabled.
+     * Gets whether this service manager has 'on the fly' service building enabled.
      * 
      * @return Is testing
      */

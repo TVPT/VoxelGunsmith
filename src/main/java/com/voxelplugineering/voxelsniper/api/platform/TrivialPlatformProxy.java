@@ -34,8 +34,8 @@ import com.voxelplugineering.voxelsniper.core.service.AbstractService;
 import com.voxelplugineering.voxelsniper.core.service.persistence.DirectoryDataSourceProvider;
 
 /**
- * A trivial {@link PlatformProxy} which is used in the case of no platform
- * being present, such as when tests are being run.
+ * A trivial {@link PlatformProxy} which is used in the case of no platform being present, such as
+ * when tests are being run.
  */
 public class TrivialPlatformProxy extends AbstractService implements PlatformProxy
 {
@@ -45,21 +45,15 @@ public class TrivialPlatformProxy extends AbstractService implements PlatformPro
      */
     public TrivialPlatformProxy()
     {
-        super(4);
+        super(PlatformProxy.class, 4);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
-        return "platformProxy";
+        return "TrivialPlatformProxy";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void init()
     {
@@ -72,45 +66,30 @@ public class TrivialPlatformProxy extends AbstractService implements PlatformPro
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getPlatformName()
     {
         return "none";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getVersion()
     {
         return "none";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getFullVersion()
     {
         return "none";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataSourceProvider getBrushDataSource()
     {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataSourceProvider getRootDataSourceProvider()
     {
@@ -128,27 +107,18 @@ public class TrivialPlatformProxy extends AbstractService implements PlatformPro
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataSourceReader getMetricsFile()
     {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getNumberOfPlayersOnline()
     {
         return 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<DataSourceReader> getConfigDataSource()
     {

@@ -51,9 +51,6 @@ public class GetBiomeNode extends AbstractNode
         this.biome = new Provider<Biome>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

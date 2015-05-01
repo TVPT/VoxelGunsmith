@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.world;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Chunk;
@@ -54,12 +56,10 @@ public abstract class AbstractChunk<T> extends WeakWrapper<T> implements Chunk
         this.world = world;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Block> getBlock(Location location)
     {
+        checkNotNull(location);
         if (location.getWorld() != this.world)
         {
             return Optional.absent();
@@ -67,21 +67,18 @@ public abstract class AbstractChunk<T> extends WeakWrapper<T> implements Chunk
         return getBlock(location.getFlooredX(), location.getFlooredY(), location.getFlooredZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Block> getBlock(Vector3i vector)
     {
+        checkNotNull(vector);
         return getBlock(vector.getX(), vector.getY(), vector.getZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setBlock(Material material, Location location)
     {
+        checkNotNull(material);
+        checkNotNull(location);
         if (location.getWorld() != this.world)
         {
             return;
@@ -89,18 +86,14 @@ public abstract class AbstractChunk<T> extends WeakWrapper<T> implements Chunk
         setBlock(material, location.getFlooredX(), location.getFlooredY(), location.getFlooredZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setBlock(Material material, Vector3i vector)
     {
+        checkNotNull(material);
+        checkNotNull(vector);
         setBlock(material, vector.getX(), vector.getY(), vector.getZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public World getWorld()
     {

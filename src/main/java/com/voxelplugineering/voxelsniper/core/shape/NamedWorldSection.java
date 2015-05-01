@@ -52,8 +52,8 @@ public class NamedWorldSection extends ComplexMaterialShape
     }
 
     /**
-     * Creates a new {@link NamedWorldSection}. This shape is initialized as a
-     * shallow copy of the given shape.
+     * Creates a new {@link NamedWorldSection}. This shape is initialized as a shallow copy of the
+     * given shape.
      * 
      * @param shape The {@link ComplexMaterialShape} to replicate.
      */
@@ -63,8 +63,7 @@ public class NamedWorldSection extends ComplexMaterialShape
     }
 
     /**
-     * Creates a new {@link NamedWorldSection} with the given material
-     * dictionary.
+     * Creates a new {@link NamedWorldSection} with the given material dictionary.
      * 
      * @param shape The shape
      * @param materialDict The material dictionary to use
@@ -110,8 +109,8 @@ public class NamedWorldSection extends ComplexMaterialShape
     }
 
     /**
-     * Gets the tile entities within this world section. The vector keys are the
-     * tiles position relative to the origin of this world section.
+     * Gets the tile entities within this world section. The vector keys are the tiles position
+     * relative to the origin of this world section.
      * 
      * @return The tiles
      */
@@ -122,9 +121,8 @@ public class NamedWorldSection extends ComplexMaterialShape
     }
 
     /**
-     * Sets what tile entities are stored within this world section. The vector
-     * keys should the locations of the tiles relative to the origin of the
-     * world section.
+     * Sets what tile entities are stored within this world section. The vector keys should the
+     * locations of the tiles relative to the origin of the world section.
      * 
      * @param tileEntitiesMap The new tile entites
      */
@@ -146,8 +144,8 @@ public class NamedWorldSection extends ComplexMaterialShape
     }
 
     /**
-     * Gets the entities within this world section. The vector keys are the
-     * entities position relative to the origin of this world section.
+     * Gets the entities within this world section. The vector keys are the entities position
+     * relative to the origin of this world section.
      * 
      * @return The entities
      */
@@ -158,9 +156,8 @@ public class NamedWorldSection extends ComplexMaterialShape
     }
 
     /**
-     * Sets what entities are stored within this world section. The vector keys
-     * should the locations of the entities relative to the origin of the world
-     * section.
+     * Sets what entities are stored within this world section. The vector keys should the locations
+     * of the entities relative to the origin of the world section.
      * 
      * @param entitiesMap The new entities
      */

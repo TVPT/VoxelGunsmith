@@ -67,9 +67,6 @@ public class NewMaterialShapeNode extends AbstractNode
         this.defaultMaterial = new Provider<Material>(this, defaultMaterial);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

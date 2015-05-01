@@ -33,20 +33,13 @@ import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
 
 /**
- * A combination location and material representation of a single voxel. The
- * location is immutable.
+ * A combination location and material representation of a single voxel. The location is immutable.
  */
 public class CommonBlock implements Block
 {
 
-    /**
-     * The location of this voxel.
-     */
     private final Location location;
-    /**
-     * The material of the voxel.
-     */
-    private Material material;
+    private final Material material;
 
     /**
      * Creates a new CommonBlock with the given location and material
@@ -56,51 +49,34 @@ public class CommonBlock implements Block
      */
     public CommonBlock(Location location, Material material)
     {
-        checkNotNull(location, "Location cannot be null");
-        checkNotNull(material, "Material cannot be null");
-        this.location = location;
-        this.material = material;
+        this.location = checkNotNull(location, "Location cannot be null");
+        this.material = checkNotNull(material, "Material cannot be null");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final Location getLocation()
     {
         return this.location;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Material getMaterial()
     {
         return this.material;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public World getWorld()
     {
         return this.location.getWorld();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Vector3i getPosition()
     {
         return this.location.getFlooredPosition();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Block> withOffset(Vector3i offset)
     {

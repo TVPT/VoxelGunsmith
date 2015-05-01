@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.shape.csg;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
 
 /**
@@ -40,7 +42,7 @@ public abstract class OffsetShape implements CSGShape
      */
     public OffsetShape(Vector3i origin)
     {
-        this.origin = origin;
+        this.origin = checkNotNull(origin);
     }
 
     /**
@@ -48,30 +50,21 @@ public abstract class OffsetShape implements CSGShape
      */
     public OffsetShape()
     {
-        this(new Vector3i(0, 0, 0));
+        this(Vector3i.ZERO);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isMutable()
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Vector3i getOrigin()
     {
         return this.origin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void offset(Vector3i offset)
     {
@@ -83,6 +76,7 @@ public abstract class OffsetShape implements CSGShape
      * 
      * @return The copy
      */
+    @Override
     public abstract CSGShape clone();
 
 }

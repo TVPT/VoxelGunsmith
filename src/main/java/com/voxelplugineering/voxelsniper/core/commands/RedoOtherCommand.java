@@ -45,9 +45,6 @@ public class RedoOtherCommand extends Command
         setPermissions("voxelsniper.command.redoother");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {

@@ -32,8 +32,8 @@ public interface UndoQueue
 {
 
     /**
-     * Adds the given change pair to the buffer. All history to the right of the
-     * current pointer (eg. any previously undone changes) will be cleared.
+     * Adds the given change pair to the buffer. All history to the right of the current pointer
+     * (eg. any previously undone changes) will be cleared.
      * 
      * @param change The change
      * @param reverse The reverse change
@@ -71,8 +71,7 @@ public interface UndoQueue
     int getMaxBufferSize();
 
     /**
-     * Sets a new capacity for the number of undos and redos that will be
-     * stored.
+     * Sets a new capacity for the number of undos and redos that will be stored.
      * 
      * @param n The new capacity
      */

@@ -29,54 +29,40 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * A provider of services. May annotate methods with several annotations for
- * various hooks.
- * <p>
- * <strong>@Builder(value=[name])</strong> - A hook for providing the
- * implementation of a service. Only one builder per service will be called
- * which will be chosen by the highest builder available in order of Core then
- * Platform then Expansion. At this time the ordering within each level is
- * undefined, but a priority system may be added if required.
+ * A provider of services. May annotate methods with several annotations for various hooks.
+ * 
+ * <p> <strong>@Builder(value=[name])</strong> - A hook for providing the implementation of a
+ * service. Only one builder per service will be called which will be chosen by the highest builder
+ * available in order of Core then Platform then Expansion. At this time the ordering within each
+ * level is undefined, but a priority system may be added if required. </p>
+ * 
+ * <p> This annotation must annotate an instance method with the signature of <code>public Service
+ * methodName();</code>. Key parts are that the method is public, not static, has a return type of
+ * {@link Service}, and has no parameters. </p>
+ * 
+ * <p> <strong>@InitHook(value=[name])</strong> - A hook called when a service is initialized.
+ * Multiple initialization hooks may exist for each service. Initialization hooks will be called in
+ * order of Core then Platform then Expansion. At this time the ordering within each level is
+ * undefined, but a priority system may be added if required. </p>
+ * 
+ * <p> This annotation must annotate an instance method with the signature of <code>public void
+ * methodName(Service service);</code>. Key parts are that the method is public, not static, and has
+ * a single parameter with the type {@link Service}. </p>
+ * 
+ * <p> <strong>@PreInit</strong> - A hook called before the initialization of services begins. The
+ * ordering of PreInit hooks is undefined. </p>
+ * 
+ * <p> This annotation must annotate an instance method with the signature of <code>public void
+ * methodName();</code>. Key parts are that the method is public, not static, and has no parameters.
  * </p>
- * <p>
- * This annotation must annotate an instance method with the signature of
- * <code>public Service methodName();</code>. Key parts are that the method is
- * public, not static, has a return type of {@link Service}, and has no
- * parameters.
- * </p>
- * <p>
- * <strong>@InitHook(value=[name])</strong> - A hook called when a service is
- * initialized. Multiple initialization hooks may exist for each service.
- * Initialization hooks will be called in order of Core then Platform then
- * Expansion. At this time the ordering within each level is undefined, but a
- * priority system may be added if required.
- * </p>
- * <p>
- * This annotation must annotate an instance method with the signature of
- * <code>public void methodName(Service service);</code>. Key parts are that the
- * method is public, not static, and has a single parameter with the type
- * {@link Service}.
- * </p>
- * <p>
- * <strong>@PreInit</strong> - A hook called before the initialization of
- * services begins. The ordering of PreInit hooks is undefined.
- * </p>
- * <p>
- * This annotation must annotate an instance method with the signature of
- * <code>public void methodName();</code>. Key parts are that the method is
- * public, not static, and has no parameters.
- * </p>
- * <p>
- * <strong>@PostInit</strong> - A hook called after all services have been built
- * and initialized. The ordering of PostInit hooks is undefined. The annotated
- * method should follow the same signature guidelines as @Preinit.
- * </p>
- * <p>
- * <strong>@PreStop</strong> - A hook called after the shutdown sequence has
- * begun, but before any services have been stopped. The ordering of PreStop
- * hooks is undefined. The annotated method should follow the same signature
- * guidelines as @Preinit.
- * </p>
+ * 
+ * <p> <strong>@PostInit</strong> - A hook called after all services have been built and
+ * initialized. The ordering of PostInit hooks is undefined. The annotated method should follow the
+ * same signature guidelines as {@code @Preinit}. </p>
+ * 
+ * <p> <strong>@PreStop</strong> - A hook called after the shutdown sequence has begun, but before
+ * any services have been stopped. The ordering of PreStop hooks is undefined. The annotated method
+ * should follow the same signature guidelines as {@code @Preinit}. </p>
  */
 public abstract class ServiceProvider
 {
@@ -84,9 +70,9 @@ public abstract class ServiceProvider
     private Type type;
 
     /**
-     * Initializes this {@link ServiceProvider}. The given type will affect the
-     * priority that the methods within this provider are called. The typical
-     * ordering is Core then Platform then Expansion.
+     * Initializes this {@link ServiceProvider}. The given type will affect the priority that the
+     * methods within this provider are called. The typical ordering is Core then Platform then
+     * Expansion.
      * 
      * @param type The provider type
      */
@@ -106,9 +92,9 @@ public abstract class ServiceProvider
     }
 
     /**
-     * A call for this provider to register all new services. Services must be
-     * registered with the {@link ServiceManager} before they can be referenced
-     * by Builder or InitHook annotated methods.
+     * A call for this provider to register all new services. Services must be registered with the
+     * {@link ServiceManager} before they can be referenced by Builder or InitHook annotated
+     * methods.
      * 
      * @param manager The manager to register services with
      */
@@ -124,26 +110,24 @@ public abstract class ServiceProvider
          */
         CORE,
         /**
-         * Platforms are special expansions which implement or proxy gunsmith's
-         * core into a specific platform.
+         * Platforms are special expansions which implement or proxy gunsmith's core into a specific
+         * platform.
          */
         PLATFORM,
         /**
-         * Expansions are additional plugins or expansions which hook into
-         * gunsmith to add or expand functionality.
+         * Expansions are additional plugins or expansions which hook into gunsmith to add or expand
+         * functionality.
          */
         EXPANSION;
     }
 
     /**
-     * Annotates a method which will 'build' a service. The method will provide
-     * an instance of a type implementing Service.
-     * <p>
-     * This annotation must annotate an instance method with the signature of
-     * <code>public Service methodName();</code>. Key parts are that the method
-     * is public, not static, has a return type of {@link Service}, and has no
-     * parameters.
-     * </p>
+     * Annotates a method which will 'build' a service. The method will provide an instance of a
+     * type implementing Service.
+     * 
+     * <p>This annotation must annotate an instance method with the signature of <code>public
+     * Service methodName();</code>. Key parts are that the method is public, not static, has a
+     * return type of {@link Service}, and has no parameters.</p>
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
@@ -155,18 +139,14 @@ public abstract class ServiceProvider
          * 
          * @return The name
          */
-        String value();
+        Class<?> value();
     }
 
     /**
-     * Annotates a method to be called during the initialization phase of a
-     * service.
-     * <p>
-     * This annotation must annotate an instance method with the signature of
-     * <code>public void methodName(Service service);</code>. Key parts are that
-     * the method is public, not static, and has a single parameter with the
-     * type {@link Service}.
-     * </p>
+     * Annotates a method to be called during the initialization phase of a service. <p> This
+     * annotation must annotate an instance method with the signature of <code>public void
+     * methodName(Service service);</code>. Key parts are that the method is public, not static, and
+     * has a single parameter with the type {@link Service}. </p>
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
@@ -178,17 +158,14 @@ public abstract class ServiceProvider
          * 
          * @return The name
          */
-        String value();
+        Class<?> value();
     }
 
     /**
-     * Annotates a method to be called after all services have finished
-     * initialization.
-     * <p>
-     * This annotation must annotate an instance method with the signature of
-     * <code>public void methodName();</code>. Key parts are that the method is
-     * public, not static, and has no parameters.
-     * </p>
+     * Annotates a method to be called after all services have finished initialization. <p> This
+     * annotation must annotate an instance method with the signature of <code>public void
+     * methodName();</code>. Key parts are that the method is public, not static, and has no
+     * parameters. </p>
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
@@ -197,13 +174,10 @@ public abstract class ServiceProvider
     }
 
     /**
-     * Annotates a method to be called before all services have finished
-     * initialization.
-     * <p>
-     * This annotation must annotate an instance method with the signature of
-     * <code>public void methodName();</code>. Key parts are that the method is
-     * public, not static, and has no parameters.
-     * </p>
+     * Annotates a method to be called before all services have finished initialization. <p> This
+     * annotation must annotate an instance method with the signature of <code>public void
+     * methodName();</code>. Key parts are that the method is public, not static, and has no
+     * parameters. </p>
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
@@ -212,12 +186,10 @@ public abstract class ServiceProvider
     }
 
     /**
-     * Annotates a method to be called just before all services begin to stop.
-     * <p>
-     * This annotation must annotate an instance method with the signature of
-     * <code>public void methodName();</code>. Key parts are that the method is
-     * public, not static, and has no parameters.
-     * </p>
+     * Annotates a method to be called just before all services begin to stop. <p> This annotation
+     * must annotate an instance method with the signature of <code>public void
+     * methodName();</code>. Key parts are that the method is public, not static, and has no
+     * parameters. </p>
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)

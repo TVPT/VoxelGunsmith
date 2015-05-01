@@ -24,11 +24,8 @@
 package com.voxelplugineering.voxelsniper.api.event;
 
 /**
- * Possible EventPriority levels.
- * <p>
- * The ordering of these should remain constant, and in particular the
- * priorities should be ordered in descending order of priority.
- * </p>
+ * Possible EventPriority levels. <p> The ordering of these should remain constant, and in
+ * particular the priorities should be ordered in descending order of priority. </p>
  */
 @SuppressWarnings("javadoc")
 public enum EventPriority

@@ -52,9 +52,6 @@ public class BlockBreakNode extends AbstractNode
         this.material = new Provider<Material>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

@@ -67,9 +67,9 @@ public class MemoryContainerTest
         container.writeByte("b", (byte) 0);
         container.writeShort("c", (short) 0);
         container.writeInt("d", 0);
-        container.writeLong("e", (long) 0);
-        container.writeFloat("f", (float) 0);
-        container.writeDouble("g", (double) 0);
+        container.writeLong("e", 0);
+        container.writeFloat("f", 0);
+        container.writeDouble("g", 0);
         container.writeChar("h", 'a');
         container.writeString("i", "HelloWorld");
         container.writeCustom("j", test);
@@ -79,9 +79,9 @@ public class MemoryContainerTest
         assertEquals(Byte.valueOf((byte) 0), container.readByte("b").get());
         assertEquals(Short.valueOf((short) 0), container.readShort("c").get());
         assertEquals(Integer.valueOf(0), container.readInt("d").get());
-        assertEquals(Long.valueOf((long) 0), container.readLong("e").get());
-        assertEquals(Float.valueOf((float) 0), container.readFloat("f").get());
-        assertEquals(Double.valueOf((double) 0), container.readDouble("g").get());
+        assertEquals(Long.valueOf(0), container.readLong("e").get());
+        assertEquals(Float.valueOf(0), container.readFloat("f").get());
+        assertEquals(Double.valueOf(0), container.readDouble("g").get());
         assertEquals(Character.valueOf('a'), container.readChar("h").get());
         assertEquals("HelloWorld", container.readString("i").get());
         assertEquals(test, container.readCustom("j", TestCustomData.class).get());
@@ -101,9 +101,9 @@ public class MemoryContainerTest
         container.writeByte("b", (byte) 0);
         container.writeShort("c", (short) 0);
         container.writeInt("d", 0);
-        container.writeLong("e", (long) 0);
-        container.writeFloat("f", (float) 0);
-        container.writeDouble("g", (double) 0);
+        container.writeLong("e", 0);
+        container.writeFloat("f", 0);
+        container.writeDouble("g", 0);
         container.writeChar("h", 'a');
         container.writeString("i", "HelloWorld");
         container.writeCustom("j", test);
@@ -121,9 +121,9 @@ public class MemoryContainerTest
         assertEquals(Byte.valueOf((byte) 0), newContainer.readByte("b").get());
         assertEquals(Short.valueOf((short) 0), newContainer.readShort("c").get());
         assertEquals(Integer.valueOf(0), newContainer.readInt("d").get());
-        assertEquals(Long.valueOf((long) 0), newContainer.readLong("e").get());
-        assertEquals(Float.valueOf((float) 0), newContainer.readFloat("f").get());
-        assertEquals(Double.valueOf((double) 0), newContainer.readDouble("g").get());
+        assertEquals(Long.valueOf(0), newContainer.readLong("e").get());
+        assertEquals(Float.valueOf(0), newContainer.readFloat("f").get());
+        assertEquals(Double.valueOf(0), newContainer.readDouble("g").get());
         assertEquals(Character.valueOf('a'), newContainer.readChar("h").get());
         assertEquals("HelloWorld", newContainer.readString("i").get());
         assertEquals(test, newContainer.readCustom("j", TestCustomData.class).get());
@@ -164,6 +164,7 @@ class TestCustomData implements DataSerializable
         return container;
     }
 
+    @Override
     public boolean equals(Object other)
     {
         if (other instanceof TestCustomData)

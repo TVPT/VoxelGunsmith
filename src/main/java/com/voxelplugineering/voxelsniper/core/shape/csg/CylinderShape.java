@@ -51,9 +51,6 @@ public class CylinderShape extends OffsetShape
         this.rz = rz;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean get(int x, int y, int z, boolean relative)
     {
@@ -66,63 +63,42 @@ public class CylinderShape extends OffsetShape
         return (x / this.rx) * (x / this.rx) + (z / this.rz) * (z / this.rz) <= 1 && y < this.height && y >= 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getWidth()
     {
         return (int) (this.rx * 2 + 1);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getHeight()
     {
         return this.height;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getLength()
     {
         return (int) (this.rz * 2 + 1);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isMutable()
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void set(int x, int y, int z, boolean relative)
     {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unset(int x, int y, int z, boolean relative)
     {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public CylinderShape clone()
     {

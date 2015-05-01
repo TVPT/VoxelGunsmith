@@ -36,8 +36,7 @@ public interface Entity
 {
 
     /**
-     * Gets the name of the entity, may be a generic name if the entity has no
-     * special name.
+     * Gets the name of the entity, may be a generic name if the entity has no special name.
      * 
      * @return The name
      */
@@ -79,16 +78,16 @@ public interface Entity
     void setLocation(Location newLocation);
 
     /**
-     * Gets the rotation of this entity. The vector components represent yaw,
-     * pitch, and roll in order.
+     * Gets the rotation of this entity. The vector components represent yaw, pitch, and roll in
+     * order.
      * 
      * @return The rotation
      */
     Vector3d getRotation();
 
     /**
-     * Sets the rotation of this entity. The vector components represent yaw,
-     * pitch, and roll in order.
+     * Sets the rotation of this entity. The vector components represent yaw, pitch, and roll in
+     * order.
      * 
      * @param rotation The new rotation
      */

@@ -72,18 +72,12 @@ public final class EndTag extends Tag
         super("");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object getValue()
     {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {

@@ -48,8 +48,7 @@ public class ComplexShape implements Shape
     private int length;
 
     /**
-     * Creates a new shape. The shape is initially all unset. The origin is set
-     * to (0, 0, 0).
+     * Creates a new shape. The shape is initially all unset. The origin is set to (0, 0, 0).
      * 
      * @param width the width
      * @param height the height
@@ -123,36 +122,24 @@ public class ComplexShape implements Shape
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getWidth()
     {
         return this.width;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getHeight()
     {
         return this.height;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getLength()
     {
         return this.length;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isMutable()
     {
@@ -166,22 +153,15 @@ public class ComplexShape implements Shape
      */
     public void setOrigin(Vector3i origin)
     {
-        checkNotNull(origin, "Origin cannot be null");
-        this.origin = origin;
+        this.origin = checkNotNull(origin, "Origin cannot be null");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Vector3i getOrigin()
     {
         return this.origin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void set(int x, int y, int z, boolean relative)
     {
@@ -198,9 +178,7 @@ public class ComplexShape implements Shape
         this.shape[x][z][y / 8] = (byte) (this.shape[x][z][y / 8] | (byte) (1 << (y % 8)));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void unset(int x, int y, int z, boolean relative)
     {
         if (relative)
@@ -216,9 +194,7 @@ public class ComplexShape implements Shape
         this.shape[x][z][y / 8] = (byte) (this.shape[x][z][y / 8] & (byte) ~(1 << (y % 8)));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean get(int x, int y, int z, boolean relative)
     {
         if (relative)
@@ -287,8 +263,7 @@ public class ComplexShape implements Shape
     }
 
     /**
-     * Changes the size to the given values. Attempts to retain as much of the
-     * shape as possible.
+     * Changes the size to the given values. Attempts to retain as much of the shape as possible.
      * 
      * @param w the new width
      * @param h the new height
@@ -350,8 +325,8 @@ public class ComplexShape implements Shape
     }
 
     /**
-     * Combines the bounding boxes of this shape with the given shape. the
-     * result will be a shape whose bounds includes the bounds of both shapes.
+     * Combines the bounding boxes of this shape with the given shape. the result will be a shape
+     * whose bounds includes the bounds of both shapes.
      * 
      * @param other The shape to combine with
      */
@@ -361,8 +336,8 @@ public class ComplexShape implements Shape
     }
 
     /**
-     * Performs a CSG add operation between this shape and the given shape.
-     * First ensures that sizes and origins are matched between the two shapes.
+     * Performs a CSG add operation between this shape and the given shape. First ensures that sizes
+     * and origins are matched between the two shapes.
      * 
      * @param s the shape to add
      */
@@ -383,8 +358,8 @@ public class ComplexShape implements Shape
     }
 
     /**
-     * Performs a CSG subtract operation between this shape and the given shape.
-     * First ensures that sizes and origins are matched between the two shapes.
+     * Performs a CSG subtract operation between this shape and the given shape. First ensures that
+     * sizes and origins are matched between the two shapes.
      * 
      * @param s the shape to subtract from this shape
      */
@@ -405,9 +380,8 @@ public class ComplexShape implements Shape
     }
 
     /**
-     * Performs a CSG intersection operation between this shape and the given
-     * shape. First ensures that sizes and origins are matched between the two
-     * shapes.
+     * Performs a CSG intersection operation between this shape and the given shape. First ensures
+     * that sizes and origins are matched between the two shapes.
      * 
      * @param s the shape to intersect with
      */
@@ -428,8 +402,8 @@ public class ComplexShape implements Shape
     }
 
     /**
-     * Performs a CSG xor operation between this shape and the given shape.
-     * First ensures that sizes and origins are matched between the two shapes.
+     * Performs a CSG xor operation between this shape and the given shape. First ensures that sizes
+     * and origins are matched between the two shapes.
      * 
      * @param s the shape to xor against
      */
@@ -467,8 +441,7 @@ public class ComplexShape implements Shape
     }
 
     /**
-     * Returns an array of {@link Vector3i} these vectors represent all set
-     * positions of this shape.
+     * Returns an array of {@link Vector3i} these vectors represent all set positions of this shape.
      * 
      * @return the set positions
      */
@@ -492,9 +465,9 @@ public class ComplexShape implements Shape
     }
 
     /**
-     * Flattens this shape. The resultant shape has a height of 1 with the
-     * position at each x,z position set if any block in a column above that
-     * point was set. As a side effect the origin is set to have a y value of 0.
+     * Flattens this shape. The resultant shape has a height of 1 with the position at each x,z
+     * position set if any block in a column above that point was set. As a side effect the origin
+     * is set to have a y value of 0.
      */
     public void flatten()
     {

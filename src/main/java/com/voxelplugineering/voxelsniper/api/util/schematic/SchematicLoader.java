@@ -30,9 +30,9 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReade
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 
 /**
- * A schematic loader is an interface for loading or saving regions of the world
- * to a persistent storage. TODO: need a more complete representation for a
- * region of a world (w/ entities and tile entities mostly)
+ * A schematic loader is an interface for loading or saving regions of the world to a persistent
+ * storage. TODO: need a more complete representation for a region of a world (w/ entities and tile
+ * entities mostly)
  */
 public interface SchematicLoader
 {
@@ -65,8 +65,7 @@ public interface SchematicLoader
     {
 
         /**
-         * Performs the conversion and returns the converted
-         * {@link MaterialShape}.
+         * Performs the conversion and returns the converted {@link MaterialShape}.
          * 
          * @return The shape
          */
@@ -90,9 +89,6 @@ public interface SchematicLoader
             // TODO StencilConverter
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public MaterialShape convert()
         {

@@ -23,26 +23,25 @@
  */
 package com.voxelplugineering.voxelsniper.core;
 
-import java.lang.annotation.Annotation;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
+import com.voxelplugineering.voxelsniper.api.commands.CommandHandler;
 import com.voxelplugineering.voxelsniper.api.config.Configuration;
 import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
 import com.voxelplugineering.voxelsniper.api.expansion.Expansion;
@@ -64,6 +63,7 @@ import com.voxelplugineering.voxelsniper.api.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
 import com.voxelplugineering.voxelsniper.core.service.CommandHandlerService;
 import com.voxelplugineering.voxelsniper.core.util.Pair;
+import com.voxelplugineering.voxelsniper.core.util.init.AnnotationCacheHelper;
 
 /**
  * The core service and expansion manager.
@@ -74,8 +74,8 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     // BEGIN static accessors
 
     /**
-     * Gets the {@link ServiceManager} which is in change of the registration,
-     * initialization, and shutdown of all {@link Service}s.
+     * Gets the {@link ServiceManager} which is in change of the registration, initialization, and
+     * shutdown of all {@link Service}s.
      * 
      * @return The service manager
      */
@@ -85,8 +85,8 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     }
 
     /**
-     * Gets the {@link ExpansionManager} which is in change of the registration
-     * of all {@link Expansion}s.
+     * Gets the {@link ExpansionManager} which is in change of the registration of all
+     * {@link Expansion}s.
      * 
      * @return The expansion manager
      */
@@ -96,36 +96,35 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     }
 
     /**
-     * Gets the logging service, which distributes logged messages to all
-     * registered sources.
+     * Gets the logging service, which distributes logged messages to all registered sources.
      * 
      * @return The logger
      */
     public static LoggingDistributor getLogger()
     {
-        return (LoggingDistributor) Holder.INSTANCE.getService("logger").orNull();
+        return Holder.INSTANCE.getService(LoggingDistributor.class).get();
     }
 
     /**
-     * Gets the {@link Configuration} service which is in change of the storing
-     * of custom configuration values for use throughout the system.
+     * Gets the {@link Configuration} service which is in change of the storing of custom
+     * configuration values for use throughout the system.
      * 
      * @return The configuration service
      */
     public static Configuration getConfiguration()
     {
-        return (Configuration) Holder.INSTANCE.getService("config").orNull();
+        return Holder.INSTANCE.getService(Configuration.class).get();
     }
 
     /**
-     * Gets the {@link TextFormatParser} service which provides the platform
-     * specific formatting codes.
+     * Gets the {@link TextFormatParser} service which provides the platform specific formatting
+     * codes.
      * 
      * @return The text format proxy
      */
     public static TextFormatParser getTextFormatProxy()
     {
-        return (TextFormatParser) Holder.INSTANCE.getService("formatProxy").orNull();
+        return Holder.INSTANCE.getService(TextFormatParser.class).get();
     }
 
     /**
@@ -149,8 +148,8 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     }
 
     /**
-     * Gets the {@link MaterialRegistry} service which holds the registry of
-     * global materials not specific to any world.
+     * Gets the {@link MaterialRegistry} service which holds the registry of global materials not
+     * specific to any world.
      * 
      * @param <T> The material type
      * @return The material registry
@@ -158,45 +157,43 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     @SuppressWarnings("unchecked")
     public static <T> MaterialRegistry<T> getMaterialRegistry()
     {
-        return (MaterialRegistry<T>) Holder.INSTANCE.getService("materialRegistry").orNull();
+        return Holder.INSTANCE.getService(MaterialRegistry.class).get();
     }
 
     /**
-     * Gets the {@link PlatformProxy} service which provides access to many
-     * platform specific values.
+     * Gets the {@link PlatformProxy} service which provides access to many platform specific
+     * values.
      * 
      * @return The platform proxy
      */
     public static PlatformProxy getPlatformProxy()
     {
-        return (PlatformProxy) Holder.INSTANCE.getService("platformProxy").orNull();
+        return Holder.INSTANCE.getService(PlatformProxy.class).get();
     }
 
     /**
-     * Gets the {@link PermissionProxy} which access to permissions for specific
-     * users.
+     * Gets the {@link PermissionProxy} which access to permissions for specific users.
      * 
      * @return The permission proxy
      */
     public static PermissionProxy getPermissionsProxy()
     {
-        return (PermissionProxy) Holder.INSTANCE.getService("permissionProxy").orNull();
+        return Holder.INSTANCE.getService(PermissionProxy.class).get();
     }
 
     /**
-     * Gets the {@link Scheduler} service which handles the registration and
-     * running of synchronous and asynchronous tasks.
+     * Gets the {@link Scheduler} service which handles the registration and running of synchronous
+     * and asynchronous tasks.
      * 
      * @return The scheduler
      */
     public static Scheduler getScheduler()
     {
-        return (Scheduler) Holder.INSTANCE.getService("scheduler").orNull();
+        return Holder.INSTANCE.getService(Scheduler.class).get();
     }
 
     /**
-     * Gets the {@link WorldRegistry} service which is a registry for all worlds
-     * within the system.
+     * Gets the {@link WorldRegistry} service which is a registry for all worlds within the system.
      * 
      * @param <T> The world type
      * @return The world registry
@@ -204,12 +201,11 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     @SuppressWarnings("unchecked")
     public static <T> WorldRegistry<T> getWorldRegistry()
     {
-        return (WorldRegistry<T>) Holder.INSTANCE.getService("worldRegistry").orNull();
+        return Holder.INSTANCE.getService(WorldRegistry.class).get();
     }
 
     /**
-     * Gets the {@link PlayerRegistry} which is a registry for all users within
-     * the system.
+     * Gets the {@link PlayerRegistry} which is a registry for all users within the system.
      * 
      * @param <T> The player type
      * @return The player registry
@@ -217,51 +213,49 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     @SuppressWarnings("unchecked")
     public static <T> PlayerRegistry<T> getPlayerRegistry()
     {
-        return (PlayerRegistry<T>) Holder.INSTANCE.getService("playerRegistry").orNull();
+        return Holder.INSTANCE.getService(PlayerRegistry.class).get();
     }
 
     /**
-     * Gets {@link OfflineUndoHandler} service which handles user's
-     * {@link UndoQueue}s after they have disconnected from the system.
+     * Gets {@link OfflineUndoHandler} service which handles user's {@link UndoQueue}s after they
+     * have disconnected from the system.
      * 
      * @return The offline undo handler
      */
     public static OfflineUndoHandler getOfflineUndoHandler()
     {
-        return (OfflineUndoHandler) Holder.INSTANCE.getService("offlineUndoHandler").orNull();
+        return Holder.INSTANCE.getService(OfflineUndoHandler.class).get();
     }
 
     /**
-     * Gets the {@link BrushManager} service which holds all brushes global to
-     * all system users.
+     * Gets the {@link BrushManager} service which holds all brushes global to all system users.
      * 
      * @return The global brush manager
      */
     public static BrushManager getGlobalBrushManager()
     {
-        return (BrushManager) Holder.INSTANCE.getService("globalBrushManager").orNull();
+        return Holder.INSTANCE.getService(BrushManager.class).get();
     }
 
     /**
-     * Gets the {@link AliasHandler} service which holds aliases global to all
-     * system users.
+     * Gets the {@link AliasHandler} service which holds aliases global to all system users.
      * 
      * @return The alias handler
      */
     public static AliasHandler getGlobalAliasHandler()
     {
-        return (AliasHandler) Holder.INSTANCE.getService("aliasRegistry").orNull();
+        return Holder.INSTANCE.getService(AliasHandler.class).get();
     }
 
     /**
-     * Gets the {@link EventBus} service which handles the registration of event
-     * handlers and the distribution of posted events.
+     * Gets the {@link EventBus} service which handles the registration of event handlers and the
+     * distribution of posted events.
      * 
      * @return The event bus
      */
     public static EventBus getEventBus()
     {
-        return (EventBus) Holder.INSTANCE.getService("eventBus").orNull();
+        return Holder.INSTANCE.getService(EventBus.class).get();
     }
 
     /**
@@ -273,7 +267,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     @SuppressWarnings("unchecked")
     public static <T> BiomeRegistry<T> getBiomeRegistry()
     {
-        return (BiomeRegistry<T>) Holder.INSTANCE.getService("biomeRegistry").orNull();
+        return Holder.INSTANCE.getService(BiomeRegistry.class).get();
     }
 
     /**
@@ -281,9 +275,9 @@ public class Gunsmith implements ServiceManager, ExpansionManager
      * 
      * @return The command handler
      */
-    public static CommandHandlerService getCommandHandler()
+    public static CommandHandler getCommandHandler()
     {
-        return (CommandHandlerService) Holder.INSTANCE.getService("commandHandler").orNull();
+        return Holder.INSTANCE.getService(CommandHandler.class).get();
     }
 
     /**
@@ -293,12 +287,11 @@ public class Gunsmith implements ServiceManager, ExpansionManager
      */
     public static DataSourceFactory getPersistence()
     {
-        return (DataSourceFactory) Holder.INSTANCE.getService("persistence").orNull();
+        return Holder.INSTANCE.getService(DataSourceFactory.class).get();
     }
 
     /**
-     * Gets whether the system has finished initialization and is currently
-     * running.
+     * Gets whether the system has finished initialization and is currently running.
      * 
      * @return Is system running
      */
@@ -332,13 +325,13 @@ public class Gunsmith implements ServiceManager, ExpansionManager
     }
 
     private Map<ServiceProvider.Type, List<ServiceProvider>> providers;
-    private Map<String, List<Pair<Object, Method>>> initHooks;
-    private Map<String, Service> services;
-    private List<String> stoppedServices;
+    private Map<Class<?>, List<Pair<Object, Method>>> initHooks;
+    private Map<Class<?>, Service> services;
+    private List<Class<?>> stoppedServices;
     private State state;
     private boolean testing = false;
     private ServiceProvider testingProvider = null;
-    private Map<String, Service> testingServices = null;
+    private Map<Class<?>, Service> testingServices = null;
 
     private void initServiceManager()
     {
@@ -349,99 +342,10 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         this.initHooks = Maps.newHashMap();
     }
 
-    /**
-     * A method annotation cache to assist with locating methods during startup.
-     */
-    @SuppressWarnings("rawtypes")
-    private static class StartupHelper
-    {
-
-        private Map<Class<?>, Map<Class, List<Method>>> cache;
-
-        public StartupHelper()
-        {
-            this.cache = new MapMaker().weakKeys().makeMap();
-        }
-
-        /**
-         * Builds the cache for the given class.
-         * 
-         * @param target The target class
-         */
-        public void build(Class<?> target)
-        {
-            if (this.cache.containsKey(target))
-            {
-                return;
-            }
-            Map<Class, List<Method>> anno = new MapMaker().weakKeys().makeMap();
-            for (Method m : target.getMethods())
-            {
-                for (Annotation a : m.getAnnotations())
-                {
-                    if (!anno.containsKey(a.annotationType()))
-                    {
-                        anno.put(a.annotationType(), Lists.<Method>newArrayList());
-                    }
-                    anno.get(a.annotationType()).add(m);
-                }
-            }
-            this.cache.put(target, anno);
-        }
-
-        /**
-         * Gets all methods from the target class with the given annotation.
-         * 
-         * @param target The target class
-         * @param annotation The requested annotation
-         * @return All methods with the given annotation
-         */
-        public List<Method> get(Class<?> target, Class<?> annotation)
-        {
-            if (!annotation.isAnnotation())
-            {
-                return new ArrayList<Method>(0);
-            }
-            build(target);
-            List<Method> methods = this.cache.get(target).get(annotation);
-            if (methods == null)
-            {
-                return new ArrayList<Method>(0);
-            }
-            return methods;
-        }
-
-        /**
-         * Gets all methods from the target class with the given annotation.
-         * Returns all methods which also pass the given function.
-         * 
-         * @param target The target class
-         * @param annotation The requested annotation
-         * @param valid A function to check method validity
-         * @return All applicable methods
-         */
-        public List<Method> get(Class<?> target, Class<?> annotation, Function<Method, Boolean> valid)
-        {
-            List<Method> methods = get(target, annotation);
-            for (Iterator<Method> iter = methods.iterator(); iter.hasNext();)
-            {
-                if (!valid.apply(iter.next()))
-                {
-                    iter.remove();
-                }
-            }
-            return methods;
-        }
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void initializeServices()
     {
-        StartupHelper startup = new StartupHelper();
+        AnnotationCacheHelper startup = new AnnotationCacheHelper();
         if (this.state != State.STOPPED)
         {
             throw new IllegalStateException();
@@ -455,7 +359,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         registerServiceProvider(new CoreServiceProvider());
         this.state = State.STARTING_REGISTRATION;
         String startTime = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z").format(new Date(System.currentTimeMillis()));
-        System.out.printf("Starting Gunsmith initialization process. (%s)\n", startTime);
+        System.out.println("Starting Gunsmith initialization process. (" + startTime + ")");
 
         Function<Method, Boolean> noParamTest = new Function<Method, Boolean>()
         {
@@ -529,7 +433,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
                 }
             }
             List<Service> toInit = Lists.newArrayList();
-            for (String name : this.services.keySet())
+            for (Class<?> name : this.services.keySet())
             {
                 toInit.add(this.services.get(name));
             }
@@ -549,21 +453,22 @@ public class Gunsmith implements ServiceManager, ExpansionManager
                     service.start();
                 } catch (Exception e)
                 {
-                    System.err.println(e.getMessage());
+                    e.printStackTrace();
                     service.stop();
-                    this.services.remove(service.getName());
+                    this.services.remove(service.getTargetedService());
                     continue;
                 }
-                if (this.initHooks.containsKey(service.getName()))
+                if (this.initHooks.containsKey(service.getTargetedService()))
                 {
-                    for (Pair<Object, Method> hook : this.initHooks.get(service.getName()))
+                    for (Pair<Object, Method> hook : this.initHooks.get(service.getTargetedService()))
                     {
                         try
                         {
                             hook.getValue().invoke(hook.getKey(), service);
                         } catch (Exception e)
                         {
-                            System.err.println("Error calling init hook for " + service.getName() + " from " + hook.getValue().toGenericString());
+                            System.err.println("Error calling init hook for " + service.getTargetedService().getName() + " from "
+                                    + hook.getValue().toGenericString());
                             e.printStackTrace();
                         }
                     }
@@ -590,9 +495,9 @@ public class Gunsmith implements ServiceManager, ExpansionManager
             if (!this.stoppedServices.isEmpty())
             {
                 String unbuilt = "";
-                for (String stopped : this.stoppedServices)
+                for (Class<?> stopped : this.stoppedServices)
                 {
-                    unbuilt += " " + stopped;
+                    unbuilt += " " + stopped.getSimpleName();
                 }
                 getLogger().warn("Finished initialization process with the following services unbuilt:" + unbuilt);
             } else
@@ -604,7 +509,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         }
     }
 
-    private void detectBuilders(ServiceProvider provider, StartupHelper startup)
+    private void detectBuilders(ServiceProvider provider, AnnotationCacheHelper startup)
     {
 
         Function<Method, Boolean> builderTest = new Function<Method, Boolean>()
@@ -613,7 +518,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
             @Override
             public Boolean apply(Method input)
             {
-                return input.getParameterTypes().length == 0 && Service.class.isAssignableFrom(input.getReturnType());
+                return input.getParameterTypes().length == 0;
             }
 
         };
@@ -639,7 +544,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
             @Override
             public Boolean apply(Method input)
             {
-                return input.getParameterTypes().length == 1 && input.getParameterTypes()[0] == Service.class;
+                return true;
             }
 
         };
@@ -659,9 +564,6 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void stopServices()
     {
@@ -695,7 +597,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         {
             this.state = State.STOPPING;
             List<Service> toStop = Lists.newArrayList();
-            for (String name : this.services.keySet())
+            for (Class<?> name : this.services.keySet())
             {
                 toStop.add(this.services.get(name));
             }
@@ -711,7 +613,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
             for (Service service : toStop)
             {
                 service.stop();
-                this.stoppedServices.add(service.getName());
+                this.stoppedServices.add(service.getTargetedService());
             }
             this.services.clear();
             System.out.println("Gunsmith successfully shutdown");
@@ -719,12 +621,10 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerServiceProvider(ServiceProvider provider)
     {
+        checkNotNull(provider);
         List<ServiceProvider> target = null;
         if (this.providers.containsKey(provider.getType()))
         {
@@ -739,12 +639,10 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void registerService(String service)
+    public void registerService(Class<?> service)
     {
+        checkNotNull(service);
         if (this.state != State.STARTING_REGISTRATION)
         {
             throw new IllegalStateException();
@@ -755,59 +653,59 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean hasService(String service)
+    public boolean hasService(Class<?> service)
     {
+        if (service == null)
+        {
+            return false;
+        }
         return this.services.containsKey(service) && this.services.get(service).isStarted();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @SuppressWarnings("unchecked")
     @Override
-    public Optional<Service> getService(String name)
+    public <T> Optional<T> getService(Class<T> cls)
     {
-        Service service = this.services.get(name);
+        checkNotNull(cls);
+        T service = (T) this.services.get(cls);
         if (service == null && this.testing)
         {
-            return Optional.fromNullable(createServiceForTesting(name));
+            return Optional.fromNullable(createServiceForTesting(cls));
         }
         return Optional.fromNullable(service);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void stopService(Service service)
     {
+        checkNotNull(service);
         synchronized (this.services)
         {
             service.stop();
             this.services.remove(service.getName());
-            this.stoppedServices.add(service.getName());
+            this.stoppedServices.add(service.getTargetedService());
         }
     }
 
-    private Service createServiceForTesting(String name)
+    @SuppressWarnings("unchecked")
+    private <T> T createServiceForTesting(Class<T> name)
     {
+        checkNotNull(name);
         if (!this.testing)
         {
             return null;
         }
         if (this.testingServices.containsKey(name))
         {
-            return this.testingServices.get(name);
+            return (T) this.testingServices.get(name);
         }
         Service service = null;
         for (Method m : this.testingProvider.getClass().getMethods())
         {
             if (m.isAnnotationPresent(ServiceProvider.Builder.class))
             {
-                if (m.getParameterTypes().length == 0 && Service.class.isAssignableFrom(m.getReturnType()))
+                if (m.getParameterTypes().length == 0)
                 {
                     ServiceProvider.Builder builder = m.getAnnotation(ServiceProvider.Builder.class);
                     if (builder.value().equals(name))
@@ -832,8 +730,7 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         service.start();
         for (Method m : this.testingProvider.getClass().getMethods())
         {
-            if (m.isAnnotationPresent(ServiceProvider.InitHook.class) && m.getParameterTypes().length == 1
-                    && m.getParameterTypes()[0] == Service.class)
+            if (m.isAnnotationPresent(ServiceProvider.InitHook.class) && m.getParameterTypes().length == 1)
             {
                 ServiceProvider.InitHook hook = m.getAnnotation(ServiceProvider.InitHook.class);
                 if (hook.value().equals(name))
@@ -851,15 +748,13 @@ public class Gunsmith implements ServiceManager, ExpansionManager
             }
         }
         this.testingServices.put(name, service);
-        return service;
+        return (T) service;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setTesting(ServiceProvider provider)
     {
+        checkNotNull(provider);
         if (this.testing)
         {
             return;
@@ -869,18 +764,12 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         this.testingServices = Maps.newHashMap();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isTesting()
     {
         return this.testing;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Iterable<Service> getServices()
     {
@@ -895,12 +784,10 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         this.expansions = Lists.newArrayList();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerExpansion(Expansion ex)
     {
+        checkNotNull(ex);
         synchronized (this.expansions)
         {
             if (!this.expansions.contains(ex))
@@ -910,9 +797,6 @@ public class Gunsmith implements ServiceManager, ExpansionManager
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Collection<Expansion> getExpansions()
     {

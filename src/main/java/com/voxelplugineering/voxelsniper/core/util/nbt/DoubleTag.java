@@ -81,18 +81,12 @@ public final class DoubleTag extends Tag
         this.value = value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Double getValue()
     {
         return this.value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {

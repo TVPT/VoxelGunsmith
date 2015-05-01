@@ -43,22 +43,16 @@ public class EventBusService extends AbstractService implements EventBus
      */
     public EventBusService(EventBus bus)
     {
-        super(2);
+        super(EventBus.class, 2);
         this.wrapped = bus;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return "eventBus";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void init()
     {
@@ -66,9 +60,6 @@ public class EventBusService extends AbstractService implements EventBus
         Gunsmith.getLogger().info("Initialized EventBus service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void destroy()
     {
@@ -76,9 +67,6 @@ public class EventBusService extends AbstractService implements EventBus
         Gunsmith.getLogger().info("Stopping EventBus service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void register(Object eventHandler)
     {
@@ -86,9 +74,6 @@ public class EventBusService extends AbstractService implements EventBus
         this.wrapped.register(eventHandler);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unregister(Object eventHandler)
     {
@@ -96,9 +81,6 @@ public class EventBusService extends AbstractService implements EventBus
         this.wrapped.unregister(eventHandler);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ListenableFuture<Event> post(Event event)
     {
@@ -106,9 +88,6 @@ public class EventBusService extends AbstractService implements EventBus
         return this.wrapped.post(event);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean exists()
     {

@@ -28,11 +28,19 @@ import java.io.IOException;
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
+import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
+import com.voxelplugineering.voxelsniper.api.commands.CommandHandler;
 import com.voxelplugineering.voxelsniper.api.config.AbstractConfigurationContainer;
 import com.voxelplugineering.voxelsniper.api.config.Configuration;
 import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
+import com.voxelplugineering.voxelsniper.api.logging.LoggingDistributor;
+import com.voxelplugineering.voxelsniper.api.permissions.PermissionProxy;
 import com.voxelplugineering.voxelsniper.api.platform.PlatformProxy;
 import com.voxelplugineering.voxelsniper.api.platform.TrivialPlatformProxy;
+import com.voxelplugineering.voxelsniper.api.registry.BiomeRegistry;
+import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
+import com.voxelplugineering.voxelsniper.api.registry.PlayerRegistry;
+import com.voxelplugineering.voxelsniper.api.registry.WorldRegistry;
 import com.voxelplugineering.voxelsniper.api.service.Service;
 import com.voxelplugineering.voxelsniper.api.service.ServiceManager;
 import com.voxelplugineering.voxelsniper.api.service.ServiceProvider;
@@ -42,6 +50,7 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvi
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.api.service.scheduler.Scheduler;
 import com.voxelplugineering.voxelsniper.api.util.text.TextFormatParser;
+import com.voxelplugineering.voxelsniper.api.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.core.brushes.ArgumentParsers;
 import com.voxelplugineering.voxelsniper.core.brushes.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.core.commands.AliasCommand;
@@ -88,28 +97,25 @@ public class CoreServiceProvider extends ServiceProvider
         super(ServiceProvider.Type.CORE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerNewServices(ServiceManager manager)
     {
-        manager.registerService("logger");
-        manager.registerService("persistence");
-        manager.registerService("config");
-        manager.registerService("formatProxy");
-        manager.registerService("eventBus");
-        manager.registerService("aliasRegistry");
-        manager.registerService("platformProxy");
-        manager.registerService("permissionProxy");
-        manager.registerService("materialRegistry");
-        manager.registerService("worldRegistry");
-        manager.registerService("playerRegistry");
-        manager.registerService("biomeRegistry");
-        manager.registerService("globalBrushManager");
-        manager.registerService("commandHandler");
-        manager.registerService("scheduler");
-        manager.registerService("offlineUndoHandler");
+        manager.registerService(LoggingDistributor.class);
+        manager.registerService(DataSourceFactory.class);
+        manager.registerService(Configuration.class);
+        manager.registerService(TextFormatParser.class);
+        manager.registerService(EventBus.class);
+        manager.registerService(AliasHandler.class);
+        manager.registerService(PlatformProxy.class);
+        manager.registerService(PermissionProxy.class);
+        manager.registerService(MaterialRegistry.class);
+        manager.registerService(WorldRegistry.class);
+        manager.registerService(PlayerRegistry.class);
+        manager.registerService(BiomeRegistry.class);
+        manager.registerService(BrushManager.class);
+        manager.registerService(CommandHandler.class);
+        manager.registerService(Scheduler.class);
+        manager.registerService(OfflineUndoHandler.class);
     }
 
     /**
@@ -117,8 +123,8 @@ public class CoreServiceProvider extends ServiceProvider
      * 
      * @return The service
      */
-    @Builder("logger")
-    public Service buildLogger()
+    @Builder(LoggingDistributor.class)
+    public LoggingDistributor buildLogger()
     {
         return new LoggingDistributorService();
     }
@@ -128,8 +134,8 @@ public class CoreServiceProvider extends ServiceProvider
      * 
      * @return The service
      */
-    @Builder("persistence")
-    public Service buildPersistence()
+    @Builder(DataSourceFactory.class)
+    public DataSourceFactory buildPersistence()
     {
         return new DataSourceFactoryService();
     }
@@ -139,8 +145,8 @@ public class CoreServiceProvider extends ServiceProvider
      * 
      * @return The service
      */
-    @Builder("config")
-    public Service buildConfig()
+    @Builder(Configuration.class)
+    public Configuration buildConfig()
     {
         return new ConfigurationService();
     }
@@ -150,8 +156,8 @@ public class CoreServiceProvider extends ServiceProvider
      * 
      * @return The service
      */
-    @Builder("formatProxy")
-    public Service buildFormatProxy()
+    @Builder(TextFormatParser.class)
+    public TextFormatParser buildFormatProxy()
     {
         return new TextFormatParser.TrivialTextFormatParser();
     }
@@ -161,8 +167,8 @@ public class CoreServiceProvider extends ServiceProvider
      * 
      * @return The service
      */
-    @Builder("eventBus")
-    public Service buildEventBus()
+    @Builder(EventBus.class)
+    public EventBus buildEventBus()
     {
         return new EventBusService(new AsyncEventBus());
     }
@@ -172,8 +178,8 @@ public class CoreServiceProvider extends ServiceProvider
      * 
      * @return The service
      */
-    @Builder("aliasRegistry")
-    public Service buildAliasRegistry()
+    @Builder(AliasHandler.class)
+    public AliasHandler buildAliasRegistry()
     {
         return new AliasHandlerService(new CommonAliasHandler(new AliasOwner.GunsmithAliasOwner()));
     }
@@ -183,21 +189,20 @@ public class CoreServiceProvider extends ServiceProvider
      * 
      * @param service The service
      */
-    @InitHook("eventBus")
-    public void initEventBus(Service service)
+    @InitHook(EventBus.class)
+    public void initEventBus(EventBus service)
     {
-        ((EventBus) service).register(new CommonEventHandler());
+        service.register(new CommonEventHandler());
     }
 
     /**
      * Init hook
      * 
-     * @param service The service
+     * @param factory The service
      */
-    @InitHook("persistence")
-    public void initPersistence(Service service)
+    @InitHook(DataSourceFactory.class)
+    public void initPersistence(DataSourceFactory factory)
     {
-        DataSourceFactory factory = (DataSourceFactory) service;
         factory.register("stdout", StandardOutDataSource.class, StandardOutDataSource.BUILDER);
         factory.register("file", FileDataSource.class, FileDataSource.BUILDER);
         factory.register("json", JsonDataSourceReader.class, JsonDataSourceReader.BUILDER);
@@ -206,12 +211,11 @@ public class CoreServiceProvider extends ServiceProvider
     /**
      * Init hook
      * 
-     * @param service The service
+     * @param configuration The service
      */
-    @InitHook("config")
-    public void initConfig(Service service)
+    @InitHook(Configuration.class)
+    public void initConfig(Configuration configuration)
     {
-        Configuration configuration = (Configuration) service;
         configuration.registerContainer(BaseConfiguration.class);
         configuration.registerContainer(VoxelSniperConfiguration.class);
     }
@@ -221,13 +225,13 @@ public class CoreServiceProvider extends ServiceProvider
      * 
      * @param service The service
      */
-    @InitHook("aliasRegistry")
-    public void initAlias(Service service)
+    @InitHook(AliasHandler.class)
+    public void initAlias(AliasHandler service)
     {
-        ((AliasHandler) service).registerTarget("brush");
-        ((AliasHandler) service).registerTarget("material");
+        service.registerTarget("brush");
+        service.registerTarget("material");
 
-        DefaultAliasBuilder.loadDefaultAliases(((AliasHandler) service));
+        DefaultAliasBuilder.loadDefaultAliases(service);
     }
 
     /**
@@ -235,8 +239,8 @@ public class CoreServiceProvider extends ServiceProvider
      * 
      * @return The service
      */
-    @Builder("globalBrushManager")
-    public Service getGlobalBrushManager()
+    @Builder(BrushManager.class)
+    public BrushManager getGlobalBrushManager()
     {
         return new BrushManagerService(new CommonBrushManager());
     }
@@ -246,8 +250,8 @@ public class CoreServiceProvider extends ServiceProvider
      * 
      * @return The service
      */
-    @Builder("commandHandler")
-    public Service getCommandHandler()
+    @Builder(CommandHandler.class)
+    public CommandHandler getCommandHandler()
     {
         return new CommandHandlerService();
     }
@@ -255,13 +259,11 @@ public class CoreServiceProvider extends ServiceProvider
     /**
      * Init hook
      * 
-     * @param service The service
+     * @param cmd The service
      */
-    @InitHook("commandHandler")
-    public void registerCommands(Service service)
+    @InitHook(CommandHandler.class)
+    public void registerCommands(CommandHandler cmd)
     {
-        CommandHandlerService cmd = (CommandHandlerService) service;
-
         cmd.registerCommand(new BrushCommand());
         cmd.registerCommand(new MaterialCommand());
         cmd.registerCommand(new MaskMaterialCommand());
@@ -278,7 +280,7 @@ public class CoreServiceProvider extends ServiceProvider
      * 
      * @return The service
      */
-    @Builder("offlineUndoHandler")
+    @Builder(OfflineUndoHandler.class)
     public Service getOfflineUndo()
     {
         return new OfflineUndoHandlerService();
@@ -289,7 +291,7 @@ public class CoreServiceProvider extends ServiceProvider
      * 
      * @return The service
      */
-    @Builder("platformProxy")
+    @Builder(PlatformProxy.class)
     public Service getTrivialPlatform()
     {
         return new TrivialPlatformProxy();
@@ -341,7 +343,6 @@ public class CoreServiceProvider extends ServiceProvider
                     }
                 } else
                 {
-
                     Optional<AbstractConfigurationContainer> container = configuration.getContainer("VoxelSniperConfiguration");
                     if (container.isPresent())
                     {
@@ -424,7 +425,7 @@ public class CoreServiceProvider extends ServiceProvider
             aliasTask.addDirty(globalAliasRegistries);
         }*/
 
-        if (Gunsmith.getScheduler() != null)
+        if (Gunsmith.getServiceManager().hasService(Scheduler.class))
         {
             //Gunsmith.getScheduler().startSynchronousTask(aliasTask, configuration.get("aliasInterval", int.class).or(30000));
             Gunsmith.getScheduler().startSynchronousTask(new ChangeQueueTask(), configuration.get("changeInterval", int.class).or(100));
@@ -456,10 +457,9 @@ public class CoreServiceProvider extends ServiceProvider
          * "Error saving player aliases!"); } }
          */
 
-        Scheduler scheduler = Gunsmith.getScheduler();
-        if (scheduler != null)
+        if (Gunsmith.getServiceManager().hasService(Scheduler.class))
         {
-            scheduler.stopAllTasks();
+            Gunsmith.getScheduler().stopAllTasks();
         }
         AnnotationHelper.clean();
     }

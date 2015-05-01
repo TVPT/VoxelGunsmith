@@ -30,11 +30,8 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceBuilder;
 
 /**
- * A {@link StreamDataSource} which ouputs data to {@link System#out} as a UFT-8
- * encoded String.
- * <p>
- * {@link #read()} is no supported.
- * </p>
+ * A {@link StreamDataSource} which ouputs data to {@link System#out} as a UFT-8 encoded String. <p>
+ * {@link #read()} is no supported. </p>
  */
 public class StandardOutDataSource extends StreamDataSource
 {
@@ -52,27 +49,18 @@ public class StandardOutDataSource extends StreamDataSource
         }
     };
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<String> getName()
     {
         return Optional.of("System.out");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public byte[] read() throws IOException
     {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void write(byte[] data) throws IOException
     {
@@ -81,9 +69,6 @@ public class StandardOutDataSource extends StreamDataSource
         System.out.println();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean exists()
     {

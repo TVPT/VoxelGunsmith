@@ -32,33 +32,15 @@ import com.voxelplugineering.voxelsniper.core.Gunsmith;
 public enum TextFormat
 {
 
-    BLACK,
-    DARK_BLUE,
-    DARK_GREEN,
-    DARK_AQUA,
-    DARK_RED,
-    DARK_PURPLE,
-    GOLD,
-    GRAY,
-    DARK_GRAY,
-    BLUE,
-    GREEN,
-    AQUA,
-    RED,
-    LIGHT_PURPLE,
-    YELLOW,
-    WHITE,
-    BOLD,
-    STRIKETHROUGH,
-    UNDERLINE,
-    ITALIC,
-    RESET;
+    BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_RED, DARK_PURPLE, GOLD, GRAY, DARK_GRAY, BLUE, GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, BOLD,
+    STRIKETHROUGH, UNDERLINE, ITALIC, RESET;
 
     /**
      * Returns the platform specific string representation of this text format.
      * 
      * @return The format code
      */
+    @Override
     public String toString()
     {
         return Gunsmith.getTextFormatProxy().getFormat(this);

@@ -23,6 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.core.brushes;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -48,23 +51,21 @@ public class BrushNodeGraph implements Brush
     private RunnableNodeGraph graph;
 
     /**
-     * Attempts to create a {@link BrushNodeGraph} from the given
-     * {@link DataContainer}.
+     * Attempts to create a {@link BrushNodeGraph} from the given {@link DataContainer}.
      * 
      * @param container The container
      * @return The graph, or null
      */
     public static Brush buildFromContainer(DataContainer container)
     {
+        checkNotNull(container);
         if (container.containsKey("name"))
         {
             Brush brush = new BrushNodeGraph(container.readString("name").get());
             brush.fromContainer(container);
             return brush;
-        } else
-        {
-            return null;
         }
+        return null;
     }
 
     private String help = Gunsmith.getConfiguration().get("defaultBrushHelpMessage", String.class)
@@ -82,10 +83,12 @@ public class BrushNodeGraph implements Brush
      */
     public BrushNodeGraph(String name, BrushPartType type)
     {
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
+        this.type = checkNotNull(type);
         this.graph = new RunnableNodeGraph(name);
         this.arguments = Maps.newHashMap();
         this.argDefaults = Maps.newHashMap();
-        this.type = type;
     }
 
     /**
@@ -117,6 +120,7 @@ public class BrushNodeGraph implements Brush
     @Override
     public void run(RuntimeState state)
     {
+        checkNotNull(state);
         /*Brush ng = this;
         while (ng != null && map != null)
         {
@@ -163,7 +167,7 @@ public class BrushNodeGraph implements Brush
     @Override
     public void setHelp(String help)
     {
-        this.help = help;
+        this.help = checkNotNull(help);
     }
 
     /**
@@ -188,6 +192,8 @@ public class BrushNodeGraph implements Brush
     @Override
     public void addArgument(String name, ArgumentParser<?> parser, String defaultValue, String... aliases)
     {
+        checkNotNull(name);
+        checkNotNull(parser);
         if (defaultValue != null && !defaultValue.isEmpty())
         {
             this.argDefaults.put(name, defaultValue);
@@ -200,9 +206,8 @@ public class BrushNodeGraph implements Brush
     }
 
     /**
-     * Sets a certain argument as the primary argument. The argument specific
-     * must have already been added with
-     * {@link #addArgument(String, ArgumentParser, String, String...)}.
+     * Sets a certain argument as the primary argument. The argument specific must have already been
+     * added with {@link #addArgument(String, ArgumentParser, String, String...)}.
      * 
      * @param arg The new primary argument
      */
@@ -217,9 +222,6 @@ public class BrushNodeGraph implements Brush
         this.primary = arg;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void parseArguments(String group, VariableHolder vars)
     {
@@ -269,9 +271,6 @@ public class BrushNodeGraph implements Brush
         return Collections.unmodifiableMap(this.arguments);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void fromContainer(DataContainer container)
     {
@@ -279,9 +278,6 @@ public class BrushNodeGraph implements Brush
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataContainer toContainer()
     {
@@ -289,27 +285,18 @@ public class BrushNodeGraph implements Brush
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return this.graph.getName();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStartNode(Node node)
     {
         this.graph.setNext(node);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Node getStartNode()
     {

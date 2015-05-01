@@ -35,8 +35,7 @@ import com.voxelplugineering.voxelsniper.core.util.BrushParsing;
 import com.voxelplugineering.voxelsniper.core.util.StringUtilities;
 
 /**
- * Standard brush command to select a brush and provide the necessary arguments
- * to said brush.
+ * Standard brush command to select a brush and provide the necessary arguments to said brush.
  */
 public class BrushCommand extends Command
 {
@@ -61,9 +60,6 @@ public class BrushCommand extends Command
         setPermissions("voxelsniper.command.brush");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {

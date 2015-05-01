@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.util;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
@@ -36,8 +38,8 @@ public class BrushParsing
 {
 
     /**
-     * Attempts to parse the given command to a {@link BrushChain} in the
-     * context of the given {@link BrushManager}.
+     * Attempts to parse the given command to a {@link BrushChain} in the context of the given
+     * {@link BrushManager}.
      * 
      * @param cmd The command
      * @param manager The brush manager
@@ -46,6 +48,8 @@ public class BrushParsing
      */
     public static Optional<BrushChain> parse(String cmd, BrushManager manager, AliasRegistry aliases)
     {
+        checkNotNull(cmd);
+        checkNotNull(manager);
         if (aliases != null)
         {
             cmd = aliases.expand(cmd);
@@ -67,10 +71,8 @@ public class BrushParsing
                     {
                         brush.chain(attempt.get());
                         continue;
-                    } else
-                    {
-                        return Optional.absent();
                     }
+                    return Optional.absent();
                 }
                 continue;
             } else if (c == '}')
@@ -94,10 +96,8 @@ public class BrushParsing
                         brush.chain(attempt.get());
                         clearOnNext = true;
                         continue;
-                    } else
-                    {
-                        return Optional.absent();
                     }
+                    return Optional.absent();
                 }
             } else
             {

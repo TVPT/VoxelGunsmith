@@ -32,8 +32,7 @@ import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.core.Gunsmith;
 
 /**
- * Standard brush command to select a brush and provide the necessary arguments
- * to said brush.
+ * Standard brush command to select a brush and provide the necessary arguments to said brush.
  */
 public class MaterialCommand extends Command
 {
@@ -43,8 +42,7 @@ public class MaterialCommand extends Command
      */
 
     /**
-     * The message sent to the player if their chosen material is not found in
-     * the registry.
+     * The message sent to the player if their chosen material is not found in the registry.
      */
     private String materialNotFoundMessage = "Could not find that material.";
     /**
@@ -70,9 +68,6 @@ public class MaterialCommand extends Command
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {

@@ -49,9 +49,6 @@ public class ShapeGetOriginNode extends AbstractNode
         this.origin = new Provider<Vector3i>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

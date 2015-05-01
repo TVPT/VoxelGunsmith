@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.service.eventbus;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +67,7 @@ public class SubscriberList
      */
     public void register(Subscriber sub)
     {
+        checkNotNull(sub);
         getOrCreateList(sub.getPriority()).add(sub);
     }
 
@@ -75,6 +78,7 @@ public class SubscriberList
      */
     public synchronized void unregister(Subscriber sub)
     {
+        checkNotNull(sub);
         if (this.subs.containsKey(sub.getPriority()))
         {
             this.subs.get(sub.getPriority()).remove(sub);
@@ -88,6 +92,7 @@ public class SubscriberList
      */
     public void register(Iterable<Subscriber> list)
     {
+        checkNotNull(list);
         for (Subscriber s : list)
         {
             register(s);
@@ -109,8 +114,8 @@ public class SubscriberList
     }
 
     /**
-     * Gets a list of subscribers ordered by priority. The ordering within
-     * priority groups is undefined.
+     * Gets a list of subscribers ordered by priority. The ordering within priority groups is
+     * undefined.
      * 
      * @return The list
      */

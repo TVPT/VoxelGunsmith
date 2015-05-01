@@ -44,9 +44,6 @@ public class HelpCommand extends Command
         setPermissions("voxelsniper.command.help");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {

@@ -24,8 +24,8 @@
 package com.voxelplugineering.voxelsniper.api.service;
 
 /**
- * Represents something which may be initialized or destroyed independently from
- * its object constructor.
+ * Represents something which may be initialized or destroyed independently from its object
+ * constructor.
  */
 public interface Buildable
 {

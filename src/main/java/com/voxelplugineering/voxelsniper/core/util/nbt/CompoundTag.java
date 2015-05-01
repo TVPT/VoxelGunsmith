@@ -86,9 +86,6 @@ public final class CompoundTag extends Tag
         this.value = Collections.unmodifiableMap(value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Map<String, Tag> getValue()
     {
@@ -128,9 +125,6 @@ public final class CompoundTag extends Tag
         return Optional.of(expected.cast(tag));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString()
     {

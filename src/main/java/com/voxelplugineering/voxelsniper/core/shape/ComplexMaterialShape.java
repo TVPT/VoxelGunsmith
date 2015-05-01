@@ -58,6 +58,7 @@ public class ComplexMaterialShape implements MaterialShape
      */
     public ComplexMaterialShape(Shape shape, Material defaultMaterial)
     {
+        checkNotNull(shape);
         checkNotNull(defaultMaterial, "Default material cannot be null!");
         this.shape = new ComplexShape(shape);
         this.materialDictionary = HashBiMap.create();
@@ -73,14 +74,12 @@ public class ComplexMaterialShape implements MaterialShape
      * 
      * @return the shape
      */
+    @Override
     public Shape getShape()
     {
         return this.shape;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isMutable()
     {
@@ -94,9 +93,9 @@ public class ComplexMaterialShape implements MaterialShape
      * @param y the y position to get
      * @param z the z position to get
      * @param relative whether to offset the given position to the origin
-     * @return the material, or {@link Optional#absent()} if the point in the
-     *         shape is not set
+     * @return the material, or {@link Optional#absent()} if the point in the shape is not set
      */
+    @Override
     public Optional<Material> getMaterial(int x, int y, int z, boolean relative)
     {
         if (this.getShape().get(x, y, z, relative))
@@ -106,10 +105,8 @@ public class ComplexMaterialShape implements MaterialShape
                 set(x, y, z, (short) 0); // the default material
             }
             return Optional.<Material>of(this.materialDictionary.get(get(x, y, z)));
-        } else
-        {
-            return Optional.absent();
         }
+        return Optional.absent();
     }
 
     private short get(int x, int y, int z)
@@ -139,8 +136,7 @@ public class ComplexMaterialShape implements MaterialShape
     }
 
     /**
-     * Sets the given point in the shape and applies the given material to that
-     * point.
+     * Sets the given point in the shape and applies the given material to that point.
      * 
      * @param x the x position
      * @param y the y position
@@ -148,6 +144,7 @@ public class ComplexMaterialShape implements MaterialShape
      * @param relative whether to offset the given position to the origin
      * @param material the material to set the given point to
      */
+    @Override
     public void setMaterial(int x, int y, int z, boolean relative, Material material)
     {
         checkNotNull(material);
@@ -171,8 +168,7 @@ public class ComplexMaterialShape implements MaterialShape
     }
 
     /**
-     * Unsets the given location in the shape and clears any material data for
-     * that point.
+     * Unsets the given location in the shape and clears any material data for that point.
      * 
      * @param x the x position
      * @param y the y position
@@ -204,6 +200,7 @@ public class ComplexMaterialShape implements MaterialShape
      * 
      * @param material the material
      */
+    @Override
     public void flood(Material material)
     {
         short id = this.getOrRegisterMaterial(material);
@@ -226,8 +223,7 @@ public class ComplexMaterialShape implements MaterialShape
     }
 
     /**
-     * Fills the entire horizontal layers between y and height with the given
-     * material.
+     * Fills the entire horizontal layers between y and height with the given material.
      * 
      * @param material The material
      * @param y The starting y layer
@@ -251,9 +247,8 @@ public class ComplexMaterialShape implements MaterialShape
     }
 
     /**
-     * Returns the id for the given material within this {@link MaterialShape}'s
-     * dictionary. If the material is not found in the dictionary then the next
-     * id is allocated to it.
+     * Returns the id for the given material within this {@link MaterialShape}'s dictionary. If the
+     * material is not found in the dictionary then the next id is allocated to it.
      * 
      * @param material the material to fetch
      * @return the id for the material
@@ -263,45 +258,43 @@ public class ComplexMaterialShape implements MaterialShape
         if (this.inverseDictionary.containsKey(material))
         {
             return this.inverseDictionary.get(material);
-        } else
-        {
-            short id = this.nextId++;
-            this.materialDictionary.put(id, material);
-            return id;
         }
+        short id = this.nextId++;
+        this.materialDictionary.put(id, material);
+        return id;
     }
 
     /**
-     * Returns the width of the underlying shape (x-axis size). Note that this
-     * is not the width of the region set, but rather the width of the total
-     * possible volume.
+     * Returns the width of the underlying shape (x-axis size). Note that this is not the width of
+     * the region set, but rather the width of the total possible volume.
      * 
      * @return the width
      */
+    @Override
     public int getWidth()
     {
         return this.shape.getWidth();
     }
 
     /**
-     * Returns the height of this shape (y-axis size). Note that this is not the
-     * height of the region set, but rather the height of the total possible
-     * volume.
+     * Returns the height of this shape (y-axis size). Note that this is not the height of the
+     * region set, but rather the height of the total possible volume.
      * 
      * @return the height
      */
+    @Override
     public int getHeight()
     {
         return this.shape.getHeight();
     }
 
     /**
-     * Returns the length of this shape (z-axis size). Note that this is not the
-     * length of the region set, but rather the length of the total possible
-     * volume.
+     * Returns the length of this shape (z-axis size). Note that this is not the length of the
+     * region set, but rather the length of the total possible volume.
      * 
      * @return the length
      */
+    @Override
     public int getLength()
     {
         return this.shape.getLength();
@@ -312,6 +305,7 @@ public class ComplexMaterialShape implements MaterialShape
      * 
      * @return the origin
      */
+    @Override
     public Vector3i getOrigin()
     {
         return this.shape.getOrigin();
@@ -331,35 +325,26 @@ public class ComplexMaterialShape implements MaterialShape
     }
 
     /**
-     * Floods the shape with the default material, effectively resetting it to
-     * initial conditions.
+     * Floods the shape with the default material, effectively resetting it to initial conditions.
      */
+    @Override
     public void reset()
     {
         flood(this.defaultMaterial);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean get(int x, int y, int z, boolean relative)
     {
         return this.shape.get(x, y, z, relative);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void set(int x, int y, int z, boolean relative)
     {
         this.shape.set(x, y, z, relative);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MaterialShape clone()
     {
@@ -367,45 +352,30 @@ public class ComplexMaterialShape implements MaterialShape
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unset(int x, int y, int z, boolean relative)
     {
         this.shape.unset(x, y, z, relative);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Material getDefaultMaterial()
     {
         return this.defaultMaterial;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public byte[] getLowerMaterialData()
     {
         return this.materialsA;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public byte[] getUpperMaterialData()
     {
         return this.materialsB;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean hasExtraData()
     {
@@ -414,18 +384,12 @@ public class ComplexMaterialShape implements MaterialShape
         return this.nextId > 256;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Map<Short, Material> getMaterialsDictionary()
     {
         return this.materialDictionary;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaxMaterialId()
     {
@@ -444,9 +408,6 @@ public class ComplexMaterialShape implements MaterialShape
         this.nextId = (short) Math.max(this.nextId, key);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setDefaultMaterial(Material material)
     {

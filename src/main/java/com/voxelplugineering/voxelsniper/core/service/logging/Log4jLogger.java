@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.service.logging;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
@@ -83,84 +85,57 @@ public class Log4jLogger implements com.voxelplugineering.voxelsniper.api.loggin
      */
     public Log4jLogger(Logger logger)
     {
-        this.logger = logger;
+        this.logger = checkNotNull(logger);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public LogLevel getLevel()
     {
         return toLevel(this.logger.getLevel());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLevel(LogLevel level)
     {
         // TODO set log4j logger level ?
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void log(LogLevel level, String msg)
     {
         this.logger.log(fromLevel(level), msg);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void debug(String msg)
     {
         this.logger.debug(msg);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void info(String msg)
     {
         this.logger.info(msg);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void warn(String msg)
     {
         this.logger.warn(msg);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void error(String msg)
     {
         this.logger.error(msg);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void error(Exception e)
     {
         this.logger.error("", e);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void error(Exception e, String msg)
     {

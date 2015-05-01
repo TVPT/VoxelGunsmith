@@ -23,8 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.world;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.World;
@@ -53,9 +53,7 @@ public final class CommonLocation implements Cloneable, Location
      */
     public CommonLocation(World world, double x, double y, double z)
     {
-        checkNotNull(world, "World cannot be null");
-        this.world = world;
-        this.position = new Vector3d(x, y, z);
+        this(world, new Vector3d(x, y, z));
     }
 
     /**
@@ -66,114 +64,76 @@ public final class CommonLocation implements Cloneable, Location
      */
     public CommonLocation(World world, Vector3d position)
     {
-        checkNotNull(world, "World cannot be null");
-        checkNotNull(position, "Position cannot be null");
-        this.world = world;
-        this.position = position;
+        this.world = checkNotNull(world, "World cannot be null");
+        this.position = checkNotNull(position, "Position cannot be null");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public World getWorld()
     {
         return this.world;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Vector3i getFlooredPosition()
     {
         return new Vector3i(this.position);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public double getX()
     {
         return this.position.getX();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public double getY()
     {
         return this.position.getY();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public double getZ()
     {
         return this.position.getZ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFlooredX()
     {
         return (int) Math.floor(this.position.getX());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFlooredY()
     {
         return (int) Math.floor(this.position.getY());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFlooredZ()
     {
         return (int) Math.floor(this.position.getZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Location add(double x, double y, double z)
     {
         return new CommonLocation(this.world, this.position.add(x, y, z));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Location add(Vector3i v)
     {
         return new CommonLocation(this.world, this.position.getX() + v.getX(), this.position.getY() + v.getY(), this.position.getZ() + v.getZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Location add(Vector3d vector)
     {
         return new CommonLocation(this.world, this.position.add(vector));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Location add(Location location)
     {
@@ -181,26 +141,18 @@ public final class CommonLocation implements Cloneable, Location
         return new CommonLocation(this.world, this.position.add(location.toVector()));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Location clone()
     {
         return new CommonLocation(this.world, this.position);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String toString()
     {
         return "CommonLocation (" + this.world.getName() + ": " + this.position.toString() + " )";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Vector3d toVector()
     {

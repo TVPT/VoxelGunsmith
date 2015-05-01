@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.util.schematic;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -67,12 +69,10 @@ public class CommonSchematicLoader implements SchematicLoader
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MaterialShape load(DataSourceReader data) throws IOException
     {
+        checkNotNull(data);
         DataContainer schematicTag = data.read();
         if (!schematicTag.containsKey("Blocks"))
         {
@@ -118,8 +118,7 @@ public class CommonSchematicLoader implements SchematicLoader
             }
         }
         // Need to pull out tile entities from this list of compound tags
-        @SuppressWarnings("unchecked")
-        List<Tag> tileEntities = schematicTag.readList("TileEntities").get();
+        @SuppressWarnings("unchecked") List<Tag> tileEntities = schematicTag.readList("TileEntities").get();
         // this is the map we will populate with all extracted time entities
         Map<Vector3i, CompoundTag> tileEntitiesMap = Maps.newHashMap();
         for (Tag tag : tileEntities)
@@ -150,8 +149,7 @@ public class CommonSchematicLoader implements SchematicLoader
             tileEntitiesMap.put(vec, tileEntity);
         }
 
-        @SuppressWarnings("unchecked")
-        List<Tag> entities = schematicTag.readList("Entities").get();
+        @SuppressWarnings("unchecked") List<Tag> entities = schematicTag.readList("Entities").get();
 
         // this is the map we will populate with all extracted time entities
         Map<Vector3i, CompoundTag> entitiesMap = new HashMap<Vector3i, CompoundTag>();
@@ -183,8 +181,7 @@ public class CommonSchematicLoader implements SchematicLoader
         }
 
         // Load material dictionary
-        @SuppressWarnings("unchecked")
-        List<Tag> dict = schematicTag.readList("MaterialDictionary").get();
+        @SuppressWarnings("unchecked") List<Tag> dict = schematicTag.readList("MaterialDictionary").get();
         Map<Short, Material> materialDict = Maps.newHashMap();
         for (Tag tag : dict)
         {
@@ -235,12 +232,11 @@ public class CommonSchematicLoader implements SchematicLoader
         return region;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void save(DataSourceReader data, MaterialShape shape, MessageReceiver owner) throws IOException
     {
+        checkNotNull(data);
+        checkNotNull(shape);
         int width = shape.getWidth();
         int height = shape.getHeight();
         int length = shape.getLength();
@@ -356,9 +352,6 @@ public class CommonSchematicLoader implements SchematicLoader
             // TODO LegacyConverter
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public MaterialShape convert()
         {

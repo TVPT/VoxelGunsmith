@@ -42,19 +42,9 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReade
 public class CommonBrushManager implements BrushManager
 {
 
-    /**
-     * The parent brush manager, referenced by the brush getter if it cannot be
-     * found within this brush manager.
-     */
     private BrushManager parent = null;
-    /**
-     * A map of brushes loaded in this manager.
-     */
-    private Map<String, Brush> brushes;
-    /**
-     * An ordered list of loaders used to load brushes by name.
-     */
-    private List<DataSourceReader> loaders;
+    private final Map<String, Brush> brushes;
+    private final List<DataSourceReader> loaders;
 
     /**
      * Creates a new CommonBrushManager.
@@ -86,18 +76,13 @@ public class CommonBrushManager implements BrushManager
         }*/
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addLoader(DataSourceReader loader)
     {
+        checkNotNull(loader);
         this.loaders.add(0, loader);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void loadBrush(String identifier, Brush graph)
     {
@@ -108,9 +93,6 @@ public class CommonBrushManager implements BrushManager
         this.brushes.put(identifier, graph);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void loadBrush(String identifier)
     {
@@ -135,9 +117,6 @@ public class CommonBrushManager implements BrushManager
         }*/
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Brush> getBrush(String identifier)
     {
@@ -155,36 +134,24 @@ public class CommonBrushManager implements BrushManager
         return Optional.of(br);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setParent(BrushManager parent)
     {
         this.parent = parent;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public BrushManager getParent()
     {
         return this.parent;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<DataSourceReader> getAllLoaders()
     {
         return this.loaders;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void clearLoaders()
     {

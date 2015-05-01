@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.util.defaults;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -76,8 +78,8 @@ import com.voxelplugineering.voxelsniper.core.nodes.world.ShapeMaterialSetNode;
 import com.voxelplugineering.voxelsniper.core.nodes.world.biome.SetBiomeNode;
 
 /**
- * In lieu of having flat file brushes this will temporarily serve as a builder
- * for brushes at runtime for debugging during development.
+ * In lieu of having flat file brushes this will temporarily serve as a builder for brushes at
+ * runtime for debugging during development.
  */
 public class DefaultBrushBuilder
 {
@@ -94,6 +96,7 @@ public class DefaultBrushBuilder
      */
     public static void loadAll(BrushManager manager)
     {
+        checkNotNull(manager);
         for (String name : graphs.keySet())
         {
             Brush brush = graphs.get(name);
@@ -108,6 +111,7 @@ public class DefaultBrushBuilder
      */
     public static void saveAll(File directory)
     {
+        checkNotNull(directory);
         if (!directory.exists())
         {
             directory.mkdirs();

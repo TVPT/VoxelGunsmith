@@ -49,81 +49,54 @@ public abstract class NativeBrush implements Brush
         this.type = type;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public BrushPartType getType()
     {
         return this.type;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getHelp()
     {
         return this.help;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setHelp(String help)
     {
         this.help = help;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Node getStartNode()
     {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStartNode(Node node)
     {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addArgument(String name, ArgumentParser<?> parser, String defaultValue, String... aliases)
     {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setArgumentAsPrimary(String name)
     {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void fromContainer(DataContainer container)
     {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataContainer toContainer()
     {

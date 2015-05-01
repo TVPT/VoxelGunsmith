@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.world;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
@@ -55,12 +57,10 @@ public abstract class AbstractWorld<T> extends WeakWrapper<T> implements World
         super(value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Block> getBlock(Location location)
     {
+        checkNotNull(location);
         if (location.getWorld() != this)
         {
             return Optional.absent();
@@ -68,21 +68,18 @@ public abstract class AbstractWorld<T> extends WeakWrapper<T> implements World
         return getBlock(location.getFlooredX(), location.getFlooredY(), location.getFlooredZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Block> getBlock(Vector3i vector)
     {
+        checkNotNull(vector);
         return getBlock(vector.getX(), vector.getY(), vector.getZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setBlock(Material material, Location location)
     {
+        checkNotNull(material);
+        checkNotNull(location);
         if (location.getWorld() != this)
         {
             return;
@@ -90,30 +87,25 @@ public abstract class AbstractWorld<T> extends WeakWrapper<T> implements World
         setBlock(material, location.getFlooredX(), location.getFlooredY(), location.getFlooredZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setBlock(Material material, Vector3i vector)
     {
+        checkNotNull(material);
+        checkNotNull(vector);
         setBlock(material, vector.getX(), vector.getY(), vector.getZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Chunk> getChunk(Vector3i vector)
     {
+        checkNotNull(vector);
         return getChunk(vector.getX(), vector.getY(), vector.getZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Biome> getBiome(Location location)
     {
+        checkNotNull(location);
         if (location.getWorld() != this)
         {
             return Optional.absent();
@@ -121,21 +113,18 @@ public abstract class AbstractWorld<T> extends WeakWrapper<T> implements World
         return getBiome(location.getFlooredX(), location.getFlooredY(), location.getFlooredZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Biome> getBiome(Vector3i vector)
     {
+        checkNotNull(vector);
         return getBiome(vector.getX(), vector.getY(), vector.getZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setBiome(Biome biome, Location location)
     {
+        checkNotNull(biome);
+        checkNotNull(location);
         if (location.getWorld() != this)
         {
             return;
@@ -143,21 +132,19 @@ public abstract class AbstractWorld<T> extends WeakWrapper<T> implements World
         setBiome(biome, location.getFlooredX(), location.getFlooredY(), location.getFlooredZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setBiome(Biome biome, Vector3i vector)
     {
+        checkNotNull(biome);
+        checkNotNull(vector);
         setBiome(biome, vector.getX(), vector.getY(), vector.getZ());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MaterialShape getShapeFromWorld(Location origin, Shape shape)
     {
+        checkNotNull(origin);
+        checkNotNull(shape);
         MaterialShape mat = new ComplexMaterialShape(shape, Gunsmith.getMaterialRegistry().getAirMaterial());
         for (int x = 0; x < shape.getWidth(); x++)
         {

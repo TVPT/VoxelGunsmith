@@ -73,9 +73,6 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
         });
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean has(String identifier)
     {
@@ -89,9 +86,6 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<DataSource> get(String identifier)
     {
@@ -111,9 +105,6 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setReaderType(Class<? extends DataSourceReader> reader, DataContainer args)
     {
@@ -121,9 +112,6 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
         this.readerArgs = args;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @SuppressWarnings("unchecked")
     @Override
     public Optional<DataSourceReader> getWithReader(String identifier)
@@ -135,18 +123,12 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
         return (Optional<DataSourceReader>) getWithReader(identifier, this.reader, this.readerArgs);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DataSourceReader> Optional<T> getWithReader(String identifier, Class<T> reader)
     {
         return getWithReader(identifier, reader, new MemoryContainer());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DataSourceReader> Optional<T> getWithReader(String identifier, Class<T> reader, DataContainer args)
     {
@@ -170,9 +152,6 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
         return Optional.absent();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<? extends DataSourceProvider> getInternalProvider(String identifier)
     {

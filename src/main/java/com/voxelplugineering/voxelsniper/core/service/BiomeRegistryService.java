@@ -50,21 +50,15 @@ public class BiomeRegistryService<T> extends AbstractService implements BiomeReg
      */
     public BiomeRegistryService()
     {
-        super(12);
+        super(BiomeRegistry.class, 12);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return "biomeRegistry";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void init()
     {
@@ -74,9 +68,6 @@ public class BiomeRegistryService<T> extends AbstractService implements BiomeReg
         Gunsmith.getLogger().info("Initialized BiomeRegistry service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
 
     @Override
     protected void destroy()
@@ -86,9 +77,6 @@ public class BiomeRegistryService<T> extends AbstractService implements BiomeReg
         Gunsmith.getLogger().info("Stopped BiomeRegistry service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Biome> getBiome(String name)
     {
@@ -96,9 +84,6 @@ public class BiomeRegistryService<T> extends AbstractService implements BiomeReg
         return this.registry.get(name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Biome> getBiome(T biome)
     {
@@ -106,9 +91,6 @@ public class BiomeRegistryService<T> extends AbstractService implements BiomeReg
         return this.registry.get(biome);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerBiome(String name, T object, Biome biome)
     {
@@ -120,9 +102,6 @@ public class BiomeRegistryService<T> extends AbstractService implements BiomeReg
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Iterable<Biome> getBiomes()
     {
@@ -135,9 +114,6 @@ public class BiomeRegistryService<T> extends AbstractService implements BiomeReg
         return biomes;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Biome getDefaultBiome()
     {

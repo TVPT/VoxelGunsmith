@@ -44,6 +44,7 @@ public interface CSGShape extends Shape
      * 
      * @return The copy
      */
+    @Override
     CSGShape clone();
 
 }

@@ -62,9 +62,6 @@ public class CountOccurrencesNode extends AbstractNode
         return this.integerProvider;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

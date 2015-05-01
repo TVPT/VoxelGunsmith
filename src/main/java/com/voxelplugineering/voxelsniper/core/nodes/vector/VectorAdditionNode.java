@@ -51,9 +51,6 @@ public class VectorAdditionNode extends AbstractNode
         this.r = new Provider<Vector3i>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

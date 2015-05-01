@@ -60,9 +60,6 @@ public class GetOverlappingChunksNode extends AbstractNode
         this.chunks = new Provider<Chunk[]>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

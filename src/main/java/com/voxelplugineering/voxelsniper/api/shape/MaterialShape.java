@@ -97,8 +97,8 @@ public interface MaterialShape extends Shape
     byte[] getUpperMaterialData();
 
     /**
-     * Gets if this shape exceeds 256 dictionary values and therefore needs both
-     * the upper and lower halves of the material data arrays.
+     * Gets if this shape exceeds 256 dictionary values and therefore needs both the upper and lower
+     * halves of the material data arrays.
      * 
      * @return Has extra data
      */
@@ -112,8 +112,8 @@ public interface MaterialShape extends Shape
     void setDefaultMaterial(Material material);
 
     /**
-     * Gets the material dictionary for this shape. This dictionary is a mapping
-     * of shorts to the materials that they represent.
+     * Gets the material dictionary for this shape. This dictionary is a mapping of shorts to the
+     * materials that they represent.
      * 
      * @return The material dictionary
      */

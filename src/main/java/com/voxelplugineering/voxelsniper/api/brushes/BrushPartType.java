@@ -24,8 +24,8 @@
 package com.voxelplugineering.voxelsniper.api.brushes;
 
 /**
- * An enumeration of some standard brush part types. These describe the general
- * targeted purpose of a brush part but should NOT be relied upon.
+ * An enumeration of some standard brush part types. These describe the general targeted purpose of
+ * a brush part but should NOT be relied upon.
  */
 public enum BrushPartType
 {

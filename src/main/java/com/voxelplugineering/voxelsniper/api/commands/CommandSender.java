@@ -32,8 +32,7 @@ public interface CommandSender extends MessageReceiver
 {
 
     /**
-     * Is this command sender a player (are they a living entity within the
-     * world).
+     * Is this command sender a player (are they a living entity within the world).
      * 
      * @return Is player
      */

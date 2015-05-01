@@ -47,9 +47,6 @@ public interface ArgumentParser<T>
     public static class RawParser implements ArgumentParser<String>
     {
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Optional<String> get(String arg)
         {

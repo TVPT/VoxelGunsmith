@@ -37,8 +37,7 @@ public interface Material
     String getName();
 
     /**
-     * Returns whether the material is representing a voxel which mat be placed
-     * within the world.
+     * Returns whether the material is representing a voxel which mat be placed within the world.
      * 
      * @return is a placeable block
      */
@@ -52,8 +51,8 @@ public interface Material
     boolean isAffectedByGravity();
 
     /**
-     * Returns if the material is solid (eg. whether a user could pass through
-     * the material unhindered).
+     * Returns if the material is solid (eg. whether a user could pass through the material
+     * unhindered).
      * 
      * @return is a solid block
      */
@@ -67,8 +66,8 @@ public interface Material
     boolean isLiquid();
 
     /**
-     * Returns if the material is reliant on its environment. (ex. a torch
-     * hanging from a wall is reliant on the wall).
+     * Returns if the material is reliant on its environment. (ex. a torch hanging from a wall is
+     * reliant on the wall).
      * 
      * @return is reliant on the environment
      */

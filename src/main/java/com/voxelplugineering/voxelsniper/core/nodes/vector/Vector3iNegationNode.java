@@ -48,9 +48,6 @@ public class Vector3iNegationNode extends AbstractNode
         this.vecOut = new Provider<Vector3i>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

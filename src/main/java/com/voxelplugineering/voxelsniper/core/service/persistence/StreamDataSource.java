@@ -34,8 +34,8 @@ public abstract class StreamDataSource implements DataSource
 {
 
     /**
-     * Reads from this {@link DataSource} completely and returns the result of
-     * the read as a byte array.
+     * Reads from this {@link DataSource} completely and returns the result of the read as a byte
+     * array.
      * 
      * @return The data
      * @throws IOException If an error occurred while reading

@@ -33,38 +33,38 @@ public abstract class AbstractService implements Service
 
     private boolean started = false;
     private final int priority;
+    private final Class<?> serviceClass;
 
     /**
      * Initializes {@link Service}
      * 
+     * @param serviceClass The targeted service class
      * @param priority The service priority
      */
-    public AbstractService(int priority)
+    public AbstractService(Class<?> serviceClass, int priority)
     {
         this.priority = priority;
+        this.serviceClass = serviceClass;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public Class<?> getTargetedService()
+    {
+        return this.serviceClass;
+    }
+
     @Override
     public int getPriority()
     {
         return this.priority;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final boolean isStarted()
     {
         return this.started;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void start()
     {
@@ -81,9 +81,6 @@ public abstract class AbstractService implements Service
      */
     protected abstract void init();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void stop()
     {

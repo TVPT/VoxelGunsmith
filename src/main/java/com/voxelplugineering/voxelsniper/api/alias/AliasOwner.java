@@ -47,9 +47,6 @@ public interface AliasOwner
     public static class GunsmithAliasOwner implements AliasOwner
     {
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public DataSourceReader getAliasSource()
         {

@@ -83,8 +83,7 @@ public class JsonDataSourceReader implements DataSourceReader
     private boolean pretty = false;
 
     /**
-     * Creates a new {@link JsonDataSourceReader} based on the given stream
-     * source.
+     * Creates a new {@link JsonDataSourceReader} based on the given stream source.
      * 
      * @param source The source
      */
@@ -103,9 +102,6 @@ public class JsonDataSourceReader implements DataSourceReader
         this.pretty = pretty;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void write(DataContainer container) throws IOException
     {
@@ -124,8 +120,7 @@ public class JsonDataSourceReader implements DataSourceReader
     }
 
     /**
-     * Recursively converts the given {@link DataContainer} to a
-     * {@link JsonObject}.
+     * Recursively converts the given {@link DataContainer} to a {@link JsonObject}.
      * 
      * @param container The container to convert
      * @return The json object representing the container
@@ -162,9 +157,6 @@ public class JsonDataSourceReader implements DataSourceReader
         return json;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataContainer read() throws IOException
     {
@@ -177,8 +169,7 @@ public class JsonDataSourceReader implements DataSourceReader
     }
 
     /**
-     * Recursively converts the given {@link JsonElement} to a
-     * {@link DataContainer}.
+     * Recursively converts the given {@link JsonElement} to a {@link DataContainer}.
      * 
      * @param rootelement The element to convert
      * @return The new {@link DataContainer}
@@ -218,18 +209,12 @@ public class JsonDataSourceReader implements DataSourceReader
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void write(DataSerializable serial) throws IOException
     {
         write(serial.toContainer());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DataSerializable> T read(T object) throws IOException
     {
@@ -237,18 +222,12 @@ public class JsonDataSourceReader implements DataSourceReader
         return object;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<String> getName()
     {
         return this.source.getName();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean exists()
     {

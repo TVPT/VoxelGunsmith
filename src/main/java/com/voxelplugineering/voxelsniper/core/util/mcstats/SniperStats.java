@@ -63,8 +63,7 @@ public final class SniperStats extends Metrics
     }
 
     /**
-     * Set Initialization time for reference when calculating average Snipes per
-     * Minute.
+     * Set Initialization time for reference when calculating average Snipes per Minute.
      * 
      * @param currentTimeMillis Current time
      */
@@ -84,27 +83,18 @@ public final class SniperStats extends Metrics
         super("VoxelSniper", pluginVersion);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getServerVersion()
     {
         return Gunsmith.getPlatformProxy().getVersion();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPlayersOnline()
     {
         return Gunsmith.getPlatformProxy().getNumberOfPlayersOnline();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public File getConfigFile()
     {

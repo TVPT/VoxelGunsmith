@@ -48,8 +48,7 @@ public abstract class SniperEvent extends Event
      */
     protected SniperEvent(Player sniper)
     {
-        checkNotNull(sniper, "Sniper cannot be null!");
-        this.sniper = sniper;
+        this.sniper = checkNotNull(sniper, "Sniper cannot be null!");
     }
 
     /**

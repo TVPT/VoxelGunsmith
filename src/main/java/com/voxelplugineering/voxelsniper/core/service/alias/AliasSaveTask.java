@@ -63,9 +63,6 @@ public class AliasSaveTask implements Runnable
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public synchronized void run()
     {

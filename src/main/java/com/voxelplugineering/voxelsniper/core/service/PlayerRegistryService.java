@@ -55,23 +55,17 @@ public class PlayerRegistryService<T> extends AbstractService implements PlayerR
      */
     public PlayerRegistryService(RegistryProvider<T, Player> provider, CommandSender console)
     {
-        super(8);
+        super(PlayerRegistry.class, 8);
         this.console = console;
         this.provider = provider;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return "playerRegistry";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void init()
     {
@@ -79,9 +73,6 @@ public class PlayerRegistryService<T> extends AbstractService implements PlayerR
         Gunsmith.getLogger().info("Initialized PlayerRegistry service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void destroy()
     {
@@ -89,18 +80,12 @@ public class PlayerRegistryService<T> extends AbstractService implements PlayerR
         Gunsmith.getLogger().info("Stopped PlayerRegistry service");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public CommandSender getConsoleSniperProxy()
     {
         return this.console;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Player> getPlayer(String name)
     {
@@ -108,9 +93,6 @@ public class PlayerRegistryService<T> extends AbstractService implements PlayerR
         return this.registry.get(name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<Player> getPlayer(T player)
     {
@@ -118,9 +100,6 @@ public class PlayerRegistryService<T> extends AbstractService implements PlayerR
         return this.registry.get(player);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Iterable<Player> getPlayers()
     {
@@ -133,9 +112,6 @@ public class PlayerRegistryService<T> extends AbstractService implements PlayerR
         return players;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void invalidate(String name)
     {
@@ -143,9 +119,6 @@ public class PlayerRegistryService<T> extends AbstractService implements PlayerR
         this.registry.remove(name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void invalidate(T player)
     {

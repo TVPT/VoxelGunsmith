@@ -63,9 +63,8 @@ public class CommonEventHandler
     }
 
     /**
-     * An event handler for the {@link SniperCreateEvent}s. This should
-     * initialize the players into the player registry, creating their
-     * {@link Player} objects and setting their defaults.
+     * An event handler for the {@link SniperCreateEvent}s. This should initialize the players into
+     * the player registry, creating their {@link Player} objects and setting their defaults.
      * 
      * @param event the event
      */
@@ -93,8 +92,7 @@ public class CommonEventHandler
     }
 
     /**
-     * An event handler for {@link SniperDestroyEvent} in order to save
-     * player-specific settings.
+     * An event handler for {@link SniperDestroyEvent} in order to save player-specific settings.
      * 
      * @param event the event
      */
@@ -125,10 +123,9 @@ public class CommonEventHandler
     }
 
     /**
-     * Processes the given
-     * {@link com.voxelplugineering.voxelsniper.core.event.SnipeEvent} and performs
-     * all necessary checks of the event. This event handler is supports
-     * asynchronous callback.
+     * Processes the given {@link com.voxelplugineering.voxelsniper.core.event.SnipeEvent} and
+     * performs all necessary checks of the event. This event handler is supports asynchronous
+     * callback.
      * 
      * @param event the snipe event to perform
      */

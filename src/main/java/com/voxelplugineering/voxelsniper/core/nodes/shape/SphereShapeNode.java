@@ -47,9 +47,6 @@ public class SphereShapeNode extends ShapeNode
         this.radius = radius;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

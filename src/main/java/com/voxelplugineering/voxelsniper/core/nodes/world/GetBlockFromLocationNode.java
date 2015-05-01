@@ -50,9 +50,6 @@ public class GetBlockFromLocationNode extends AbstractNode
         this.block = new Provider<Block>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

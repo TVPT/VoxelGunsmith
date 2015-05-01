@@ -39,13 +39,10 @@ public class UndoCommand extends Command
     public UndoCommand()
     {
         super("undo", "Undoes your last n changes. Usage: /undo [n]");
-        setAliases("u");
+        setAliases("u", "vundo");
         setPermissions("voxelsniper.command.undo");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {
@@ -68,10 +65,8 @@ public class UndoCommand extends Command
         {
             ((Player) sender).undoHistory(n);
             return true;
-        } else
-        {
-            sender.sendMessage(TextFormat.RED + "Sorry, this is a player only command.");
-            return true;
         }
+        sender.sendMessage(TextFormat.RED + "Sorry, this is a player only command.");
+        return true;
     }
 }

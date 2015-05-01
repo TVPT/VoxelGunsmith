@@ -34,8 +34,7 @@ public interface DataSourceBuilder<T extends DataSource>
 {
 
     /**
-     * Builds a new instance of the data source with arguments from the given
-     * {@link DataContainer}.
+     * Builds a new instance of the data source with arguments from the given {@link DataContainer}.
      * 
      * @param args The arguments
      * @return The new data source

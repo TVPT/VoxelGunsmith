@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.api.entity;
 
-
 /**
  * Represents a living entity
  */
@@ -38,8 +37,8 @@ public interface Living extends Entity
     double getHealth();
 
     /**
-     * Sets the health of the entity to the given value. The new health will be
-     * clamped between zero and {@link #getMaxHealth()}.
+     * Sets the health of the entity to the given value. The new health will be clamped between zero
+     * and {@link #getMaxHealth()}.
      * 
      * @param health The new health
      */

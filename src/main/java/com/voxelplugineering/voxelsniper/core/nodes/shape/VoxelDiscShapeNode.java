@@ -47,9 +47,6 @@ public class VoxelDiscShapeNode extends ShapeNode
         this.radius = radius;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

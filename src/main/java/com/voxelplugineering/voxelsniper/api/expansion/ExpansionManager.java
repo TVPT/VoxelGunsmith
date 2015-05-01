@@ -32,8 +32,8 @@ public interface ExpansionManager
 {
 
     /**
-     * Registers the given expansion with the manager to be referenced for
-     * system startup and shutdown.
+     * Registers the given expansion with the manager to be referenced for system startup and
+     * shutdown.
      * 
      * @param ex The expansion
      */

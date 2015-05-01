@@ -113,8 +113,7 @@ public class Vector3d implements Serializable, Cloneable
     }
 
     /**
-     * Returns a new vector representing this vector scaled by the given scalar
-     * quantity.
+     * Returns a new vector representing this vector scaled by the given scalar quantity.
      * 
      * @param scalar the amount to scale this vector
      * @return the new vector
@@ -125,8 +124,7 @@ public class Vector3d implements Serializable, Cloneable
     }
 
     /**
-     * Returns a new vector representing this vector projected onto the given
-     * vector.
+     * Returns a new vector representing this vector projected onto the given vector.
      * 
      * @param b the vector to project this vector onto
      * @return the new vector
@@ -152,8 +150,7 @@ public class Vector3d implements Serializable, Cloneable
     }
 
     /**
-     * Returns a new vector representing the cross product of this vector with
-     * the given vector.
+     * Returns a new vector representing the cross product of this vector with the given vector.
      * 
      * @param v the other vector
      * @return the cross product result
@@ -185,9 +182,8 @@ public class Vector3d implements Serializable, Cloneable
     }
 
     /**
-     * Returns the squared length of this vector (for computations requiring the
-     * squared form of the length and wanting to save on the cost of Math.sqrt
-     * in the normal length function).
+     * Returns the squared length of this vector (for computations requiring the squared form of the
+     * length and wanting to save on the cost of Math.sqrt in the normal length function).
      * 
      * @return the squared length
      */
@@ -201,6 +197,7 @@ public class Vector3d implements Serializable, Cloneable
      * 
      * @return the clone
      */
+    @Override
     public Vector3d clone()
     {
         return new Vector3d(getX(), getY(), getZ());
@@ -211,6 +208,7 @@ public class Vector3d implements Serializable, Cloneable
      * 
      * @return The string
      */
+    @Override
     public String toString()
     {
         return "Vector3d: (" + this.vec[0] + ", " + this.vec[1] + ", " + this.vec[2] + ")";

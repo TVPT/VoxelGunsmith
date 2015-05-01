@@ -49,9 +49,6 @@ public class FlattenShapeNode extends AbstractNode
         this.shapeOut = new Provider<Shape>(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exec(RuntimeState state)
     {

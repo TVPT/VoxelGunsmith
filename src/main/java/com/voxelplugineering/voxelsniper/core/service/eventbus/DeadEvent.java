@@ -24,13 +24,14 @@
 package com.voxelplugineering.voxelsniper.core.service.eventbus;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy.ASYNCHRONOUS;
 
 import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy;
 
 /**
- * An event which wraps another event to indicate that it was 'dead'. An event
- * being dead means that it was posted but no handlers for it were registered.
+ * An event which wraps another event to indicate that it was 'dead'. An event being dead means that
+ * it was posted but no handlers for it were registered.
  */
 @EventThreadingPolicy(ASYNCHRONOUS)
 public class DeadEvent extends Event
@@ -45,6 +46,7 @@ public class DeadEvent extends Event
      */
     public DeadEvent(Event event)
     {
+        checkNotNull(event);
         checkArgument(!event.getClass().equals(DeadEvent.class));
         this.event = event;
     }

@@ -32,15 +32,12 @@ import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
 
 /**
- * An abstract configuration container which supports serializing configuration
- * values stored in the fields of the class.
+ * An abstract configuration container which supports serializing configuration values stored in the
+ * fields of the class.
  */
 public class AbstractConfigurationContainer implements DataSerializable
 {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void fromContainer(DataContainer container)
     {
@@ -91,9 +88,6 @@ public class AbstractConfigurationContainer implements DataSerializable
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataContainer toContainer()
     {

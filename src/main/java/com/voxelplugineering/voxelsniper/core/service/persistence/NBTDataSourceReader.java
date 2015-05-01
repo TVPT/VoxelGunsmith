@@ -106,18 +106,12 @@ public class NBTDataSourceReader implements DataSourceReader
         this.source = source;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void write(DataSerializable serial) throws IOException
     {
         write(serial.toContainer());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void write(DataContainer container) throws IOException
     {
@@ -203,9 +197,6 @@ public class NBTDataSourceReader implements DataSourceReader
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataContainer read() throws IOException
     {
@@ -311,9 +302,6 @@ public class NBTDataSourceReader implements DataSourceReader
         return data;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DataSerializable> T read(T object) throws IOException
     {
@@ -321,18 +309,12 @@ public class NBTDataSourceReader implements DataSourceReader
         return object;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Optional<String> getName()
     {
         return this.source.getName();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean exists()
     {

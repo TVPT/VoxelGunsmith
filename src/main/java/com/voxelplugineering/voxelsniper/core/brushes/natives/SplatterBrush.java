@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.brushes.natives;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Random;
 
 import com.thevoxelbox.vsl.api.variables.VariableHolder;
@@ -33,11 +35,9 @@ import com.voxelplugineering.voxelsniper.core.brushes.NativeBrush;
 import com.voxelplugineering.voxelsniper.core.shape.ComplexShape;
 
 /**
- * A native brush part which applies a random 'splatter' mask to a shape.
- * <p>
- * The splatter effect is achieved by first randomly seeding the area and then
- * growing the seeds over a number of iterations.
- * </p>
+ * A native brush part which applies a random 'splatter' mask to a shape. <p> The splatter effect is
+ * achieved by first randomly seeding the area and then growing the seeds over a number of
+ * iterations. </p>
  */
 public class SplatterBrush extends NativeBrush
 {
@@ -66,12 +66,10 @@ public class SplatterBrush extends NativeBrush
         setHelp("splatter");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void run(RuntimeState state)
     {
+        checkNotNull(state);
         VariableHolder vars = state.getVars();
         Shape shape = vars.get("__CHAINED__shape", Shape.class).get();
         ComplexShape out = new ComplexShape(shape.getWidth(), shape.getHeight(), shape.getLength(), shape.getOrigin());
@@ -180,18 +178,12 @@ public class SplatterBrush extends NativeBrush
         vars.set("__CHAINED__shape", out);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName()
     {
         return "splatter";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void parseArguments(String string, VariableHolder vars)
     {
