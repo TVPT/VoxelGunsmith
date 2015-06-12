@@ -28,12 +28,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
-import com.voxelplugineering.voxelsniper.api.logging.LogLevel;
+import com.voxelplugineering.voxelsniper.api.service.logging.LogLevel;
 
 /**
  * A wrapper for a {@link org.apache.logging.log4j.Logger}.
  */
-public class Log4jLogger implements com.voxelplugineering.voxelsniper.api.logging.Logger
+public class Log4jLogger implements com.voxelplugineering.voxelsniper.api.service.logging.Logger
 {
 
     private static LogLevel toLevel(Level level)

@@ -30,10 +30,11 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import com.voxelplugineering.voxelsniper.api.registry.MaterialRegistry;
+import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
+import com.voxelplugineering.voxelsniper.api.service.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.registry.WeakRegistry;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A standard material registry for materials.
@@ -43,6 +44,8 @@ import com.voxelplugineering.voxelsniper.core.registry.WeakRegistry;
 public class MaterialRegistryService<T> extends AbstractService implements MaterialRegistry<T>
 {
 
+    private final Configuration conf;
+
     private WeakRegistry<T, Material> registry;
     private Material air;
     private String defaultMaterialName;
@@ -50,32 +53,25 @@ public class MaterialRegistryService<T> extends AbstractService implements Mater
     /**
      * Creates a new {@link MaterialRegistryService}.
      */
-    public MaterialRegistryService()
+    public MaterialRegistryService(Context context)
     {
-        super(MaterialRegistry.class, 5);
+        super(context);
+        this.conf = context.getRequired(Configuration.class, this);
     }
 
     @Override
-    public String getName()
-    {
-        return "materialRegistry";
-    }
-
-    @Override
-    protected void init()
+    protected void _init()
     {
         this.registry = new WeakRegistry<T, Material>();
         this.registry.setCaseSensitiveKeys(false);
-        this.defaultMaterialName = Gunsmith.getConfiguration().get("defaultMaterialName", String.class).or("air");
-        Gunsmith.getLogger().info("Initialized MaterialRegistry service");
+        this.defaultMaterialName = this.conf.get("defaultMaterialName", String.class).or("air");
     }
 
     @Override
-    protected void destroy()
+    protected void _shutdown()
     {
         this.registry = null;
         this.defaultMaterialName = null;
-        Gunsmith.getLogger().info("Stopped MaterialRegistry service");
     }
 
     @Override
@@ -87,21 +83,21 @@ public class MaterialRegistryService<T> extends AbstractService implements Mater
     @Override
     public Optional<Material> getMaterial(String name)
     {
-        check();
+        check("getMaterial");
         return this.registry.get(name);
     }
 
     @Override
     public Optional<Material> getMaterial(T material)
     {
-        check();
+        check("getMaterial");
         return this.registry.get(material);
     }
 
     @Override
     public void registerMaterial(String name, T object, Material material)
     {
-        check();
+        check("registerMaterial");
         this.registry.register(name, object, material);
         if (name.equalsIgnoreCase(this.defaultMaterialName))
         {
@@ -112,7 +108,7 @@ public class MaterialRegistryService<T> extends AbstractService implements Mater
     @Override
     public Collection<Material> getMaterials()
     {
-        check();
+        check("getMaterials");
         Set<Map.Entry<T, Material>> entries = this.registry.getRegisteredValues();
         List<Material> mats = Lists.newArrayList();
         for (Map.Entry<T, Material> entry : entries)

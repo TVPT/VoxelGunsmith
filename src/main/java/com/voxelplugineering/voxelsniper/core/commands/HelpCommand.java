@@ -24,9 +24,10 @@
 package com.voxelplugineering.voxelsniper.core.commands;
 
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
-import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
+import com.voxelplugineering.voxelsniper.api.brushes.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A command get fetching the help information for a brush.
@@ -34,14 +35,17 @@ import com.voxelplugineering.voxelsniper.core.Gunsmith;
 public class HelpCommand extends Command
 {
 
+    private final GlobalBrushManager brushes;
+
     /**
      * Creates a new Command instance.
      */
-    public HelpCommand()
+    public HelpCommand(Context context)
     {
-        super("voxelhelp", "Provides help information for brush parts: /help <brushName>");
+        super("voxelhelp", "Provides help information for brush parts: /help <brushName>", context);
         setAliases("vhelp", "man");
         setPermissions("voxelsniper.command.help");
+        this.brushes = context.getRequired(GlobalBrushManager.class);
     }
 
     @Override
@@ -55,7 +59,7 @@ public class HelpCommand extends Command
                 brush = ((Player) sender).getBrushManager().getBrush(args[0]).orNull();
             } else
             {
-                brush = Gunsmith.getGlobalBrushManager().getBrush(args[0]).orNull();
+                brush = this.brushes.getBrush(args[0]).orNull();
             }
             if (brush == null)
             {

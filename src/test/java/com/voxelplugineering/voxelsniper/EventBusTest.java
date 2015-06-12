@@ -26,19 +26,18 @@ package com.voxelplugineering.voxelsniper;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.voxelplugineering.voxelsniper.api.event.EventHandler;
 import com.voxelplugineering.voxelsniper.api.event.EventPriority;
 import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy;
 import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy;
-import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
-import com.voxelplugineering.voxelsniper.core.CoreServiceProvider;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.event.EventBus;
+import com.voxelplugineering.voxelsniper.core.service.ConfigurationService;
 import com.voxelplugineering.voxelsniper.core.service.eventbus.AsyncEventBus;
 import com.voxelplugineering.voxelsniper.core.service.eventbus.DeadEvent;
 import com.voxelplugineering.voxelsniper.core.service.eventbus.Event;
+import com.voxelplugineering.voxelsniper.util.ContextTestUtil;
 
 /**
  * Tests for the {@link AsyncEventBus} implementation.
@@ -49,23 +48,12 @@ public class EventBusTest
     /**
      * 
      */
-    @BeforeClass
-    public static void setupGunsmith()
-    {
-        if (!Gunsmith.getServiceManager().isTesting())
-        {
-            Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
-        }
-    }
-
-    /**
-     * 
-     */
     @Test
     public void basicTest()
     {
-        EventBus bus = new AsyncEventBus();
-        bus.init();
+        EventBus bus = new AsyncEventBus(ContextTestUtil.create(null, new ConfigurationService(ContextTestUtil.create())));
+        bus.start();
+
         TestHandler handler = new TestHandler();
         bus.register(handler);
         bus.post(new TestEvent());
@@ -79,8 +67,9 @@ public class EventBusTest
     @Test
     public void priorityTest()
     {
-        EventBus bus = new AsyncEventBus();
-        bus.init();
+        EventBus bus = new AsyncEventBus(ContextTestUtil.create(null, new ConfigurationService(ContextTestUtil.create())));
+        bus.start();
+
         PriorityHandler handler = new PriorityHandler();
         bus.register(handler);
         bus.post(new TestEvent());
@@ -94,8 +83,9 @@ public class EventBusTest
     @Test
     public void superEventhandling()
     {
-        EventBus bus = new AsyncEventBus();
-        bus.init();
+        EventBus bus = new AsyncEventBus(ContextTestUtil.create(null, new ConfigurationService(ContextTestUtil.create())));
+        bus.start();
+
         SuperHandler handler = new SuperHandler();
         bus.register(handler);
         bus.post(new SubEvent());
@@ -109,8 +99,9 @@ public class EventBusTest
     @Test
     public void superEventhandling2()
     {
-        EventBus bus = new AsyncEventBus();
-        bus.init();
+        EventBus bus = new AsyncEventBus(ContextTestUtil.create(null, new ConfigurationService(ContextTestUtil.create())));
+        bus.start();
+
         SuperHandler handler = new SuperHandler();
         bus.register(handler);
         bus.post(new TestEvent());
@@ -124,8 +115,9 @@ public class EventBusTest
     @Test
     public void testDeadEvent() throws InterruptedException
     {
-        EventBus bus = new AsyncEventBus();
-        bus.init();
+        EventBus bus = new AsyncEventBus(ContextTestUtil.create(null, new ConfigurationService(ContextTestUtil.create())));
+        bus.start();
+
         DeadEventHandler handler = new DeadEventHandler();
         bus.register(handler);
         bus.post(new TestEvent());
@@ -148,8 +140,9 @@ public class EventBusTest
     @Test
     public void testNotAsync()
     {
-        EventBus bus = new AsyncEventBus();
-        bus.init();
+        EventBus bus = new AsyncEventBus(ContextTestUtil.create(null, new ConfigurationService(ContextTestUtil.create())));
+        bus.start();
+
         SyncHandler handler = new SyncHandler();
         bus.register(handler);
         SyncEvent e = new SyncEvent();
@@ -164,16 +157,15 @@ public class EventBusTest
     @Test
     public void testAsync()
     {
-        EventBus bus = new AsyncEventBus();
-        bus.init();
+        EventBus bus = new AsyncEventBus(ContextTestUtil.create(null, new ConfigurationService(ContextTestUtil.create())));
+        bus.start();
+
         AsyncHandler handler = new AsyncHandler();
         bus.register(handler);
         bus.post(new AsyncEvent());
         assertNotEquals(Thread.currentThread(), handler.thread);
         bus.unregister(handler);
     }
-
-    // =======================================================================
 
     /**
      * 

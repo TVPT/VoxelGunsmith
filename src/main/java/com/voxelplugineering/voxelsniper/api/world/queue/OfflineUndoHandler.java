@@ -24,12 +24,13 @@
 package com.voxelplugineering.voxelsniper.api.world.queue;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.api.service.Service;
 
 /**
  * A handler for {@link UndoQueue}s for users who have disconnected from the system. These
  * {@link UndoQueue}s will be invalidated depending on the implementing class's policy.
  */
-public interface OfflineUndoHandler
+public interface OfflineUndoHandler extends Service
 {
 
     /**

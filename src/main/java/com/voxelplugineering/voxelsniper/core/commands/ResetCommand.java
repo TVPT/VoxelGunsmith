@@ -23,9 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.core.commands;
 
-import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
-import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
+import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
+import com.voxelplugineering.voxelsniper.api.service.text.TextFormat;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A command get fetching the help information for a brush.
@@ -36,9 +37,9 @@ public class ResetCommand extends Command
     /**
      * Creates a new Command instance.
      */
-    public ResetCommand()
+    public ResetCommand(Context context)
     {
-        super("voxelreset", "Resets your brush settings to the defualt values.");
+        super("voxelreset", "Resets your brush settings to the defualt values.", context);
         setAliases("d");
         setPermissions("voxelsniper.command.reset");
     }

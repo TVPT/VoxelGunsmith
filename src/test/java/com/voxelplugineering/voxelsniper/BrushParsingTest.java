@@ -25,21 +25,18 @@ package com.voxelplugineering.voxelsniper;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.thevoxelbox.vsl.api.node.Node;
 import com.thevoxelbox.vsl.api.variables.VariableHolder;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.thevoxelbox.vsl.variables.ParentedVariableScope;
-import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
-import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
+import com.voxelplugineering.voxelsniper.api.service.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.api.service.command.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.core.CoreServiceProvider;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.brushes.BrushChain;
 import com.voxelplugineering.voxelsniper.core.brushes.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.core.service.alias.CommonAliasRegistry;
@@ -54,18 +51,6 @@ public class BrushParsingTest
     /**
      * 
      */
-    @BeforeClass
-    public static void setupGunsmith()
-    {
-        if (!Gunsmith.getServiceManager().isTesting())
-        {
-            Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
-        }
-    }
-
-    /**
-     * 
-     */
     @Test
     public void test()
     {
@@ -74,7 +59,7 @@ public class BrushParsingTest
         manager.loadBrush("voxel", voxel);
         RunCheckBrush material = new RunCheckBrush();
         manager.loadBrush("material", material);
-        AliasRegistry alias = new CommonAliasRegistry("brush");
+        AliasRegistry alias = new CommonAliasRegistry("brush", false);
 
         BrushChain chain = BrushParsing.parse("voxel material", manager, alias).get();
         Brush[] brushes = chain.getBrushes();
@@ -145,7 +130,7 @@ class RunCheckBrush implements Brush
     }
 
     @Override
-    public void addArgument(String name, ArgumentParser<?> parser, String defaultValue, String... aliases)
+    public void addArgument(String name, ArgumentParser<?> parser)
     {
 
     }

@@ -26,12 +26,12 @@ package com.voxelplugineering.voxelsniper.core.commands;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
-import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
+import com.voxelplugineering.voxelsniper.api.service.text.TextFormat;
 import com.voxelplugineering.voxelsniper.core.brushes.BrushChain;
 import com.voxelplugineering.voxelsniper.core.util.BrushParsing;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 import com.voxelplugineering.voxelsniper.core.util.StringUtilities;
 
 /**
@@ -43,21 +43,22 @@ public class BrushCommand extends Command
     /**
      * The message sent to players when their brush size is changed.
      */
-    private String brushSizeChangeMessage = Gunsmith.getConfiguration().get("brushSizeChangedMessage", String.class)
-            .or("Your brush size was changed to %.1f");
+    private String brushSizeChangeMessage;
     /**
      * The message sent to players when their brush is set.
      */
-    private String brushSetMessage = Gunsmith.getConfiguration().get("brushSetMessage", String.class).or("Your brush has been set to %s");
+    private String brushSetMessage;
 
     /**
      * Constructs a new BrushCommand.
      */
-    public BrushCommand()
+    public BrushCommand(Context context)
     {
-        super("brush", "Sets your current brush");
+        super("brush", "Sets your current brush", context);
         setAliases("b");
         setPermissions("voxelsniper.command.brush");
+        this.brushSizeChangeMessage = this.config.get("brushSizeChangedMessage", String.class).or("Your brush size was changed to %.1f");
+        this.brushSetMessage = this.config.get("brushSetMessage", String.class).or("Your brush has been set to %s");
     }
 
     @Override
@@ -71,7 +72,7 @@ public class BrushCommand extends Command
             return true;
         }
         Player sniper = (Player) sender;
-        if (!Gunsmith.getPermissionsProxy().hasPermission(sniper, "voxelsniper.command.brush"))
+        if (!this.permsProxy.hasPermission(sniper, "voxelsniper.command.brush"))
         {
             sender.sendMessage("Sorry you lack the required permissions for this command");
             return true;

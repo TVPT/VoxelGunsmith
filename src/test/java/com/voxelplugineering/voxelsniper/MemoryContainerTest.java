@@ -25,15 +25,12 @@ package com.voxelplugineering.voxelsniper;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
-import com.voxelplugineering.voxelsniper.core.CoreServiceProvider;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.service.persistence.JsonDataSourceReader;
 import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
 
@@ -42,18 +39,6 @@ import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContaine
  */
 public class MemoryContainerTest
 {
-
-    /**
-     * 
-     */
-    @BeforeClass
-    public static void setupGunsmith()
-    {
-        if (!Gunsmith.getServiceManager().isTesting())
-        {
-            Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
-        }
-    }
 
     /**
      * 

@@ -26,8 +26,10 @@ package com.voxelplugineering.voxelsniper.core.commands;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
+import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
+import com.voxelplugineering.voxelsniper.api.service.permission.PermissionProxy;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A abstract representation of a command.
@@ -35,10 +37,13 @@ import com.voxelplugineering.voxelsniper.core.Gunsmith;
 public abstract class Command
 {
 
+    protected final PermissionProxy permsProxy;
+    protected final Configuration config;
+
     /**
      * Aliases for this command.
      */
-    String[] aliases = new String[0];
+    protected String[] aliases = new String[0];
     /**
      * The name of this command, the primary command alias.
      */
@@ -46,7 +51,7 @@ public abstract class Command
     /**
      * A help message for this command.
      */
-    private String helpMsg = Gunsmith.getConfiguration().get("defaultHelpMessage", String.class).or("No help was provided for this command.");
+    private String helpMsg;
     /**
      * If this command is player only or usable by the console as well.
      */
@@ -63,12 +68,15 @@ public abstract class Command
      * @param name the name of this command
      * @param help the help string for this command
      */
-    protected Command(final String name, final String help)
+    protected Command(final String name, final String help, Context context)
     {
         checkNotNull(name, "Cannot have a null name!");
         checkArgument(!name.isEmpty(), "Cannot have an empty name!");
         this.name = name;
         this.helpMsg = help;
+        this.permsProxy = context.getRequired(PermissionProxy.class);
+        this.config = context.getRequired(Configuration.class);
+        this.helpMsg = this.config.get("defaultHelpMessage", String.class).or("No help was provided for this command.");
     }
 
     /**

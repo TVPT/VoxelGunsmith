@@ -46,16 +46,22 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.voxelplugineering.voxelsniper.api.event.EventHandler;
 import com.voxelplugineering.voxelsniper.api.event.EventPriority;
 import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy;
-import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
+import com.voxelplugineering.voxelsniper.api.service.event.EventBus;
+import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
+import com.voxelplugineering.voxelsniper.core.service.AbstractService;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * An {@link EventBus} implementation supporting all {@link ThreadingPolicy} types. Optionally takes
  * an {@link ExecutorService} to use for asynchronous task delegation. <p> This class is safe for
  * concurrent use. </p>
  */
-public class AsyncEventBus implements EventBus
+public class AsyncEventBus extends AbstractService implements EventBus
 {
+
+    private final Configuration config;
+    private final LoggingDistributor logger;
 
     private ListeningExecutorService executor;
     private Map<Class<? extends Event>, SubscriberList> registry;
@@ -67,8 +73,9 @@ public class AsyncEventBus implements EventBus
      * 
      * @param executorService The {@link ExecutorService} to use for asynchronous task delegation
      */
-    public AsyncEventBus(ExecutorService executorService)
+    public AsyncEventBus(Context context, ExecutorService executorService)
     {
+        this(context);
         checkNotNull(executorService);
         this.executor = MoreExecutors.listeningDecorator(executorService);
         this.explicitExecutor = true;
@@ -78,12 +85,15 @@ public class AsyncEventBus implements EventBus
      * Creates a new {@link AsyncEventBus}. This defaults to using
      * {@link Executors#newCachedThreadPool()} for event handler delegation.
      */
-    public AsyncEventBus()
+    public AsyncEventBus(Context context)
     {
+        super(context);
+        this.config = context.getRequired(Configuration.class, this);
+        this.logger = context.getRequired(LoggingDistributor.class, this);
     }
 
     @Override
-    public void init()
+    public void _init()
     {
         if (this.built)
         {
@@ -92,7 +102,7 @@ public class AsyncEventBus implements EventBus
         this.registry = new MapMaker().concurrencyLevel(4).makeMap();
         if (!this.explicitExecutor)
         {
-            final String prefix = Gunsmith.getConfiguration().get("eventBusThreadPrefix", String.class).or("AsyncEventBus-executor-");
+            final String prefix = this.config.get("eventBusThreadPrefix", String.class).or("AsyncEventBus-executor-");
             this.executor = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(new ThreadFactory()
             {
 
@@ -115,7 +125,7 @@ public class AsyncEventBus implements EventBus
     }
 
     @Override
-    public void destroy()
+    public void _shutdown()
     {
         if (!this.built)
         {
@@ -128,12 +138,6 @@ public class AsyncEventBus implements EventBus
         }
 
         this.built = false;
-    }
-
-    @Override
-    public boolean exists()
-    {
-        return this.built;
     }
 
     @Override
@@ -254,8 +258,7 @@ public class AsyncEventBus implements EventBus
                 s.getMethod().invoke(s.getContainer(), event);
             } catch (Exception e)
             {
-                Gunsmith.getLogger().error(e,
-                        "Error executing event handler in " + s.getContainer().getClass().getName() + " " + s.getMethod().getName());
+                this.logger.error(e, "Error executing event handler in " + s.getContainer().getClass().getName() + " " + s.getMethod().getName());
                 continue;
             }
         }
@@ -277,13 +280,11 @@ public class AsyncEventBus implements EventBus
                 this.executor.submit(new EventCallable(event, s)).get();
             } catch (InterruptedException e)
             {
-                Gunsmith.getLogger().error(e,
-                        "Error executing event handler in " + s.getContainer().getClass().getName() + " " + s.getMethod().getName());
+                this.logger.error(e, "Error executing event handler in " + s.getContainer().getClass().getName() + " " + s.getMethod().getName());
                 continue;
             } catch (ExecutionException e)
             {
-                Gunsmith.getLogger().error(e,
-                        "Error executing event handler in " + s.getContainer().getClass().getName() + " " + s.getMethod().getName());
+                this.logger.error(e, "Error executing event handler in " + s.getContainer().getClass().getName() + " " + s.getMethod().getName());
                 continue;
             }
         }

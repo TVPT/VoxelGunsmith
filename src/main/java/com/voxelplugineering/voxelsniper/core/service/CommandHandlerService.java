@@ -33,12 +33,14 @@ import java.util.Map;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.api.commands.CommandHandler;
-import com.voxelplugineering.voxelsniper.api.commands.CommandRegistrar;
-import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.command.CommandHandler;
+import com.voxelplugineering.voxelsniper.api.service.command.CommandRegistrar;
+import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
+import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
+import com.voxelplugineering.voxelsniper.api.service.permission.PermissionProxy;
 import com.voxelplugineering.voxelsniper.core.commands.Command;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A handler for commands which handles registration of command handlers and commands. Also
@@ -49,6 +51,9 @@ import com.voxelplugineering.voxelsniper.core.commands.Command;
 public class CommandHandlerService extends AbstractService implements CommandHandler
 {
 
+    private final Configuration config;
+    private final PermissionProxy perms;
+
     private String permissionMessage;
 
     private Map<String, Command> commands;
@@ -58,41 +63,35 @@ public class CommandHandlerService extends AbstractService implements CommandHan
     /**
      * Constructs a command handler
      */
-    public CommandHandlerService()
+    public CommandHandlerService(Context context)
     {
-        super(CommandHandler.class, 10);
+        super(context);
+        this.config = context.getRequired(Configuration.class, this);
+        this.perms = context.getRequired(PermissionProxy.class, this);
     }
 
     @Override
-    public String getName()
+    protected void _init()
     {
-        return "CommandHandler";
-    }
-
-    @Override
-    protected void init()
-    {
-        Optional<String> pmsg = Gunsmith.getConfiguration().get("permissionsRequiredMessage", String.class);
+        Optional<String> pmsg = this.config.get("permissionsRequiredMessage", String.class);
         this.permissionMessage = pmsg.or("You lack the required permission for this command.");
         this.commands = Maps.newHashMap();
         this.unique = Lists.newArrayList();
-        Gunsmith.getLogger().info("Initialized CommandHandler service");
 
     }
 
     @Override
-    protected void destroy()
+    protected void _shutdown()
     {
         this.permissionMessage = null;
         this.commands = null;
         this.unique = null;
-        Gunsmith.getLogger().info("Stopped CommandHandler service");
     }
 
     @Override
     public synchronized void setRegistrar(CommandRegistrar registrar)
     {
-        check();
+        check("setRegistrar");
         this.registrar = checkNotNull(registrar, "Registrar cannot be null");
         // Register all existing commands to the registrar
         for (Command cmd : this.unique)
@@ -104,7 +103,7 @@ public class CommandHandlerService extends AbstractService implements CommandHan
     @Override
     public synchronized void registerCommand(Command cmd)
     {
-        check();
+        check("registerCommand");
         checkNotNull(cmd, "Cannot register a null command!");
         if (this.registrar != null)
         {
@@ -121,7 +120,7 @@ public class CommandHandlerService extends AbstractService implements CommandHan
     @Override
     public synchronized void onCommand(CommandSender sender, String command, String[] args)
     {
-        check();
+        check("onCommand");
         checkNotNull(sender, "Cannot have a null sniper!");
         checkNotNull(command, "Cannot use a null command!");
         checkNotNull(args, "Command arguments cannot be null!");
@@ -136,7 +135,7 @@ public class CommandHandlerService extends AbstractService implements CommandHan
         {
             for (String s : handler.getPermissions())
             {
-                if (Gunsmith.getPermissionsProxy().hasPermission((Player) sender, s))
+                if (this.perms.hasPermission((Player) sender, s))
                 {
                     allowed = true;
                     break;
@@ -164,7 +163,7 @@ public class CommandHandlerService extends AbstractService implements CommandHan
     @Override
     public void onCommand(CommandSender sender, String fullCommand)
     {
-        check();
+        check("onCommand");
         checkNotNull(sender, "Cannot have a null sniper!");
         checkNotNull(fullCommand, "Cannot use a null command!");
         checkArgument(!fullCommand.isEmpty(), "Command cannot be empty");

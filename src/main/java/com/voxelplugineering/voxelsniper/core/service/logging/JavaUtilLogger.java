@@ -28,12 +28,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.voxelplugineering.voxelsniper.api.logging.LogLevel;
+import com.voxelplugineering.voxelsniper.api.service.logging.LogLevel;
 
 /**
  * A wrapper for a {@link java.util.logging.Logger} to receive logging messages from gunsmith.
  */
-public class JavaUtilLogger implements com.voxelplugineering.voxelsniper.api.logging.Logger
+public class JavaUtilLogger implements com.voxelplugineering.voxelsniper.api.service.logging.Logger
 {
 
     private static LogLevel toLevel(Level level)

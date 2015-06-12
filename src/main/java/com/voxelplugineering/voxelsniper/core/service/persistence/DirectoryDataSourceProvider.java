@@ -35,15 +35,17 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceFactory;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceProvider;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 
 /**
  * A {@link DataSourceProvider} for files within a directory.
  */
 public class DirectoryDataSourceProvider implements DataSourceProvider
 {
+
+    private final DataSourceFactory factory;
 
     private final File directory;
     // Decided to use a cache due to how often has and read will be called close
@@ -57,10 +59,11 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
      * 
      * @param dir The directory
      */
-    public DirectoryDataSourceProvider(File dir)
+    public DirectoryDataSourceProvider(File dir, DataSourceFactory factory)
     {
         checkArgument(dir.isDirectory(), "File passed to DirectoryDataSource was not a directory.");
         this.directory = dir;
+        this.factory = factory;
         this.cache = CacheBuilder.newBuilder().expireAfterAccess(60, TimeUnit.SECONDS).build(new CacheLoader<String, File>()
         {
 
@@ -147,7 +150,7 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
             sourceArgs.writeString("path", file.getAbsolutePath());
             args.writeString("source", "file");
             args.writeContainer("sourceArgs", sourceArgs);
-            return Gunsmith.getPersistence().build(reader, args);
+            return this.factory.build(reader, args);
         }
         return Optional.absent();
     }

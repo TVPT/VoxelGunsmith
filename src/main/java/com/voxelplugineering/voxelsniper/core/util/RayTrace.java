@@ -34,7 +34,7 @@ import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.World;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.core.util.math.Vector3d;
 
 /**
  * A utility for performing a ray trace within a world.
@@ -101,6 +101,7 @@ public class RayTrace
     private double rotYSin;
     private double rotYCos;
     private double step;
+    private Vector3d playerEyeOffset;
 
     /**
      * Creates a new raytrace to reference with the given location yaw and pitch.
@@ -109,17 +110,18 @@ public class RayTrace
      * @param yaw the yaw
      * @param pitch the pitch
      */
-    public RayTrace(Location origin, double yaw, double pitch)
+    public RayTrace(Location origin, double yaw, double pitch, double range, int minY, int maxY, double step, Vector3d playerEyeOffset)
     {
         this.origin = checkNotNull(origin, "Origin cannot be null");
         this.yaw = yaw;
         this.pitch = pitch;
-        this.range = (Double) Gunsmith.getConfiguration().get("rayTraceRange").get();
-        this.minWorldY = (Integer) Gunsmith.getConfiguration().get("minimumWorldDepth").get();
-        this.maxWorldY = (Integer) Gunsmith.getConfiguration().get("maximumWorldHeight").get();
-        this.step = (Double) Gunsmith.getConfiguration().get("rayTraceStep").get();
+        this.range = range;
+        this.minWorldY = minY;
+        this.maxWorldY = maxY;
+        this.step = step;
         this.world = this.origin.getWorld();
         this.traversalBlocks.add(this.world.getMaterialRegistry().getAirMaterial());
+        this.playerEyeOffset = playerEyeOffset;
     }
 
     /**
@@ -239,7 +241,7 @@ public class RayTrace
     private void init()
     {
         this.length = 0;
-        this.origin = this.origin.add(0, ((Double) Gunsmith.getConfiguration().get("playerEyeHeight").get()), 0);
+        this.origin = this.origin.add(this.playerEyeOffset);
         this.currentX = this.origin.getX();
         this.currentY = this.origin.getY();
         this.currentZ = this.origin.getZ();

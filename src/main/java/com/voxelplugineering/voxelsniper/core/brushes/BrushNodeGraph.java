@@ -37,10 +37,8 @@ import com.thevoxelbox.vsl.node.RunnableNodeGraph;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
-import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
+import com.voxelplugineering.voxelsniper.api.service.command.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 
 /**
  * The Gunsmith specific {@link NodeGraph}.
@@ -68,10 +66,8 @@ public class BrushNodeGraph implements Brush
         return null;
     }
 
-    private String help = Gunsmith.getConfiguration().get("defaultBrushHelpMessage", String.class)
-            .or(TextFormat.RED + "No help is provided for this brush part.");
+    private String help = "No help is provided for this brush.";
     private final Map<String, ArgumentParser<?>> arguments;
-    private final Map<String, String> argDefaults;
     private String primary = null;
     private final BrushPartType type;
 
@@ -88,7 +84,6 @@ public class BrushNodeGraph implements Brush
         this.type = checkNotNull(type);
         this.graph = new RunnableNodeGraph(name);
         this.arguments = Maps.newHashMap();
-        this.argDefaults = Maps.newHashMap();
     }
 
     /**
@@ -186,28 +181,18 @@ public class BrushNodeGraph implements Brush
      * 
      * @param name The name
      * @param parser The argument parser
-     * @param defaultValue The default value, or null
-     * @param aliases Any aliases, optional
      */
     @Override
-    public void addArgument(String name, ArgumentParser<?> parser, String defaultValue, String... aliases)
+    public void addArgument(String name, ArgumentParser<?> parser)
     {
         checkNotNull(name);
         checkNotNull(parser);
-        if (defaultValue != null && !defaultValue.isEmpty())
-        {
-            this.argDefaults.put(name, defaultValue);
-        }
         this.arguments.put(name, parser);
-        for (String alias : aliases)
-        {
-            this.arguments.put(alias, parser);
-        }
     }
 
     /**
      * Sets a certain argument as the primary argument. The argument specific must have already been
-     * added with {@link #addArgument(String, ArgumentParser, String, String...)}.
+     * added with {@link #addArgument}.
      * 
      * @param arg The new primary argument
      */

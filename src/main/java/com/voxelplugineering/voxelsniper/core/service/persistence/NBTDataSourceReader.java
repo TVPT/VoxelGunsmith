@@ -36,10 +36,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceBuilder;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.util.nbt.ByteArrayTag;
 import com.voxelplugineering.voxelsniper.core.util.nbt.ByteTag;
 import com.voxelplugineering.voxelsniper.core.util.nbt.CompoundTag;
@@ -65,7 +63,7 @@ public class NBTDataSourceReader implements DataSourceReader
     /**
      * A {@link DataSourceBuilder} for nbt data sources.
      */
-    public static final DataSourceBuilder BUILDER = new DataSourceBuilder()
+    /*public static final DataSourceBuilder BUILDER = new DataSourceBuilder()
     {
 
         @Override
@@ -92,7 +90,7 @@ public class NBTDataSourceReader implements DataSourceReader
             return Optional.<DataSource>of(new JsonDataSourceReader(stream));
         }
 
-    };
+    };*/
 
     private final StreamDataSource source;
 

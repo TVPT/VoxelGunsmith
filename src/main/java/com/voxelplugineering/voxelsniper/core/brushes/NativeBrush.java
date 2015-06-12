@@ -26,7 +26,7 @@ package com.voxelplugineering.voxelsniper.core.brushes;
 import com.thevoxelbox.vsl.api.node.Node;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
-import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
+import com.voxelplugineering.voxelsniper.api.service.command.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 
 /**
@@ -80,7 +80,7 @@ public abstract class NativeBrush implements Brush
     }
 
     @Override
-    public void addArgument(String name, ArgumentParser<?> parser, String defaultValue, String... aliases)
+    public void addArgument(String name, ArgumentParser<?> parser)
     {
         throw new UnsupportedOperationException();
     }

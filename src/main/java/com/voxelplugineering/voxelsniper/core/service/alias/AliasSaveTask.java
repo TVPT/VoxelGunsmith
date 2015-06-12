@@ -30,8 +30,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.alias.AliasHandler;
+import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
 
 /**
  * A task for saving aliases.
@@ -39,14 +39,17 @@ import com.voxelplugineering.voxelsniper.core.Gunsmith;
 public class AliasSaveTask implements Runnable
 {
 
+    private final Logger logger;
+
     private List<AliasHandler> dirty;
 
     /**
      * Creates a new {@link AliasSaveTask}.
      */
-    public AliasSaveTask()
+    public AliasSaveTask(Logger logger)
     {
         this.dirty = Lists.newArrayList();
+        this.logger = logger;
     }
 
     /**
@@ -74,7 +77,7 @@ public class AliasSaveTask implements Runnable
                 alias.getOwner().getAliasSource().write(alias);
             } catch (IOException e)
             {
-                Gunsmith.getLogger().error(e, "Error saving aliases");
+                this.logger.error(e, "Error saving aliases");
             }
             it.remove();
         }

@@ -26,7 +26,7 @@ package com.voxelplugineering.voxelsniper.core.registry;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.registry.RegistryProvider;
+import com.voxelplugineering.voxelsniper.api.service.registry.RegistryProvider;
 import com.voxelplugineering.voxelsniper.core.util.Pair;
 
 /**

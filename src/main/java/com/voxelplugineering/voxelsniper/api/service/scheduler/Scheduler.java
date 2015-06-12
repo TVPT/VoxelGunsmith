@@ -24,11 +24,12 @@
 package com.voxelplugineering.voxelsniper.api.service.scheduler;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.api.service.Service;
 
 /**
  * A proxy for a specific implementations scheduler.
  */
-public interface Scheduler
+public interface Scheduler extends Service
 {
 
     /**

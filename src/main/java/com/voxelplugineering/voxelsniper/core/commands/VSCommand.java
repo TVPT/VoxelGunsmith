@@ -29,9 +29,12 @@ import java.util.Arrays;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
+import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
+import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
+import com.voxelplugineering.voxelsniper.api.service.platform.PlatformProxy;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 import com.voxelplugineering.voxelsniper.core.util.IngameBrushTest;
 
 /**
@@ -40,17 +43,22 @@ import com.voxelplugineering.voxelsniper.core.util.IngameBrushTest;
 public class VSCommand extends Command
 {
 
-    Map<String, SubCommand> subcommands;
+    private final PlatformProxy platform;
+    private final LoggingDistributor logger;
+
+    private Map<String, SubCommand> subcommands;
 
     /**
      * Constructs a new BrushCommand
      */
-    public VSCommand()
+    public VSCommand(Context context)
     {
-        super("vs", "Sets your current brush");
+        super("vs", "Sets your current brush", context);
         setAliases("voxelsniper");
         setPermissions("voxelsniper.command.vs");
         this.subcommands = Maps.newHashMap();
+        this.platform = context.getRequired(PlatformProxy.class);
+        this.logger = context.getRequired(LoggingDistributor.class);
         setupSubcommands();
     }
 
@@ -102,13 +110,13 @@ public class VSCommand extends Command
 
     private void setupSubcommands()
     {
-        this.subcommands.put("version", new SubCommand()
+        this.subcommands.put("version", new SubCommand(this.config, this.platform, this.logger)
         {
 
             @Override
             boolean execute(CommandSender sender, String[] args)
             {
-                sender.sendMessage("VoxelSniper version " + Gunsmith.getPlatformProxy().getFullVersion());
+                sender.sendMessage("VoxelSniper version " + this.platform.getFullVersion());
                 return true;
             }
 
@@ -119,7 +127,7 @@ public class VSCommand extends Command
             }
 
         });
-        this.subcommands.put("range", new SubCommand()
+        this.subcommands.put("range", new SubCommand(this.config, this.platform, this.logger)
         {
 
             @Override
@@ -134,7 +142,7 @@ public class VSCommand extends Command
                 {
                     if (args[0].equalsIgnoreCase("reset"))
                     {
-                        double range = (Double) Gunsmith.getConfiguration().get("rayTraceRange").get();
+                        double range = this.conf.get("rayTraceRange", Double.class).get();
                         player.getBrushSettings().set("range", range);
                         sender.sendMessage("Reset your maximum range to %d", range);
                     }
@@ -160,7 +168,7 @@ public class VSCommand extends Command
             }
 
         });
-        this.subcommands.put("unittest", new SubCommand()
+        this.subcommands.put("unittest", new SubCommand(this.config, this.platform, this.logger)
         {
 
             @Override
@@ -168,7 +176,7 @@ public class VSCommand extends Command
             {
                 if (sender instanceof Player)
                 {
-                    new Thread(new IngameBrushTest((Player) sender)).start();
+                    new Thread(new IngameBrushTest((Player) sender, this.logger)).start();
                 } else
                 {
                     sender.sendMessage("Sorry this is a player only sub command.");
@@ -188,6 +196,17 @@ public class VSCommand extends Command
 
 abstract class SubCommand
 {
+
+    protected final Configuration conf;
+    protected final PlatformProxy platform;
+    protected final LoggingDistributor logger;
+
+    public SubCommand(Configuration conf, PlatformProxy platform, LoggingDistributor logger)
+    {
+        this.conf = conf;
+        this.platform = platform;
+        this.logger = logger;
+    }
 
     abstract boolean execute(CommandSender sender, String[] args);
 

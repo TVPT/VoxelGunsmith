@@ -23,41 +23,21 @@
  */
 package com.voxelplugineering.voxelsniper.api.service;
 
+import com.voxelplugineering.voxelsniper.core.util.Contextable;
+
 /**
  * Represents a service, which is a portion of the system which may be started and stopped. It has
  * priority and implicit dependencies (TODO to be made explicit).
  */
-public interface Service
+public interface Service extends Contextable
 {
-
-    /**
-     * Gets the targeted class of this service.
-     * 
-     * @return The target class
-     */
-    Class<?> getTargetedService();
-
-    /**
-     * Gets the name of the service.
-     * 
-     * @return The name
-     */
-    String getName();
-
-    /**
-     * Gets the priority of this service. Services will be sorted lowest to highest for
-     * initialization and the inverse for shutdown.
-     * 
-     * @return The priority
-     */
-    int getPriority();
 
     /**
      * Gets whether this service has been started.
      * 
      * @return is started
      */
-    boolean isStarted();
+    boolean isInitialized();
 
     /**
      * Starts this service.
@@ -67,6 +47,12 @@ public interface Service
     /**
      * Stops this service.
      */
-    void stop();
+    void shutdown();
+
+    /**
+     * Adds a service as depending on this service. Dependent services will be shutdown before this
+     * service.
+     */
+    <T extends Service> void addDependent(T service);
 
 }

@@ -28,13 +28,19 @@ import com.thevoxelbox.vsl.api.variables.VariableScope;
 import com.thevoxelbox.vsl.variables.ParentedVariableScope;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.event.EventHandler;
+import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
+import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
+import com.voxelplugineering.voxelsniper.api.service.permission.PermissionProxy;
+import com.voxelplugineering.voxelsniper.api.service.registry.PlayerRegistry;
 import com.voxelplugineering.voxelsniper.api.world.Location;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.core.event.SnipeEvent;
 import com.voxelplugineering.voxelsniper.core.event.SniperEvent;
 import com.voxelplugineering.voxelsniper.core.event.SniperEvent.SniperCreateEvent;
 import com.voxelplugineering.voxelsniper.core.event.SniperEvent.SniperDestroyEvent;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 import com.voxelplugineering.voxelsniper.core.util.RayTrace;
+import com.voxelplugineering.voxelsniper.core.util.math.Vector3d;
 
 /**
  * An event handler for the default behavior for events.
@@ -42,24 +48,42 @@ import com.voxelplugineering.voxelsniper.core.util.RayTrace;
 public class CommonEventHandler
 {
 
-    //private final String playerFolderName = Gunsmith.getConfiguration().get("playerDataDirectory", String.class).or("players/");
-    //private final String aliasFile = Gunsmith.getConfiguration().get("aliasesFileName", String.class).or("aliases.json");
-    private final String playerSysvar = Gunsmith.getConfiguration().get("playerSysVarName", String.class).or("__PLAYER__");
+    private final Configuration conf;
+    private final LoggingDistributor logger;
+    private final PlayerRegistry<?> players;
+    private final OfflineUndoHandler undo;
+    private final PermissionProxy perms;
 
-    private final String originVariable = Gunsmith.getConfiguration().get("originVariable", String.class).or("origin");
-    private final String yawVariable = Gunsmith.getConfiguration().get("yawVariable", String.class).or("yaw");
-    private final String pitchVariable = Gunsmith.getConfiguration().get("pitchVariable", String.class).or("pitch");
-    private final String targetBlockVariable = Gunsmith.getConfiguration().get("targetBlockVariable", String.class).or("targetBlock");
-    private final String lengthVariable = Gunsmith.getConfiguration().get("lengthVariable", String.class).or("length");
+    //private final String playerFolderName = this.conf.get("playerDataDirectory", String.class).or("players/");
+    //private final String aliasFile = this.conf.get("aliasesFileName", String.class).or("aliases.json");
+    private final String playerSysvar;
 
-    private final double rayTraceRange = Gunsmith.getConfiguration().get("rayTraceRange", Double.class).or(250.0);
+    private final String originVariable;
+    private final String yawVariable;
+    private final String pitchVariable;
+    private final String targetBlockVariable;
+    private final String lengthVariable;
+
+    private final double rayTraceRange;
 
     /**
      * Constructs a new CommonEventHandler
      */
-    public CommonEventHandler()
+    public CommonEventHandler(Context context)
     {
+        this.logger = context.getRequired(LoggingDistributor.class);
+        this.conf = context.getRequired(Configuration.class);
+        this.players = context.getRequired(PlayerRegistry.class);
+        this.undo = context.getRequired(OfflineUndoHandler.class);
+        this.perms = context.getRequired(PermissionProxy.class);
 
+        this.playerSysvar = this.conf.get("playerSysVarName", String.class).or("__PLAYER__");
+        this.originVariable = this.conf.get("originVariable", String.class).or("origin");
+        this.yawVariable = this.conf.get("yawVariable", String.class).or("yaw");
+        this.pitchVariable = this.conf.get("pitchVariable", String.class).or("pitch");
+        this.targetBlockVariable = this.conf.get("targetBlockVariable", String.class).or("targetBlock");
+        this.lengthVariable = this.conf.get("lengthVariable", String.class).or("length");
+        this.rayTraceRange = this.conf.get("rayTraceRange", Double.class).or(250.0);
     }
 
     /**
@@ -118,8 +142,8 @@ public class CommonEventHandler
             Gunsmith.getLogger().error(e, "Error saving player aliases!");
         }*/
 
-        Gunsmith.getOfflineUndoHandler().register(player.getName(), player.getUndoHistory());
-        Gunsmith.getPlayerRegistry().invalidate(player.getName());
+        this.undo.register(player.getName(), player.getUndoHistory());
+        this.players.invalidate(player.getName());
     }
 
     /**
@@ -133,7 +157,7 @@ public class CommonEventHandler
     public void onSnipe(SnipeEvent event)
     {
         Player sniper = event.getSniper();
-        if (!Gunsmith.getPermissionsProxy().hasPermission(sniper, "voxelsniper.sniper"))
+        if (!this.perms.hasPermission(sniper, "voxelsniper.sniper"))
         {
             return;
         }
@@ -143,7 +167,11 @@ public class CommonEventHandler
             Location location = sniper.getLocation();
             double yaw = event.getYaw();
             double pitch = event.getPitch();
-            RayTrace ray = new RayTrace(location, yaw, pitch);
+            int minY = this.conf.get("minimumWorldDepth", int.class).or(0);
+            int maxY = this.conf.get("maximumWorldHeight", int.class).or(255);
+            double step = this.conf.get("rayTraceStep", double.class).or(0.2);
+            Vector3d eyeOffs = new Vector3d(0, this.conf.get("playerEyeHeight", double.class).or(1.62), 0);
+            RayTrace ray = new RayTrace(location, yaw, pitch, this.rayTraceRange, minY, maxY, step, eyeOffs);
             double range = this.rayTraceRange;
             if (sniper.getBrushSettings().hasValue("range"))
             {
@@ -174,7 +202,7 @@ public class CommonEventHandler
             if (!attemptedNullAction)
             {
                 sniper.sendMessage("Error executing brush, see console for more details.");
-                Gunsmith.getLogger().error(e, "Error executing brush");
+                this.logger.error(e, "Error executing brush");
             }
         }
     }
@@ -188,6 +216,6 @@ public class CommonEventHandler
     public void handleDeadEvent(DeadEvent deadEvent)
     {
         Object event = deadEvent.getEvent();
-        Gunsmith.getLogger().warn("An unhandled " + event.getClass().getName() + " event was posted to the event bus!");
+        this.logger.warn("An unhandled " + event.getClass().getName() + " event was posted to the event bus!");
     }
 }

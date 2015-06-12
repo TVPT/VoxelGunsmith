@@ -25,12 +25,9 @@ package com.voxelplugineering.voxelsniper;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
-import com.voxelplugineering.voxelsniper.core.CoreServiceProvider;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.shape.ComplexShape;
 import com.voxelplugineering.voxelsniper.core.shape.csg.CuboidShape;
 import com.voxelplugineering.voxelsniper.core.shape.csg.EllipsoidShape;
@@ -41,18 +38,6 @@ import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
  */
 public class ComplexShapeTest
 {
-
-    /**
-     * 
-     */
-    @BeforeClass
-    public static void setupGunsmith()
-    {
-        if (!Gunsmith.getServiceManager().isTesting())
-        {
-            Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
-        }
-    }
 
     /**
      * 

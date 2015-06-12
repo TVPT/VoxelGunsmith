@@ -26,9 +26,9 @@ package com.voxelplugineering.voxelsniper.core.util;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
+import com.voxelplugineering.voxelsniper.api.service.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.core.brushes.BrushChain;
 
 /**

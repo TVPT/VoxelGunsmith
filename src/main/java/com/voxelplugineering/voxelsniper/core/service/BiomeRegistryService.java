@@ -28,10 +28,11 @@ import java.util.Map;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import com.voxelplugineering.voxelsniper.api.registry.BiomeRegistry;
+import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
+import com.voxelplugineering.voxelsniper.api.service.registry.BiomeRegistry;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.registry.WeakRegistry;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A common biome registry for biomes.
@@ -41,6 +42,8 @@ import com.voxelplugineering.voxelsniper.core.registry.WeakRegistry;
 public class BiomeRegistryService<T> extends AbstractService implements BiomeRegistry<T>
 {
 
+    private final Configuration conf;
+
     private WeakRegistry<T, Biome> registry;
     private Biome defaultBiome = null;
     private String defaultBiomeName;
@@ -48,53 +51,45 @@ public class BiomeRegistryService<T> extends AbstractService implements BiomeReg
     /**
      * Creates a new {@link BiomeRegistryService}.
      */
-    public BiomeRegistryService()
+    public BiomeRegistryService(Context context)
     {
-        super(BiomeRegistry.class, 12);
+        super(context);
+        this.conf = context.getRequired(Configuration.class, this);
     }
 
     @Override
-    public String getName()
-    {
-        return "biomeRegistry";
-    }
-
-    @Override
-    protected void init()
+    protected void _init()
     {
         this.registry = new WeakRegistry<T, Biome>();
         this.registry.setCaseSensitiveKeys(false);
-        this.defaultBiomeName = Gunsmith.getConfiguration().get("defaultBiomeName", String.class).or("plains");
-        Gunsmith.getLogger().info("Initialized BiomeRegistry service");
+        this.defaultBiomeName = this.conf.get("defaultBiomeName", String.class).or("plains");
     }
 
-
     @Override
-    protected void destroy()
+    protected void _shutdown()
     {
         this.registry = null;
         this.defaultBiomeName = null;
-        Gunsmith.getLogger().info("Stopped BiomeRegistry service");
     }
 
     @Override
     public Optional<Biome> getBiome(String name)
     {
-        check();
+        check("getBiome");
         return this.registry.get(name);
     }
 
     @Override
     public Optional<Biome> getBiome(T biome)
     {
-        check();
+        check("getBiome");
         return this.registry.get(biome);
     }
 
     @Override
     public void registerBiome(String name, T object, Biome biome)
     {
-        check();
+        check("registerBiome");
         this.registry.register(name, object, biome);
         if (name.equalsIgnoreCase(this.defaultBiomeName))
         {
@@ -105,7 +100,7 @@ public class BiomeRegistryService<T> extends AbstractService implements BiomeReg
     @Override
     public Iterable<Biome> getBiomes()
     {
-        check();
+        check("getBiomes");
         List<Biome> biomes = Lists.newArrayList();
         for (Map.Entry<T, Biome> e : this.registry.getRegisteredValues())
         {
@@ -117,6 +112,7 @@ public class BiomeRegistryService<T> extends AbstractService implements BiomeReg
     @Override
     public Biome getDefaultBiome()
     {
+        check("getDefaultBiome");
         return this.defaultBiome;
     }
 

@@ -23,7 +23,13 @@
  */
 package com.voxelplugineering.voxelsniper.core.service;
 
+import java.util.List;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.api.service.Service;
+import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * An abstract {@link Service} handling state and priority.
@@ -31,81 +37,73 @@ import com.voxelplugineering.voxelsniper.api.service.Service;
 public abstract class AbstractService implements Service
 {
 
-    private boolean started = false;
-    private final int priority;
-    private final Class<?> serviceClass;
+    private final Optional<LoggingDistributor> _logger;
+
+    private boolean initialized = false;
+    private List<Service> dependants = Lists.newArrayList();
 
     /**
-     * Initializes {@link Service}
+     * Define a constructor in order to force needing to pass in a Context to all services.
      * 
-     * @param serviceClass The targeted service class
-     * @param priority The service priority
+     * @param context The service context
      */
-    public AbstractService(Class<?> serviceClass, int priority)
+    public AbstractService(Context context)
     {
-        this.priority = priority;
-        this.serviceClass = serviceClass;
+        this._logger = context.get(LoggingDistributor.class);
     }
 
     @Override
-    public Class<?> getTargetedService()
+    public final synchronized void start()
     {
-        return this.serviceClass;
-    }
-
-    @Override
-    public int getPriority()
-    {
-        return this.priority;
-    }
-
-    @Override
-    public final boolean isStarted()
-    {
-        return this.started;
-    }
-
-    @Override
-    public final void start()
-    {
-        if (this.started)
+        if (this.initialized)
         {
-            throw new IllegalStateException();
+            throw new IllegalStateException("Cannot initialize and already initialized service.");
         }
-        this.started = true;
-        init();
+        this.initialized = true;
+        _init();
+        if (this._logger.isPresent())
+        {
+            this._logger.get().info("Started " + getClass().getName() + " service.");
+        }
     }
 
-    /**
-     * Initializes the service.
-     */
-    protected abstract void init();
+    protected abstract void _init();
 
     @Override
-    public final void stop()
+    public final synchronized void shutdown()
     {
-        if (!this.started)
+        for (Service s : this.dependants)
         {
-            throw new IllegalStateException("Service " + getName() + " was attempted to be stopped while not started!");
+            s.shutdown();
         }
-        destroy();
-        this.started = false;
+        _shutdown();
+        if (this._logger.isPresent())
+        {
+            this._logger.get().info("Stopped " + getClass().getName() + " service.");
+        }
+        this.initialized = false;
     }
 
-    /**
-     * Performs shutdown tasks.
-     */
-    protected abstract void destroy();
+    protected abstract void _shutdown();
 
-    /**
-     * Validates that service is started.
-     */
-    public void check()
+    @Override
+    public final boolean isInitialized()
     {
-        if (!this.started)
+        return this.initialized;
+    }
+
+    protected void check(String s)
+    {
+        if (!this.initialized)
         {
-            throw new IllegalStateException("Tried to perform operation against " + getName() + " while it was stopped.");
+            throw new IllegalStateException("Attempted to " + s + " while service was uninitialized.");
         }
+    }
+
+    @Override
+    public <T extends Service> void addDependent(T service)
+    {
+        this.dependants.add(service);
     }
 
 }

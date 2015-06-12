@@ -28,14 +28,16 @@ import com.thevoxelbox.vsl.node.AbstractNode;
 import com.thevoxelbox.vsl.util.Provider;
 import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
+import com.voxelplugineering.voxelsniper.api.service.registry.BiomeRegistry;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 
 /**
  * A node for getting a {@link Biome} by name.
  */
 public class GetBiomeNode extends AbstractNode
 {
+
+    private final BiomeRegistry<?> biomes;
 
     private final Provider<String> name;
     private final Provider<Biome> biome;
@@ -45,16 +47,17 @@ public class GetBiomeNode extends AbstractNode
      * 
      * @param name The name provider
      */
-    public GetBiomeNode(Provider<String> name)
+    public GetBiomeNode(Provider<String> name, BiomeRegistry<?> biomes)
     {
         this.name = name;
         this.biome = new Provider<Biome>(this);
+        this.biomes = biomes;
     }
 
     @Override
     public void exec(RuntimeState state)
     {
-        Optional<Biome> b = Gunsmith.getBiomeRegistry().getBiome(this.name.get(state));
+        Optional<Biome> b = this.biomes.getBiome(this.name.get(state));
         if (b.isPresent())
         {
             this.biome.set(b.get(), state.getUUID());

@@ -26,6 +26,7 @@ package com.voxelplugineering.voxelsniper.core.world;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.api.service.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.api.world.Block;
@@ -34,9 +35,9 @@ import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.World;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.registry.WeakWrapper;
 import com.voxelplugineering.voxelsniper.core.shape.ComplexMaterialShape;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
 
 /**
@@ -47,14 +48,17 @@ import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
 public abstract class AbstractWorld<T> extends WeakWrapper<T> implements World
 {
 
+    private final MaterialRegistry<?> mats;
+
     /**
      * Sets up the {@link AbstractWorld}
      * 
      * @param value The underlying world object
      */
-    public AbstractWorld(T value)
+    public AbstractWorld(Context context, T value)
     {
         super(value);
+        this.mats = context.getRequired(MaterialRegistry.class);
     }
 
     @Override
@@ -145,7 +149,7 @@ public abstract class AbstractWorld<T> extends WeakWrapper<T> implements World
     {
         checkNotNull(origin);
         checkNotNull(shape);
-        MaterialShape mat = new ComplexMaterialShape(shape, Gunsmith.getMaterialRegistry().getAirMaterial());
+        MaterialShape mat = new ComplexMaterialShape(shape, this.mats.getAirMaterial());
         for (int x = 0; x < shape.getWidth(); x++)
         {
             int ox = x + origin.getFlooredX() - shape.getOrigin().getX();

@@ -30,7 +30,6 @@ import static org.mockito.Mockito.when;
 import java.util.UUID;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -40,8 +39,6 @@ import com.thevoxelbox.vsl.util.RuntimeState;
 import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.core.CoreServiceProvider;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.nodes.block.BlockBreakNode;
 import com.voxelplugineering.voxelsniper.core.nodes.material.IsLiquidNode;
 import com.voxelplugineering.voxelsniper.core.nodes.material.MaterialCompareNode;
@@ -54,18 +51,6 @@ import com.voxelplugineering.voxelsniper.util.CheckRunNode;
  */
 public class NodeTest
 {
-
-    /**
-     * 
-     */
-    @BeforeClass
-    public static void setupGunsmith()
-    {
-        if (!Gunsmith.getServiceManager().isTesting())
-        {
-            Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
-        }
-    }
 
     RuntimeState state;
 

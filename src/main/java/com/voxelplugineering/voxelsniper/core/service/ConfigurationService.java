@@ -32,11 +32,12 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.api.config.AbstractConfigurationContainer;
-import com.voxelplugineering.voxelsniper.api.config.Configuration;
+import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
+import com.voxelplugineering.voxelsniper.api.service.config.ConfigurationContainer;
+import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * The configuration storage.
@@ -44,41 +45,30 @@ import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContaine
 public class ConfigurationService extends AbstractService implements Configuration
 {
 
-    /**
-     * The configuration values.
-     */
+    private final LoggingDistributor logger;
+
     private Map<String, Object> config;
-    /**
-     * A Map of containers imported to this configuration storage.
-     */
-    private Map<String, AbstractConfigurationContainer> containers;
+    private Map<String, ConfigurationContainer> containers;
 
     /**
      * Constructs a new Configuration
      */
-    public ConfigurationService()
+    public ConfigurationService(Context context)
     {
-        super(Configuration.class, 1);
+        super(context);
+        this.logger = context.getRequired(LoggingDistributor.class, this);
     }
 
     @Override
-    public String getName()
+    protected void _init()
     {
-        return "config";
-    }
-
-    @Override
-    protected void init()
-    {
-        Gunsmith.getLogger().info("Initializing Configuration service");
         this.config = Maps.newHashMap();
         this.containers = Maps.newHashMap();
     }
 
     @Override
-    protected void destroy()
+    protected void _shutdown()
     {
-        Gunsmith.getLogger().info("Stopping Configuration service");
         this.config = null;
         this.containers = null;
     }
@@ -86,7 +76,7 @@ public class ConfigurationService extends AbstractService implements Configurati
     @Override
     public void set(String name, Object value)
     {
-        check();
+        check("set");
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         checkNotNull(value, "Value cannot be null!");
@@ -96,7 +86,7 @@ public class ConfigurationService extends AbstractService implements Configurati
     @Override
     public Optional<Object> get(String name)
     {
-        check();
+        check("get");
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         return has(name) ? Optional.of(this.config.get(name)) : Optional.absent();
@@ -105,7 +95,7 @@ public class ConfigurationService extends AbstractService implements Configurati
     @Override
     public <T> Optional<T> get(String name, Class<T> expectedType)
     {
-        check();
+        check("get");
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         if (has(name))
@@ -120,11 +110,11 @@ public class ConfigurationService extends AbstractService implements Configurati
     }
 
     @Override
-    public <T extends AbstractConfigurationContainer> void registerContainer(Class<T> container)
+    public <T extends ConfigurationContainer> void registerContainer(Class<T> container)
     {
-        check();
+        check("registerContainer");
         checkNotNull(container, "Container cannot be null!");
-        Gunsmith.getLogger().info("Registering config values from " + container.getName());
+        this.logger.info("Registering config values from " + container.getName());
         String name = container.getSimpleName();
         if (this.containers.containsKey(name))
         {
@@ -136,7 +126,7 @@ public class ConfigurationService extends AbstractService implements Configurati
         {
             obj = container.newInstance();
             this.containers.put(name, obj);
-            Gunsmith.getLogger().info("Loading configuration container: " + name);
+            this.logger.info("Loading configuration container: " + name);
             DataContainer data = obj.toContainer();
             for (Map.Entry<String, Object> entry : data.entrySet())
             {
@@ -144,31 +134,31 @@ public class ConfigurationService extends AbstractService implements Configurati
             }
         } catch (InstantiationException e1)
         {
-            Gunsmith.getLogger().error(e1, "Could not create a new instance of the container");
+            this.logger.error(e1, "Could not create a new instance of the container");
         } catch (IllegalAccessException e1)
         {
-            Gunsmith.getLogger().error(e1, "Could not create a new instance of the container");
+            this.logger.error(e1, "Could not create a new instance of the container");
         }
 
     }
 
     @Override
-    public Optional<AbstractConfigurationContainer> getContainer(String containerName)
+    public Optional<ConfigurationContainer> getContainer(String containerName)
     {
-        check();
+        check("getContainer");
         checkNotNull(containerName, "Name cannot be null!");
         checkArgument(!containerName.isEmpty(), "Name cannot be empty");
         return Optional.fromNullable(this.containers.get(containerName));
     }
 
     @Override
-    public AbstractConfigurationContainer[] getContainers()
+    public ConfigurationContainer[] getContainers()
     {
-        check();
-        Set<Entry<String, AbstractConfigurationContainer>> entries = this.containers.entrySet();
-        AbstractConfigurationContainer[] containers = new AbstractConfigurationContainer[entries.size()];
+        check("getContainers");
+        Set<Entry<String, ConfigurationContainer>> entries = this.containers.entrySet();
+        ConfigurationContainer[] containers = new ConfigurationContainer[entries.size()];
         int i = 0;
-        for (Entry<String, AbstractConfigurationContainer> e : entries)
+        for (Entry<String, ConfigurationContainer> e : entries)
         {
             containers[i++] = e.getValue();
         }
@@ -178,14 +168,14 @@ public class ConfigurationService extends AbstractService implements Configurati
     @Override
     public boolean has(String name)
     {
-        check();
+        check("has");
         return this.config.containsKey(name);
     }
 
     @Override
     public void fromContainer(DataContainer container)
     {
-        check();
+        check("fromContainer");
         for (String s : container.keySet())
         {
             if (this.containers.containsKey(s))
@@ -202,11 +192,11 @@ public class ConfigurationService extends AbstractService implements Configurati
     @Override
     public DataContainer toContainer()
     {
-        check();
+        check("toContainer");
         DataContainer container = new MemoryContainer("");
         for (String key : this.containers.keySet())
         {
-            AbstractConfigurationContainer c = this.containers.get(key);
+            ConfigurationContainer c = this.containers.get(key);
             container.writeContainer(c.getClass().getName(), c.toContainer());
         }
         return container;
@@ -215,10 +205,10 @@ public class ConfigurationService extends AbstractService implements Configurati
     @Override
     public void refreshAllContainers()
     {
-        check();
+        check("refreshAllContainers");
         for (String key : this.containers.keySet())
         {
-            AbstractConfigurationContainer c = this.containers.get(key);
+            ConfigurationContainer c = this.containers.get(key);
             DataContainer data = c.toContainer();
             for (Map.Entry<String, Object> entry : data.entrySet())
             {
@@ -230,8 +220,8 @@ public class ConfigurationService extends AbstractService implements Configurati
     @Override
     public void refreshContainer(String containerName)
     {
-        check();
-        Optional<AbstractConfigurationContainer> container = getContainer(containerName);
+        check("refreshContainer");
+        Optional<ConfigurationContainer> container = getContainer(containerName);
         if (container.isPresent())
         {
             DataContainer data = container.get().toContainer();

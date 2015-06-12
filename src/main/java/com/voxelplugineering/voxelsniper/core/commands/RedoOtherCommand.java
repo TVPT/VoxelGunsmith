@@ -24,11 +24,13 @@
 package com.voxelplugineering.voxelsniper.core.commands;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
-import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
+import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
+import com.voxelplugineering.voxelsniper.api.service.registry.PlayerRegistry;
+import com.voxelplugineering.voxelsniper.api.service.text.TextFormat;
+import com.voxelplugineering.voxelsniper.api.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A command get fetching the help information for a brush.
@@ -36,13 +38,18 @@ import com.voxelplugineering.voxelsniper.core.Gunsmith;
 public class RedoOtherCommand extends Command
 {
 
+    private final PlayerRegistry<?> players;
+    private final OfflineUndoHandler undoHandler;
+
     /**
      * Creates a new Command instance.
      */
-    public RedoOtherCommand()
+    public RedoOtherCommand(Context context)
     {
-        super("redoother", "Redoes another player's last n undone changes. Usage: /redoother [name] [n]");
+        super("redoother", "Redoes another player's last n undone changes. Usage: /redoother [name] [n]", context);
         setPermissions("voxelsniper.command.redoother");
+        this.players = context.getRequired(PlayerRegistry.class);
+        this.undoHandler = context.getRequired(OfflineUndoHandler.class);
     }
 
     @Override
@@ -55,10 +62,10 @@ public class RedoOtherCommand extends Command
         }
         String name = args[0];
         UndoQueue queue = null;
-        Optional<Player> target = Gunsmith.getPlayerRegistry().getPlayer(name);
+        Optional<Player> target = this.players.getPlayer(name);
         if (!target.isPresent())
         {
-            Optional<UndoQueue> attempt = Gunsmith.getOfflineUndoHandler().get(name);
+            Optional<UndoQueue> attempt = this.undoHandler.get(name);
             if (attempt.isPresent())
             {
                 queue = attempt.get();

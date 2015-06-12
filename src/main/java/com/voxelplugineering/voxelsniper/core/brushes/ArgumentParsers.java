@@ -24,12 +24,16 @@
 package com.voxelplugineering.voxelsniper.core.brushes;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
+import com.voxelplugineering.voxelsniper.api.service.command.ArgumentParser;
+import com.voxelplugineering.voxelsniper.api.service.registry.BiomeRegistry;
+import com.voxelplugineering.voxelsniper.api.service.registry.MaterialRegistry;
+import com.voxelplugineering.voxelsniper.api.service.registry.PlayerRegistry;
+import com.voxelplugineering.voxelsniper.api.service.registry.WorldRegistry;
 import com.voxelplugineering.voxelsniper.api.world.World;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A static library of standard argument parsers.
@@ -49,19 +53,16 @@ public class ArgumentParsers
     /**
      * Initialize
      */
-    public static void init()
+    @SuppressWarnings("rawtypes")
+    public static void init(Context context)
     {
         STRING_PARSER = new ArgumentParser.RawParser();
-        BIOME_PARSER = new ArgumentParser<Biome>()
+
+        Optional<BiomeRegistry> biome_reg = context.get(BiomeRegistry.class);
+        if (biome_reg.isPresent())
         {
-
-            @Override
-            public Optional<Biome> get(String arg)
-            {
-                return Gunsmith.getBiomeRegistry().getBiome(arg);
-            }
-
-        };
+            BIOME_PARSER = new BiomeParser(biome_reg.get());
+        }
         INTEGER_PARSER = new ArgumentParser<Integer>()
         {
 
@@ -82,35 +83,92 @@ public class ArgumentParsers
             }
 
         };
-        WOLRD_PARSER = new ArgumentParser<World>()
+        Optional<WorldRegistry> world_reg = context.get(WorldRegistry.class);
+        if (world_reg.isPresent())
         {
-
-            @Override
-            public Optional<World> get(String arg)
-            {
-                return Gunsmith.getWorldRegistry().getWorld(arg);
-            }
-
-        };
-        MATERIAL_PARSER = new ArgumentParser<Material>()
+            WOLRD_PARSER = new WorldParser(world_reg.get());
+        }
+        Optional<MaterialRegistry> material_reg = context.get(MaterialRegistry.class);
+        if (material_reg.isPresent())
         {
-
-            @Override
-            public Optional<Material> get(String arg)
-            {
-                return Gunsmith.getMaterialRegistry().getMaterial(arg);
-            }
-
-        };
-        PLAYER_PARSER = new ArgumentParser<Player>()
+            MATERIAL_PARSER = new MaterialParser(material_reg.get());
+        }
+        Optional<PlayerRegistry> player_reg = context.get(PlayerRegistry.class);
+        if (player_reg.isPresent())
         {
+            PLAYER_PARSER = new PlayerParser(player_reg.get());
+        }
+    }
 
-            @Override
-            public Optional<Player> get(String arg)
-            {
-                return Gunsmith.getPlayerRegistry().getPlayer(arg);
-            }
+    private static class BiomeParser implements ArgumentParser<Biome>
+    {
 
-        };
+        private final BiomeRegistry<?> reg;
+
+        public BiomeParser(BiomeRegistry<?> reg)
+        {
+            this.reg = reg;
+        }
+
+        @Override
+        public Optional<Biome> get(String arg)
+        {
+            return this.reg.getBiome(arg);
+        }
+
+    }
+
+    private static class PlayerParser implements ArgumentParser<Player>
+    {
+
+        private final PlayerRegistry<?> reg;
+
+        public PlayerParser(PlayerRegistry<?> reg)
+        {
+            this.reg = reg;
+        }
+
+        @Override
+        public Optional<Player> get(String arg)
+        {
+            return this.reg.getPlayer(arg);
+        }
+
+    }
+
+    private static class WorldParser implements ArgumentParser<World>
+    {
+
+        private final WorldRegistry<?> reg;
+
+        public WorldParser(WorldRegistry<?> reg)
+        {
+            this.reg = reg;
+        }
+
+        @Override
+        public Optional<World> get(String arg)
+        {
+            return this.reg.getWorld(arg);
+        }
+
+    }
+
+    private static class MaterialParser implements ArgumentParser<Material>
+    {
+
+        private final MaterialRegistry<?> reg;
+
+        public MaterialParser(MaterialRegistry<?> reg)
+        {
+            this.reg = reg;
+        }
+
+        @Override
+        public Optional<Material> get(String arg)
+        {
+            return this.reg.getMaterial(arg);
+        }
+
     }
 }

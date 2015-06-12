@@ -34,13 +34,14 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.entity.MessageReceiver;
+import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
+import com.voxelplugineering.voxelsniper.api.service.registry.MaterialRegistry;
+import com.voxelplugineering.voxelsniper.api.service.text.TextFormat;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.util.schematic.SchematicLoader;
-import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
 import com.voxelplugineering.voxelsniper.core.shape.NamedWorldSection;
 import com.voxelplugineering.voxelsniper.core.shape.csg.CuboidShape;
@@ -61,12 +62,16 @@ public class CommonSchematicLoader implements SchematicLoader
      * TODO unit tests for this
      */
 
+    private final MaterialRegistry<?> mats;
+    private final Logger logger;
+
     /**
      * Creates a new {@link CommonSchematicLoader}.
      */
-    public CommonSchematicLoader()
+    public CommonSchematicLoader(MaterialRegistry<?> mats, Logger logger)
     {
-
+        this.logger = logger;
+        this.mats = mats;
     }
 
     @Override
@@ -192,7 +197,7 @@ public class CommonSchematicLoader implements SchematicLoader
             CompoundTag material = (CompoundTag) tag;
             short key = material.getChildTag("Key", ShortTag.class).get().getValue();
             String mat = material.getChildTag("Name", StringTag.class).get().getValue();
-            materialDict.put(key, Gunsmith.getMaterialRegistry().getMaterial(mat).or(Gunsmith.getMaterialRegistry().getAirMaterial()));
+            materialDict.put(key, this.mats.getMaterial(mat).or(this.mats.getAirMaterial()));
         }
         // create region and return
         NamedWorldSection region;
@@ -247,8 +252,8 @@ public class CommonSchematicLoader implements SchematicLoader
         {
             if (owner == null)
             {
-                Gunsmith.getLogger().warn(
-                        "Failed to save schematic to " + data.getName().or("an unknown source") + ": Dimensions exceeded max size supported.");
+                this.logger.warn("Failed to save schematic to " + data.getName().or("an unknown source")
+                        + ": Dimensions exceeded max size supported.");
             } else
             {
                 owner.sendMessage(TextFormat.RED + "Could not save schematic, dimensions exceeded maximum supported size!");

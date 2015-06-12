@@ -34,12 +34,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceBuilder;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceFactory;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 
 /**
  * A data source which serializes data to a file as Json.
@@ -50,34 +51,37 @@ public class JsonDataSourceReader implements DataSourceReader
     /**
      * A {@link DataSourceBuilder} for json data sources.
      */
-    public static final DataSourceBuilder<JsonDataSourceReader> BUILDER = new DataSourceBuilder<JsonDataSourceReader>()
+    public static final DataSourceBuilder<JsonDataSourceReader> getBuilder(final Logger logger, final DataSourceFactory factory)
     {
-
-        @Override
-        public Optional<JsonDataSourceReader> build(DataContainer args)
+        return new DataSourceBuilder<JsonDataSourceReader>()
         {
-            if (!args.containsKey("source") || !args.containsKey("sourceArgs"))
-            {
-                Gunsmith.getLogger().warn("Failed to build JsonDataSourceReader, invalid args");
-                return Optional.absent();
-            }
-            String sourceName = args.readString("source").get();
-            Optional<DataSource> source = Gunsmith.getPersistence().build(sourceName, args.readContainer("sourceArgs").get());
-            if (!source.isPresent())
-            {
-                Gunsmith.getLogger().warn("Failed to build data source for JsonDataSourceReader");
-                return Optional.absent();
-            }
-            if (!StreamDataSource.class.isAssignableFrom(source.get().getClass()))
-            {
-                Gunsmith.getLogger().warn("Failed to build JsonDataSourceReader: Source was not a StreamDataSource");
-                return Optional.absent();
-            }
-            StreamDataSource stream = (StreamDataSource) source.get();
-            return Optional.of(new JsonDataSourceReader(stream));
-        }
 
-    };
+            @Override
+            public Optional<JsonDataSourceReader> build(DataContainer args)
+            {
+                if (!args.containsKey("source") || !args.containsKey("sourceArgs"))
+                {
+                    logger.warn("Failed to build JsonDataSourceReader, invalid args");
+                    return Optional.absent();
+                }
+                String sourceName = args.readString("source").get();
+                Optional<DataSource> source = factory.build(sourceName, args.readContainer("sourceArgs").get());
+                if (!source.isPresent())
+                {
+                    logger.warn("Failed to build data source for JsonDataSourceReader");
+                    return Optional.absent();
+                }
+                if (!StreamDataSource.class.isAssignableFrom(source.get().getClass()))
+                {
+                    logger.warn("Failed to build JsonDataSourceReader: Source was not a StreamDataSource");
+                    return Optional.absent();
+                }
+                StreamDataSource stream = (StreamDataSource) source.get();
+                return Optional.of(new JsonDataSourceReader(stream));
+            }
+
+        };
+    }
 
     private final StreamDataSource source;
     private boolean pretty = false;

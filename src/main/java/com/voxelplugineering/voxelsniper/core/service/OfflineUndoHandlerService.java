@@ -30,7 +30,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.voxelplugineering.voxelsniper.api.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A standard offline undo handler which caches player {@link UndoQueue}s for a period of 60 minutes
@@ -44,49 +44,41 @@ public class OfflineUndoHandlerService extends AbstractService implements Offlin
     /**
      * Creates a new {@link OfflineUndoHandlerService}.
      */
-    public OfflineUndoHandlerService()
+    public OfflineUndoHandlerService(Context context)
     {
-        super(OfflineUndoHandler.class, 13);
+        super(context);
     }
 
     @Override
-    public String getName()
-    {
-        return "offlineUndoHandler";
-    }
-
-    @Override
-    protected void init()
+    protected void _init()
     {
         this.cache = CacheBuilder.newBuilder().expireAfterAccess(60, TimeUnit.MINUTES).build();
-        Gunsmith.getLogger().info("Initialized OfflineUndoHandler service");
     }
 
     @Override
-    protected void destroy()
+    protected void _shutdown()
     {
         this.cache = null;
-        Gunsmith.getLogger().info("Stopped OfflineUndoHandler service");
     }
 
     @Override
     public void register(String name, UndoQueue undo)
     {
-        check();
+        check("register");
         this.cache.put(name, undo);
     }
 
     @Override
     public Optional<UndoQueue> get(String name)
     {
-        check();
+        check("get");
         return Optional.fromNullable(this.cache.getIfPresent(name));
     }
 
     @Override
     public void invalidate(String name)
     {
-        check();
+        check("invalidate");
         this.cache.invalidate(name);
     }
 

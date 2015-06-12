@@ -26,7 +26,7 @@ package com.voxelplugineering.voxelsniper.api.brushes;
 import com.thevoxelbox.vsl.api.node.Node;
 import com.thevoxelbox.vsl.api.variables.VariableHolder;
 import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.api.commands.ArgumentParser;
+import com.voxelplugineering.voxelsniper.api.service.command.ArgumentParser;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
 
 /**
@@ -92,10 +92,8 @@ public interface Brush extends DataSerializable
      * 
      * @param name The name
      * @param parser The parser
-     * @param defaultValue The default value
-     * @param aliases Any aliases
      */
-    void addArgument(String name, ArgumentParser<?> parser, String defaultValue, String... aliases);
+    void addArgument(String name, ArgumentParser<?> parser);
 
     /**
      * Sets an argument by name as the primary argument. If only a single argument is provided it is

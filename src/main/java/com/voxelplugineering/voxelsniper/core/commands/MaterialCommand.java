@@ -26,10 +26,10 @@ package com.voxelplugineering.voxelsniper.core.commands;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
+import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.
@@ -44,28 +44,22 @@ public class MaterialCommand extends Command
     /**
      * The message sent to the player if their chosen material is not found in the registry.
      */
-    private String materialNotFoundMessage = "Could not find that material.";
+    private String materialNotFoundMessage;
     /**
      * The message sent to the player when their material is set.
      */
-    private String materialSetMessage = "Set material to %s";
+    private String materialSetMessage;
 
     /**
      * Constructs a new BrushCommand
      */
-    public MaterialCommand()
+    public MaterialCommand(Context context)
     {
-        super("material", "Sets your current brush material");
+        super("material", "Sets your current brush material", context);
         setAliases("v");
         setPermissions("voxelsniper.command.material");
-        if (Gunsmith.getConfiguration().has("materialNotFoundMessage"))
-        {
-            this.materialNotFoundMessage = Gunsmith.getConfiguration().get("materialNotFoundMessage").get().toString();
-        }
-        if (Gunsmith.getConfiguration().has("materialSetMessage"))
-        {
-            this.materialSetMessage = Gunsmith.getConfiguration().get("materialSetMessage").get().toString();
-        }
+        this.materialNotFoundMessage = this.config.get("materialNotFoundMessage", String.class).or("Could not find that material.");
+        this.materialSetMessage = this.config.get("materialSetMessage", String.class).or("Set material to %s");
     }
 
     @Override

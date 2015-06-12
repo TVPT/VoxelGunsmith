@@ -27,13 +27,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.PrintStream;
 
-import com.voxelplugineering.voxelsniper.api.logging.LogLevel;
+import com.voxelplugineering.voxelsniper.api.service.logging.LogLevel;
 
 /**
  * A logger wrapping a {@link PrintStream}. Designed for use for logging to consoles such as
  * standard out.
  */
-public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.logging.Logger
+public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.api.service.logging.Logger
 {
 
     private final PrintStream stream;

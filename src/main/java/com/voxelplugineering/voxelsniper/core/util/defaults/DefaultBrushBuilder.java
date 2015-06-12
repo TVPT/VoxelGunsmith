@@ -43,12 +43,12 @@ import com.thevoxelbox.vsl.nodes.vars.VariableGetNode;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
+import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Chunk;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.brushes.ArgumentParsers;
 import com.voxelplugineering.voxelsniper.core.brushes.BrushNodeGraph;
 import com.voxelplugineering.voxelsniper.core.brushes.natives.BlendBrush;
@@ -109,7 +109,7 @@ public class DefaultBrushBuilder
      * 
      * @param directory the directory to store the brush files in.
      */
-    public static void saveAll(File directory)
+    public static void saveAll(File directory, Logger logger)
     {
         checkNotNull(directory);
         if (!directory.exists())
@@ -139,7 +139,7 @@ public class DefaultBrushBuilder
 
             } catch (Exception e)
             {
-                Gunsmith.getLogger().warn("Error saving brush " + name + ": " + e.getClass().getName() + " " + e.getMessage());
+                logger.warn("Error saving brush " + name + ": " + e.getClass().getName() + " " + e.getMessage());
             } finally
             {
                 if (output != null)
@@ -157,7 +157,7 @@ public class DefaultBrushBuilder
     }
 
     /**
-     * Creates and loads all brushes into the blobal brush manager.
+     * Creates and loads all brushes into the global brush manager.
      */
     public static void buildBrushes()
     {
@@ -194,18 +194,9 @@ public class DefaultBrushBuilder
             chunkForEach.setBody(refresh);
 
             Brush brush = new BrushNodeGraph("biome", BrushPartType.EFFECT);
-            brush.addArgument("biome", ArgumentParsers.BIOME_PARSER, Gunsmith.getBiomeRegistry().getDefaultBiome().getName());
+            brush.addArgument("biome", ArgumentParsers.BIOME_PARSER);
             brush.setArgumentAsPrimary("biome");
-            String biomes = "";
-            for (Biome b : Gunsmith.getBiomeRegistry().getBiomes())
-            {
-                if (!biomes.isEmpty())
-                {
-                    biomes += ", ";
-                }
-                biomes += b.getName();
-            }
-            String help = "Sets the biome for the world across the flattened area of a shape\nValid biomes are: " + biomes;
+            String help = "Sets the biome for the world across the flattened area of a shape.";
             brush.setHelp(help);
             brush.setStartNode(flatten);
             graphs.put("biome", brush);

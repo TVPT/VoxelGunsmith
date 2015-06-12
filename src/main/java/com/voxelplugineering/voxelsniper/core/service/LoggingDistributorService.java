@@ -30,9 +30,10 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.api.logging.LogLevel;
-import com.voxelplugineering.voxelsniper.api.logging.Logger;
-import com.voxelplugineering.voxelsniper.api.logging.LoggingDistributor;
+import com.voxelplugineering.voxelsniper.api.service.logging.LogLevel;
+import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
+import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A standard logging distributor.
@@ -49,27 +50,21 @@ public class LoggingDistributorService extends AbstractService implements Loggin
     /**
      * Creates a new logging distributor.
      */
-    public LoggingDistributorService()
+    public LoggingDistributorService(Context context)
     {
-        super(LoggingDistributor.class, -2);
+        super(context);
         this.loggers = Maps.newHashMap();
     }
 
     @Override
-    public String getName()
-    {
-        return "logger";
-    }
-
-    @Override
-    protected void init()
+    protected void _init()
     {
         this.loggers = Maps.newHashMap();
         info("Initializing Logging service");
     }
 
     @Override
-    protected void destroy()
+    protected void _shutdown()
     {
         info("Stopping Logging service");
         this.loggers = null;
@@ -91,7 +86,7 @@ public class LoggingDistributorService extends AbstractService implements Loggin
     public void log(LogLevel level, String msg)
     {
 
-        check();
+        check("log");
         if (msg == null || msg.isEmpty() || !level.isGEqual(this.root))
         {
             return;
@@ -116,7 +111,7 @@ public class LoggingDistributorService extends AbstractService implements Loggin
     @Override
     public void debug(String msg)
     {
-        check();
+        check("debug");
         if (msg == null || msg.isEmpty() || !LogLevel.DEBUG.isGEqual(this.root))
         {
             return;
@@ -131,7 +126,7 @@ public class LoggingDistributorService extends AbstractService implements Loggin
     @Override
     public void info(String msg)
     {
-        check();
+        check("info");
         if (msg == null || msg.isEmpty() || !LogLevel.INFO.isGEqual(this.root))
         {
             return;
@@ -150,7 +145,7 @@ public class LoggingDistributorService extends AbstractService implements Loggin
     @Override
     public void warn(String msg)
     {
-        check();
+        check("warn");
         if (msg == null || msg.isEmpty() || !LogLevel.WARN.isGEqual(this.root))
         {
             return;
@@ -169,7 +164,7 @@ public class LoggingDistributorService extends AbstractService implements Loggin
     @Override
     public void error(String msg)
     {
-        check();
+        check("error");
         if (msg == null || msg.isEmpty())
         {
             return;
@@ -188,7 +183,7 @@ public class LoggingDistributorService extends AbstractService implements Loggin
     @Override
     public void error(Exception e)
     {
-        check();
+        check("error");
         if (e == null)
         {
             return;
@@ -207,7 +202,7 @@ public class LoggingDistributorService extends AbstractService implements Loggin
     @Override
     public void error(Exception e, String msg)
     {
-        check();
+        check("error");
         if (msg == null || msg.isEmpty() || e == null)
         {
             return;
@@ -227,7 +222,7 @@ public class LoggingDistributorService extends AbstractService implements Loggin
     @Override
     public void registerLogger(Logger logger, String name)
     {
-        check();
+        check("registerLogger");
         checkNotNull(logger, "Logger cannot be null!");
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
@@ -237,7 +232,7 @@ public class LoggingDistributorService extends AbstractService implements Loggin
     @Override
     public void removeLogger(String name)
     {
-        check();
+        check("removeLogger");
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         this.loggers.remove(name);

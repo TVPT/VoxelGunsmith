@@ -25,11 +25,12 @@ package com.voxelplugineering.voxelsniper.core.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
-import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
-import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.alias.AliasHandler;
+import com.voxelplugineering.voxelsniper.api.service.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.api.service.alias.GlobalAliasHandler;
+import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 import com.voxelplugineering.voxelsniper.core.util.StringUtilities;
 
 /**
@@ -38,14 +39,17 @@ import com.voxelplugineering.voxelsniper.core.util.StringUtilities;
 public class AliasCommand extends Command
 {
 
+    private final AliasHandler aliases;
+
     /**
-     * Constructs a new BrushCommand
+     * Constructs a new {@link AliasCommand}.
      */
-    public AliasCommand()
+    public AliasCommand(Context context)
     {
-        super("alias", "Sets an alias: /alias [target] [-g] alias=value");
+        super("alias", "Sets an alias: /alias [target] [-g] alias=value", context);
         setAliases("voxelalias");
         setPermissions("voxelsniper.command.alias");
+        this.aliases = context.getRequired(GlobalAliasHandler.class);
     }
 
     @Override
@@ -65,8 +69,8 @@ public class AliasCommand extends Command
             return true;
         }
         String target = args[0];
-        boolean global = args[1].equalsIgnoreCase("-g") && Gunsmith.getPermissionsProxy().hasPermission(sniper, "voxelsniper.command.alias.global");
-        AliasHandler alias = global ? Gunsmith.getGlobalAliasHandler() : sniper.getAliasHandler();
+        boolean global = args[1].equalsIgnoreCase("-g") && this.permsProxy.hasPermission(sniper, "voxelsniper.command.alias.global");
+        AliasHandler alias = global ? this.aliases : sniper.getAliasHandler();
         int n = global ? 2 : 1;
         if (alias.hasTarget(target))
         {

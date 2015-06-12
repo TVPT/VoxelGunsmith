@@ -30,7 +30,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.concurrent.ExecutorService;
 
-import com.voxelplugineering.voxelsniper.api.event.bus.EventBus;
+import com.voxelplugineering.voxelsniper.api.service.event.EventBus;
 
 /**
  * Annotates an event to specify the threading policy that should be followed by {@link EventBus}s

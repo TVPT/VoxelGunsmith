@@ -24,12 +24,13 @@
 package com.voxelplugineering.voxelsniper.api.service.persistence;
 
 import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.api.service.Service;
 
 /**
  * A factory into which data source types may be registered along with their
  * {@link DataSourceBuilder}.
  */
-public interface DataSourceFactory
+public interface DataSourceFactory extends Service
 {
 
     /**

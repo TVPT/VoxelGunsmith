@@ -30,12 +30,13 @@ import java.util.Map;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
+import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceBuilder;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceFactory;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A {@link DataSourceFactory} service.
@@ -43,44 +44,39 @@ import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContaine
 public class DataSourceFactoryService extends AbstractService implements DataSourceFactory
 {
 
+    private final LoggingDistributor logger;
+
     private Map<String, DataSourceBuilder<?>> builders;
     private Map<Class<? extends DataSource>, String> names;
 
     /**
      * Creates a new {@link DataSourceFactoryService}.
      */
-    public DataSourceFactoryService()
+    public DataSourceFactoryService(Context context)
     {
-        super(DataSourceFactory.class, -1);
+        super(context);
+        this.logger = context.getRequired(LoggingDistributor.class, this);
     }
 
     @Override
-    public String getName()
-    {
-        return "persistence";
-    }
-
-    @Override
-    protected void init()
+    protected void _init()
     {
         this.builders = Maps.newHashMap();
         this.names = Maps.newHashMap();
-        Gunsmith.getLogger().info("Initialized Persistence service");
     }
 
     @Override
-    protected void destroy()
+    protected void _shutdown()
     {
         this.builders = null;
         this.names = null;
-        Gunsmith.getLogger().info("Stopped Persistence service");
     }
 
     @Override
     public <T extends DataSource> void register(String name, Class<T> type, DataSourceBuilder<T> builder)
     {
-        check();
-        Gunsmith.getLogger().info("Registering DataSourceBuilder " + name + " " + type.getName());
+        check("register");
+        this.logger.info("Registering DataSourceBuilder " + name + " " + type.getName());
         this.builders.put(name, builder);
         this.names.put(type, name);
     }
@@ -89,12 +85,13 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
     @SuppressWarnings("unchecked")
     public Optional<DataSource> build(String name, DataContainer args)
     {
-        check();
+        check("build");
         checkNotNull(name);
         if (this.builders.containsKey(name))
         {
             return (Optional<DataSource>) this.builders.get(name).build(args);
         }
+        System.err.println("Could not find builder for " + name);
         return Optional.absent();
     }
 
@@ -108,7 +105,7 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
     @SuppressWarnings("unchecked")
     public <T extends DataSource> Optional<T> build(Class<T> type)
     {
-        check();
+        check("build");
         if (this.names.containsKey(type))
         {
             return (Optional<T>) build(this.names.get(type));
@@ -120,7 +117,7 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
     @SuppressWarnings("unchecked")
     public <T extends DataSource> Optional<T> build(Class<T> type, DataContainer args)
     {
-        check();
+        check("build");
         if (this.names.containsKey(type))
         {
             return (Optional<T>) build(this.names.get(type), args);
@@ -131,7 +128,7 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
     @Override
     public boolean remove(String name)
     {
-        check();
+        check("remove");
         if (this.builders.containsKey(name))
         {
             this.builders.remove(name);
@@ -151,7 +148,7 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
     @Override
     public void clear()
     {
-        check();
+        check("clear");
         this.names.clear();
         this.builders.clear();
     }

@@ -159,9 +159,9 @@
             <property name="scope" value="protected"/>
             <property name="severity" value="warning"/>
             <property name="allowMissingJavadoc" value="false"/>
-            <property name="allowMissingParamTags" value="false"/>
-            <property name="allowMissingReturnTag" value="false"/>
-            <property name="allowMissingThrowsTags" value="false"/>
+            <property name="allowMissingParamTags" value="true"/>
+            <property name="allowMissingReturnTag" value="true"/>
+            <property name="allowMissingThrowsTags" value="true"/>
             <property name="allowThrowsTagsForSubclasses" value="false"/>
             <property name="allowUndeclaredRTE" value="true"/>
         </module>

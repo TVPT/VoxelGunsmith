@@ -28,12 +28,12 @@ import java.util.Map;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
-import com.voxelplugineering.voxelsniper.api.registry.PlayerRegistry;
-import com.voxelplugineering.voxelsniper.api.registry.RegistryProvider;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
+import com.voxelplugineering.voxelsniper.api.service.registry.PlayerRegistry;
+import com.voxelplugineering.voxelsniper.api.service.registry.RegistryProvider;
 import com.voxelplugineering.voxelsniper.core.registry.ProvidedWeakRegistry;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A standard player registry for players.
@@ -53,31 +53,23 @@ public class PlayerRegistryService<T> extends AbstractService implements PlayerR
      * @param provider The provider for getting new players
      * @param console The console sender proxy
      */
-    public PlayerRegistryService(RegistryProvider<T, Player> provider, CommandSender console)
+    public PlayerRegistryService(Context context, RegistryProvider<T, Player> provider, CommandSender console)
     {
-        super(PlayerRegistry.class, 8);
+        super(context);
         this.console = console;
         this.provider = provider;
     }
 
     @Override
-    public String getName()
-    {
-        return "playerRegistry";
-    }
-
-    @Override
-    protected void init()
+    protected void _init()
     {
         this.registry = new ProvidedWeakRegistry<T, Player>(this.provider);
-        Gunsmith.getLogger().info("Initialized PlayerRegistry service");
     }
 
     @Override
-    protected void destroy()
+    protected void _shutdown()
     {
         this.registry = null;
-        Gunsmith.getLogger().info("Stopped PlayerRegistry service");
     }
 
     @Override
@@ -89,21 +81,21 @@ public class PlayerRegistryService<T> extends AbstractService implements PlayerR
     @Override
     public Optional<Player> getPlayer(String name)
     {
-        check();
+        check("getPlayer");
         return this.registry.get(name);
     }
 
     @Override
     public Optional<Player> getPlayer(T player)
     {
-        check();
+        check("getPlayer");
         return this.registry.get(player);
     }
 
     @Override
     public Iterable<Player> getPlayers()
     {
-        check();
+        check("getPlayers");
         List<Player> players = Lists.newArrayList();
         for (Map.Entry<T, Player> e : this.registry.getRegisteredValues())
         {
@@ -115,14 +107,14 @@ public class PlayerRegistryService<T> extends AbstractService implements PlayerR
     @Override
     public void invalidate(String name)
     {
-        check();
+        check("invalidate");
         this.registry.remove(name);
     }
 
     @Override
     public void invalidate(T player)
     {
-        check();
+        check("invalidate");
         this.registry.remove(player);
     }
 

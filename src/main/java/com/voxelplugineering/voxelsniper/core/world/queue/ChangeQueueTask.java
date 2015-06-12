@@ -24,13 +24,29 @@
 package com.voxelplugineering.voxelsniper.core.world.queue;
 
 import com.voxelplugineering.voxelsniper.api.entity.Player;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
+import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
+import com.voxelplugineering.voxelsniper.api.service.registry.PlayerRegistry;
 
 /**
  * A task for executing pending change queues.
  */
 public class ChangeQueueTask implements Runnable
 {
+
+    private final PlayerRegistry<?> players;
+    private final Logger logger;
+    private final Configuration conf;
+
+    /**
+     * Creates a new {@link ChangeQueueTask}.
+     */
+    public ChangeQueueTask(PlayerRegistry<?> players, Logger logger, Configuration conf)
+    {
+        this.players = players;
+        this.logger = logger;
+        this.conf = conf;
+    }
 
     /**
      * Performs a set of changes fro all players with pending changes.
@@ -40,7 +56,7 @@ public class ChangeQueueTask implements Runnable
     {
         // long start = System.currentTimeMillis();
         int n = 0;
-        for (Player p : Gunsmith.getPlayerRegistry().getPlayers())
+        for (Player p : this.players.getPlayers())
         {
             if (p.hasPendingChanges())
             {
@@ -51,9 +67,9 @@ public class ChangeQueueTask implements Runnable
         {
             return;
         }
-        int remaining = (Integer) Gunsmith.getConfiguration().get("blockChangesPerSecond").get();
+        int remaining = this.conf.get("blockChangesPerSecond", int.class).get();
         remaining /= 10;
-        for (Player p : Gunsmith.getPlayerRegistry().getPlayers())
+        for (Player p : this.players.getPlayers())
         {
             if (!p.hasPendingChanges())
             {
@@ -76,7 +92,7 @@ public class ChangeQueueTask implements Runnable
                     actual += p.getNextPendingChange().get().perform(allocation);
                 } catch (Exception e)
                 {
-                    Gunsmith.getLogger().error(e, "Error while performing change operation!");
+                    this.logger.error(e, "Error while performing change operation!");
                     p.clearNextPending();
                 }
                 if (p.getNextPendingChange().get().isFinished())

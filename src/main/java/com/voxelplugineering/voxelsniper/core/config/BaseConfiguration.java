@@ -23,12 +23,13 @@
  */
 package com.voxelplugineering.voxelsniper.core.config;
 
-import com.voxelplugineering.voxelsniper.api.config.AbstractConfigurationContainer;
+import com.voxelplugineering.voxelsniper.api.service.config.ConfigurationContainer;
+import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
 
 /**
  * Default base configuration values.
  */
-public class BaseConfiguration extends AbstractConfigurationContainer
+public class BaseConfiguration extends ConfigurationContainer
 {
 
     double playerEyeHeight = 1.62;
@@ -52,4 +53,8 @@ public class BaseConfiguration extends AbstractConfigurationContainer
     int aliasInterval = 30000;
     int changeInterval = 100;
 
+    protected BaseConfiguration(Logger logger)
+    {
+        super(logger);
+    }
 }

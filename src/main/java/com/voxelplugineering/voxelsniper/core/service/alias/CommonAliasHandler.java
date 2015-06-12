@@ -32,9 +32,9 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
-import com.voxelplugineering.voxelsniper.api.alias.AliasOwner;
-import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.api.service.alias.AliasHandler;
+import com.voxelplugineering.voxelsniper.api.service.alias.AliasOwner;
+import com.voxelplugineering.voxelsniper.api.service.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
 
@@ -47,16 +47,16 @@ public class CommonAliasHandler implements AliasHandler
     private AliasHandler parent;
     private Map<String, AliasRegistry> aliasTargets;
     private AliasOwner owner;
-    private boolean built;
+    private boolean caseSensitive;
 
     /**
      * Creates a new {@link AliasHandler}.
      * 
      * @param owner The owner
      */
-    public CommonAliasHandler(AliasOwner owner)
+    public CommonAliasHandler(AliasOwner owner, boolean caseSensitive)
     {
-        this(owner, null);
+        this(owner, null, caseSensitive);
     }
 
     /**
@@ -65,23 +65,12 @@ public class CommonAliasHandler implements AliasHandler
      * @param parent The new parent
      * @param owner The owner
      */
-    public CommonAliasHandler(AliasOwner owner, AliasHandler parent)
+    public CommonAliasHandler(AliasOwner owner, AliasHandler parent, boolean caseSensitive)
     {
         this.owner = checkNotNull(owner);
         this.parent = parent;
-        this.built = false;
-    }
-
-    @Override
-    public boolean exists()
-    {
-        return this.built;
-    }
-
-    @Override
-    public void init()
-    {
         this.aliasTargets = Maps.newHashMap();
+        this.caseSensitive = caseSensitive;
         if (this.parent != null)
         {
             for (String target : this.parent.getValidTargets())
@@ -89,14 +78,6 @@ public class CommonAliasHandler implements AliasHandler
                 registerTarget(target);
             }
         }
-        this.built = true;
-    }
-
-    @Override
-    public void destroy()
-    {
-        this.aliasTargets = null;
-        this.built = false;
     }
 
     @Override
@@ -107,7 +88,7 @@ public class CommonAliasHandler implements AliasHandler
         if (!this.aliasTargets.containsKey(target))
         {
             AliasRegistry parentRegistry = this.parent == null ? null : this.parent.getRegistry(target).orNull();
-            this.aliasTargets.put(target, new CommonAliasRegistry(target, parentRegistry));
+            this.aliasTargets.put(target, new CommonAliasRegistry(target, parentRegistry, this.caseSensitive));
         }
         return this.aliasTargets.get(target);
     }

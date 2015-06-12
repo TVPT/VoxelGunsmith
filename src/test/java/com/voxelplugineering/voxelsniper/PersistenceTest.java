@@ -25,34 +25,23 @@ package com.voxelplugineering.voxelsniper;
 
 import java.io.IOException;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceFactory;
-import com.voxelplugineering.voxelsniper.core.CoreServiceProvider;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.core.service.DataSourceFactoryService;
+import com.voxelplugineering.voxelsniper.core.service.logging.PrintStreamLogger;
+import com.voxelplugineering.voxelsniper.core.service.persistence.FileDataSource;
 import com.voxelplugineering.voxelsniper.core.service.persistence.JsonDataSourceReader;
 import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
 import com.voxelplugineering.voxelsniper.core.service.persistence.StandardOutDataSource;
+import com.voxelplugineering.voxelsniper.util.ContextTestUtil;
 
 /**
  * A test for various aspects of the persistence service.
  */
 public class PersistenceTest
 {
-
-    /**
-     * 
-     */
-    @BeforeClass
-    public static void setupGunsmith()
-    {
-        if (!Gunsmith.getServiceManager().isTesting())
-        {
-            Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
-        }
-    }
 
     /**
      * @throws IOException On error
@@ -75,8 +64,11 @@ public class PersistenceTest
     @Test
     public void testFactory() throws IOException
     {
-        Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
-        DataSourceFactory factory = Gunsmith.getPersistence();
+        DataSourceFactory factory = new DataSourceFactoryService(ContextTestUtil.create());
+        factory.start();
+        factory.register("stdout", StandardOutDataSource.class, StandardOutDataSource.BUILDER);
+        factory.register("file", FileDataSource.class, FileDataSource.BUILDER);
+        factory.register("json", JsonDataSourceReader.class, JsonDataSourceReader.getBuilder(new PrintStreamLogger(System.out), factory));
 
         DataContainer args = new MemoryContainer("");
         args.writeString("source", "stdout");

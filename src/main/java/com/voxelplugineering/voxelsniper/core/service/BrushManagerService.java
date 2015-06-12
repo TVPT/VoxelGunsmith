@@ -28,99 +28,95 @@ import java.util.List;
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
+import com.voxelplugineering.voxelsniper.api.brushes.GlobalBrushManager;
+import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A service containing a {@link BrushManager}.
  */
-public class BrushManagerService extends AbstractService implements BrushManager
+public class BrushManagerService extends AbstractService implements GlobalBrushManager
 {
 
     private final BrushManager wrapped;
+    private final LoggingDistributor logger;
 
     /**
      * Creates a new {@link BrushManagerService}.
      * 
      * @param manager The manager to use within this service
      */
-    public BrushManagerService(BrushManager manager)
+    public BrushManagerService(Context context, BrushManager manager)
     {
-        super(BrushManager.class, 9);
+        super(context);
+        this.logger = context.getRequired(LoggingDistributor.class, this);
         this.wrapped = manager;
     }
 
     @Override
-    public String getName()
+    protected void _init()
     {
-        return "GlobalBrushManager";
+        this.logger.info("Initialized GlobalBrushManager service");
     }
 
     @Override
-    protected void init()
+    protected void _shutdown()
     {
-        Gunsmith.getLogger().info("Initialized GlobalBrushManager service");
-    }
-
-    @Override
-    protected void destroy()
-    {
-        Gunsmith.getLogger().info("Stopped GlobalBrushManager service");
+        this.logger.info("Stopped GlobalBrushManager service");
     }
 
     @Override
     public void loadBrush(String identifier, Brush graph)
     {
-        check();
+        check("loadBrush");
         this.wrapped.loadBrush(identifier, graph);
     }
 
     @Override
     public void loadBrush(String identifier)
     {
-        check();
+        check("loadBrush");
         this.wrapped.loadBrush(identifier);
     }
 
     @Override
     public void addLoader(DataSourceReader loader)
     {
-        check();
+        check("addLoader");
         this.wrapped.addLoader(loader);
     }
 
     @Override
     public Optional<Brush> getBrush(String identifier)
     {
-        check();
+        check("getBrush");
         return this.wrapped.getBrush(identifier);
     }
 
     @Override
     public void setParent(BrushManager parent)
     {
-        check();
-        this.wrapped.setParent(parent);
+        throw new UnsupportedOperationException("Cannot set the parent of the global brush manager.");
     }
 
     @Override
     public BrushManager getParent()
     {
-        check();
-        return this.wrapped.getParent();
+        return null;
     }
 
     @Override
     public List<DataSourceReader> getAllLoaders()
     {
-        check();
+        check("getAllLoaders");
         return this.wrapped.getAllLoaders();
     }
 
     @Override
     public void clearLoaders()
     {
-        check();
+        check("clearLoaders");
         this.wrapped.clearLoaders();
     }
 

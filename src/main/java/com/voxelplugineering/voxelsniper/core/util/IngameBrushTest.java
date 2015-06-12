@@ -28,15 +28,16 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.thevoxelbox.vsl.api.variables.VariableScope;
 import com.thevoxelbox.vsl.variables.ParentedVariableScope;
-import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
+import com.voxelplugineering.voxelsniper.api.brushes.BrushVars;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
+import com.voxelplugineering.voxelsniper.api.service.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
+import com.voxelplugineering.voxelsniper.api.service.text.TextFormat;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
-import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.World;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.brushes.BrushChain;
 import com.voxelplugineering.voxelsniper.core.brushes.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.core.service.alias.CommonAliasRegistry;
@@ -52,6 +53,7 @@ public class IngameBrushTest implements Runnable
 {
 
     private final Player sender;
+    private final Logger logger;
     private static final BrushTest[] tests;
     private static final BrushManager manager;
     private static final AliasRegistry alias;
@@ -59,7 +61,7 @@ public class IngameBrushTest implements Runnable
     static
     {
         manager = new CommonBrushManager();
-        alias = new CommonAliasRegistry("brush");
+        alias = new CommonAliasRegistry("brush", false);
         DefaultBrushBuilder.loadAll(manager);
         tests = new BrushTest[1];
         tests[0] = new BrushTest("voxel")
@@ -93,9 +95,10 @@ public class IngameBrushTest implements Runnable
      * 
      * @param sender The player who is executing the test
      */
-    public IngameBrushTest(Player sender)
+    public IngameBrushTest(Player sender, Logger logger)
     {
         this.sender = sender;
+        this.logger = logger;
     }
 
     /**
@@ -117,7 +120,7 @@ public class IngameBrushTest implements Runnable
             } catch (Exception e)
             {
                 success = false;
-                Gunsmith.getLogger().error(e, "Error running test for " + test.name);
+                this.logger.error(e, "Error running test for " + test.name);
                 this.sender.sendMessage("Error running test: " + e.getMessage());
             }
             if (success)
@@ -137,14 +140,6 @@ public class IngameBrushTest implements Runnable
 
 abstract class BrushTest
 {
-
-    private final String playerSysvar = Gunsmith.getConfiguration().get("playerSysVarName", String.class).or("__PLAYER__");
-
-    private final String originVariable = Gunsmith.getConfiguration().get("originVariable", String.class).or("origin");
-    private final String yawVariable = Gunsmith.getConfiguration().get("yawVariable", String.class).or("yaw");
-    private final String pitchVariable = Gunsmith.getConfiguration().get("pitchVariable", String.class).or("pitch");
-    private final String targetBlockVariable = Gunsmith.getConfiguration().get("targetBlockVariable", String.class).or("targetBlock");
-    private final String lengthVariable = Gunsmith.getConfiguration().get("lengthVariable", String.class).or("length");
 
     final String name;
 
@@ -175,12 +170,12 @@ abstract class BrushTest
         player.sendMessage("Executing brush: " + brush.getName());
         VariableScope brushVariables = new ParentedVariableScope(vars);
         brushVariables.setCaseSensitive(false);
-        brushVariables.set(this.originVariable, target);
-        brushVariables.set(this.yawVariable, 0);
-        brushVariables.set(this.pitchVariable, 0);
-        brushVariables.set(this.targetBlockVariable, target.getWorld().getBlock(target).get());
-        brushVariables.set(this.lengthVariable, 5);
-        brushVariables.set(this.playerSysvar, player);
+        brushVariables.set(BrushVars.ORIGIN, target);
+        brushVariables.set(BrushVars.YAW, 0);
+        brushVariables.set(BrushVars.PITCH, 0);
+        brushVariables.set(BrushVars.TARGET_BLOCK, target.getWorld().getBlock(target).get());
+        brushVariables.set(BrushVars.LENGTH, 5);
+        brushVariables.set(BrushVars.PLAYER, player);
         brush.run(brushVariables);
     }
 

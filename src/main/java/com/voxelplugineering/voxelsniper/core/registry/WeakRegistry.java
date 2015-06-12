@@ -31,7 +31,7 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.MapMaker;
-import com.voxelplugineering.voxelsniper.api.registry.Registry;
+import com.voxelplugineering.voxelsniper.api.service.registry.Registry;
 
 /**
  * A registry for values which are referenced both by a name and a custom key. The key is only

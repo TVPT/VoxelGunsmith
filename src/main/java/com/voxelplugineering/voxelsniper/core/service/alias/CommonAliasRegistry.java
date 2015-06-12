@@ -40,9 +40,8 @@ import java.util.regex.Pattern;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.api.service.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
 import com.voxelplugineering.voxelsniper.core.util.StringUtilities;
 
@@ -62,9 +61,9 @@ public class CommonAliasRegistry implements AliasRegistry
      * 
      * @param name The registry name
      */
-    public CommonAliasRegistry(String name)
+    public CommonAliasRegistry(String name, boolean caseSensitive)
     {
-        this(name, null);
+        this(name, null, caseSensitive);
     }
 
     /**
@@ -73,7 +72,7 @@ public class CommonAliasRegistry implements AliasRegistry
      * @param name The registry name
      * @param parent the parent registry
      */
-    public CommonAliasRegistry(String name, AliasRegistry parent)
+    public CommonAliasRegistry(String name, AliasRegistry parent, boolean caseSensitive)
     {
         checkNotNull(name);
         this.aliases = Maps.newTreeMap(new Comparator<String>()
@@ -91,7 +90,7 @@ public class CommonAliasRegistry implements AliasRegistry
             }
         });
         this.parent = parent;
-        this.caseSensitive = Gunsmith.getConfiguration().get("caseSensitiveAliases", Boolean.class).or(true);
+        this.caseSensitive = caseSensitive;
         this.registryName = name;
     }
 

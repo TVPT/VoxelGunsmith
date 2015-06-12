@@ -31,17 +31,21 @@ import java.util.Queue;
 import com.google.common.base.Optional;
 import com.thevoxelbox.vsl.api.variables.VariableScope;
 import com.thevoxelbox.vsl.variables.ParentedVariableScope;
-import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
+import com.voxelplugineering.voxelsniper.api.brushes.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
+import com.voxelplugineering.voxelsniper.api.service.alias.AliasHandler;
+import com.voxelplugineering.voxelsniper.api.service.alias.GlobalAliasHandler;
+import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
+import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.brushes.BrushChain;
 import com.voxelplugineering.voxelsniper.core.brushes.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.core.service.alias.CommonAliasHandler;
 import com.voxelplugineering.voxelsniper.core.util.BrushParsing;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 import com.voxelplugineering.voxelsniper.core.world.queue.ChangeQueue;
 import com.voxelplugineering.voxelsniper.core.world.queue.CommonUndoQueue;
 
@@ -52,6 +56,9 @@ import com.voxelplugineering.voxelsniper.core.world.queue.CommonUndoQueue;
  */
 public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Player
 {
+
+    private final LoggingDistributor logger;
+    private final Configuration conf;
 
     private BrushManager personalBrushManager;
     private BrushChain currentBrush;
@@ -66,36 +73,50 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
      * @param player the player object
      * @param parentBrushManager The parent brush manager
      */
-    protected AbstractPlayer(T player, BrushManager parentBrushManager)
+    protected AbstractPlayer(T player, BrushManager parentBrushManager, Context context)
     {
         super(player);
+        this.logger = context.getRequired(LoggingDistributor.class);
+        this.conf = context.getRequired(Configuration.class);
         this.personalBrushManager = new CommonBrushManager(parentBrushManager);
         this.brushVariables = new ParentedVariableScope();
         this.brushVariables.setCaseSensitive(false);
         this.pending = new LinkedList<ChangeQueue>();
-        this.personalAliasHandler = new CommonAliasHandler(this, Gunsmith.getGlobalAliasHandler());
-        this.personalAliasHandler.init();
+        boolean caseSensitiveAliases = this.conf.get("caseSensitiveAliases", boolean.class).or(false);
+        this.personalAliasHandler = new CommonAliasHandler(this, context.getRequired(GlobalAliasHandler.class), caseSensitiveAliases);
         this.history = new CommonUndoQueue(this);
         try
         {
             resetSettings();
         } catch (Exception e)
         {
-            Gunsmith.getLogger().error(e, "Error setting up default player settings.");
+            this.logger.error(e, "Error setting up default player settings.");
             // we catch exceptions here so that an issue while resetting
             // settings cannot stop the object from initializing.
         }
     }
-
-    /**
-     * Creates a new {@link AbstractPlayer} with a weak reference to the player. The player will use
-     * the global brush manager as its parent brush manager.
-     * 
-     * @param player the player object
-     */
-    protected AbstractPlayer(T player)
+    
+    protected AbstractPlayer(T player, Context context)
     {
-        this(player, Gunsmith.getGlobalBrushManager());
+        super(player);
+        this.logger = context.getRequired(LoggingDistributor.class);
+        this.conf = context.getRequired(Configuration.class);
+        this.personalBrushManager = new CommonBrushManager(context.getRequired(GlobalBrushManager.class));
+        this.brushVariables = new ParentedVariableScope();
+        this.brushVariables.setCaseSensitive(false);
+        this.pending = new LinkedList<ChangeQueue>();
+        boolean caseSensitiveAliases = this.conf.get("caseSensitiveAliases", boolean.class).or(false);
+        this.personalAliasHandler = new CommonAliasHandler(this, context.getRequired(GlobalAliasHandler.class), caseSensitiveAliases);
+        this.history = new CommonUndoQueue(this);
+        try
+        {
+            resetSettings();
+        } catch (Exception e)
+        {
+            this.logger.error(e, "Error setting up default player settings.");
+            // we catch exceptions here so that an issue while resetting
+            // settings cannot stop the object from initializing.
+        }
     }
 
     @Override
@@ -144,17 +165,17 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     public void resetSettings()
     {
         this.brushVariables.clear();
-        String brush = Gunsmith.getConfiguration().get("defaultBrush", String.class).or("voxel material");
+        String brush = this.conf.get("defaultBrush", String.class).or("voxel material");
         Optional<BrushChain> current = BrushParsing.parse(brush, this.personalBrushManager, this.personalAliasHandler.getRegistry("brush").orNull());
         if (current.isPresent())
         {
             setCurrentBrush(current.get());
-            sendMessage("Brush set to " + Gunsmith.getConfiguration().get("defaultBrush").get().toString());
+            sendMessage("Brush set to " + this.conf.get("defaultBrush").get().toString());
         }
-        double size = Gunsmith.getConfiguration().get("defaultBrushSize", Double.class).or(5.0);
+        double size = this.conf.get("defaultBrushSize", Double.class).or(5.0);
         this.brushVariables.set("brushSize", size);
         sendMessage("Your brush size was changed to " + size);
-        Optional<String> materialName = Gunsmith.getConfiguration().get("defaultBrushMaterial", String.class);
+        Optional<String> materialName = this.conf.get("defaultBrushMaterial", String.class);
         Material mat = getWorld().getMaterialRegistry().getAirMaterial();
         if (materialName.isPresent())
         {

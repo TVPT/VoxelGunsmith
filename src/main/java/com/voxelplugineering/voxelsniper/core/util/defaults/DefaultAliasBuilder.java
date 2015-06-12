@@ -23,8 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.core.util.defaults;
 
-import com.voxelplugineering.voxelsniper.api.alias.AliasHandler;
-import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.api.service.alias.AliasHandler;
+import com.voxelplugineering.voxelsniper.api.service.alias.AliasRegistry;
 
 /**
  * A utility for loading default aliases.

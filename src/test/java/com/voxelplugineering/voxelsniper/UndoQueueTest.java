@@ -25,14 +25,11 @@ package com.voxelplugineering.voxelsniper;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.voxelplugineering.voxelsniper.api.world.queue.ChangeQueueOwner;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
-import com.voxelplugineering.voxelsniper.core.CoreServiceProvider;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.world.queue.ChangeQueue;
 import com.voxelplugineering.voxelsniper.core.world.queue.CommonUndoQueue;
 
@@ -41,18 +38,6 @@ import com.voxelplugineering.voxelsniper.core.world.queue.CommonUndoQueue;
  */
 public class UndoQueueTest
 {
-
-    /**
-     * 
-     */
-    @BeforeClass
-    public static void setupGunsmith()
-    {
-        if (!Gunsmith.getServiceManager().isTesting())
-        {
-            Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
-        }
-    }
 
     /**
      * 

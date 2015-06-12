@@ -23,9 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.core.commands;
 
-import com.voxelplugineering.voxelsniper.api.commands.CommandSender;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
-import com.voxelplugineering.voxelsniper.api.util.text.TextFormat;
+import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
+import com.voxelplugineering.voxelsniper.api.service.text.TextFormat;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A command get fetching the help information for a brush.
@@ -36,9 +37,9 @@ public class RedoCommand extends Command
     /**
      * Creates a new Command instance.
      */
-    public RedoCommand()
+    public RedoCommand(Context context)
     {
-        super("redo", "Redoes your last n undone changes. Usage: /redo [n]");
+        super("redo", "Redoes your last n undone changes. Usage: /redo [n]", context);
         setAliases("vredo");
         setPermissions("voxelsniper.command.redo");
     }

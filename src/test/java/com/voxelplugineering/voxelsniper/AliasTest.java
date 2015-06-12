@@ -29,12 +29,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.voxelplugineering.voxelsniper.api.alias.AliasRegistry;
-import com.voxelplugineering.voxelsniper.core.CoreServiceProvider;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.core.service.alias.CommonAliasRegistry;
 
 /**
@@ -46,24 +43,12 @@ public class AliasTest
     AliasRegistry alias;
 
     /**
-     * 
-     */
-    @BeforeClass
-    public static void setupGunsmith()
-    {
-        if (!Gunsmith.getServiceManager().isTesting())
-        {
-            Gunsmith.getServiceManager().setTesting(new CoreServiceProvider());
-        }
-    }
-
-    /**
      * Sets up an {@link AliasRegistry} for use during the tests.
      */
     @Before
     public void setup()
     {
-        this.alias = new CommonAliasRegistry("test");
+        this.alias = new CommonAliasRegistry("test", false);
     }
 
     /**
@@ -149,7 +134,7 @@ public class AliasTest
     @Test
     public void testParentage()
     {
-        AliasRegistry child = new CommonAliasRegistry("test", this.alias);
+        AliasRegistry child = new CommonAliasRegistry("test", this.alias, false);
 
         this.alias.register("abc", "absd");
 
@@ -166,7 +151,7 @@ public class AliasTest
     @Test
     public void testParentage2()
     {
-        AliasRegistry child = new CommonAliasRegistry("test", this.alias);
+        AliasRegistry child = new CommonAliasRegistry("test", this.alias, false);
 
         this.alias.register("abc", "rawr");
         child.register("abc", "absd");

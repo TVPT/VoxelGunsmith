@@ -28,11 +28,11 @@ import java.util.Map;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import com.voxelplugineering.voxelsniper.api.registry.RegistryProvider;
-import com.voxelplugineering.voxelsniper.api.registry.WorldRegistry;
+import com.voxelplugineering.voxelsniper.api.service.registry.RegistryProvider;
+import com.voxelplugineering.voxelsniper.api.service.registry.WorldRegistry;
 import com.voxelplugineering.voxelsniper.api.world.World;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
 import com.voxelplugineering.voxelsniper.core.registry.ProvidedWeakRegistry;
+import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A standard world registry.
@@ -50,50 +50,42 @@ public class WorldRegistryService<T> extends AbstractService implements WorldReg
      * 
      * @param provider The provider for new worlds
      */
-    public WorldRegistryService(RegistryProvider<T, World> provider)
+    public WorldRegistryService(Context context, RegistryProvider<T, World> provider)
     {
-        super(WorldRegistry.class, 6);
+        super(context);
         this.provider = provider;
     }
 
     @Override
-    public String getName()
-    {
-        return "worldRegistry";
-    }
-
-    @Override
-    protected void init()
+    protected void _init()
     {
         this.registry = new ProvidedWeakRegistry<T, World>(this.provider);
-        Gunsmith.getLogger().info("Initialized WorldRegistry service");
     }
 
     @Override
-    protected void destroy()
+    protected void _shutdown()
     {
         this.registry = null;
-        Gunsmith.getLogger().info("Stopped WorldRegistry service");
     }
 
     @Override
     public Optional<World> getWorld(String name)
     {
-        check();
+        check("getWorld");
         return this.registry.get(name);
     }
 
     @Override
     public Optional<World> getWorld(T world)
     {
-        check();
+        check("getWorld");
         return this.registry.get(world);
     }
 
     @Override
     public Iterable<World> getLoadedWorlds()
     {
-        check();
+        check("getLoadedWorlds");
         List<World> worlds = Lists.newArrayList();
         for (Map.Entry<T, World> e : this.registry.getRegisteredValues())
         {
@@ -105,14 +97,14 @@ public class WorldRegistryService<T> extends AbstractService implements WorldReg
     @Override
     public void invalidate(String name)
     {
-        check();
+        check("invalidate");
         this.registry.remove(name);
     }
 
     @Override
     public void invalidate(T world)
     {
-        check();
+        check("invalidate");
         this.registry.remove(world);
     }
 

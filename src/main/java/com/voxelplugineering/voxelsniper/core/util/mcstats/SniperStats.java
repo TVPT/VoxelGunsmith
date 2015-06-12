@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.core.Gunsmith;
+import com.voxelplugineering.voxelsniper.api.service.platform.PlatformProxy;
 
 /**
  * Implementation of Sniper Stats.
@@ -72,27 +72,30 @@ public final class SniperStats extends Metrics
         SniperStats.snipeCounterInitTimeStamp = currentTimeMillis;
     }
 
+    private final PlatformProxy platform;
+
     /**
      * Creates a new instance of SniperStats for Metrics.
      * 
      * @param pluginVersion The plugin version string marked by the platform
      * @throws IOException In the event Metrics is unable to start
      */
-    public SniperStats(String pluginVersion) throws IOException
+    public SniperStats(String pluginVersion, PlatformProxy platform) throws IOException
     {
         super("VoxelSniper", pluginVersion);
+        this.platform = platform;
     }
 
     @Override
     public String getServerVersion()
     {
-        return Gunsmith.getPlatformProxy().getVersion();
+        return this.platform.getVersion();
     }
 
     @Override
     public int getPlayersOnline()
     {
-        return Gunsmith.getPlatformProxy().getNumberOfPlayersOnline();
+        return this.platform.getNumberOfPlayersOnline();
     }
 
     @Override
@@ -160,9 +163,9 @@ public final class SniperStats extends Metrics
             }
 
             start();
-        } catch (final Exception exception)
+        } catch (final Exception e)
         {
-            Gunsmith.getLogger().warn("Failed to submit Metrics Data.");
+            e.printStackTrace();
         }
     }
 
@@ -174,9 +177,9 @@ public final class SniperStats extends Metrics
         try
         {
             disable();
-        } catch (Exception e)
+        } catch (IOException e)
         {
-            Gunsmith.getLogger().warn("Failed to terminate Metrics!");
+            e.printStackTrace();
         }
     }
 
