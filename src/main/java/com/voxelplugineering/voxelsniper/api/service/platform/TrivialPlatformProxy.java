@@ -23,8 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.api.service.platform;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import java.io.File;
 import java.net.URISyntaxException;
 
@@ -52,9 +50,7 @@ public class TrivialPlatformProxy extends AbstractService implements PlatformPro
     public TrivialPlatformProxy(Context context)
     {
         super(context);
-        Optional<DataSourceFactory> factory = context.get(DataSourceFactory.class);
-        checkArgument(factory.isPresent(), "DataSourceFactory service was not found in the current context.");
-        this.factory = factory.get();
+        this.factory = context.getRequired(DataSourceFactory.class, this);
         this.factory.addDependent(this);
     }
 

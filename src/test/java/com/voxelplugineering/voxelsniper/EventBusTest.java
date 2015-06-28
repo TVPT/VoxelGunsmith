@@ -51,7 +51,7 @@ public class EventBusTest
     @Test
     public void basicTest()
     {
-        EventBus bus = new AsyncEventBus(ContextTestUtil.create(null, new ConfigurationService(ContextTestUtil.create())));
+        EventBus bus = new AsyncEventBus(ContextTestUtil.create(new ConfigurationService(ContextTestUtil.create())));
         bus.start();
 
         TestHandler handler = new TestHandler();
@@ -67,7 +67,7 @@ public class EventBusTest
     @Test
     public void priorityTest()
     {
-        EventBus bus = new AsyncEventBus(ContextTestUtil.create(null, new ConfigurationService(ContextTestUtil.create())));
+        EventBus bus = new AsyncEventBus(ContextTestUtil.create(new ConfigurationService(ContextTestUtil.create())));
         bus.start();
 
         PriorityHandler handler = new PriorityHandler();
@@ -83,7 +83,7 @@ public class EventBusTest
     @Test
     public void superEventhandling()
     {
-        EventBus bus = new AsyncEventBus(ContextTestUtil.create(null, new ConfigurationService(ContextTestUtil.create())));
+        EventBus bus = new AsyncEventBus(ContextTestUtil.create(new ConfigurationService(ContextTestUtil.create())));
         bus.start();
 
         SuperHandler handler = new SuperHandler();
@@ -99,7 +99,7 @@ public class EventBusTest
     @Test
     public void superEventhandling2()
     {
-        EventBus bus = new AsyncEventBus(ContextTestUtil.create(null, new ConfigurationService(ContextTestUtil.create())));
+        EventBus bus = new AsyncEventBus(ContextTestUtil.create(new ConfigurationService(ContextTestUtil.create())));
         bus.start();
 
         SuperHandler handler = new SuperHandler();
@@ -115,7 +115,7 @@ public class EventBusTest
     @Test
     public void testDeadEvent() throws InterruptedException
     {
-        EventBus bus = new AsyncEventBus(ContextTestUtil.create(null, new ConfigurationService(ContextTestUtil.create())));
+        EventBus bus = new AsyncEventBus(ContextTestUtil.create(new ConfigurationService(ContextTestUtil.create())));
         bus.start();
 
         DeadEventHandler handler = new DeadEventHandler();
@@ -140,7 +140,7 @@ public class EventBusTest
     @Test
     public void testNotAsync()
     {
-        EventBus bus = new AsyncEventBus(ContextTestUtil.create(null, new ConfigurationService(ContextTestUtil.create())));
+        EventBus bus = new AsyncEventBus(ContextTestUtil.create(new ConfigurationService(ContextTestUtil.create())));
         bus.start();
 
         SyncHandler handler = new SyncHandler();
@@ -157,7 +157,7 @@ public class EventBusTest
     @Test
     public void testAsync()
     {
-        EventBus bus = new AsyncEventBus(ContextTestUtil.create(null, new ConfigurationService(ContextTestUtil.create())));
+        EventBus bus = new AsyncEventBus(ContextTestUtil.create(new ConfigurationService(ContextTestUtil.create())));
         bus.start();
 
         AsyncHandler handler = new AsyncHandler();

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.core.service;
+package com.voxelplugineering.voxelsniper.core;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -32,61 +32,51 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.service.logging.LogLevel;
 import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
-import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
-import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
  * A standard logging distributor.
  */
-public class LoggingDistributorService extends AbstractService implements LoggingDistributor
+public class GunsmithLogger
 {
+    private static GunsmithLogger INSTANCE = null;
+    
+    public static GunsmithLogger getLogger() {
+        if(INSTANCE == null) {
+            INSTANCE = new GunsmithLogger();
+        }
+        return INSTANCE;
+    }
+    
+    public static void setLogger(GunsmithLogger logger) {
+        INSTANCE = logger;
+    }
 
     /**
      * The collection of loggers to distribute the logging messages to.
      */
-    private Map<String, Logger> loggers = null;
+    private final Map<String, Logger> loggers;
     private LogLevel root = LogLevel.DEBUG;
 
     /**
      * Creates a new logging distributor.
      */
-    public LoggingDistributorService(Context context)
-    {
-        super(context);
-        this.loggers = Maps.newHashMap();
-    }
-
-    @Override
-    protected void _init()
+    private GunsmithLogger()
     {
         this.loggers = Maps.newHashMap();
-        info("Initializing Logging service");
     }
 
-    @Override
-    protected void _shutdown()
-    {
-        info("Stopping Logging service");
-        this.loggers = null;
-    }
-
-    @Override
     public LogLevel getLevel()
     {
         return this.root;
     }
 
-    @Override
     public void setLevel(LogLevel level)
     {
         this.root = level;
     }
 
-    @Override
     public void log(LogLevel level, String msg)
     {
-
-        check("log");
         if (msg == null || msg.isEmpty() || !level.isGEqual(this.root))
         {
             return;
@@ -102,16 +92,13 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         }
     }
 
-    @Override
     public Collection<Logger> getLoggers()
     {
         return this.loggers.values();
     }
 
-    @Override
     public void debug(String msg)
     {
-        check("debug");
         if (msg == null || msg.isEmpty() || !LogLevel.DEBUG.isGEqual(this.root))
         {
             return;
@@ -123,10 +110,8 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         }
     }
 
-    @Override
     public void info(String msg)
     {
-        check("info");
         if (msg == null || msg.isEmpty() || !LogLevel.INFO.isGEqual(this.root))
         {
             return;
@@ -142,10 +127,8 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         }
     }
 
-    @Override
     public void warn(String msg)
     {
-        check("warn");
         if (msg == null || msg.isEmpty() || !LogLevel.WARN.isGEqual(this.root))
         {
             return;
@@ -161,10 +144,8 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         }
     }
 
-    @Override
     public void error(String msg)
     {
-        check("error");
         if (msg == null || msg.isEmpty())
         {
             return;
@@ -180,10 +161,8 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         }
     }
 
-    @Override
     public void error(Exception e)
     {
-        check("error");
         if (e == null)
         {
             return;
@@ -199,10 +178,8 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         }
     }
 
-    @Override
     public void error(Exception e, String msg)
     {
-        check("error");
         if (msg == null || msg.isEmpty() || e == null)
         {
             return;
@@ -219,20 +196,16 @@ public class LoggingDistributorService extends AbstractService implements Loggin
         }
     }
 
-    @Override
     public void registerLogger(Logger logger, String name)
     {
-        check("registerLogger");
         checkNotNull(logger, "Logger cannot be null!");
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         this.loggers.put(name, logger);
     }
 
-    @Override
     public void removeLogger(String name)
     {
-        check("removeLogger");
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         this.loggers.remove(name);

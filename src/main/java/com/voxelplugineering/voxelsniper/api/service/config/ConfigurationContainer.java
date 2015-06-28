@@ -26,9 +26,9 @@ package com.voxelplugineering.voxelsniper.api.service.config;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
+import com.voxelplugineering.voxelsniper.core.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
 
 /**
@@ -37,13 +37,6 @@ import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContaine
  */
 public class ConfigurationContainer implements DataSerializable
 {
-
-    private final Logger logger;
-
-    protected ConfigurationContainer(Logger logger)
-    {
-        this.logger = logger;
-    }
 
     @Override
     public void fromContainer(DataContainer container)
@@ -78,7 +71,7 @@ public class ConfigurationContainer implements DataSerializable
                         f.set(this, value.longValue());
                     } else
                     {
-                        this.logger.error("Failed to load config value " + entry.getKey() + ": " + fieldType.getName()
+                        GunsmithLogger.getLogger().error("Failed to load config value " + entry.getKey() + ": " + fieldType.getName()
                                 + " is not a recognized Number.");
                         continue;
                     }
@@ -88,7 +81,7 @@ public class ConfigurationContainer implements DataSerializable
                 }
             } catch (Exception e)
             {
-                this.logger.error(e, "Failed to load config value " + entry.getKey());
+                GunsmithLogger.getLogger().error(e, "Failed to load config value " + entry.getKey());
                 continue;
             }
 
@@ -107,7 +100,7 @@ public class ConfigurationContainer implements DataSerializable
                 data.write(f.getName(), f.get(this));
             } catch (Exception e)
             {
-                this.logger.error(e, "Failed to serialize " + f.getName() + " from configuration.");
+                GunsmithLogger.getLogger().error(e, "Failed to serialize " + f.getName() + " from configuration.");
                 continue;
             }
         }

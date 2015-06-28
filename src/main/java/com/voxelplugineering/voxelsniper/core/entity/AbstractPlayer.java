@@ -37,10 +37,10 @@ import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.service.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.service.alias.GlobalAliasHandler;
 import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
-import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
+import com.voxelplugineering.voxelsniper.core.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.core.brushes.BrushChain;
 import com.voxelplugineering.voxelsniper.core.brushes.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.core.service.alias.CommonAliasHandler;
@@ -57,7 +57,6 @@ import com.voxelplugineering.voxelsniper.core.world.queue.CommonUndoQueue;
 public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Player
 {
 
-    private final LoggingDistributor logger;
     private final Configuration conf;
 
     private BrushManager personalBrushManager;
@@ -76,7 +75,6 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     protected AbstractPlayer(T player, BrushManager parentBrushManager, Context context)
     {
         super(player);
-        this.logger = context.getRequired(LoggingDistributor.class);
         this.conf = context.getRequired(Configuration.class);
         this.personalBrushManager = new CommonBrushManager(parentBrushManager);
         this.brushVariables = new ParentedVariableScope();
@@ -85,21 +83,11 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         boolean caseSensitiveAliases = this.conf.get("caseSensitiveAliases", boolean.class).or(false);
         this.personalAliasHandler = new CommonAliasHandler(this, context.getRequired(GlobalAliasHandler.class), caseSensitiveAliases);
         this.history = new CommonUndoQueue(this);
-        try
-        {
-            resetSettings();
-        } catch (Exception e)
-        {
-            this.logger.error(e, "Error setting up default player settings.");
-            // we catch exceptions here so that an issue while resetting
-            // settings cannot stop the object from initializing.
-        }
     }
-    
+
     protected AbstractPlayer(T player, Context context)
     {
         super(player);
-        this.logger = context.getRequired(LoggingDistributor.class);
         this.conf = context.getRequired(Configuration.class);
         this.personalBrushManager = new CommonBrushManager(context.getRequired(GlobalBrushManager.class));
         this.brushVariables = new ParentedVariableScope();
@@ -108,14 +96,16 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         boolean caseSensitiveAliases = this.conf.get("caseSensitiveAliases", boolean.class).or(false);
         this.personalAliasHandler = new CommonAliasHandler(this, context.getRequired(GlobalAliasHandler.class), caseSensitiveAliases);
         this.history = new CommonUndoQueue(this);
+    }
+
+    public void init()
+    {
         try
         {
             resetSettings();
         } catch (Exception e)
         {
-            this.logger.error(e, "Error setting up default player settings.");
-            // we catch exceptions here so that an issue while resetting
-            // settings cannot stop the object from initializing.
+            GunsmithLogger.getLogger().error(e, "Error setting up default player settings.");
         }
     }
 

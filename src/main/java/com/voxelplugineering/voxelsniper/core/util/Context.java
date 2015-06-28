@@ -90,14 +90,18 @@ public class Context
     {
         Optional<T> obj = get(cls);
         checkArgument(obj.isPresent(), cls.getSimpleName() + " service was not found in the current context.");
+        checkArgument(obj.get() != null, cls.getSimpleName() + " service was not found in the current context.");
         return obj.get();
     }
+
     public <T extends Contextable> T getRequired(Class<T> cls, Service serv)
     {
         Optional<T> attempt = get(cls);
         checkArgument(attempt.isPresent(), cls.getSimpleName() + " service was not found in the current context.");
+        checkArgument(attempt.get() != null, cls.getSimpleName() + " service was not found in the current context.");
         T obj = attempt.get();
-        if(obj instanceof Service) {
+        if (obj instanceof Service)
+        {
             ((Service) obj).addDependent(serv);
         }
         return obj;

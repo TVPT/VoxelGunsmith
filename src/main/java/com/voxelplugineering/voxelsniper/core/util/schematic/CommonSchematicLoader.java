@@ -42,6 +42,7 @@ import com.voxelplugineering.voxelsniper.api.service.text.TextFormat;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.util.schematic.SchematicLoader;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.core.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
 import com.voxelplugineering.voxelsniper.core.shape.NamedWorldSection;
 import com.voxelplugineering.voxelsniper.core.shape.csg.CuboidShape;
@@ -63,14 +64,12 @@ public class CommonSchematicLoader implements SchematicLoader
      */
 
     private final MaterialRegistry<?> mats;
-    private final Logger logger;
 
     /**
      * Creates a new {@link CommonSchematicLoader}.
      */
-    public CommonSchematicLoader(MaterialRegistry<?> mats, Logger logger)
+    public CommonSchematicLoader(MaterialRegistry<?> mats)
     {
-        this.logger = logger;
         this.mats = mats;
     }
 
@@ -252,8 +251,8 @@ public class CommonSchematicLoader implements SchematicLoader
         {
             if (owner == null)
             {
-                this.logger.warn("Failed to save schematic to " + data.getName().or("an unknown source")
-                        + ": Dimensions exceeded max size supported.");
+                GunsmithLogger.getLogger().warn(
+                        "Failed to save schematic to " + data.getName().or("an unknown source") + ": Dimensions exceeded max size supported.");
             } else
             {
                 owner.sendMessage(TextFormat.RED + "Could not save schematic, dimensions exceeded maximum supported size!");

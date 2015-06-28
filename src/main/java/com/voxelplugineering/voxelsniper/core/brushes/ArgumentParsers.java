@@ -58,11 +58,8 @@ public class ArgumentParsers
     {
         STRING_PARSER = new ArgumentParser.RawParser();
 
-        Optional<BiomeRegistry> biome_reg = context.get(BiomeRegistry.class);
-        if (biome_reg.isPresent())
-        {
-            BIOME_PARSER = new BiomeParser(biome_reg.get());
-        }
+        BiomeRegistry biome_reg = context.getRequired(BiomeRegistry.class);
+        BIOME_PARSER = new BiomeParser(biome_reg);
         INTEGER_PARSER = new ArgumentParser<Integer>()
         {
 

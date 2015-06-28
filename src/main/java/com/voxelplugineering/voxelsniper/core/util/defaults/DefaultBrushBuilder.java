@@ -43,12 +43,12 @@ import com.thevoxelbox.vsl.nodes.vars.VariableGetNode;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushPartType;
-import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.Chunk;
 import com.voxelplugineering.voxelsniper.api.world.biome.Biome;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.core.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.core.brushes.ArgumentParsers;
 import com.voxelplugineering.voxelsniper.core.brushes.BrushNodeGraph;
 import com.voxelplugineering.voxelsniper.core.brushes.natives.BlendBrush;
@@ -109,7 +109,7 @@ public class DefaultBrushBuilder
      * 
      * @param directory the directory to store the brush files in.
      */
-    public static void saveAll(File directory, Logger logger)
+    public static void saveAll(File directory)
     {
         checkNotNull(directory);
         if (!directory.exists())
@@ -139,7 +139,7 @@ public class DefaultBrushBuilder
 
             } catch (Exception e)
             {
-                logger.warn("Error saving brush " + name + ": " + e.getClass().getName() + " " + e.getMessage());
+                GunsmithLogger.getLogger()  .warn("Error saving brush " + name + ": " + e.getClass().getName() + " " + e.getMessage());
             } finally
             {
                 if (output != null)

@@ -30,13 +30,13 @@ import com.voxelplugineering.voxelsniper.api.brushes.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.api.service.Builder;
 import com.voxelplugineering.voxelsniper.api.service.InitHook;
 import com.voxelplugineering.voxelsniper.api.service.InitPhase;
+import com.voxelplugineering.voxelsniper.api.service.PostInit;
+import com.voxelplugineering.voxelsniper.api.service.PreStop;
 import com.voxelplugineering.voxelsniper.api.service.alias.GlobalAliasHandler;
 import com.voxelplugineering.voxelsniper.api.service.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.api.service.config.ConfigurationContainer;
 import com.voxelplugineering.voxelsniper.api.service.event.EventBus;
-import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
-import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
 import com.voxelplugineering.voxelsniper.api.service.permission.PermissionProxy;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceFactory;
@@ -67,7 +67,6 @@ import com.voxelplugineering.voxelsniper.core.service.CommandHandlerService;
 import com.voxelplugineering.voxelsniper.core.service.ConfigurationService;
 import com.voxelplugineering.voxelsniper.core.service.DataSourceFactoryService;
 import com.voxelplugineering.voxelsniper.core.service.GlobalAliasService;
-import com.voxelplugineering.voxelsniper.core.service.LoggingDistributorService;
 import com.voxelplugineering.voxelsniper.core.service.OfflineUndoHandlerService;
 import com.voxelplugineering.voxelsniper.core.service.alias.CommonAliasHandler;
 import com.voxelplugineering.voxelsniper.core.service.alias.SimpleAliasOwner;
@@ -85,70 +84,35 @@ import com.voxelplugineering.voxelsniper.core.world.queue.ChangeQueueTask;
 /**
  * The core service provider.
  */
+@SuppressWarnings("javadoc")
 public class CoreServiceProvider
 {
 
-    /**
-     * Builder
-     * 
-     * @return The service
-     */
-    @Builder(target = LoggingDistributor.class, priority = -2000)
-    public LoggingDistributor buildLogger(Context context)
-    {
-        return new LoggingDistributorService(context);
-    }
-
-    /**
-     * Builder
-     * 
-     * @return The service
-     */
     @Builder(target = DataSourceFactory.class, priority = -1000, initPhase = InitPhase.EARLY)
     public DataSourceFactory buildPersistence(Context context)
     {
         return new DataSourceFactoryService(context);
     }
 
-    /**
-     * Builder
-     * 
-     * @return The service
-     */
     @Builder(target = Configuration.class, priority = 1000)
     public Configuration buildConfig(Context context)
     {
         return new ConfigurationService(context);
     }
 
-    /**
-     * Builder
-     * 
-     * @return The service
-     */
     @Builder(target = TextFormatParser.class, priority = 0)
     public TextFormatParser buildFormatProxy(Context context)
     {
         return new TextFormatParser.TrivialTextFormatParser(context);
     }
 
-    /**
-     * Builder
-     * 
-     * @return The service
-     */
     @Builder(target = EventBus.class, priority = 2000)
     public EventBus buildEventBus(Context context)
     {
         return new AsyncEventBus(context);
     }
 
-    /**
-     * Builder
-     * 
-     * @return The service
-     */
-    @Builder(target = GlobalAliasHandler.class, priority = 3000)
+    @Builder(target = GlobalAliasHandler.class, priority = 5000)
     public GlobalAliasHandler buildAliasRegistry(Context context)
     {
         PlatformProxy platform = context.getRequired(PlatformProxy.class);
@@ -161,37 +125,20 @@ public class CoreServiceProvider
         return new GlobalAliasService(context, new CommonAliasHandler(owner, caseSensitive));
     }
 
-    /**
-     * Init hook
-     * 
-     * @param service The service
-     */
     @InitHook(target = EventBus.class)
     public void initEventBus(Context context, EventBus service)
     {
         service.register(new CommonEventHandler(context));
     }
 
-    /**
-     * Init hook
-     * 
-     * @param factory The service
-     */
     @InitHook(target = DataSourceFactory.class)
     public void initPersistence(Context context, DataSourceFactory factory)
     {
-        LoggingDistributor logger = context.getRequired(LoggingDistributor.class);
-
         factory.register("stdout", StandardOutDataSource.class, StandardOutDataSource.BUILDER);
         factory.register("file", FileDataSource.class, FileDataSource.BUILDER);
-        factory.register("json", JsonDataSourceReader.class, JsonDataSourceReader.getBuilder(logger, factory));
+        factory.register("json", JsonDataSourceReader.class, JsonDataSourceReader.getBuilder(factory));
     }
 
-    /**
-     * Init hook
-     * 
-     * @param configuration The service
-     */
     @InitHook(target = Configuration.class)
     public void initConfig(Context context, Configuration configuration)
     {
@@ -199,11 +146,6 @@ public class CoreServiceProvider
         configuration.registerContainer(VoxelSniperConfiguration.class);
     }
 
-    /**
-     * Init hook
-     * 
-     * @param service The service
-     */
     @InitHook(target = GlobalAliasHandler.class)
     public void initAlias(Context context, GlobalAliasHandler service)
     {
@@ -213,33 +155,18 @@ public class CoreServiceProvider
         DefaultAliasBuilder.loadDefaultAliases(service);
     }
 
-    /**
-     * Builder
-     * 
-     * @return The service
-     */
-    @Builder(target = GlobalBrushManager.class, priority = 9000)
+    @Builder(target = GlobalBrushManager.class, priority = 7500)
     public GlobalBrushManager getGlobalBrushManager(Context context)
     {
         return new BrushManagerService(context, new CommonBrushManager());
     }
 
-    /**
-     * Builder
-     * 
-     * @return The service
-     */
     @Builder(target = CommandHandler.class, priority = 10000)
     public CommandHandler getCommandHandler(Context context)
     {
         return new CommandHandlerService(context);
     }
 
-    /**
-     * Init hook
-     * 
-     * @param cmd The service
-     */
     @InitHook(target = CommandHandler.class)
     public void registerCommands(Context context, CommandHandler cmd)
     {
@@ -254,22 +181,12 @@ public class CoreServiceProvider
         cmd.registerCommand(new RedoCommand(context));
     }
 
-    /**
-     * Builder
-     * 
-     * @return The service
-     */
     @Builder(target = OfflineUndoHandler.class, priority = 13000)
     public OfflineUndoHandler getOfflineUndo(Context context)
     {
         return new OfflineUndoHandlerService(context);
     }
 
-    /**
-     * Builder
-     * 
-     * @return The service
-     */
     @Builder(target = PlatformProxy.class, priority = 4000)
     public PlatformProxy getTrivialPlatform(Context context)
     {
@@ -285,15 +202,14 @@ public class CoreServiceProvider
     /**
      * Post init
      */
-    //@PostInit
+    @PostInit
     public void post(Context context)
     {
         ArgumentParsers.init(context);
 
-        PlatformProxy proxy = context.get(PlatformProxy.class).get();
-        Configuration configuration = context.get(Configuration.class).get();
-        Logger logger = context.get(LoggingDistributor.class).get();
-        PlayerRegistry<?> players = context.get(PlayerRegistry.class).get();
+        PlatformProxy proxy = context.getRequired(PlatformProxy.class);
+        Configuration configuration = context.getRequired(Configuration.class);
+        PlayerRegistry<?> players = context.getRequired(PlayerRegistry.class);
 
         Optional<DataSourceReader> oconfig = proxy.getConfigDataSource();
         DataSourceReader config = null;
@@ -318,7 +234,7 @@ public class CoreServiceProvider
             {
                 if (config.exists())
                 {
-                    logger.info("Loading config from " + config.getName().or("an unknown source"));
+                    GunsmithLogger.getLogger().info("Loading config from " + config.getName().or("an unknown source"));
                     DataContainer values = config.read();
                     Optional<ConfigurationContainer> container = configuration.getContainer("VoxelSniperConfiguration");
                     if (container.isPresent())
@@ -327,24 +243,24 @@ public class CoreServiceProvider
                         configuration.refreshContainer("VoxelSniperConfiguration");
                     } else
                     {
-                        logger.warn("Could not find config container for VoxelSniperConfiguration");
+                        GunsmithLogger.getLogger().warn("Could not find config container for VoxelSniperConfiguration");
                     }
                 } else
                 {
                     Optional<ConfigurationContainer> container = configuration.getContainer("VoxelSniperConfiguration");
                     if (container.isPresent())
                     {
-                        logger.info("Saving config to " + config.getName().or("an unknown source"));
+                        GunsmithLogger.getLogger().info("Saving config to " + config.getName().or("an unknown source"));
                         config.write(container.get());
                     }
                 }
             } catch (IOException e)
             {
-                logger.error(e, "Error loading configuration values.");
+                GunsmithLogger.getLogger().error(e, "Error loading configuration values.");
             }
         } else
         {
-            logger.warn("Could not find the configuration data source, and no fallback could be created.");
+            GunsmithLogger.getLogger().warn("Could not find the configuration data source, and no fallback could be created.");
         }
         /*Runnable aliasTask = new AliasSaveTask();
 
@@ -416,7 +332,7 @@ public class CoreServiceProvider
         if (sched.isPresent())
         {
             //Gunsmith.getScheduler().startSynchronousTask(aliasTask, configuration.get("aliasInterval", int.class).or(30000));
-            sched.get().startSynchronousTask(new ChangeQueueTask(players, logger, configuration),
+            sched.get().startSynchronousTask(new ChangeQueueTask(players, configuration),
                     configuration.get("changeInterval", int.class).or(100));
         }
     }
@@ -424,7 +340,7 @@ public class CoreServiceProvider
     /**
      * Stop hook
      */
-    //@PreStop
+    @PreStop
     public void onStop(Context context)
     {
         /*

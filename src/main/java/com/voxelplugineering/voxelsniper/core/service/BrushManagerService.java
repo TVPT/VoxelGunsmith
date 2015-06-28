@@ -29,7 +29,6 @@ import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.brushes.Brush;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.brushes.GlobalBrushManager;
-import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.core.util.Context;
 
@@ -40,7 +39,6 @@ public class BrushManagerService extends AbstractService implements GlobalBrushM
 {
 
     private final BrushManager wrapped;
-    private final LoggingDistributor logger;
 
     /**
      * Creates a new {@link BrushManagerService}.
@@ -50,20 +48,19 @@ public class BrushManagerService extends AbstractService implements GlobalBrushM
     public BrushManagerService(Context context, BrushManager manager)
     {
         super(context);
-        this.logger = context.getRequired(LoggingDistributor.class, this);
         this.wrapped = manager;
     }
 
     @Override
     protected void _init()
     {
-        this.logger.info("Initialized GlobalBrushManager service");
+
     }
 
     @Override
     protected void _shutdown()
     {
-        this.logger.info("Stopped GlobalBrushManager service");
+
     }
 
     @Override

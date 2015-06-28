@@ -21,38 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api.service.logging;
+package com.voxelplugineering.voxelsniper.api.service;
 
-import java.util.Collection;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import com.voxelplugineering.voxelsniper.api.service.Service;
-
-/**
- * A distributor for logging messages to a collection of {@link Logger}s.
- */
-public interface LoggingDistributor extends Logger, Service
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface PostInit
 {
 
-    /**
-     * Registers a new logger to distribute messages to.
-     * 
-     * @param logger the new logger, cannot be null
-     * @param name a name to register this logger under, cannot be null or empty
-     */
-    void registerLogger(Logger logger, String name);
-
-    /**
-     * Removes a logger from the distribution collection by-name.
-     * 
-     * @param name the name of the logger to remove, cannot be null or empty
-     */
-    void removeLogger(String name);
-
-    /**
-     * Gets all currently register loggers.
-     * 
-     * @return The loggers
-     */
-    Collection<Logger> getLoggers();
-
+    int priority() default 1000;
+    
 }

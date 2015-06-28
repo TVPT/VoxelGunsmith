@@ -32,7 +32,6 @@ import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
-import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
 import com.voxelplugineering.voxelsniper.api.service.platform.PlatformProxy;
 import com.voxelplugineering.voxelsniper.core.util.Context;
 import com.voxelplugineering.voxelsniper.core.util.IngameBrushTest;
@@ -44,7 +43,6 @@ public class VSCommand extends Command
 {
 
     private final PlatformProxy platform;
-    private final LoggingDistributor logger;
 
     private Map<String, SubCommand> subcommands;
 
@@ -58,7 +56,6 @@ public class VSCommand extends Command
         setPermissions("voxelsniper.command.vs");
         this.subcommands = Maps.newHashMap();
         this.platform = context.getRequired(PlatformProxy.class);
-        this.logger = context.getRequired(LoggingDistributor.class);
         setupSubcommands();
     }
 
@@ -110,7 +107,7 @@ public class VSCommand extends Command
 
     private void setupSubcommands()
     {
-        this.subcommands.put("version", new SubCommand(this.config, this.platform, this.logger)
+        this.subcommands.put("version", new SubCommand(this.config, this.platform)
         {
 
             @Override
@@ -127,7 +124,7 @@ public class VSCommand extends Command
             }
 
         });
-        this.subcommands.put("range", new SubCommand(this.config, this.platform, this.logger)
+        this.subcommands.put("range", new SubCommand(this.config, this.platform)
         {
 
             @Override
@@ -168,7 +165,7 @@ public class VSCommand extends Command
             }
 
         });
-        this.subcommands.put("unittest", new SubCommand(this.config, this.platform, this.logger)
+        this.subcommands.put("unittest", new SubCommand(this.config, this.platform)
         {
 
             @Override
@@ -176,7 +173,7 @@ public class VSCommand extends Command
             {
                 if (sender instanceof Player)
                 {
-                    new Thread(new IngameBrushTest((Player) sender, this.logger)).start();
+                    new Thread(new IngameBrushTest((Player) sender)).start();
                 } else
                 {
                     sender.sendMessage("Sorry this is a player only sub command.");
@@ -199,13 +196,11 @@ abstract class SubCommand
 
     protected final Configuration conf;
     protected final PlatformProxy platform;
-    protected final LoggingDistributor logger;
 
-    public SubCommand(Configuration conf, PlatformProxy platform, LoggingDistributor logger)
+    public SubCommand(Configuration conf, PlatformProxy platform)
     {
         this.conf = conf;
         this.platform = platform;
-        this.logger = logger;
     }
 
     abstract boolean execute(CommandSender sender, String[] args);

@@ -30,11 +30,11 @@ import java.util.Map;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSource;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceBuilder;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceFactory;
+import com.voxelplugineering.voxelsniper.core.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
 import com.voxelplugineering.voxelsniper.core.util.Context;
 
@@ -43,8 +43,6 @@ import com.voxelplugineering.voxelsniper.core.util.Context;
  */
 public class DataSourceFactoryService extends AbstractService implements DataSourceFactory
 {
-
-    private final LoggingDistributor logger;
 
     private Map<String, DataSourceBuilder<?>> builders;
     private Map<Class<? extends DataSource>, String> names;
@@ -55,7 +53,6 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
     public DataSourceFactoryService(Context context)
     {
         super(context);
-        this.logger = context.getRequired(LoggingDistributor.class, this);
     }
 
     @Override
@@ -76,7 +73,7 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
     public <T extends DataSource> void register(String name, Class<T> type, DataSourceBuilder<T> builder)
     {
         check("register");
-        this.logger.info("Registering DataSourceBuilder " + name + " " + type.getName());
+        GunsmithLogger.getLogger().info("Registering DataSourceBuilder " + name + " " + type.getName());
         this.builders.put(name, builder);
         this.names.put(type, name);
     }

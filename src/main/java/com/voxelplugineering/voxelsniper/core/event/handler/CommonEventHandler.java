@@ -29,11 +29,11 @@ import com.thevoxelbox.vsl.variables.ParentedVariableScope;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.event.EventHandler;
 import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
-import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
 import com.voxelplugineering.voxelsniper.api.service.permission.PermissionProxy;
 import com.voxelplugineering.voxelsniper.api.service.registry.PlayerRegistry;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.queue.OfflineUndoHandler;
+import com.voxelplugineering.voxelsniper.core.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.core.event.SnipeEvent;
 import com.voxelplugineering.voxelsniper.core.event.SniperEvent;
 import com.voxelplugineering.voxelsniper.core.event.SniperEvent.SniperCreateEvent;
@@ -49,7 +49,6 @@ public class CommonEventHandler
 {
 
     private final Configuration conf;
-    private final LoggingDistributor logger;
     private final PlayerRegistry<?> players;
     private final OfflineUndoHandler undo;
     private final PermissionProxy perms;
@@ -71,7 +70,6 @@ public class CommonEventHandler
      */
     public CommonEventHandler(Context context)
     {
-        this.logger = context.getRequired(LoggingDistributor.class);
         this.conf = context.getRequired(Configuration.class);
         this.players = context.getRequired(PlayerRegistry.class);
         this.undo = context.getRequired(OfflineUndoHandler.class);
@@ -202,7 +200,7 @@ public class CommonEventHandler
             if (!attemptedNullAction)
             {
                 sniper.sendMessage("Error executing brush, see console for more details.");
-                this.logger.error(e, "Error executing brush");
+                GunsmithLogger.getLogger().error(e, "Error executing brush");
             }
         }
     }
@@ -216,6 +214,6 @@ public class CommonEventHandler
     public void handleDeadEvent(DeadEvent deadEvent)
     {
         Object event = deadEvent.getEvent();
-        this.logger.warn("An unhandled " + event.getClass().getName() + " event was posted to the event bus!");
+        GunsmithLogger.getLogger().warn("An unhandled " + event.getClass().getName() + " event was posted to the event bus!");
     }
 }

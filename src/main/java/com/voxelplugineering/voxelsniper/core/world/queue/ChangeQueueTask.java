@@ -25,8 +25,8 @@ package com.voxelplugineering.voxelsniper.core.world.queue;
 
 import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
-import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
 import com.voxelplugineering.voxelsniper.api.service.registry.PlayerRegistry;
+import com.voxelplugineering.voxelsniper.core.GunsmithLogger;
 
 /**
  * A task for executing pending change queues.
@@ -35,16 +35,14 @@ public class ChangeQueueTask implements Runnable
 {
 
     private final PlayerRegistry<?> players;
-    private final Logger logger;
     private final Configuration conf;
 
     /**
      * Creates a new {@link ChangeQueueTask}.
      */
-    public ChangeQueueTask(PlayerRegistry<?> players, Logger logger, Configuration conf)
+    public ChangeQueueTask(PlayerRegistry<?> players, Configuration conf)
     {
         this.players = players;
-        this.logger = logger;
         this.conf = conf;
     }
 
@@ -92,7 +90,7 @@ public class ChangeQueueTask implements Runnable
                     actual += p.getNextPendingChange().get().perform(allocation);
                 } catch (Exception e)
                 {
-                    this.logger.error(e, "Error while performing change operation!");
+                    GunsmithLogger.getLogger().error(e, "Error while performing change operation!");
                     p.clearNextPending();
                 }
                 if (p.getNextPendingChange().get().isFinished())

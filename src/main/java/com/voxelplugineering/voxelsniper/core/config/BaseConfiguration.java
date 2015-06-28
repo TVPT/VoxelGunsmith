@@ -53,8 +53,4 @@ public class BaseConfiguration extends ConfigurationContainer
     int aliasInterval = 30000;
     int changeInterval = 100;
 
-    protected BaseConfiguration(Logger logger)
-    {
-        super(logger);
-    }
 }

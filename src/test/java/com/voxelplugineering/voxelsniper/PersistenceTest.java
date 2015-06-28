@@ -30,7 +30,6 @@ import org.junit.Test;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceFactory;
 import com.voxelplugineering.voxelsniper.core.service.DataSourceFactoryService;
-import com.voxelplugineering.voxelsniper.core.service.logging.PrintStreamLogger;
 import com.voxelplugineering.voxelsniper.core.service.persistence.FileDataSource;
 import com.voxelplugineering.voxelsniper.core.service.persistence.JsonDataSourceReader;
 import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
@@ -68,7 +67,7 @@ public class PersistenceTest
         factory.start();
         factory.register("stdout", StandardOutDataSource.class, StandardOutDataSource.BUILDER);
         factory.register("file", FileDataSource.class, FileDataSource.BUILDER);
-        factory.register("json", JsonDataSourceReader.class, JsonDataSourceReader.getBuilder(new PrintStreamLogger(System.out), factory));
+        factory.register("json", JsonDataSourceReader.class, JsonDataSourceReader.getBuilder(factory));
 
         DataContainer args = new MemoryContainer("");
         args.writeString("source", "stdout");

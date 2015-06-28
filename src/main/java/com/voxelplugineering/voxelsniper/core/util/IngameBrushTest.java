@@ -32,12 +32,12 @@ import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
 import com.voxelplugineering.voxelsniper.api.brushes.BrushVars;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.service.alias.AliasRegistry;
-import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
 import com.voxelplugineering.voxelsniper.api.service.text.TextFormat;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.World;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.core.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.core.brushes.BrushChain;
 import com.voxelplugineering.voxelsniper.core.brushes.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.core.service.alias.CommonAliasRegistry;
@@ -53,7 +53,6 @@ public class IngameBrushTest implements Runnable
 {
 
     private final Player sender;
-    private final Logger logger;
     private static final BrushTest[] tests;
     private static final BrushManager manager;
     private static final AliasRegistry alias;
@@ -95,10 +94,9 @@ public class IngameBrushTest implements Runnable
      * 
      * @param sender The player who is executing the test
      */
-    public IngameBrushTest(Player sender, Logger logger)
+    public IngameBrushTest(Player sender)
     {
         this.sender = sender;
-        this.logger = logger;
     }
 
     /**
@@ -120,7 +118,7 @@ public class IngameBrushTest implements Runnable
             } catch (Exception e)
             {
                 success = false;
-                this.logger.error(e, "Error running test for " + test.name);
+                GunsmithLogger.getLogger().error(e, "Error running test for " + test.name);
                 this.sender.sendMessage("Error running test: " + e.getMessage());
             }
             if (success)

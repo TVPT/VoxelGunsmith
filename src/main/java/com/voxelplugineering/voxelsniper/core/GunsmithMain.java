@@ -25,7 +25,6 @@ package com.voxelplugineering.voxelsniper.core;
 
 import java.io.File;
 
-import com.voxelplugineering.voxelsniper.core.service.logging.PrintStreamLogger;
 import com.voxelplugineering.voxelsniper.core.util.defaults.DefaultBrushBuilder;
 
 /**
@@ -44,7 +43,7 @@ public class GunsmithMain
         if (args.length == 2 && args[0].equalsIgnoreCase("--generate"))
         {
             DefaultBrushBuilder.buildBrushes();
-            DefaultBrushBuilder.saveAll(new File(args[1]), new PrintStreamLogger(System.out));
+            DefaultBrushBuilder.saveAll(new File(args[1]));
         } else if (args.length == 1 && args[0].equalsIgnoreCase("--testinit"))
         {
             System.out.println("Starting init -> stop cycle test.");

@@ -35,6 +35,8 @@ import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.api.service.Builder;
 import com.voxelplugineering.voxelsniper.api.service.InitHook;
 import com.voxelplugineering.voxelsniper.api.service.InitPhase;
+import com.voxelplugineering.voxelsniper.api.service.PostInit;
+import com.voxelplugineering.voxelsniper.api.service.PreStop;
 import com.voxelplugineering.voxelsniper.api.service.Service;
 import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.core.util.Context;
@@ -62,9 +64,12 @@ public class ServiceManager implements Contextable
 
     };
 
-    protected State state;
     private final Map<Class<? extends Contextable>, TargettedMethod> builders;
     private final Map<Class<? extends Contextable>, List<TargettedMethod>> inithooks;
+    private final List<TargettedMethod> postInit;
+    private final List<TargettedMethod> preStop;
+
+    protected State state;
     protected List<Service> services;
     protected Context context;
     protected Configuration conf;
@@ -77,6 +82,8 @@ public class ServiceManager implements Contextable
         this.builders = Maps.newHashMap();
         this.inithooks = Maps.newHashMap();
         this.services = Lists.newArrayList();
+        this.postInit = Lists.newArrayList();
+        this.preStop = Lists.newArrayList();
         this.state = State.STOPPED;
     }
 
@@ -170,6 +177,19 @@ public class ServiceManager implements Contextable
                 System.exit(1);
             }
         }
+
+        for (TargettedMethod m : this.postInit)
+        {
+            try
+            {
+                m.method.invoke(m.obj, this.context);
+                System.out.println("Called post init hook " + m.method.toGenericString());
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
     }
 
     /**
@@ -177,6 +197,18 @@ public class ServiceManager implements Contextable
      */
     public void shutdown()
     {
+        for (TargettedMethod m : this.preStop)
+        {
+            try
+            {
+                m.method.invoke(m.obj, this.context);
+                System.out.println("Called pre stop hook " + m.method.toGenericString());
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
         for (Service serv : this.services)
         {
             if (serv.isInitialized())
@@ -197,7 +229,39 @@ public class ServiceManager implements Contextable
         }
         detectBuilders(serviceProvider);
         detectInitHooks(serviceProvider);
+        detectPostInit(serviceProvider);
+        detectPreStop(serviceProvider);
 
+    }
+
+    private void detectPostInit(Object serviceProvider)
+    {
+        Class<?> cls = serviceProvider.getClass();
+        for (Method m : cls.getDeclaredMethods())
+        {
+            if (!m.isAnnotationPresent(PostInit.class) || m.getParameterTypes().length != 1
+                    || !Context.class.isAssignableFrom(m.getParameterTypes()[0]))
+            {
+                continue;
+            }
+            PostInit anno = m.getAnnotation(PostInit.class);
+            this.postInit.add(new TargettedMethod(m, anno, serviceProvider));
+        }
+    }
+
+    private void detectPreStop(Object serviceProvider)
+    {
+        Class<?> cls = serviceProvider.getClass();
+        for (Method m : cls.getDeclaredMethods())
+        {
+            if (!m.isAnnotationPresent(PreStop.class) || m.getParameterTypes().length != 1
+                    || !Context.class.isAssignableFrom(m.getParameterTypes()[0]))
+            {
+                continue;
+            }
+            PreStop anno = m.getAnnotation(PreStop.class);
+            this.preStop.add(new TargettedMethod(m, anno, serviceProvider));
+        }
     }
 
     private void detectBuilders(Object serviceProvider)
@@ -247,7 +311,8 @@ class TargettedMethod
 {
 
     public final Method method;
-    public final Class<? extends Contextable> target;
+    public Class<? extends Contextable> target;
+    public Class<?> annotation;
     public final Object obj;
     public final int priority;
     public InitPhase phase;
@@ -259,6 +324,7 @@ class TargettedMethod
         this.obj = obj;
         this.priority = annotation.priority();
         this.phase = annotation.initPhase();
+        this.annotation = annotation.getClass();
     }
 
     public TargettedMethod(Method m, InitHook annotation, Object obj)
@@ -268,6 +334,23 @@ class TargettedMethod
         this.obj = obj;
         this.priority = annotation.priority();
         this.phase = null;
+        this.annotation = annotation.getClass();
+    }
+
+    public TargettedMethod(Method m, PostInit annotation, Object obj)
+    {
+        this.method = m;
+        this.obj = obj;
+        this.priority = annotation.priority();
+        this.annotation = annotation.getClass();
+    }
+
+    public TargettedMethod(Method m, PreStop annotation, Object obj)
+    {
+        this.method = m;
+        this.obj = obj;
+        this.priority = annotation.priority();
+        this.annotation = annotation.getClass();
     }
 
 }

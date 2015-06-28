@@ -32,10 +32,11 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
+import com.google.common.primitives.Primitives;
 import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.api.service.config.ConfigurationContainer;
-import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.core.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
 import com.voxelplugineering.voxelsniper.core.util.Context;
 
@@ -44,8 +45,6 @@ import com.voxelplugineering.voxelsniper.core.util.Context;
  */
 public class ConfigurationService extends AbstractService implements Configuration
 {
-
-    private final LoggingDistributor logger;
 
     private Map<String, Object> config;
     private Map<String, ConfigurationContainer> containers;
@@ -56,7 +55,6 @@ public class ConfigurationService extends AbstractService implements Configurati
     public ConfigurationService(Context context)
     {
         super(context);
-        this.logger = context.getRequired(LoggingDistributor.class, this);
     }
 
     @Override
@@ -80,6 +78,7 @@ public class ConfigurationService extends AbstractService implements Configurati
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         checkNotNull(value, "Value cannot be null!");
+        GunsmithLogger.getLogger().info("Set config: " + name + " " + value.toString());
         this.config.put(name, value);
     }
 
@@ -98,6 +97,9 @@ public class ConfigurationService extends AbstractService implements Configurati
         check("get");
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
+        if(expectedType.isPrimitive()) {
+            expectedType = Primitives.wrap(expectedType);
+        }
         if (has(name))
         {
             Object o = this.config.get(name);
@@ -105,6 +107,7 @@ public class ConfigurationService extends AbstractService implements Configurati
             {
                 return Optional.of(expectedType.cast(o));
             }
+            GunsmithLogger.getLogger().warn("Cannot get config value " + name + " with expected type " + expectedType.getSimpleName() + " has type " + o.getClass().getSimpleName());
         }
         return Optional.absent();
     }
@@ -114,7 +117,7 @@ public class ConfigurationService extends AbstractService implements Configurati
     {
         check("registerContainer");
         checkNotNull(container, "Container cannot be null!");
-        this.logger.info("Registering config values from " + container.getName());
+        GunsmithLogger.getLogger().info("Registering config values from " + container.getName());
         String name = container.getSimpleName();
         if (this.containers.containsKey(name))
         {
@@ -126,7 +129,7 @@ public class ConfigurationService extends AbstractService implements Configurati
         {
             obj = container.newInstance();
             this.containers.put(name, obj);
-            this.logger.info("Loading configuration container: " + name);
+            GunsmithLogger.getLogger().info("Loading configuration container: " + name);
             DataContainer data = obj.toContainer();
             for (Map.Entry<String, Object> entry : data.entrySet())
             {
@@ -134,10 +137,16 @@ public class ConfigurationService extends AbstractService implements Configurati
             }
         } catch (InstantiationException e1)
         {
-            this.logger.error(e1, "Could not create a new instance of the container");
+            GunsmithLogger.getLogger().error(e1, "Could not create a new instance of the container");
         } catch (IllegalAccessException e1)
         {
-            this.logger.error(e1, "Could not create a new instance of the container");
+            GunsmithLogger.getLogger().error(e1, "Could not create a new instance of the container");
+        } catch (IllegalArgumentException e)
+        {
+            GunsmithLogger.getLogger().error(e, "Could not create a new instance of the container");
+        } catch (SecurityException e)
+        {
+            GunsmithLogger.getLogger().error(e, "Could not create a new instance of the container");
         }
 
     }

@@ -24,7 +24,6 @@
 package com.voxelplugineering.voxelsniper.core.config;
 
 import com.voxelplugineering.voxelsniper.api.service.config.ConfigurationContainer;
-import com.voxelplugineering.voxelsniper.api.service.logging.Logger;
 import com.voxelplugineering.voxelsniper.api.service.text.TextFormat;
 
 /**
@@ -60,8 +59,4 @@ public class VoxelSniperConfiguration extends ConfigurationContainer
     // Alias Settings
     boolean caseSensitiveAliases = true;
 
-    protected VoxelSniperConfiguration(Logger logger)
-    {
-        super(logger);
-    }
 }

@@ -25,10 +25,9 @@ package com.voxelplugineering.voxelsniper.core.service;
 
 import java.util.List;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.api.service.Service;
-import com.voxelplugineering.voxelsniper.api.service.logging.LoggingDistributor;
+import com.voxelplugineering.voxelsniper.core.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
@@ -36,8 +35,6 @@ import com.voxelplugineering.voxelsniper.core.util.Context;
  */
 public abstract class AbstractService implements Service
 {
-
-    private final Optional<LoggingDistributor> _logger;
 
     private boolean initialized = false;
     private List<Service> dependants = Lists.newArrayList();
@@ -49,7 +46,7 @@ public abstract class AbstractService implements Service
      */
     public AbstractService(Context context)
     {
-        this._logger = context.get(LoggingDistributor.class);
+        
     }
 
     @Override
@@ -61,10 +58,7 @@ public abstract class AbstractService implements Service
         }
         this.initialized = true;
         _init();
-        if (this._logger.isPresent())
-        {
-            this._logger.get().info("Started " + getClass().getName() + " service.");
-        }
+        GunsmithLogger.getLogger().info("Started " + getClass().getName() + " service.");
     }
 
     protected abstract void _init();
@@ -77,10 +71,7 @@ public abstract class AbstractService implements Service
             s.shutdown();
         }
         _shutdown();
-        if (this._logger.isPresent())
-        {
-            this._logger.get().info("Stopped " + getClass().getName() + " service.");
-        }
+        GunsmithLogger.getLogger().info("Stopped " + getClass().getName() + " service.");
         this.initialized = false;
     }
 

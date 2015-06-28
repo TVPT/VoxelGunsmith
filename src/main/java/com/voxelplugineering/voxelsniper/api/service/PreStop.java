@@ -21,42 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.util;
+package com.voxelplugineering.voxelsniper.api.service;
 
-import static org.mockito.Mockito.mock;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
-import com.voxelplugineering.voxelsniper.core.util.Context;
-
-/**
- * A util for creating mock {@link Context}s.
- */
-public class ContextTestUtil
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface PreStop
 {
+    
+    int priority() default 1000;
 
-    /**
-     * Creates a completely mock context.
-     */
-    public static Context create()
-    {
-        return create(null);
-    }
-
-    /**
-     * Creates a context with the given objects in it, if null is passed for any params then the
-     * class is mocked.
-     */
-    public static Context create(Configuration conf)
-    {
-        Context c = new Context();  
-        if (conf != null)
-        {
-            if (!conf.isInitialized()) conf.start();
-            c.put(conf);
-        } else
-        {
-            c.put(mock(Configuration.class));
-        }
-        return c;
-    }
 }
