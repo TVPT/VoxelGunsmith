@@ -29,10 +29,10 @@ import org.junit.Test;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
-import com.voxelplugineering.voxelsniper.core.service.persistence.JsonDataSourceReader;
-import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
+import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.service.persistence.DataSerializable;
+import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSourceReader;
+import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 
 /**
  * A set of tests for the {@link MemoryContainer}.

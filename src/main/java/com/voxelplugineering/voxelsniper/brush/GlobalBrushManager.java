@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.brush;
 
-import com.voxelplugineering.voxelsniper.api.service.Service;
+import com.voxelplugineering.voxelsniper.service.Service;
 
 /**
  * A marker interface for the global {@link BrushManager} service.

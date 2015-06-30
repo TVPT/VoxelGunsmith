@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.brush;
 
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
 
 /**
  * An interface for anything which may have a brush selected.

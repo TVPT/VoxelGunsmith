@@ -24,16 +24,16 @@
 package com.voxelplugineering.voxelsniper.brush.defaults;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.entity.Player;
-import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
-import com.voxelplugineering.voxelsniper.api.shape.Shape;
-import com.voxelplugineering.voxelsniper.api.world.Block;
-import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
-import com.voxelplugineering.voxelsniper.core.shape.SingleMaterialShape;
-import com.voxelplugineering.voxelsniper.core.world.queue.ShapeChangeQueue;
+import com.voxelplugineering.voxelsniper.entity.Player;
+import com.voxelplugineering.voxelsniper.shape.MaterialShape;
+import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.shape.SingleMaterialShape;
+import com.voxelplugineering.voxelsniper.world.Block;
+import com.voxelplugineering.voxelsniper.world.material.Material;
+import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
 
 public class MaterialBrush extends AbstractBrush {

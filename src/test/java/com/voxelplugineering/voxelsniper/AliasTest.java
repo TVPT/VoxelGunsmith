@@ -31,8 +31,8 @@ import java.util.regex.Pattern;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.voxelplugineering.voxelsniper.api.service.alias.AliasRegistry;
-import com.voxelplugineering.voxelsniper.core.service.alias.CommonAliasRegistry;
+import com.voxelplugineering.voxelsniper.service.alias.AliasRegistry;
+import com.voxelplugineering.voxelsniper.service.alias.CommonAliasRegistry;
 
 /**
  * A test suite for the alias system

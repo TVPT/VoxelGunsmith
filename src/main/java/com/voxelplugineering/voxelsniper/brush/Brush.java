@@ -23,8 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.brush;
 
-import com.voxelplugineering.voxelsniper.api.entity.Player;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
+import com.voxelplugineering.voxelsniper.entity.Player;
+import com.voxelplugineering.voxelsniper.service.persistence.DataSerializable;
 
 /**
  * Represents a brush which may be run, only one brush instance should exist and be shared among all

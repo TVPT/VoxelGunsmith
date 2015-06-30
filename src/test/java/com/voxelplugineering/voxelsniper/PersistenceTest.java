@@ -27,13 +27,13 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceFactory;
-import com.voxelplugineering.voxelsniper.core.service.DataSourceFactoryService;
-import com.voxelplugineering.voxelsniper.core.service.persistence.FileDataSource;
-import com.voxelplugineering.voxelsniper.core.service.persistence.JsonDataSourceReader;
-import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
-import com.voxelplugineering.voxelsniper.core.service.persistence.StandardOutDataSource;
+import com.voxelplugineering.voxelsniper.service.DataSourceFactoryService;
+import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.service.persistence.DataSourceFactory;
+import com.voxelplugineering.voxelsniper.service.persistence.FileDataSource;
+import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSourceReader;
+import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
+import com.voxelplugineering.voxelsniper.service.persistence.StandardOutDataSource;
 import com.voxelplugineering.voxelsniper.util.ContextTestUtil;
 
 /**

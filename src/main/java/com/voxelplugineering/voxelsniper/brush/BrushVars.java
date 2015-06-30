@@ -32,9 +32,9 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
-import com.voxelplugineering.voxelsniper.core.service.persistence.MemoryContainer;
+import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.service.persistence.DataSerializable;
+import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 
 /**
  * Standard brush variable keys.

@@ -23,14 +23,14 @@
  */
 package com.voxelplugineering.voxelsniper.brush.defaults;
 
-import com.voxelplugineering.voxelsniper.api.entity.Player;
-import com.voxelplugineering.voxelsniper.api.shape.Shape;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
-import com.voxelplugineering.voxelsniper.core.shape.csg.EllipsoidShape;
-import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.entity.Player;
+import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.shape.csg.EllipsoidShape;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 
 public class BallBrush extends AbstractBrush {

@@ -27,11 +27,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.voxelplugineering.voxelsniper.api.shape.Shape;
-import com.voxelplugineering.voxelsniper.core.shape.ComplexShape;
-import com.voxelplugineering.voxelsniper.core.shape.csg.CuboidShape;
-import com.voxelplugineering.voxelsniper.core.shape.csg.EllipsoidShape;
-import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.shape.ComplexShape;
+import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
+import com.voxelplugineering.voxelsniper.shape.csg.EllipsoidShape;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * A set of tests for the {@link ComplexShape}.

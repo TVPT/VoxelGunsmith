@@ -25,8 +25,8 @@ package com.voxelplugineering.voxelsniper.util;
 
 import static org.mockito.Mockito.mock;
 
-import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
-import com.voxelplugineering.voxelsniper.core.util.Context;
+import com.voxelplugineering.voxelsniper.service.config.Configuration;
+import com.voxelplugineering.voxelsniper.util.Context;
 
 /**
  * A util for creating mock {@link Context}s.

@@ -26,7 +26,7 @@ package com.voxelplugineering.voxelsniper.brush;
 import java.util.List;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
+import com.voxelplugineering.voxelsniper.service.persistence.DataSourceReader;
 
 /**
  * Handles the registration of {@link Brush}es. Also contains an ordered list of loaders which is

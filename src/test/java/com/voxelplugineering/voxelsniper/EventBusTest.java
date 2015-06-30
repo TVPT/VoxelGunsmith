@@ -28,15 +28,15 @@ import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
-import com.voxelplugineering.voxelsniper.api.event.EventHandler;
-import com.voxelplugineering.voxelsniper.api.event.EventPriority;
-import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy;
-import com.voxelplugineering.voxelsniper.api.event.EventThreadingPolicy.ThreadingPolicy;
-import com.voxelplugineering.voxelsniper.api.service.event.EventBus;
-import com.voxelplugineering.voxelsniper.core.service.ConfigurationService;
-import com.voxelplugineering.voxelsniper.core.service.eventbus.AsyncEventBus;
-import com.voxelplugineering.voxelsniper.core.service.eventbus.DeadEvent;
-import com.voxelplugineering.voxelsniper.core.service.eventbus.Event;
+import com.voxelplugineering.voxelsniper.service.ConfigurationService;
+import com.voxelplugineering.voxelsniper.service.event.DeadEvent;
+import com.voxelplugineering.voxelsniper.service.event.Event;
+import com.voxelplugineering.voxelsniper.service.eventbus.AsyncEventBus;
+import com.voxelplugineering.voxelsniper.service.eventbus.EventBus;
+import com.voxelplugineering.voxelsniper.service.eventbus.EventHandler;
+import com.voxelplugineering.voxelsniper.service.eventbus.EventPriority;
+import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy;
+import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.ThreadingPolicy;
 import com.voxelplugineering.voxelsniper.util.ContextTestUtil;
 
 /**

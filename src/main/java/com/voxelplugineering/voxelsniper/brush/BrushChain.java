@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.Queue;
 
 import com.google.common.collect.Queues;
-import com.voxelplugineering.voxelsniper.api.entity.Player;
+import com.voxelplugineering.voxelsniper.entity.Player;
 
 /**
  * Represents a chain of brushes. Unlike {@link Brush} this should be a unique instance per player

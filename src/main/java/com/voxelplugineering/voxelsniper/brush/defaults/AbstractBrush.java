@@ -23,9 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.brush.defaults;
 
-import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
+import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
 
 
 public abstract class AbstractBrush implements Brush {
