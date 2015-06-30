@@ -29,6 +29,8 @@ import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**
@@ -83,7 +85,7 @@ public class MaskMaterialCommand extends Command
                 return false;
             }
             sniper.sendMessage(this.materialSetMessage, material.get().getName());
-            sniper.getBrushSettings().set("maskMaterial", material.get());
+            sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL, material.get());
         } else
         {
             sniper.sendMessage(this.getHelpMsg());

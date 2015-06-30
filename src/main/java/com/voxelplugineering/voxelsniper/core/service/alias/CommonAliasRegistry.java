@@ -296,7 +296,7 @@ public class CommonAliasRegistry implements AliasRegistry
     {
         for (String key : container.keySet())
         {
-            Optional<String> alias = container.readString(key);
+            Optional<String> alias = container.getString(key);
             if (alias.isPresent())
             {
                 this.register(key, alias.get());
@@ -310,7 +310,7 @@ public class CommonAliasRegistry implements AliasRegistry
         MemoryContainer container = new MemoryContainer(this.registryName);
         for (String key : this.aliases.keySet())
         {
-            container.writeString(key, this.aliases.get(key));
+            container.setString(key, this.aliases.get(key));
         }
         return container;
     }

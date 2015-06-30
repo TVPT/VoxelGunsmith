@@ -29,10 +29,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import com.google.common.base.Optional;
-import com.thevoxelbox.vsl.api.variables.VariableScope;
-import com.thevoxelbox.vsl.variables.ParentedVariableScope;
-import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
-import com.voxelplugineering.voxelsniper.api.brushes.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.service.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.service.alias.GlobalAliasHandler;
@@ -40,11 +36,16 @@ import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
 import com.voxelplugineering.voxelsniper.api.world.queue.UndoQueue;
+import com.voxelplugineering.voxelsniper.brush.Brush;
+import com.voxelplugineering.voxelsniper.brush.BrushChain;
+import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushManager;
+import com.voxelplugineering.voxelsniper.brush.BrushVars;
+import com.voxelplugineering.voxelsniper.brush.CommonBrushManager;
+import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.core.GunsmithLogger;
-import com.voxelplugineering.voxelsniper.core.brushes.BrushChain;
-import com.voxelplugineering.voxelsniper.core.brushes.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.core.service.alias.CommonAliasHandler;
-import com.voxelplugineering.voxelsniper.core.util.BrushParsing;
 import com.voxelplugineering.voxelsniper.core.util.Context;
 import com.voxelplugineering.voxelsniper.core.world.queue.ChangeQueue;
 import com.voxelplugineering.voxelsniper.core.world.queue.CommonUndoQueue;
@@ -61,7 +62,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
 
     private BrushManager personalBrushManager;
     private BrushChain currentBrush;
-    private VariableScope brushVariables;
+    private BrushVars brushVariables;
     private Queue<ChangeQueue> pending;
     private AliasHandler personalAliasHandler;
     private UndoQueue history;
@@ -77,8 +78,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         super(player);
         this.conf = context.getRequired(Configuration.class);
         this.personalBrushManager = new CommonBrushManager(parentBrushManager);
-        this.brushVariables = new ParentedVariableScope();
-        this.brushVariables.setCaseSensitive(false);
+        this.brushVariables = new BrushVars();
         this.pending = new LinkedList<ChangeQueue>();
         boolean caseSensitiveAliases = this.conf.get("caseSensitiveAliases", boolean.class).or(false);
         this.personalAliasHandler = new CommonAliasHandler(this, context.getRequired(GlobalAliasHandler.class), caseSensitiveAliases);
@@ -90,8 +90,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         super(player);
         this.conf = context.getRequired(Configuration.class);
         this.personalBrushManager = new CommonBrushManager(context.getRequired(GlobalBrushManager.class));
-        this.brushVariables = new ParentedVariableScope();
-        this.brushVariables.setCaseSensitive(false);
+        this.brushVariables = new BrushVars();
         this.pending = new LinkedList<ChangeQueue>();
         boolean caseSensitiveAliases = this.conf.get("caseSensitiveAliases", boolean.class).or(false);
         this.personalAliasHandler = new CommonAliasHandler(this, context.getRequired(GlobalAliasHandler.class), caseSensitiveAliases);
@@ -146,7 +145,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     }
 
     @Override
-    public VariableScope getBrushSettings()
+    public BrushVars getBrushVars()
     {
         return this.brushVariables;
     }
@@ -155,15 +154,21 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     public void resetSettings()
     {
         this.brushVariables.clear();
-        String brush = this.conf.get("defaultBrush", String.class).or("voxel material");
-        Optional<BrushChain> current = BrushParsing.parse(brush, this.personalBrushManager, this.personalAliasHandler.getRegistry("brush").orNull());
-        if (current.isPresent())
-        {
-            setCurrentBrush(current.get());
-            sendMessage("Brush set to " + this.conf.get("defaultBrush").get().toString());
+        String fullBrush = this.conf.get("defaultBrush", String.class).or("voxel material");
+        fullBrush = getAliasHandler().getRegistry("brush").get().expand(fullBrush);
+        BrushChain brush = new BrushChain(fullBrush);
+        for (String b : fullBrush.split(" ")) {
+            Optional<Brush> br = getBrushManager().getBrush(b);
+            if (br.isPresent()) {
+                brush.chain(br.get());
+            } else {
+                sendMessage("Could not find brush: " + b);
+            }
         }
+        setCurrentBrush(brush);
+        sendMessage("Your brush has been set to %s", brush.getName());
         double size = this.conf.get("defaultBrushSize", Double.class).or(5.0);
-        this.brushVariables.set("brushSize", size);
+        this.brushVariables.set(BrushContext.GLOBAL, BrushKeys.BRUSH_SIZE, size);
         sendMessage("Your brush size was changed to " + size);
         Optional<String> materialName = this.conf.get("defaultBrushMaterial", String.class);
         Material mat = getWorld().getMaterialRegistry().getAirMaterial();
@@ -176,8 +181,8 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
             }
         }
         sendMessage("Set material to " + mat.getName());
-        getBrushSettings().set("setMaterial", mat);
-        getBrushSettings().set("maskmaterial", mat);
+        getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MATERIAL, mat);
+        getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL, mat);
     }
 
     @Override

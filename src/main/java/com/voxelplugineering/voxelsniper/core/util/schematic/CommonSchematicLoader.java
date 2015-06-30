@@ -87,22 +87,22 @@ public class CommonSchematicLoader implements SchematicLoader
             return new LegacyConverter(schematicTag).convert();
         }
         // extract dimensions
-        int width = schematicTag.readInt("Width").get();
-        int length = schematicTag.readInt("Length").get();
-        int height = schematicTag.readInt("Height").get();
-        String materials = schematicTag.readString("Materials").get();
+        int width = schematicTag.getInt("Width").get();
+        int length = schematicTag.getInt("Length").get();
+        int height = schematicTag.getInt("Height").get();
+        String materials = schematicTag.getString("Materials").get();
         if (!materials.equals("Alpha"))
         {
             throw new UnsupportedOperationException("Schematic file is not an Alpha schematic");
         }
         // extract block id and data values, addId is used if the schematic
         // contains block ids above 255
-        byte[] blockId = schematicTag.readByteArray("Blocks").get();
+        byte[] blockId = schematicTag.getByteArray("Blocks").get();
         byte[] addId = new byte[0];
         short[] blocks = new short[blockId.length];
         if (schematicTag.containsKey("AddBlocks"))
         {
-            addId = schematicTag.readByteArray("AddBlocks").get();
+            addId = schematicTag.getByteArray("AddBlocks").get();
         }
         // combine blockId and addId into a single short array blocks
         for (int index = 0; index < blockId.length; index++)
@@ -122,7 +122,7 @@ public class CommonSchematicLoader implements SchematicLoader
             }
         }
         // Need to pull out tile entities from this list of compound tags
-        @SuppressWarnings("unchecked") List<Tag> tileEntities = schematicTag.readList("TileEntities").get();
+        @SuppressWarnings("unchecked") List<Tag> tileEntities = schematicTag.getList("TileEntities").get();
         // this is the map we will populate with all extracted time entities
         Map<Vector3i, CompoundTag> tileEntitiesMap = Maps.newHashMap();
         for (Tag tag : tileEntities)
@@ -153,7 +153,7 @@ public class CommonSchematicLoader implements SchematicLoader
             tileEntitiesMap.put(vec, tileEntity);
         }
 
-        @SuppressWarnings("unchecked") List<Tag> entities = schematicTag.readList("Entities").get();
+        @SuppressWarnings("unchecked") List<Tag> entities = schematicTag.getList("Entities").get();
 
         // this is the map we will populate with all extracted time entities
         Map<Vector3i, CompoundTag> entitiesMap = new HashMap<Vector3i, CompoundTag>();
@@ -185,7 +185,7 @@ public class CommonSchematicLoader implements SchematicLoader
         }
 
         // Load material dictionary
-        @SuppressWarnings("unchecked") List<Tag> dict = schematicTag.readList("MaterialDictionary").get();
+        @SuppressWarnings("unchecked") List<Tag> dict = schematicTag.getList("MaterialDictionary").get();
         Map<Short, Material> materialDict = Maps.newHashMap();
         for (Tag tag : dict)
         {
@@ -202,9 +202,9 @@ public class CommonSchematicLoader implements SchematicLoader
         NamedWorldSection region;
         if (schematicTag.containsKey("WEOffsetX") && schematicTag.containsKey("WEOffsetY") && schematicTag.containsKey("WEOffsetZ"))
         {
-            int offsetX = schematicTag.readInt("WEOffsetX").get();
-            int offsetY = schematicTag.readInt("WEOffsetY").get();
-            int offsetZ = schematicTag.readInt("WEOffsetZ").get();
+            int offsetX = schematicTag.getInt("WEOffsetX").get();
+            int offsetY = schematicTag.getInt("WEOffsetY").get();
+            int offsetZ = schematicTag.getInt("WEOffsetZ").get();
             region = new NamedWorldSection(new CuboidShape(width, height, length, new Vector3i(offsetX, offsetY, offsetZ)), materialDict);
         } else
         {
@@ -213,7 +213,7 @@ public class CommonSchematicLoader implements SchematicLoader
         String name = null;
         if (schematicTag.containsKey("name"))
         {
-            name = schematicTag.readString("name").get();
+            name = schematicTag.getString("name").get();
         } else
         {
             Optional<String> sourcename = data.getName();
@@ -262,10 +262,10 @@ public class CommonSchematicLoader implements SchematicLoader
 
         DataContainer schematic = new MemoryContainer("");
         // Store basic schematic data
-        schematic.writeInt("Width", width);
-        schematic.writeInt("Height", height);
-        schematic.writeInt("Length", length);
-        schematic.writeString("Materials", "Alpha");
+        schematic.setInt("Width", width);
+        schematic.setInt("Height", height);
+        schematic.setInt("Length", length);
+        schematic.setString("Materials", "Alpha");
 
         // Extract tile entities and load into the main schematic map
 
@@ -296,26 +296,26 @@ public class CommonSchematicLoader implements SchematicLoader
         // save the region reference point in the WorldEdit style for
         // compatibility
         Vector3i origin = shape.getOrigin();
-        schematic.writeInt("WEOffsetX", origin.getX());
-        schematic.writeInt("WEOffsetY", origin.getY());
-        schematic.writeInt("WEOffsetZ", origin.getZ());
+        schematic.setInt("WEOffsetX", origin.getX());
+        schematic.setInt("WEOffsetY", origin.getY());
+        schematic.setInt("WEOffsetZ", origin.getZ());
 
         // store the lower byte of the block Ids
-        schematic.writeByteArray("Blocks", shape.getLowerMaterialData());
+        schematic.setByteArray("Blocks", shape.getLowerMaterialData());
         if (shape.hasExtraData())
         {
-            schematic.writeByteArray("AddBlocks", shape.getUpperMaterialData());
+            schematic.setByteArray("AddBlocks", shape.getUpperMaterialData());
         }
         if (shape instanceof NamedWorldSection)
         {
             NamedWorldSection complex = (NamedWorldSection) shape;
             if (complex.hasTileEntities())
             {
-                schematic.writeList("TileEntities", tiles);
+                schematic.setList("TileEntities", tiles);
             }
             if (complex.hasEntities())
             {
-                schematic.writeList("Entities", entities);
+                schematic.setList("Entities", entities);
             }
         }
 
@@ -329,7 +329,7 @@ public class CommonSchematicLoader implements SchematicLoader
             CompoundTag tag = new CompoundTag("Material", material);
             materials.add(tag);
         }
-        schematic.writeList("MaterialDictionary", materials);
+        schematic.setList("MaterialDictionary", materials);
 
         data.write(schematic);
         /*

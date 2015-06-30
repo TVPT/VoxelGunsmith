@@ -34,7 +34,7 @@ public interface DataContainer extends DataView
 {
 
     @Override
-    Optional<DataContainer> readContainer(String path);
+    Optional<DataContainer> getContainer(String path);
 
     /**
      * Writes a byte to the given path.
@@ -42,7 +42,7 @@ public interface DataContainer extends DataView
      * @param path The path
      * @param data The value
      */
-    void writeByte(String path, byte data);
+    void setByte(String path, byte data);
 
     /**
      * Writes a byte array to the given path.
@@ -50,7 +50,7 @@ public interface DataContainer extends DataView
      * @param path The path
      * @param data The value
      */
-    void writeByteArray(String path, byte[] data);
+    void setByteArray(String path, byte[] data);
 
     /**
      * Writes a short to the given path.
@@ -58,7 +58,7 @@ public interface DataContainer extends DataView
      * @param path The path
      * @param data The value
      */
-    void writeShort(String path, short data);
+    void setShort(String path, short data);
 
     /**
      * Writes an integer to the given path.
@@ -66,7 +66,7 @@ public interface DataContainer extends DataView
      * @param path The path
      * @param data The value
      */
-    void writeInt(String path, int data);
+    void setInt(String path, int data);
 
     /**
      * Writes a long to the given path.
@@ -74,7 +74,7 @@ public interface DataContainer extends DataView
      * @param path The path
      * @param data The value
      */
-    void writeLong(String path, long data);
+    void setLong(String path, long data);
 
     /**
      * Writes a character to the given path.
@@ -82,7 +82,7 @@ public interface DataContainer extends DataView
      * @param path The path
      * @param data The value
      */
-    void writeChar(String path, char data);
+    void setChar(String path, char data);
 
     /**
      * Writes a float to the given path.
@@ -90,7 +90,7 @@ public interface DataContainer extends DataView
      * @param path The path
      * @param data The value
      */
-    void writeFloat(String path, float data);
+    void setFloat(String path, float data);
 
     /**
      * Writes a double to the given path.
@@ -98,7 +98,7 @@ public interface DataContainer extends DataView
      * @param path The path
      * @param data The value
      */
-    void writeDouble(String path, double data);
+    void setDouble(String path, double data);
 
     /**
      * Writes a String to the given path.
@@ -106,7 +106,7 @@ public interface DataContainer extends DataView
      * @param path The path
      * @param data The value
      */
-    void writeString(String path, String data);
+    void setString(String path, String data);
 
     /**
      * Writes a boolean to the given path.
@@ -114,7 +114,7 @@ public interface DataContainer extends DataView
      * @param path The path
      * @param data The value
      */
-    void writeBoolean(String path, boolean data);
+    void setBoolean(String path, boolean data);
 
     /**
      * Writes a type extending {@link DataSerializable} to the given path. The type is written as if
@@ -124,7 +124,7 @@ public interface DataContainer extends DataView
      * @param data The value
      * @param <T> The {@link DataSerializable} type
      */
-    <T extends DataSerializable> void writeCustom(String path, T data);
+    <T extends DataSerializable> void setCustom(String path, T data);
 
     /**
      * Writes a {@link DataContainer} to the given path.
@@ -132,7 +132,9 @@ public interface DataContainer extends DataView
      * @param path The path
      * @param data The value
      */
-    void writeContainer(String path, DataContainer data);
+    void setContainer(String path, DataContainer data);
+    
+    DataContainer getOrCreateContainer(String path);
 
     /**
      * Writes a Number to the given path.
@@ -140,7 +142,7 @@ public interface DataContainer extends DataView
      * @param path The path
      * @param data The value
      */
-    void writeNumber(String path, Number data);
+    void setNumber(String path, Number data);
 
     /**
      * Writes a List to the given path.
@@ -148,7 +150,7 @@ public interface DataContainer extends DataView
      * @param path The path
      * @param data The value
      */
-    void writeList(String path, List<?> data);
+    void setList(String path, List<?> data);
 
     /**
      * Attempts to write the given object to the container.
@@ -156,14 +158,14 @@ public interface DataContainer extends DataView
      * @param path The path
      * @param value The value
      */
-    void write(String path, Object value);
+    void set(String path, Object value);
 
     /**
      * Writes all values from the given container to this container.
      * 
      * @param container The source container
      */
-    void writeAll(DataContainer container);
+    void setAll(DataContainer container);
 
     /**
      * Removes the given path from this container.

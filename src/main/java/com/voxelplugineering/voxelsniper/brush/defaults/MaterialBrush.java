@@ -21,52 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.core.nodes.world;
+package com.voxelplugineering.voxelsniper.brush.defaults;
 
-import com.thevoxelbox.vsl.node.AbstractNode;
-import com.thevoxelbox.vsl.util.Provider;
-import com.thevoxelbox.vsl.util.RuntimeState;
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.api.shape.Shape;
-import com.voxelplugineering.voxelsniper.api.world.Location;
+import com.voxelplugineering.voxelsniper.api.world.Block;
 import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushPartType;
+import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.core.shape.SingleMaterialShape;
 import com.voxelplugineering.voxelsniper.core.world.queue.ShapeChangeQueue;
 
-/**
- * A visual scripting node to set the a shape to a material.
- */
-public class ShapeMaterialSetNode extends AbstractNode
-{
 
-    private final Provider<Shape> shape;
-    private final Provider<Material> material;
-    private final Provider<Location> target;
+public class MaterialBrush extends AbstractBrush {
 
-    /**
-     * Constructs a new ShapeMaterialSetNode
-     * 
-     * @param shape The shape
-     * @param material The material
-     * @param target The target
-     */
-    public ShapeMaterialSetNode(Provider<Shape> shape, Provider<Material> material, Provider<Location> target)
-    {
-        this.shape = shape;
-        this.material = material;
-        this.target = target;
+    public MaterialBrush() {
+        super("material", BrushPartType.EFFECT);
     }
 
     @Override
-    public void exec(RuntimeState state)
-    {
-        Shape s = this.shape.get(state);
-        Location l = this.target.get(state);
-        Material m = this.material.get(state);
-        Player p = state.getVars().<Player>get("__PLAYER__", Player.class).get();
-        MaterialShape ms = new SingleMaterialShape(s, m);
-        new ShapeChangeQueue(p, l, ms).flush();
+    public void run(Player player, BrushVars args) {
+        Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
+        if(!s.isPresent()) {
+            player.sendMessage("You must have at least one shape brush before your material brush.");
+            return;
+        }
+        Optional<Material> m = args.get(BrushKeys.MATERIAL, Material.class);
+        if(!m.isPresent()) {
+            player.sendMessage("You must select a material.");
+            return;
+        }
+        Optional<Block> l = args.get(BrushKeys.TARGET_BLOCK, Block.class);
+        MaterialShape ms = new SingleMaterialShape(s.get(), m.get());
+        new ShapeChangeQueue(player, l.get().getLocation(), ms).flush();
     }
 
 }

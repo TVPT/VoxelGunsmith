@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api.brushes;
+package com.voxelplugineering.voxelsniper.brush;
 
 import java.util.List;
 
@@ -84,9 +84,9 @@ public interface BrushManager
      * is done of the brush version and the copy with the higher version is kept loaded.
      * 
      * @param identifier the brush name, cannot be null or empty
-     * @param graph The node graph
+     * @param brush The node graph
      */
-    void loadBrush(String identifier, Brush graph);
+    void loadBrush(String identifier, Brush brush);
 
     /**
      * Returns a new instance of the brush with the given name if it has been previously loaded into

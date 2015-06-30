@@ -33,8 +33,9 @@ import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.api.service.platform.PlatformProxy;
+import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.core.util.Context;
-import com.voxelplugineering.voxelsniper.core.util.IngameBrushTest;
 
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.
@@ -93,7 +94,7 @@ public class VSCommand extends Command
             String[] split = full.split("=");
             String key = split[0].trim().toLowerCase();
             String value = split[1].trim();
-            sniper.getBrushSettings().set(key, value);
+            sniper.getBrushVars().set(BrushContext.GLOBAL, key, value);
             sniper.sendMessage("Set " + key + " to " + value);
             return true;
         }
@@ -140,13 +141,13 @@ public class VSCommand extends Command
                     if (args[0].equalsIgnoreCase("reset"))
                     {
                         double range = this.conf.get("rayTraceRange", Double.class).get();
-                        player.getBrushSettings().set("range", range);
+                        player.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.RANGE, range);
                         sender.sendMessage("Reset your maximum range to %d", range);
                     }
                     try
                     {
                         double range = Double.parseDouble(args[0]);
-                        player.getBrushSettings().set("range", range);
+                        player.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.RANGE, range);
                         sender.sendMessage("Set your maximum range to %d", Integer.parseInt(args[0]));
                     } catch (NumberFormatException e)
                     {
@@ -165,7 +166,7 @@ public class VSCommand extends Command
             }
 
         });
-        this.subcommands.put("unittest", new SubCommand(this.config, this.platform)
+        /*this.subcommands.put("unittest", new SubCommand(this.config, this.platform)
         {
 
             @Override
@@ -187,7 +188,7 @@ public class VSCommand extends Command
                 return "  /vs unittest -- Runs an ingame set of brush tests (warning: destructive)";
             }
 
-        });
+        });*/
     }
 }
 

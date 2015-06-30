@@ -52,7 +52,7 @@ public class PersistenceTest
         JsonDataSourceReader reader = new JsonDataSourceReader(source);
 
         DataContainer data = new MemoryContainer("");
-        data.writeString("hello", "world");
+        data.setString("hello", "world");
 
         reader.write(data);
     }
@@ -70,13 +70,13 @@ public class PersistenceTest
         factory.register("json", JsonDataSourceReader.class, JsonDataSourceReader.getBuilder(factory));
 
         DataContainer args = new MemoryContainer("");
-        args.writeString("source", "stdout");
-        args.writeContainer("sourceArgs", new MemoryContainer(""));
+        args.setString("source", "stdout");
+        args.setContainer("sourceArgs", new MemoryContainer(""));
 
         JsonDataSourceReader output = (JsonDataSourceReader) factory.build("json", args).get();
 
         DataContainer data = new MemoryContainer("");
-        data.writeString("hello", "world");
+        data.setString("hello", "world");
 
         output.write(data);
     }

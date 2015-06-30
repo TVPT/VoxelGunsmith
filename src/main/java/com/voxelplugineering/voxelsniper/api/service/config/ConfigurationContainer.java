@@ -97,7 +97,7 @@ public class ConfigurationContainer implements DataSerializable
             f.setAccessible(true);
             try
             {
-                data.write(f.getName(), f.get(this));
+                data.set(f.getName(), f.get(this));
             } catch (Exception e)
             {
                 GunsmithLogger.getLogger().error(e, "Failed to serialize " + f.getName() + " from configuration.");

@@ -65,8 +65,8 @@ public class JsonDataSourceReader implements DataSourceReader
                     GunsmithLogger.getLogger().warn("Failed to build JsonDataSourceReader, invalid args");
                     return Optional.absent();
                 }
-                String sourceName = args.readString("source").get();
-                Optional<DataSource> source = factory.build(sourceName, args.readContainer("sourceArgs").get());
+                String sourceName = args.getString("source").get();
+                Optional<DataSource> source = factory.build(sourceName, args.getContainer("sourceArgs").get());
                 if (!source.isPresent())
                 {
                     GunsmithLogger.getLogger().warn("Failed to build data source for JsonDataSourceReader");
@@ -195,17 +195,17 @@ public class JsonDataSourceReader implements DataSourceReader
                     JsonPrimitive primitive = element.getAsJsonPrimitive();
                     if (primitive.isBoolean())
                     {
-                        container.writeBoolean(key, primitive.getAsBoolean());
+                        container.setBoolean(key, primitive.getAsBoolean());
                     } else if (primitive.isString())
                     {
-                        container.writeString(key, primitive.getAsString());
+                        container.setString(key, primitive.getAsString());
                     } else if (primitive.isNumber())
                     {
-                        container.writeNumber(key, primitive.getAsNumber());
+                        container.setNumber(key, primitive.getAsNumber());
                     }
                 } else if (element.isJsonObject())
                 {
-                    container.writeContainer(key, toContainer(element));
+                    container.setContainer(key, toContainer(element));
                 }
             }
         }

@@ -28,14 +28,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
-import com.voxelplugineering.voxelsniper.api.service.text.TextFormat;
-import com.voxelplugineering.voxelsniper.core.brushes.BrushChain;
-import com.voxelplugineering.voxelsniper.core.util.BrushParsing;
+import com.voxelplugineering.voxelsniper.brush.Brush;
+import com.voxelplugineering.voxelsniper.brush.BrushChain;
+import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.core.util.Context;
 import com.voxelplugineering.voxelsniper.core.util.StringUtilities;
 
 /**
- * Standard brush command to select a brush and provide the necessary arguments to said brush.
+ * Standard brush command to select a brush and provide the necessary arguments
+ * to said brush.
  */
 public class BrushCommand extends Command
 {
@@ -82,7 +84,8 @@ public class BrushCommand extends Command
             try
             {
                 double brushSize = Double.parseDouble(args[0]);
-                sniper.getBrushSettings().set("brushSize", brushSize);
+                sniper.getBrushVars().setContext(BrushContext.GLOBAL);
+                sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.BRUSH_SIZE, brushSize);
                 sniper.sendMessage(this.brushSizeChangeMessage, brushSize);
                 return true;
             } catch (NumberFormatException ignored)
@@ -92,19 +95,19 @@ public class BrushCommand extends Command
         }
         if (args.length >= 1)
         {
-
             String fullBrush = StringUtilities.getSection(args, 0, args.length - 1);
-            Optional<BrushChain> brush = BrushParsing.parse(fullBrush, sniper.getBrushManager(), sniper.getAliasHandler().getRegistry("brush").get());
-            if (brush.isPresent())
-            {
-                sniper.setCurrentBrush(brush.get());
-                sniper.sendMessage(this.brushSetMessage, brush.get().getName());
-
-                //TODO non-action check
-            } else
-            {
-                sniper.sendMessage(TextFormat.RED + "Failed to parse brush, check your brush names!");
+            fullBrush = sniper.getAliasHandler().getRegistry("brush").get().expand(fullBrush);
+            BrushChain brush = new BrushChain(fullBrush);
+            for (String b : fullBrush.split(" ")) {
+                Optional<Brush> br = sniper.getBrushManager().getBrush(b);
+                if (br.isPresent()) {
+                    brush.chain(br.get());
+                } else {
+                    sniper.sendMessage("Could not find brush: " + b);
+                }
             }
+            sniper.setCurrentBrush(brush);
+            sniper.sendMessage(this.brushSetMessage, brush.getName());
 
             return true;
         }

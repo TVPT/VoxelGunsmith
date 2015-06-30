@@ -21,49 +21,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.core.nodes.world.buffer;
+package com.voxelplugineering.voxelsniper.brush;
 
-import com.thevoxelbox.vsl.util.Provider;
-import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
-import com.voxelplugineering.voxelsniper.api.world.material.Material;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
 
 /**
- * A node for flooding a materialshape with a material.
+ * An interface for anything which may have a brush selected.
  */
-public class MaterialShapeFloodNode extends MaterialShapeNode
+public interface BrushHolder
 {
 
-    private final Provider<Material> fill;
+    /**
+     * Returns the brush manager specific to this user.
+     * 
+     * @return the sniper's brush manager
+     */
+    BrushManager getBrushManager();
 
     /**
-     * Creates a new {@link MaterialShapeFloodNode}
+     * Sets this user's personal brush manager.
      * 
-     * @param shape The shape to flood
-     * @param fill The material to flood it with
+     * @param manager The new brush manager
      */
-    public MaterialShapeFloodNode(Provider<MaterialShape> shape, Provider<Material> fill)
-    {
-        super(shape);
-        this.fill = fill;
-    }
+    void setBrushManager(BrushManager manager);
 
     /**
-     * Creates a new {@link MaterialShapeFloodNode}
+     * Returns the currently selected brush of this sniper.
      * 
-     * @param shape The shape to flood
-     * @param fill The material to flood it with
+     * @return the brush
      */
-    public MaterialShapeFloodNode(Provider<MaterialShape> shape, Material fill)
-    {
-        super(shape);
-        this.fill = new Provider<Material>(this, fill);
-    }
+    BrushChain getCurrentBrush();
 
-    @Override
-    public void exec(RuntimeState state)
-    {
-        this.shape.get(state).flood(this.fill.get(state));
-    }
+    /**
+     * Sets the current brush of this sniper.
+     * 
+     * @param brush the new brush, cannot be null
+     */
+    void setCurrentBrush(BrushChain brush);
+
+    /**
+     * Returns this sniper's current brush settings.
+     * 
+     * @return the brush settings
+     */
+    BrushVars getBrushVars();
+
+    /**
+     * Resets the settings of this player to their default configuration.
+     */
+    void resetSettings();
 
 }

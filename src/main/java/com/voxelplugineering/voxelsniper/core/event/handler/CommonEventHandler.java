@@ -24,8 +24,6 @@
 package com.voxelplugineering.voxelsniper.core.event.handler;
 
 import com.google.common.eventbus.DeadEvent;
-import com.thevoxelbox.vsl.api.variables.VariableScope;
-import com.thevoxelbox.vsl.variables.ParentedVariableScope;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.event.EventHandler;
 import com.voxelplugineering.voxelsniper.api.service.config.Configuration;
@@ -33,6 +31,9 @@ import com.voxelplugineering.voxelsniper.api.service.permission.PermissionProxy;
 import com.voxelplugineering.voxelsniper.api.service.registry.PlayerRegistry;
 import com.voxelplugineering.voxelsniper.api.world.Location;
 import com.voxelplugineering.voxelsniper.api.world.queue.OfflineUndoHandler;
+import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.core.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.core.event.SnipeEvent;
 import com.voxelplugineering.voxelsniper.core.event.SniperEvent;
@@ -55,13 +56,6 @@ public class CommonEventHandler
 
     //private final String playerFolderName = this.conf.get("playerDataDirectory", String.class).or("players/");
     //private final String aliasFile = this.conf.get("aliasesFileName", String.class).or("aliases.json");
-    private final String playerSysvar;
-
-    private final String originVariable;
-    private final String yawVariable;
-    private final String pitchVariable;
-    private final String targetBlockVariable;
-    private final String lengthVariable;
 
     private final double rayTraceRange;
 
@@ -75,12 +69,6 @@ public class CommonEventHandler
         this.undo = context.getRequired(OfflineUndoHandler.class);
         this.perms = context.getRequired(PermissionProxy.class);
 
-        this.playerSysvar = this.conf.get("playerSysVarName", String.class).or("__PLAYER__");
-        this.originVariable = this.conf.get("originVariable", String.class).or("origin");
-        this.yawVariable = this.conf.get("yawVariable", String.class).or("yaw");
-        this.pitchVariable = this.conf.get("pitchVariable", String.class).or("pitch");
-        this.targetBlockVariable = this.conf.get("targetBlockVariable", String.class).or("targetBlock");
-        this.lengthVariable = this.conf.get("lengthVariable", String.class).or("length");
         this.rayTraceRange = this.conf.get("rayTraceRange", Double.class).or(250.0);
     }
 
@@ -171,9 +159,9 @@ public class CommonEventHandler
             Vector3d eyeOffs = new Vector3d(0, this.conf.get("playerEyeHeight", double.class).or(1.62), 0);
             RayTrace ray = new RayTrace(location, yaw, pitch, this.rayTraceRange, minY, maxY, step, eyeOffs);
             double range = this.rayTraceRange;
-            if (sniper.getBrushSettings().hasValue("range"))
+            if (sniper.getBrushVars().has(BrushKeys.RANGE))
             {
-                range = sniper.getBrushSettings().get("range", Double.class).get();
+                range = sniper.getBrushVars().get(BrushKeys.RANGE, Double.class).get();
             }
             ray.setRange(range);
             ray.trace();
@@ -182,19 +170,18 @@ public class CommonEventHandler
             {
                 attemptedNullAction = true;
             }
-
-            VariableScope brushVariables = new ParentedVariableScope(sniper.getBrushSettings());
-            brushVariables.setCaseSensitive(false);
-            brushVariables.set(this.originVariable, location);
-            brushVariables.set(this.yawVariable, yaw);
-            brushVariables.set(this.pitchVariable, pitch);
-            brushVariables.set(this.targetBlockVariable, ray.getTargetBlock());
+            BrushVars vars = sniper.getBrushVars();
+            vars.clearRuntime();
+            vars.set(BrushContext.RUNTIME, BrushKeys.ORIGIN, location);
+            vars.set(BrushContext.RUNTIME, BrushKeys.YAW, yaw);
+            vars.set(BrushContext.RUNTIME, BrushKeys.PITCH, pitch);
+            vars.set(BrushContext.RUNTIME, BrushKeys.TARGET_BLOCK, ray.getTargetBlock());
             // brushVariables.set("lastBlock", ray.getLastBlock());
             // TODO support gunpoweder alt action
-            brushVariables.set(this.lengthVariable, ray.getLength());
-            brushVariables.set(this.playerSysvar, sniper);
+            vars.set(BrushContext.RUNTIME, BrushKeys.LENGTH, ray.getLength());
+            vars.set(BrushContext.RUNTIME, BrushKeys.PLAYER, sniper);
             //Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());
-            sniper.getCurrentBrush().run(brushVariables);
+            sniper.getCurrentBrush().run(sniper, vars);
         } catch (Exception e)
         {
             if (!attemptedNullAction)

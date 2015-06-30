@@ -189,7 +189,7 @@ public class ConfigurationService extends AbstractService implements Configurati
         {
             if (this.containers.containsKey(s))
             {
-                Optional<DataContainer> data = container.readContainer(s);
+                Optional<DataContainer> data = container.getContainer(s);
                 if (data.isPresent())
                 {
                     this.containers.get(s).fromContainer(data.get());
@@ -206,7 +206,7 @@ public class ConfigurationService extends AbstractService implements Configurati
         for (String key : this.containers.keySet())
         {
             ConfigurationContainer c = this.containers.get(key);
-            container.writeContainer(c.getClass().getName(), c.toContainer());
+            container.setContainer(c.getClass().getName(), c.toContainer());
         }
         return container;
     }

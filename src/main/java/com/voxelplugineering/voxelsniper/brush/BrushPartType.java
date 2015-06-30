@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.api.brushes;
+package com.voxelplugineering.voxelsniper.brush;
 
 /**
  * An enumeration of some standard brush part types. These describe the general targeted purpose of

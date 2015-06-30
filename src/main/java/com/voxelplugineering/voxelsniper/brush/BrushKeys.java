@@ -21,48 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.util;
+package com.voxelplugineering.voxelsniper.brush;
 
-import com.thevoxelbox.vsl.node.AbstractNode;
-import com.thevoxelbox.vsl.util.RuntimeState;
+@SuppressWarnings("javadoc")
+public final class BrushKeys {
 
-/**
- * A testing utility node to check that a node is run a specified number of times.
- */
-public class CheckRunNode extends AbstractNode
-{
+    public static final String SHAPE = "shape";
+    public static final String BRUSH_SIZE = "brushSize";
+    public static final String MATERIAL = "setMaterial";
+    public static final String MASK_MATERIAL = "maskmaterial";
+    public static final String RANGE = "range";
+    public static final String ORIGIN = "origin";
+    public static final String YAW = "yaw";
+    public static final String PITCH = "pitch";
+    public static final String TARGET_BLOCK = "targetBlock";
+    public static final String LENGTH = "length";
+    public static final String PLAYER = "player";
 
-    int expected;
-
-    /**
-     * Creates a new {@link CheckRunNode}.
-     * 
-     * @param e The expected number of runs
-     */
-    public CheckRunNode(int e)
-    {
-        this.expected = e;
+    private BrushKeys() {
     }
-
-    @Override
-    public void exec(RuntimeState state)
-    {
-        this.expected--;
-        if (this.expected < 0)
-        {
-            throw new UnsupportedOperationException("Check node ran too many times");
-        }
-    }
-
-    /**
-     * Validates that the node ran the expected number of times
-     */
-    public void end()
-    {
-        if (this.expected > 0)
-        {
-            throw new UnsupportedOperationException("Check node ran too few times");
-        }
-    }
-
 }

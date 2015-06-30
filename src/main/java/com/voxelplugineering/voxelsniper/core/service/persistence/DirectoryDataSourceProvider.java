@@ -147,9 +147,9 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
         if (file.isFile() || !file.exists())
         {
             DataContainer sourceArgs = new MemoryContainer("");
-            sourceArgs.writeString("path", file.getAbsolutePath());
-            args.writeString("source", "file");
-            args.writeContainer("sourceArgs", sourceArgs);
+            sourceArgs.setString("path", file.getAbsolutePath());
+            args.setString("source", "file");
+            args.setContainer("sourceArgs", sourceArgs);
             return this.factory.build(reader, args);
         }
         return Optional.absent();

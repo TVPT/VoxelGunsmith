@@ -42,7 +42,7 @@ public interface DataView
      * @param path The path to read from
      * @return The data
      */
-    Optional<Byte> readByte(String path);
+    Optional<Byte> getByte(String path);
 
     /**
      * Reads from the given path. If the path does not exist, or if the type at the path is not
@@ -51,7 +51,7 @@ public interface DataView
      * @param path The path to read from
      * @return The data
      */
-    Optional<byte[]> readByteArray(String path);
+    Optional<byte[]> getByteArray(String path);
 
     /**
      * Reads from the given path. If the path does not exist, or if the type at the path is not
@@ -60,7 +60,7 @@ public interface DataView
      * @param path The path to read from
      * @return The data
      */
-    Optional<Short> readShort(String path);
+    Optional<Short> getShort(String path);
 
     /**
      * Reads from the given path. If the path does not exist, or if the type at the path is not
@@ -69,7 +69,7 @@ public interface DataView
      * @param path The path to read from
      * @return The data
      */
-    Optional<Integer> readInt(String path);
+    Optional<Integer> getInt(String path);
 
     /**
      * Reads from the given path. If the path does not exist, or if the type at the path is not
@@ -78,7 +78,7 @@ public interface DataView
      * @param path The path to read from
      * @return The data
      */
-    Optional<Long> readLong(String path);
+    Optional<Long> getLong(String path);
 
     /**
      * Reads from the given path. If the path does not exist, or if the type at the path is not
@@ -87,7 +87,7 @@ public interface DataView
      * @param path The path to read from
      * @return The data
      */
-    Optional<Character> readChar(String path);
+    Optional<Character> getChar(String path);
 
     /**
      * Reads from the given path. If the path does not exist, or if the type at the path is not
@@ -96,7 +96,7 @@ public interface DataView
      * @param path The path to read from
      * @return The data
      */
-    Optional<Float> readFloat(String path);
+    Optional<Float> getFloat(String path);
 
     /**
      * Reads from the given path. If the path does not exist, or if the type at the path is not
@@ -105,7 +105,7 @@ public interface DataView
      * @param path The path to read from
      * @return The data
      */
-    Optional<Double> readDouble(String path);
+    Optional<Double> getDouble(String path);
 
     /**
      * Reads from the given path. If the path does not exist, or if the type at the path is not
@@ -114,7 +114,7 @@ public interface DataView
      * @param path The path to read from
      * @return The data
      */
-    Optional<String> readString(String path);
+    Optional<String> getString(String path);
 
     /**
      * Reads from the given path. If the path does not exist, or if the type at the path is not
@@ -123,7 +123,7 @@ public interface DataView
      * @param path The path to read from
      * @return The data
      */
-    Optional<Boolean> readBoolean(String path);
+    Optional<Boolean> getBoolean(String path);
 
     /**
      * Reads from the given path. If the path does not exist, or if the type at the path is not
@@ -137,7 +137,7 @@ public interface DataView
      * @param <T> The {@link DataSerializable} type
      * @return The data
      */
-    <T extends DataSerializable> Optional<T> readCustom(String path, Class<T> type);
+    <T extends DataSerializable> Optional<T> getCustom(String path, Class<T> type);
 
     /**
      * Reads from the given path. If the path does not exist, or if the type at the path is not
@@ -146,7 +146,7 @@ public interface DataView
      * @param path The path to read from
      * @return The data
      */
-    Optional<? extends DataView> readContainer(String path);
+    Optional<? extends DataView> getContainer(String path);
 
     /**
      * Reads from the given path. If the path does not exist, or if the type at the path is not
@@ -156,7 +156,7 @@ public interface DataView
      * @return The data
      */
     @SuppressWarnings("rawtypes")
-    Optional<List> readList(String path);
+    Optional<List> getList(String path);
 
     /**
      * Gets the root path of this view.

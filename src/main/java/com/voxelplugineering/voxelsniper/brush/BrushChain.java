@@ -21,19 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.core.brushes;
+package com.voxelplugineering.voxelsniper.brush;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Queue;
 
-import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
-import com.thevoxelbox.vsl.api.variables.VariableScope;
-import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.api.brushes.Brush;
+import com.voxelplugineering.voxelsniper.api.entity.Player;
 
 /**
  * Represents a chain of brushes. Unlike {@link Brush} this should be a unique instance per player
@@ -44,7 +40,6 @@ public class BrushChain
 
     private final String cmd;
     private final Queue<Brush> brushes;
-    private final Map<String, String> args;
 
     /**
      * Creates a new {@link BrushChain}.
@@ -66,7 +61,6 @@ public class BrushChain
     {
         this.cmd = checkNotNull(cmd);
         this.brushes = Queues.newArrayDeque();
-        this.args = Maps.newHashMap();
         if (brushes != null)
         {
             for (Brush b : brushes)
@@ -91,32 +85,15 @@ public class BrushChain
      * 
      * @param brushVariables The execution variables
      */
-    public void run(VariableScope brushVariables)
+    public void run(Player player, BrushVars brushVariables)
     {
         checkNotNull(brushVariables);
-        RuntimeState state = new RuntimeState(brushVariables);
         for (Iterator<Brush> it = this.brushes.iterator(); it.hasNext();)
         {
             Brush next = it.next();
-            if (this.args.containsKey(next.getName()))
-            {
-                next.parseArguments(this.args.get(next.getName()), brushVariables);
-            }
-            next.run(state);
+            brushVariables.setContext(BrushContext.of(next));
+            next.run(player, brushVariables);
         }
-    }
-
-    /**
-     * Sets the argument for a particular brush.
-     * 
-     * @param brush The target brush
-     * @param arg The argument
-     */
-    public void setBrushArgument(String brush, String arg)
-    {
-        checkNotNull(brush);
-        checkNotNull(arg);
-        this.args.put(brush, arg);
     }
 
     /**

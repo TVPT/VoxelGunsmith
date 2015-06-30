@@ -26,7 +26,6 @@ package com.voxelplugineering.voxelsniper.core;
 import java.io.IOException;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.brushes.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.api.service.Builder;
 import com.voxelplugineering.voxelsniper.api.service.InitHook;
 import com.voxelplugineering.voxelsniper.api.service.InitPhase;
@@ -48,8 +47,8 @@ import com.voxelplugineering.voxelsniper.api.service.registry.PlayerRegistry;
 import com.voxelplugineering.voxelsniper.api.service.scheduler.Scheduler;
 import com.voxelplugineering.voxelsniper.api.service.text.TextFormatParser;
 import com.voxelplugineering.voxelsniper.api.world.queue.OfflineUndoHandler;
-import com.voxelplugineering.voxelsniper.core.brushes.ArgumentParsers;
-import com.voxelplugineering.voxelsniper.core.brushes.CommonBrushManager;
+import com.voxelplugineering.voxelsniper.brush.CommonBrushManager;
+import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.core.commands.AliasCommand;
 import com.voxelplugineering.voxelsniper.core.commands.BrushCommand;
 import com.voxelplugineering.voxelsniper.core.commands.HelpCommand;
@@ -205,8 +204,6 @@ public class CoreServiceProvider
     @PostInit
     public void post(Context context)
     {
-        ArgumentParsers.init(context);
-
         PlatformProxy proxy = context.getRequired(PlatformProxy.class);
         Configuration configuration = context.getRequired(Configuration.class);
         PlayerRegistry<?> players = context.getRequired(PlayerRegistry.class);

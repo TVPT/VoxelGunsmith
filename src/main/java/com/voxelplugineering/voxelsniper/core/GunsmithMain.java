@@ -23,10 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.core;
 
-import java.io.File;
-
-import com.voxelplugineering.voxelsniper.core.util.defaults.DefaultBrushBuilder;
-
 /**
  * The main class for utility operations.
  */
@@ -40,11 +36,7 @@ public class GunsmithMain
      */
     public static void main(String[] args)
     {
-        if (args.length == 2 && args[0].equalsIgnoreCase("--generate"))
-        {
-            DefaultBrushBuilder.buildBrushes();
-            DefaultBrushBuilder.saveAll(new File(args[1]));
-        } else if (args.length == 1 && args[0].equalsIgnoreCase("--testinit"))
+        if (args.length == 1 && args[0].equalsIgnoreCase("--testinit"))
         {
             System.out.println("Starting init -> stop cycle test.");
             Gunsmith.getServiceManager().start();

@@ -23,11 +23,11 @@
  */
 package com.voxelplugineering.voxelsniper.api.entity;
 
-import com.voxelplugineering.voxelsniper.api.brushes.BrushHolder;
 import com.voxelplugineering.voxelsniper.api.service.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.api.service.alias.AliasOwner;
 import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.api.world.queue.ChangeQueueOwner;
+import com.voxelplugineering.voxelsniper.brush.BrushHolder;
 
 /**
  * Representation of a user within Gunsmith. Holds all state information relevant to the user.

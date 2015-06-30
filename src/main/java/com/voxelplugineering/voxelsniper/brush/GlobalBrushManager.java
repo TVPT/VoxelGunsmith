@@ -21,36 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.core.nodes.shape;
+package com.voxelplugineering.voxelsniper.brush;
 
-import com.thevoxelbox.vsl.util.Provider;
-import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.core.shape.csg.CuboidShape;
-import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.api.service.Service;
 
 /**
- * Creates a square shape with a side length of radius*2+1.
+ * A marker interface for the global {@link BrushManager} service.
  */
-public class VoxelShapeNode extends ShapeNode
+public interface GlobalBrushManager extends BrushManager, Service
 {
 
-    private final Provider<Double> radius;
-
-    /**
-     * Creates a new node.
-     * 
-     * @param radius The radius provider
-     */
-    public VoxelShapeNode(Provider<Double> radius)
-    {
-        super();
-        this.radius = radius;
-    }
-
-    @Override
-    public void exec(RuntimeState state)
-    {
-        int rad = (int) Math.floor(this.radius.get(state));
-        this.shape.set(new CuboidShape(rad * 2 + 1, rad * 2 + 1, rad * 2 + 1, new Vector3i(rad, rad, rad)), state.getUUID());
-    }
 }

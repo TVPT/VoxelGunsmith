@@ -50,7 +50,7 @@ public class FileDataSource extends StreamDataSource
             {
                 return Optional.absent();
             }
-            String path = args.readString("path").get();
+            String path = args.getString("path").get();
             return Optional.of(new FileDataSource(new File(path)));
         }
     };

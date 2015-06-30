@@ -41,7 +41,7 @@ import com.voxelplugineering.voxelsniper.api.service.persistence.DataType;
 public class MemoryContainer implements DataContainer
 {
 
-    private static final String PATH_SEPARATOR = ".";
+    public static final String PATH_SEPARATOR = ".";
     private final String path;
     private final Map<String, Object> data;
 
@@ -90,15 +90,15 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public Optional<Byte> readByte(String path)
+    public Optional<Byte> getByte(String path)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                return container.get().readByte(path.substring(index + 1));
+                return container.get().getByte(path.substring(index + 1));
             }
         } else if (this.data.containsKey(path))
         {
@@ -114,15 +114,15 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public Optional<Short> readShort(String path)
+    public Optional<Short> getShort(String path)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                return container.get().readShort(path.substring(index + 1));
+                return container.get().getShort(path.substring(index + 1));
             }
         } else if (this.data.containsKey(path))
         {
@@ -138,15 +138,15 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public Optional<Integer> readInt(String path)
+    public Optional<Integer> getInt(String path)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                return container.get().readInt(path.substring(index + 1));
+                return container.get().getInt(path.substring(index + 1));
             }
         } else if (this.data.containsKey(path))
         {
@@ -162,15 +162,15 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public Optional<Long> readLong(String path)
+    public Optional<Long> getLong(String path)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                return container.get().readLong(path.substring(index + 1));
+                return container.get().getLong(path.substring(index + 1));
             }
         } else if (this.data.containsKey(path))
         {
@@ -186,15 +186,15 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public Optional<Character> readChar(String path)
+    public Optional<Character> getChar(String path)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                return container.get().readChar(path.substring(index + 1));
+                return container.get().getChar(path.substring(index + 1));
             }
         } else if (this.data.containsKey(path))
         {
@@ -215,15 +215,15 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public Optional<Float> readFloat(String path)
+    public Optional<Float> getFloat(String path)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                return container.get().readFloat(path.substring(index + 1));
+                return container.get().getFloat(path.substring(index + 1));
             }
         } else if (this.data.containsKey(path))
         {
@@ -239,15 +239,15 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public Optional<Double> readDouble(String path)
+    public Optional<Double> getDouble(String path)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                return container.get().readDouble(path.substring(index + 1));
+                return container.get().getDouble(path.substring(index + 1));
             }
         } else if (this.data.containsKey(path))
         {
@@ -263,15 +263,15 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public Optional<String> readString(String path)
+    public Optional<String> getString(String path)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                return container.get().readString(path.substring(index + 1));
+                return container.get().getString(path.substring(index + 1));
             }
         } else if (this.data.containsKey(path))
         {
@@ -281,15 +281,15 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public Optional<Boolean> readBoolean(String path)
+    public Optional<Boolean> getBoolean(String path)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                return container.get().readBoolean(path.substring(index + 1));
+                return container.get().getBoolean(path.substring(index + 1));
             }
         } else if (this.data.containsKey(path))
         {
@@ -299,15 +299,15 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public <T extends DataSerializable> Optional<T> readCustom(String path, Class<T> type)
+    public <T extends DataSerializable> Optional<T> getCustom(String path, Class<T> type)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                return container.get().readCustom(path.substring(index + 1), type);
+                return container.get().getCustom(path.substring(index + 1), type);
             }
         } else if (this.data.containsKey(path))
         {
@@ -360,15 +360,15 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public Optional<DataContainer> readContainer(String path)
+    public Optional<DataContainer> getContainer(String path)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                return container.get().readContainer(path.substring(index + 1));
+                return container.get().getContainer(path.substring(index + 1));
             }
         } else if (this.data.containsKey(path))
         {
@@ -378,20 +378,20 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public void writeByte(String path, byte data)
+    public void setByte(String path, byte data)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                container.get().writeByte(path.substring(index + 1), data);
+                container.get().setByte(path.substring(index + 1), data);
             } else
             {
                 DataContainer c = new MemoryContainer(path.substring(0, index));
                 this.data.put(path.substring(0, index), c);
-                c.writeByte(path.substring(index + 1), data);
+                c.setByte(path.substring(index + 1), data);
             }
         } else
         {
@@ -400,20 +400,20 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public void writeShort(String path, short data)
+    public void setShort(String path, short data)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                container.get().writeShort(path.substring(index + 1), data);
+                container.get().setShort(path.substring(index + 1), data);
             } else
             {
                 DataContainer c = new MemoryContainer(path.substring(0, index));
                 this.data.put(path.substring(0, index), c);
-                c.writeShort(path.substring(index + 1), data);
+                c.setShort(path.substring(index + 1), data);
             }
         } else
         {
@@ -422,20 +422,20 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public void writeInt(String path, int data)
+    public void setInt(String path, int data)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                container.get().writeInt(path.substring(index + 1), data);
+                container.get().setInt(path.substring(index + 1), data);
             } else
             {
                 DataContainer c = new MemoryContainer(path.substring(0, index));
                 this.data.put(path.substring(0, index), c);
-                c.writeInt(path.substring(index + 1), data);
+                c.setInt(path.substring(index + 1), data);
             }
         } else
         {
@@ -444,20 +444,20 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public void writeLong(String path, long data)
+    public void setLong(String path, long data)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                container.get().writeLong(path.substring(index + 1), data);
+                container.get().setLong(path.substring(index + 1), data);
             } else
             {
                 DataContainer c = new MemoryContainer(path.substring(0, index));
                 this.data.put(path.substring(0, index), c);
-                c.writeLong(path.substring(index + 1), data);
+                c.setLong(path.substring(index + 1), data);
             }
         } else
         {
@@ -466,20 +466,20 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public void writeChar(String path, char data)
+    public void setChar(String path, char data)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                container.get().writeChar(path.substring(index + 1), data);
+                container.get().setChar(path.substring(index + 1), data);
             } else
             {
                 DataContainer c = new MemoryContainer(path.substring(0, index));
                 this.data.put(path.substring(0, index), c);
-                c.writeChar(path.substring(index + 1), data);
+                c.setChar(path.substring(index + 1), data);
             }
         } else
         {
@@ -488,20 +488,20 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public void writeFloat(String path, float data)
+    public void setFloat(String path, float data)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                container.get().writeFloat(path.substring(index + 1), data);
+                container.get().setFloat(path.substring(index + 1), data);
             } else
             {
                 DataContainer c = new MemoryContainer(path.substring(0, index));
                 this.data.put(path.substring(0, index), c);
-                c.writeFloat(path.substring(index + 1), data);
+                c.setFloat(path.substring(index + 1), data);
             }
         } else
         {
@@ -510,20 +510,20 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public void writeDouble(String path, double data)
+    public void setDouble(String path, double data)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                container.get().writeDouble(path.substring(index + 1), data);
+                container.get().setDouble(path.substring(index + 1), data);
             } else
             {
                 DataContainer c = new MemoryContainer(path.substring(0, index));
                 this.data.put(path.substring(0, index), c);
-                c.writeDouble(path.substring(index + 1), data);
+                c.setDouble(path.substring(index + 1), data);
             }
         } else
         {
@@ -532,20 +532,20 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public void writeString(String path, String data)
+    public void setString(String path, String data)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                container.get().writeString(path.substring(index + 1), data);
+                container.get().setString(path.substring(index + 1), data);
             } else
             {
                 DataContainer c = new MemoryContainer(path.substring(0, index));
                 this.data.put(path.substring(0, index), c);
-                c.writeString(path.substring(index + 1), data);
+                c.setString(path.substring(index + 1), data);
             }
         } else
         {
@@ -554,20 +554,20 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public void writeBoolean(String path, boolean data)
+    public void setBoolean(String path, boolean data)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                container.get().writeBoolean(path.substring(index + 1), data);
+                container.get().setBoolean(path.substring(index + 1), data);
             } else
             {
                 DataContainer c = new MemoryContainer(path.substring(0, index));
                 this.data.put(path.substring(0, index), c);
-                c.writeBoolean(path.substring(index + 1), data);
+                c.setBoolean(path.substring(index + 1), data);
             }
         } else
         {
@@ -576,20 +576,20 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public void writeNumber(String key, Number data)
+    public void setNumber(String key, Number data)
     {
         if (key.contains(PATH_SEPARATOR))
         {
             int index = key.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(key.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(key.substring(0, index));
             if (container.isPresent())
             {
-                container.get().writeNumber(key.substring(index + 1), data);
+                container.get().setNumber(key.substring(index + 1), data);
             } else
             {
                 DataContainer c = new MemoryContainer(key.substring(0, index));
                 this.data.put(key.substring(0, index), c);
-                c.writeNumber(key.substring(index + 1), data);
+                c.setNumber(key.substring(index + 1), data);
             }
         } else
         {
@@ -598,20 +598,20 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public <T extends DataSerializable> void writeCustom(String path, T data)
+    public <T extends DataSerializable> void setCustom(String path, T data)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                container.get().writeCustom(path.substring(index + 1), data);
+                container.get().setCustom(path.substring(index + 1), data);
             } else
             {
                 DataContainer c = new MemoryContainer(path.substring(0, index));
                 this.data.put(path.substring(0, index), c);
-                c.writeCustom(path.substring(index + 1), data);
+                c.setCustom(path.substring(index + 1), data);
             }
         } else
         {
@@ -620,25 +620,44 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public void writeContainer(String path, DataContainer data)
+    public void setContainer(String path, DataContainer data)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                container.get().writeContainer(path.substring(index + 1), data);
+                container.get().setContainer(path.substring(index + 1), data);
             } else
             {
                 DataContainer c = new MemoryContainer(path.substring(0, index));
                 this.data.put(path.substring(0, index), c);
-                c.writeContainer(path.substring(index + 1), data);
+                c.setContainer(path.substring(index + 1), data);
             }
         } else
         {
             this.data.put(path, data);
         }
+    }
+
+    @Override
+    public DataContainer getOrCreateContainer(String path) {
+        if (path.contains(PATH_SEPARATOR))
+        {
+            int index = path.indexOf(PATH_SEPARATOR);
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
+            if (container.isPresent())
+            {
+                return container.get().getOrCreateContainer(path.substring(index + 1));
+            }
+        } else if (this.data.containsKey(path))
+        {
+            return (DataContainer) this.data.get(path);
+        }
+        DataContainer c = new MemoryContainer(path);
+        this.data.put(path, c);
+        return c;
     }
 
     @Override
@@ -654,15 +673,15 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public Optional<byte[]> readByteArray(String path)
+    public Optional<byte[]> getByteArray(String path)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                return container.get().readByteArray(path.substring(index + 1));
+                return container.get().getByteArray(path.substring(index + 1));
             }
         } else if (this.data.containsKey(path))
         {
@@ -677,7 +696,7 @@ public class MemoryContainer implements DataContainer
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
                 return container.get().containsKey(path.substring(index + 1));
@@ -688,20 +707,20 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public void writeByteArray(String path, byte[] data)
+    public void setByteArray(String path, byte[] data)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                container.get().writeByteArray(path.substring(index + 1), data);
+                container.get().setByteArray(path.substring(index + 1), data);
             } else
             {
                 DataContainer c = new MemoryContainer(path.substring(0, index));
                 this.data.put(path.substring(0, index), c);
-                c.writeByteArray(path.substring(index + 1), data);
+                c.setByteArray(path.substring(index + 1), data);
             }
         } else
         {
@@ -711,15 +730,15 @@ public class MemoryContainer implements DataContainer
 
     @SuppressWarnings("rawtypes")
     @Override
-    public Optional<List> readList(String path)
+    public Optional<List> getList(String path)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                return container.get().readList(path.substring(index + 1));
+                return container.get().getList(path.substring(index + 1));
             }
         } else if (this.data.containsKey(path))
         {
@@ -729,20 +748,20 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public void writeList(String path, List<?> data)
+    public void setList(String path, List<?> data)
     {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);
-            Optional<DataContainer> container = this.readContainer(path.substring(0, index));
+            Optional<DataContainer> container = this.getContainer(path.substring(0, index));
             if (container.isPresent())
             {
-                container.get().writeList(path.substring(index + 1), data);
+                container.get().setList(path.substring(index + 1), data);
             } else
             {
                 DataContainer c = new MemoryContainer(path.substring(0, index));
                 this.data.put(path.substring(0, index), c);
-                c.writeList(path.substring(index + 1), data);
+                c.setList(path.substring(index + 1), data);
             }
         } else
         {
@@ -752,7 +771,7 @@ public class MemoryContainer implements DataContainer
 
     @Override
     @SuppressWarnings("rawtypes")
-    public void write(String path, Object value)
+    public void set(String path, Object value)
     {
         Class<?> type = value.getClass();
         if (!DataType.isValidType(type))
@@ -761,43 +780,43 @@ public class MemoryContainer implements DataContainer
         }
         if (DataType.CONTAINER.isOfType(type))
         {
-            writeContainer(path, (DataContainer) value);
+            setContainer(path, (DataContainer) value);
         } else if (DataType.CUSTOM.isOfType(type))
         {
-            writeCustom(path, (DataSerializable) value);
+            setCustom(path, (DataSerializable) value);
         } else if (DataType.BYTE.isOfType(type))
         {
-            writeByte(path, (Byte) value);
+            setByte(path, (Byte) value);
         } else if (DataType.SHORT.isOfType(type))
         {
-            writeShort(path, (Short) value);
+            setShort(path, (Short) value);
         } else if (DataType.INT.isOfType(type))
         {
-            writeInt(path, (Integer) value);
+            setInt(path, (Integer) value);
         } else if (DataType.LONG.isOfType(type))
         {
-            writeLong(path, (Long) value);
+            setLong(path, (Long) value);
         } else if (DataType.CHAR.isOfType(type))
         {
-            writeChar(path, (Character) value);
+            setChar(path, (Character) value);
         } else if (DataType.FLOAT.isOfType(type))
         {
-            writeFloat(path, (Float) value);
+            setFloat(path, (Float) value);
         } else if (DataType.DOUBLE.isOfType(type))
         {
-            writeDouble(path, (Double) value);
+            setDouble(path, (Double) value);
         } else if (DataType.LIST.isOfType(type))
         {
-            writeList(path, (List) value);
+            setList(path, (List) value);
         } else if (DataType.STRING.isOfType(type))
         {
-            writeString(path, (String) value);
+            setString(path, (String) value);
         } else if (DataType.BYTE_ARRAY.isOfType(type))
         {
-            writeByteArray(path, (byte[]) value);
+            setByteArray(path, (byte[]) value);
         } else if (DataType.BOOLEAN.isOfType(type))
         {
-            writeBoolean(path, (Boolean) value);
+            setBoolean(path, (Boolean) value);
         }
     }
 
@@ -808,11 +827,11 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public void writeAll(DataContainer container)
+    public void setAll(DataContainer container)
     {
         for (Map.Entry<String, Object> entry : container.entrySet())
         {
-            write(entry.getKey(), entry.getValue());
+            set(entry.getKey(), entry.getValue());
         }
     }
 

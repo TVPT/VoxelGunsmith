@@ -26,10 +26,10 @@ package com.voxelplugineering.voxelsniper.core.service;
 import java.util.List;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.api.brushes.Brush;
-import com.voxelplugineering.voxelsniper.api.brushes.BrushManager;
-import com.voxelplugineering.voxelsniper.api.brushes.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.api.service.persistence.DataSourceReader;
+import com.voxelplugineering.voxelsniper.brush.Brush;
+import com.voxelplugineering.voxelsniper.brush.BrushManager;
+import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**

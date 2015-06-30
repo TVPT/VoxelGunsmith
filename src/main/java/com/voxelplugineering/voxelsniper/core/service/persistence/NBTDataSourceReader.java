@@ -226,23 +226,23 @@ public class NBTDataSourceReader implements DataSourceReader
             String key = entry.getKey();
             if (value instanceof ByteArrayTag)
             {
-                data.writeByteArray(key, ((ByteArrayTag) value).getValue());
+                data.setByteArray(key, ((ByteArrayTag) value).getValue());
             }
             if (value instanceof ByteTag)
             {
-                data.writeByte(key, ((ByteTag) value).getValue());
+                data.setByte(key, ((ByteTag) value).getValue());
             }
             if (value instanceof CompoundTag)
             {
-                data.writeContainer(key, toContainer((CompoundTag) value));
+                data.setContainer(key, toContainer((CompoundTag) value));
             }
             if (value instanceof DoubleTag)
             {
-                data.writeDouble(key, ((DoubleTag) value).getValue());
+                data.setDouble(key, ((DoubleTag) value).getValue());
             }
             if (value instanceof FloatTag)
             {
-                data.writeFloat(key, ((FloatTag) value).getValue());
+                data.setFloat(key, ((FloatTag) value).getValue());
             }
             if (value instanceof IntArrayTag)
             {
@@ -253,27 +253,27 @@ public class NBTDataSourceReader implements DataSourceReader
                 {
                     list.add(i);
                 }
-                data.writeList(key, list);
+                data.setList(key, list);
             }
             if (value instanceof IntTag)
             {
-                data.writeInt(key, ((IntTag) value).getValue());
+                data.setInt(key, ((IntTag) value).getValue());
             }
             if (value instanceof ListTag)
             {
-                data.writeList(key, convertListFromTag(((ListTag) value).getValue()));
+                data.setList(key, convertListFromTag(((ListTag) value).getValue()));
             }
             if (value instanceof LongTag)
             {
-                data.writeLong(key, ((LongTag) value).getValue());
+                data.setLong(key, ((LongTag) value).getValue());
             }
             if (value instanceof ShortTag)
             {
-                data.writeShort(key, ((ShortTag) value).getValue());
+                data.setShort(key, ((ShortTag) value).getValue());
             }
             if (value instanceof StringTag)
             {
-                data.writeString(key, ((StringTag) value).getValue());
+                data.setString(key, ((StringTag) value).getValue());
             }
         }
 

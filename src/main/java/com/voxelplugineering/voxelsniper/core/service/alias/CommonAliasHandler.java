@@ -130,7 +130,7 @@ public class CommonAliasHandler implements AliasHandler
     {
         for (String key : container.keySet())
         {
-            Optional<DataContainer> regContainer = container.readContainer(key);
+            Optional<DataContainer> regContainer = container.getContainer(key);
             if (regContainer.isPresent())
             {
                 AliasRegistry registry = this.registerTarget(key);
@@ -145,7 +145,7 @@ public class CommonAliasHandler implements AliasHandler
         MemoryContainer container = new MemoryContainer("aliases");
         for (String s : this.aliasTargets.keySet())
         {
-            container.writeContainer(s, this.aliasTargets.get(s).toContainer());
+            container.setContainer(s, this.aliasTargets.get(s).toContainer());
         }
         return container;
     }

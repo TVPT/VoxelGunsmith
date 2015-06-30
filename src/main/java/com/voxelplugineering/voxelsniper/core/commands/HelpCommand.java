@@ -23,10 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.core.commands;
 
-import com.voxelplugineering.voxelsniper.api.brushes.Brush;
-import com.voxelplugineering.voxelsniper.api.brushes.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.api.entity.Player;
 import com.voxelplugineering.voxelsniper.api.service.command.CommandSender;
+import com.voxelplugineering.voxelsniper.brush.Brush;
+import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.core.util.Context;
 
 /**

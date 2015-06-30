@@ -21,32 +21,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.core.nodes.world.buffer;
+package com.voxelplugineering.voxelsniper.brush;
 
-import com.thevoxelbox.vsl.util.Provider;
-import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.api.shape.MaterialShape;
+import com.voxelplugineering.voxelsniper.api.entity.Player;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataSerializable;
 
 /**
- * A node to reset a material shape to its default material.
+ * Represents a brush which may be run, only one brush instance should exist and be shared among all
+ * users. A users individual runtime settings are stored within the {@link RuntimeState}.
  */
-public class MaterialShapeClearNode extends MaterialShapeNode
+public interface Brush extends DataSerializable
 {
 
     /**
-     * Creates a new {@link MaterialShapeClearNode}.
+     * Gets the name of this brush, otherwise known as the primary alias.
      * 
-     * @param shape The shape to reset
+     * @return The name
      */
-    public MaterialShapeClearNode(Provider<MaterialShape> shape)
-    {
-        super(shape);
-    }
+    String getName();
 
-    @Override
-    public void exec(RuntimeState state)
-    {
-        this.shape.get(state).reset();
-    }
+    /**
+     * Gets the type of this brush.
+     * 
+     * @return The type
+     */
+    BrushPartType getType();
 
+    /**
+     * Gets any provided help for the usage of this brush.
+     * 
+     * @return The help
+     */
+    String getHelp();
+
+    /**
+     * Sets the help message for this brush.
+     * 
+     * @param help The new help
+     */
+    void setHelp(String help);
+
+    /**
+     * Executes this brush.
+     */
+    void run(Player player, BrushVars args);
 }

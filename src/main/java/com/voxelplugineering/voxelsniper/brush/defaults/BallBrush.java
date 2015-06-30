@@ -21,50 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.core.nodes.world;
+package com.voxelplugineering.voxelsniper.brush.defaults;
 
-import com.thevoxelbox.vsl.node.AbstractNode;
-import com.thevoxelbox.vsl.util.Provider;
-import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.api.world.Block;
-import com.voxelplugineering.voxelsniper.api.world.Location;
+import com.voxelplugineering.voxelsniper.api.entity.Player;
+import com.voxelplugineering.voxelsniper.api.shape.Shape;
+import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushPartType;
+import com.voxelplugineering.voxelsniper.brush.BrushVars;
+import com.voxelplugineering.voxelsniper.core.shape.csg.EllipsoidShape;
+import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
 
-/**
- * A node for retrieving a block from a location. Equivalent to
- * {@code location.getWorld().getBlockAt(location);}
- */
-public class GetBlockFromLocationNode extends AbstractNode
-{
 
-    private final Provider<Location> input;
-    private final Provider<Block> block;
+public class BallBrush extends AbstractBrush {
 
-    /**
-     * Create a new node.
-     * 
-     * @param location The location
-     */
-    public GetBlockFromLocationNode(Provider<Location> location)
-    {
-        this.input = location;
-        this.block = new Provider<Block>(this);
+    public BallBrush() {
+        super("ball", BrushPartType.SHAPE);
     }
 
     @Override
-    public void exec(RuntimeState state)
-    {
-        Location loc = this.input.get(state);
-        this.block.set(loc.getWorld().getBlock(loc).get(), state.getUUID());
-    }
-
-    /**
-     * Gets the block provider.
-     * 
-     * @return The block
-     */
-    public Provider<Block> getBlock()
-    {
-        return this.block;
+    public void run(Player player, BrushVars args) {
+        double size = args.get(BrushKeys.BRUSH_SIZE, Double.class).get();
+        Shape s = new EllipsoidShape(size, size, size, new Vector3i(size, size, size));
+        args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
     }
 
 }

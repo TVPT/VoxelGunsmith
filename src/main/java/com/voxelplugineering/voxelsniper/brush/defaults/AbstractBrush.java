@@ -21,50 +21,53 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.core.nodes.vector;
+package com.voxelplugineering.voxelsniper.brush.defaults;
 
-import com.thevoxelbox.vsl.node.AbstractNode;
-import com.thevoxelbox.vsl.util.Provider;
-import com.thevoxelbox.vsl.util.RuntimeState;
-import com.voxelplugineering.voxelsniper.core.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.api.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.brush.Brush;
+import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 
-/**
- * Adds two {@link Vector3i}s together and returns the result.
- */
-public class VectorAdditionNode extends AbstractNode
-{
 
-    private final Provider<Vector3i> a;
-    private final Provider<Vector3i> b;
-    private final Provider<Vector3i> r;
+public abstract class AbstractBrush implements Brush {
 
-    /**
-     * Create a new node.
-     * 
-     * @param a The first vector
-     * @param b The second vector
-     */
-    public VectorAdditionNode(Provider<Vector3i> a, Provider<Vector3i> b)
-    {
-        this.a = a;
-        this.b = b;
-        this.r = new Provider<Vector3i>(this);
+    private final String name;
+    private final BrushPartType type;
+    private String help;
+    
+    public AbstractBrush(String name, BrushPartType type) {
+        this.name = name;
+        this.type = type;
+        this.help = "No help is provided for this brush. :(";
+    }
+    
+    @Override
+    public void fromContainer(DataContainer container) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void exec(RuntimeState state)
-    {
-        this.r.set(this.a.get(state).add(this.b.get(state)), state.getUUID());
+    public DataContainer toContainer() {
+        throw new UnsupportedOperationException();
     }
 
-    /**
-     * Gets the result of the operation.
-     * 
-     * @return The result
-     */
-    public Provider<Vector3i> getResult()
-    {
-        return this.r;
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public BrushPartType getType() {
+        return this.type;
+    }
+
+    @Override
+    public String getHelp() {
+        return this.help;
+    }
+
+    @Override
+    public void setHelp(String help) {
+        this.help = help;
     }
 
 }
