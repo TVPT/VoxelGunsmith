@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.util;
 
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+
 /**
  * An enum of directions.
  */
@@ -46,6 +48,7 @@ public enum Direction
     private final int modX;
     private final int modY;
     private final int modZ;
+    private final Vector3i vector;
 
     /**
      * Gets an array of cardinal directions including up and down.
@@ -62,6 +65,7 @@ public enum Direction
         this.modX = modX;
         this.modY = modY;
         this.modZ = modZ;
+        this.vector = new Vector3i(this.modX, this.modY, this.modZ);
     }
 
     private Direction(final Direction face1, final Direction face2)
@@ -69,6 +73,7 @@ public enum Direction
         this.modX = face1.getModX() + face2.getModX();
         this.modY = face1.getModY() + face2.getModY();
         this.modZ = face1.getModZ() + face2.getModZ();
+        this.vector = new Vector3i(this.modX, this.modY, this.modZ);
     }
 
     /**
@@ -116,6 +121,10 @@ public enum Direction
             }
         }
         return Direction.SELF;
+    }
+
+    public Vector3i vector() {
+        return this.vector;
     }
 
 }

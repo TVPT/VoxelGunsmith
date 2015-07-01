@@ -23,10 +23,14 @@
  */
 package com.voxelplugineering.voxelsniper.shape.csg;
 
+import com.voxelplugineering.voxelsniper.util.Direction;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * Represents a Cylindrical primitive shape.
+ * 
+ * <p>The axis code in this is half arsed at best and will not support anything
+ * other than the cardinal axes TODO improve.</p>
  */
 public class CylinderShape extends OffsetShape
 {
@@ -34,6 +38,7 @@ public class CylinderShape extends OffsetShape
     private double rx;
     private int height;
     private double rz;
+    private final Direction axis;
 
     /**
      * Creates a new {@link CylinderShape}.
@@ -49,6 +54,15 @@ public class CylinderShape extends OffsetShape
         this.rx = rx;
         this.height = height;
         this.rz = rz;
+        this.axis = Direction.UP;
+    }
+
+    public CylinderShape(double rx, int height, double rz, Vector3i origin, Direction axis) {
+        super(origin);
+        this.rx = rx;
+        this.height = height;
+        this.rz = rz;
+        this.axis = axis;
     }
 
     @Override
@@ -60,24 +74,54 @@ public class CylinderShape extends OffsetShape
             y -= getOrigin().getY();
             z -= getOrigin().getZ();
         }
-        return (x / this.rx) * (x / this.rx) + (z / this.rz) * (z / this.rz) <= 1 && y < this.height && y >= 0;
+        if (this.axis.getModY() == 1) {
+            return (x / this.rx) * (x / this.rx) + (z / this.rz) * (z / this.rz) <= 1 && y < this.height && y >= 0;
+        }
+        if (this.axis.getModX() == 1) {
+            return (y / this.rx) * (y / this.rx) + (z / this.rz) * (z / this.rz) <= 1 && x < this.height && x >= 0;
+        }
+        if (this.axis.getModZ() == 1) {
+            return (x / this.rx) * (x / this.rx) + (y / this.rz) * (y / this.rz) <= 1 && z < this.height && z >= 0;
+        }
+        return false;
     }
 
     @Override
     public int getWidth()
     {
+        if (this.axis.getModY() == 1 || this.axis.getModZ() == 1) {
+            return (int) (this.rx * 2 + 1);
+        }
+        if (this.axis.getModX() == 1) {
+            return this.height;
+        }
         return (int) (this.rx * 2 + 1);
     }
 
     @Override
     public int getHeight()
     {
+        if (this.axis.getModY() == 1) {
+            return this.height;
+        }
+        if (this.axis.getModX() == 1) {
+            return (int) (this.rx * 2 + 1);
+        }
+        if (this.axis.getModZ() == 1) {
+            return (int) (this.rz * 2 + 1);
+        }
         return this.height;
     }
 
     @Override
     public int getLength()
     {
+        if (this.axis.getModY() == 1 || this.axis.getModX() == 1) {
+            return (int) (this.rz * 2 + 1);
+        }
+        if (this.axis.getModZ() == 1) {
+            return this.height;
+        }
         return (int) (this.rz * 2 + 1);
     }
 

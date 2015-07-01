@@ -21,36 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brush;
+package com.voxelplugineering.voxelsniper.brush.defaults;
 
-@SuppressWarnings("javadoc")
-public final class BrushKeys {
+import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushPartType;
+import com.voxelplugineering.voxelsniper.brush.BrushVars;
+import com.voxelplugineering.voxelsniper.entity.Player;
+import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.shape.csg.EllipsoidShape;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
-    // Globals
-    public static final String BRUSH_SIZE = "brushSize";
-    public static final String LENGTH = "length";
-    public static final String MASK_MATERIAL = "maskmaterial";
-    public static final String MATERIAL = "setMaterial";
-    public static final String ORIGIN = "origin";
-    public static final String PITCH = "pitch";
-    public static final String PLAYER = "player";
-    public static final String RANGE = "range";
-    public static final String TARGET_BLOCK = "targetBlock";
-    public static final String TARGET_FACE = "targetFace";
-    public static final String USE_FACE = "face";
-    public static final String YAW = "yaw";
 
-    // Runtime
-    public static final String POINT_A = "pointA";
-    public static final String POINT_B = "pointB";
-    public static final String SHAPE = "shape";
+public class EllipsoidBrush extends AbstractBrush {
 
-    // Parameters
-    public static final String HEIGHT = "height";
-    public static final String RADIUS_X = "rx";
-    public static final String RADIUS_Y = "ry";
-    public static final String RADIUS_Z = "rz";
-
-    private BrushKeys() {
+    public EllipsoidBrush() {
+        super("ellipsoid", BrushPartType.SHAPE);
     }
+
+    @Override
+    public void run(Player player, BrushVars args) {
+        double rx = args.get(BrushKeys.RADIUS_X, Double.class).get();
+        double ry = args.get(BrushKeys.RADIUS_Y, Double.class).get();
+        double rz = args.get(BrushKeys.RADIUS_Z, Double.class).get();
+        Shape s = new EllipsoidShape(rx, ry, rz, new Vector3i(rx, ry, rz));
+        args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
+    }
+
 }

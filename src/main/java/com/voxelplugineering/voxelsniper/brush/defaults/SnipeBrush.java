@@ -21,36 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brush;
+package com.voxelplugineering.voxelsniper.brush.defaults;
 
-@SuppressWarnings("javadoc")
-public final class BrushKeys {
+import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushPartType;
+import com.voxelplugineering.voxelsniper.brush.BrushVars;
+import com.voxelplugineering.voxelsniper.entity.Player;
+import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
-    // Globals
-    public static final String BRUSH_SIZE = "brushSize";
-    public static final String LENGTH = "length";
-    public static final String MASK_MATERIAL = "maskmaterial";
-    public static final String MATERIAL = "setMaterial";
-    public static final String ORIGIN = "origin";
-    public static final String PITCH = "pitch";
-    public static final String PLAYER = "player";
-    public static final String RANGE = "range";
-    public static final String TARGET_BLOCK = "targetBlock";
-    public static final String TARGET_FACE = "targetFace";
-    public static final String USE_FACE = "face";
-    public static final String YAW = "yaw";
 
-    // Runtime
-    public static final String POINT_A = "pointA";
-    public static final String POINT_B = "pointB";
-    public static final String SHAPE = "shape";
+public class SnipeBrush extends AbstractBrush {
 
-    // Parameters
-    public static final String HEIGHT = "height";
-    public static final String RADIUS_X = "rx";
-    public static final String RADIUS_Y = "ry";
-    public static final String RADIUS_Z = "rz";
-
-    private BrushKeys() {
+    public SnipeBrush() {
+        super("snipe", BrushPartType.SHAPE);
     }
+
+    @Override
+    public void run(Player player, BrushVars args) {
+        Shape s = new CuboidShape(1, 1, 1, new Vector3i(0, 0, 0));
+        args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
+    }
+
 }
