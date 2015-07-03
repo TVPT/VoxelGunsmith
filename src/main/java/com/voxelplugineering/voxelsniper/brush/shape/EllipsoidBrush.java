@@ -28,6 +28,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
+import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.csg.EllipsoidShape;
@@ -41,12 +42,13 @@ public class EllipsoidBrush extends AbstractBrush {
     }
 
     @Override
-    public void run(Player player, BrushVars args) {
+    public ExecutionResult run(Player player, BrushVars args) {
         double rx = args.get(BrushKeys.RADIUS_X, Double.class).get();
         double ry = args.get(BrushKeys.RADIUS_Y, Double.class).get();
         double rz = args.get(BrushKeys.RADIUS_Z, Double.class).get();
         Shape s = new EllipsoidShape(rx, ry, rz, new Vector3i(rx, ry, rz));
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
+        return ExecutionResult.continueExecution();
     }
 
 }

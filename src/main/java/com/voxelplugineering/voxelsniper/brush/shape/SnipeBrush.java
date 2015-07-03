@@ -28,6 +28,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
+import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
@@ -41,9 +42,10 @@ public class SnipeBrush extends AbstractBrush {
     }
 
     @Override
-    public void run(Player player, BrushVars args) {
+    public ExecutionResult run(Player player, BrushVars args) {
         Shape s = new CuboidShape(1, 1, 1, new Vector3i(0, 0, 0));
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
+        return ExecutionResult.continueExecution();
     }
 
 }

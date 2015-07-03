@@ -29,6 +29,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
+import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.csg.CylinderShape;
@@ -43,13 +44,13 @@ public class CylinderBrush extends AbstractBrush {
     }
 
     @Override
-    public void run(Player player, BrushVars args) {
+    public ExecutionResult run(Player player, BrushVars args) {
         double size = args.get(BrushKeys.BRUSH_SIZE, Double.class).get();
         Optional<Double> oheight = args.get(BrushKeys.HEIGHT, Double.class);
         System.out.println("got height " + oheight);
         if(!oheight.isPresent()) {
             player.sendMessage("Please specify a height for the cylinder: /param cylinder height=#");
-            return;
+            return ExecutionResult.abortExecution();
         }
         int height = (int) Math.floor(oheight.get());
         boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(false);
@@ -78,6 +79,7 @@ public class CylinderBrush extends AbstractBrush {
         }
         System.out.println("cyl made");
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
+        return ExecutionResult.continueExecution();
     }
 
 }

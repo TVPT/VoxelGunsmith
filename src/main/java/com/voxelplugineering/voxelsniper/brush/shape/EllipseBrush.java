@@ -28,6 +28,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
+import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.csg.CylinderShape;
@@ -42,7 +43,7 @@ public class EllipseBrush extends AbstractBrush {
     }
 
     @Override
-    public void run(Player player, BrushVars args) {
+    public ExecutionResult run(Player player, BrushVars args) {
         double rx = args.get(BrushKeys.RADIUS_X, Double.class).get();
         double ry = args.get(BrushKeys.RADIUS_Y, Double.class).get();
         boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(false);
@@ -66,6 +67,7 @@ public class EllipseBrush extends AbstractBrush {
             s = new CylinderShape(rx, 1, ry, new Vector3i(rx, 0, ry));
         }
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
+        return ExecutionResult.continueExecution();
     }
 
 }

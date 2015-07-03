@@ -64,5 +64,5 @@ public interface Brush extends DataSerializable
     /**
      * Executes this brush.
      */
-    void run(Player player, BrushVars args);
+    ExecutionResult run(Player player, BrushVars args);
 }

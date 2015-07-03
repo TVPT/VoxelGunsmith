@@ -29,6 +29,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
+import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.ComplexShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
@@ -45,19 +46,19 @@ public class MaterialMaskBrush extends AbstractBrush
     }
 
     @Override
-    public void run(Player player, BrushVars args)
+    public ExecutionResult run(Player player, BrushVars args)
     {
         Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
         if (!s.isPresent())
         {
             player.sendMessage("You must have at least one shape brush before your material brush.");
-            return;
+            return ExecutionResult.abortExecution();
         }
         Optional<Material> m = args.get(BrushKeys.MASK_MATERIAL, Material.class);
         if (!m.isPresent())
         {
             player.sendMessage("You must select a secondary material.");
-            return;
+            return ExecutionResult.abortExecution();
         }
         Optional<Block> l = args.get(BrushKeys.TARGET_BLOCK, Block.class);
         Location loc = l.get().getLocation();
@@ -92,6 +93,7 @@ public class MaterialMaskBrush extends AbstractBrush
         }
 
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, shape);
+        return ExecutionResult.continueExecution();
     }
 
 }

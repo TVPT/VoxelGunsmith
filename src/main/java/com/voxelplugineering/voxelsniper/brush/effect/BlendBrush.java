@@ -33,6 +33,7 @@ import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
+import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.ComplexMaterialShape;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
@@ -52,7 +53,7 @@ public class BlendBrush extends AbstractBrush
     }
 
     @Override
-    public void run(Player player, BrushVars args)
+    public ExecutionResult run(Player player, BrushVars args)
     {
         boolean excludeFluid = true;
         if(args.has(BrushKeys.EXCLUDE_FLUID)) {
@@ -63,13 +64,13 @@ public class BlendBrush extends AbstractBrush
         if (!s.isPresent())
         {
             player.sendMessage("You must have at least one shape brush before your blend brush.");
-            return;
+            return ExecutionResult.abortExecution();
         }
         Optional<Material> m = args.get(BrushKeys.MATERIAL, Material.class);
         if (!m.isPresent())
         {
             player.sendMessage("You must select a material.");
-            return;
+            return ExecutionResult.abortExecution();
         }
         Optional<Block> l = args.get(BrushKeys.TARGET_BLOCK, Block.class);
         MaterialShape ms = new ComplexMaterialShape(s.get(), m.get());
@@ -119,6 +120,7 @@ public class BlendBrush extends AbstractBrush
                         if (e.getValue() > n && !(excludeFluid && e.getKey().isLiquid()))
                         {
                             winner = e.getKey();
+                            n = e.getValue();
                         }
                     }
                     
@@ -126,11 +128,10 @@ public class BlendBrush extends AbstractBrush
 
                     for (Map.Entry<Material, Integer> e : mats.entrySet())
                     {
-                        if(e.getValue() == n && !(excludeFluid && e.getKey().isLiquid())) {
+                        if(e.getValue() == n && !e.getKey().equals(winner) && !(excludeFluid && e.getKey().isLiquid())) {
                             tie = true;
                         }
                     }
-                    
                     if(!tie) {
                         ms.setMaterial(x, y, z, false, winner);
                     }
@@ -139,5 +140,6 @@ public class BlendBrush extends AbstractBrush
         }
 
         new ShapeChangeQueue(player, loc, ms).flush();
+        return ExecutionResult.continueExecution();
     }
 }

@@ -92,7 +92,10 @@ public class BrushChain
         {
             Brush next = it.next();
             brushVariables.setContext(BrushContext.of(next));
-            next.run(player, brushVariables);
+            ExecutionResult ex = next.run(player, brushVariables);
+            if(!ex.shouldContinue()) {
+                break;
+            }
         }
     }
 

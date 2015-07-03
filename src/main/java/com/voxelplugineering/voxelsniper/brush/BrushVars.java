@@ -74,90 +74,68 @@ public class BrushVars
     }
 
     public <T> Optional<T> get(String path, Class<T> type) {
-        System.out.println("getting " + path);
-        System.out.println("\tcontext " + this.context);
         Map<String, Object> data = null;
         if (this.context instanceof BrushContext.Brush) {
             String name = ((BrushContext.Brush) this.context).getBrush().getName();
-            System.out.println("\tUsing brush context" + name);
             if (this.brushes.containsKey(name) && this.brushes.get(name).containsKey(path)) {
-                System.out.println("\tfound in brush");
                 data = this.brushes.get(name);
             }
         }
         if (data == null) {
             if (this.runtime.containsKey(path)) {
                 data = this.runtime;
-                System.out.println("\tUsing runtime context");
             } else if (this.global.containsKey(path)) {
                 data = this.global;
-                System.out.println("\tUsing global context");
             } else {
-                System.out.println("\tNo value found");
                 return Optional.absent();
             }
         }
         Object o = data.get(path);
-        System.out.println("\t" + o);
         if(o != null) {
             try
             {
-                System.out.println("\tcast " + type.cast(o));
                 return Optional.of(type.cast(o));
             } catch (Exception e)
             {
-                System.out.println("\ttrans " + DataTranslator.attempt(o, o.getClass(), type));
                 return DataTranslator.attempt(o, o.getClass(), type);
             }
         }
-        System.out.println("\tabs");
         return Optional.absent();
     }
 
     public boolean has(String path) {
-        System.out.println("checking " + path);
-        System.out.println("\tcontext " + this.context);
         if (this.context instanceof BrushContext.Brush) {
             String name = ((BrushContext.Brush) this.context).getBrush().getName();
             if (this.brushes.containsKey(name) && this.brushes.get(name).containsKey(path)) {
-                System.out.println("\tFound in brush context");
                 return true;
             }
         }
         if (this.runtime.containsKey(path)) {
-            System.out.println("\tFound in runtime context");
             return true;
         }
         if (this.global.containsKey(path)) {
-            System.out.println("\tFound in global context");
             return true;
         }
         return false;
     }
 
     public void set(BrushContext context, String path, Object value) {
-        System.out.println("setting " + path);
-        System.out.println("\tcontext " + context);
         if (context instanceof BrushContext.Brush) {
             String name = ((BrushContext.Brush) context).getBrush().getName();
             if (this.brushes.containsKey(name)) {
-                System.out.println("\tset into brush " + name);
                 this.brushes.get(name).put(path, value);
                 return;
             }
             Map<String, Object> data = Maps.newHashMap();
             data.put(path, value);
-            System.out.println("\tset into brush " + name);
             this.brushes.put(name, data);
             return;
         }
         if (context == BrushContext.RUNTIME) {
             this.runtime.put(path, value);
-            System.out.println("\tset into runtime");
             return;
         }
         if (context == BrushContext.GLOBAL) {
-            System.out.println("\tset into global");
             this.global.put(path, value);
             return;
         }

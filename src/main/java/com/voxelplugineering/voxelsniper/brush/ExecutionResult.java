@@ -21,32 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brush.shape;
-
-import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
-import com.voxelplugineering.voxelsniper.brush.BrushContext;
-import com.voxelplugineering.voxelsniper.brush.BrushKeys;
-import com.voxelplugineering.voxelsniper.brush.BrushPartType;
-import com.voxelplugineering.voxelsniper.brush.BrushVars;
-import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
-import com.voxelplugineering.voxelsniper.entity.Player;
-import com.voxelplugineering.voxelsniper.shape.Shape;
-import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
-import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+package com.voxelplugineering.voxelsniper.brush;
 
 
-public class VoxelBrush extends AbstractBrush {
+public class ExecutionResult
+{
+    
+    private static final ExecutionResult ABORT = new ExecutionResult(false);
+    private static final ExecutionResult CONTINUE = new ExecutionResult(true);
 
-    public VoxelBrush() {
-        super("voxel", BrushPartType.SHAPE);
+    public static ExecutionResult abortExecution() {
+        return ABORT;
     }
 
-    @Override
-    public ExecutionResult run(Player player, BrushVars args) {
-        int size = (int) Math.floor(args.get(BrushKeys.BRUSH_SIZE, Double.class).get());
-        Shape s = new CuboidShape(size*2+1, size*2+1, size*2+1, new Vector3i(size, size, size));
-        args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
-        return ExecutionResult.continueExecution();
+    public static ExecutionResult continueExecution() {
+        return CONTINUE;
     }
-
+    
+    private final boolean cont;
+    
+    private ExecutionResult(boolean c) {
+        this.cont = c;
+    }
+    
+    public boolean shouldContinue() {
+        return this.cont;
+    }
+    
 }
