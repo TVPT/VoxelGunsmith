@@ -21,28 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brush.defaults;
+package com.voxelplugineering.voxelsniper.brush.shape;
 
+import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.Shape;
-import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
+import com.voxelplugineering.voxelsniper.shape.csg.EllipsoidShape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 
-public class VoxelBrush extends AbstractBrush {
+public class BallBrush extends AbstractBrush {
 
-    public VoxelBrush() {
-        super("voxel", BrushPartType.SHAPE);
+    public BallBrush() {
+        super("ball", BrushPartType.SHAPE);
     }
 
     @Override
     public void run(Player player, BrushVars args) {
-        int size = (int) Math.floor(args.get(BrushKeys.BRUSH_SIZE, Double.class).get());
-        Shape s = new CuboidShape(size, size, size, new Vector3i(size, size, size));
+        double size = args.get(BrushKeys.BRUSH_SIZE, Double.class).get();
+        Shape s = new EllipsoidShape(size, size, size, new Vector3i(size, size, size));
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
     }
 

@@ -21,53 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brush.defaults;
+package com.voxelplugineering.voxelsniper.brush.shape;
 
-import com.voxelplugineering.voxelsniper.brush.Brush;
+import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
-import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.brush.BrushVars;
+import com.voxelplugineering.voxelsniper.entity.Player;
+import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.shape.csg.EllipsoidShape;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 
-public abstract class AbstractBrush implements Brush {
+public class EllipsoidBrush extends AbstractBrush {
 
-    private final String name;
-    private final BrushPartType type;
-    private String help;
-    
-    public AbstractBrush(String name, BrushPartType type) {
-        this.name = name;
-        this.type = type;
-        this.help = "No help is provided for this brush. :(";
-    }
-    
-    @Override
-    public void fromContainer(DataContainer container) {
-        throw new UnsupportedOperationException();
+    public EllipsoidBrush() {
+        super("ellipsoid", BrushPartType.SHAPE);
     }
 
     @Override
-    public DataContainer toContainer() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    @Override
-    public BrushPartType getType() {
-        return this.type;
-    }
-
-    @Override
-    public String getHelp() {
-        return this.help;
-    }
-
-    @Override
-    public void setHelp(String help) {
-        this.help = help;
+    public void run(Player player, BrushVars args) {
+        double rx = args.get(BrushKeys.RADIUS_X, Double.class).get();
+        double ry = args.get(BrushKeys.RADIUS_Y, Double.class).get();
+        double rz = args.get(BrushKeys.RADIUS_Z, Double.class).get();
+        Shape s = new EllipsoidShape(rx, ry, rz, new Vector3i(rx, ry, rz));
+        args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
     }
 
 }

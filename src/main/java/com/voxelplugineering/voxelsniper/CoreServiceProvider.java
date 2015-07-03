@@ -33,6 +33,7 @@ import com.voxelplugineering.voxelsniper.commands.BrushCommand;
 import com.voxelplugineering.voxelsniper.commands.HelpCommand;
 import com.voxelplugineering.voxelsniper.commands.MaskMaterialCommand;
 import com.voxelplugineering.voxelsniper.commands.MaterialCommand;
+import com.voxelplugineering.voxelsniper.commands.ParameterCommand;
 import com.voxelplugineering.voxelsniper.commands.RedoCommand;
 import com.voxelplugineering.voxelsniper.commands.ResetCommand;
 import com.voxelplugineering.voxelsniper.commands.UndoCommand;
@@ -178,6 +179,7 @@ public class CoreServiceProvider
         cmd.registerCommand(new ResetCommand(context));
         cmd.registerCommand(new UndoCommand(context));
         cmd.registerCommand(new RedoCommand(context));
+        cmd.registerCommand(new ParameterCommand(context));
     }
 
     @Builder(target = OfflineUndoHandler.class, priority = 13000)

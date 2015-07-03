@@ -21,28 +21,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brush.defaults;
+package com.voxelplugineering.voxelsniper.brush;
 
-import com.voxelplugineering.voxelsniper.brush.BrushContext;
-import com.voxelplugineering.voxelsniper.brush.BrushKeys;
-import com.voxelplugineering.voxelsniper.brush.BrushPartType;
-import com.voxelplugineering.voxelsniper.brush.BrushVars;
-import com.voxelplugineering.voxelsniper.entity.Player;
-import com.voxelplugineering.voxelsniper.shape.Shape;
-import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
-import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
 
 
-public class SnipeBrush extends AbstractBrush {
+public abstract class AbstractBrush implements Brush {
 
-    public SnipeBrush() {
-        super("snipe", BrushPartType.SHAPE);
+    private final String name;
+    private final BrushPartType type;
+    private String help;
+    
+    public AbstractBrush(String name, BrushPartType type) {
+        this.name = name;
+        this.type = type;
+        this.help = "No help is provided for this brush. :(";
+    }
+    
+    @Override
+    public void fromContainer(DataContainer container) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void run(Player player, BrushVars args) {
-        Shape s = new CuboidShape(1, 1, 1, new Vector3i(0, 0, 0));
-        args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
+    public DataContainer toContainer() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public BrushPartType getType() {
+        return this.type;
+    }
+
+    @Override
+    public String getHelp() {
+        return this.help;
+    }
+
+    @Override
+    public void setHelp(String help) {
+        this.help = help;
     }
 
 }

@@ -130,13 +130,13 @@ public class JavaUtilLogger implements com.voxelplugineering.voxelsniper.service
     }
 
     @Override
-    public void error(Exception e)
+    public void error(Throwable e)
     {
         this.logger.log(Level.SEVERE, e.getMessage(), e);
     }
 
     @Override
-    public void error(Exception e, String msg)
+    public void error(Throwable e, String msg)
     {
         this.logger.log(Level.SEVERE, msg, e);
 

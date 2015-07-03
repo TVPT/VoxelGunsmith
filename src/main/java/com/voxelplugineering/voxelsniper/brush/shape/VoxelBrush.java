@@ -21,49 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brush.defaults;
+package com.voxelplugineering.voxelsniper.brush.shape;
 
+import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.Shape;
-import com.voxelplugineering.voxelsniper.shape.csg.CylinderShape;
-import com.voxelplugineering.voxelsniper.util.Direction;
+import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 
-public class CylinderBrush extends AbstractBrush {
+public class VoxelBrush extends AbstractBrush {
 
-    public CylinderBrush() {
-        super("cylinder", BrushPartType.SHAPE);
+    public VoxelBrush() {
+        super("voxel", BrushPartType.SHAPE);
     }
 
     @Override
     public void run(Player player, BrushVars args) {
-        double size = args.get(BrushKeys.BRUSH_SIZE, Double.class).get();
-        int height = (int) Math.floor(args.get(BrushKeys.HEIGHT, Double.class).get());
-        boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(false);
-        Shape s = null;
-        if(face) {
-            Direction d = args.get(BrushKeys.TARGET_FACE, Direction.class).or(Direction.UP);
-            switch(d) {
-                case NORTH:
-                case SOUTH:
-                    s = new CylinderShape(size, height, size, new Vector3i(size, 0, size), Direction.SOUTH);
-                    break;
-                case EAST:
-                case WEST:
-                    s = new CylinderShape(size, height, size, new Vector3i(size, 0, size), Direction.EAST);
-                    break;
-                default:
-                    s = new CylinderShape(size, height, size, new Vector3i(size, 0, size));
-                    break;
-            }
-        } else {
-            s = new CylinderShape(size, height, size, new Vector3i(size, 0, size));
-        }
+        int size = (int) Math.floor(args.get(BrushKeys.BRUSH_SIZE, Double.class).get());
+        Shape s = new CuboidShape(size*2+1, size*2+1, size*2+1, new Vector3i(size, size, size));
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
     }
 

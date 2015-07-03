@@ -32,7 +32,7 @@ public abstract class BrushContext {
     public static final BrushContext GLOBAL = new Fixed("global");
     public static final BrushContext RUNTIME = new Fixed("runtime");
     
-    private static final Map<com.voxelplugineering.voxelsniper.brush.Brush, BrushContext> BRUSHES;
+    private static final Map<com.voxelplugineering.voxelsniper.brush.Brush, BrushContext.Brush> BRUSHES;
     
     static {
         BRUSHES = new MapMaker().weakKeys().makeMap();
@@ -42,7 +42,7 @@ public abstract class BrushContext {
         if(BRUSHES.containsKey(brush)) {
             return BRUSHES.get(brush);
         }
-        BrushContext c = new Brush(brush);
+        Brush c = new Brush(brush);
         BRUSHES.put(brush, c);
         return c;
     }

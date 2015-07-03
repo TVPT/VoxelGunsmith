@@ -37,8 +37,17 @@ import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushManager;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
-import com.voxelplugineering.voxelsniper.brush.defaults.BallBrush;
-import com.voxelplugineering.voxelsniper.brush.defaults.MaterialBrush;
+import com.voxelplugineering.voxelsniper.brush.effect.BlendBrush;
+import com.voxelplugineering.voxelsniper.brush.effect.MaterialBrush;
+import com.voxelplugineering.voxelsniper.brush.mask.MaterialMaskBrush;
+import com.voxelplugineering.voxelsniper.brush.shape.BallBrush;
+import com.voxelplugineering.voxelsniper.brush.shape.CylinderBrush;
+import com.voxelplugineering.voxelsniper.brush.shape.DiscBrush;
+import com.voxelplugineering.voxelsniper.brush.shape.EllipseBrush;
+import com.voxelplugineering.voxelsniper.brush.shape.EllipsoidBrush;
+import com.voxelplugineering.voxelsniper.brush.shape.SnipeBrush;
+import com.voxelplugineering.voxelsniper.brush.shape.VoxelBrush;
+import com.voxelplugineering.voxelsniper.brush.shape.VoxelDiscBrush;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Chunk;
@@ -97,8 +106,22 @@ public class DefaultBrushBuilder
      */
     public static void buildBrushes()
     {
+        //shape
         graphs.put("ball", new BallBrush());
+        graphs.put("cylinder", new CylinderBrush());
+        graphs.put("disc", new DiscBrush());
+        graphs.put("ellipse", new EllipseBrush());
+        graphs.put("ellipsoid", new EllipsoidBrush());
+        graphs.put("snipe", new SnipeBrush());
+        graphs.put("voxel", new VoxelBrush());
+        graphs.put("voxeldisc", new VoxelDiscBrush());
+        
+        //mask
+        graphs.put("materialmask", new MaterialMaskBrush());
+        
+        //effect
         graphs.put("material", new MaterialBrush());
+        graphs.put("blend", new BlendBrush());
     }
 
 }

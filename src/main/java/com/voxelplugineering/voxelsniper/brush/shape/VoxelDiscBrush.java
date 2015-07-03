@@ -21,8 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brush.defaults;
+package com.voxelplugineering.voxelsniper.brush.shape;
 
+import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
@@ -62,7 +63,7 @@ public class VoxelDiscBrush extends AbstractBrush {
                     break;
             }
         } else {
-            s = new CuboidShape(size * 2 + 1, 1, size * 2 + 1, new Vector3i(size, 1, size));
+            s = new CuboidShape(size * 2 + 1, 1, size * 2 + 1, new Vector3i(size, 0, size));
         }
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
     }

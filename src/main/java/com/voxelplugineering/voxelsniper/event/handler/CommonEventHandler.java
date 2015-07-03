@@ -176,13 +176,14 @@ public class CommonEventHandler
             vars.set(BrushContext.RUNTIME, BrushKeys.YAW, yaw);
             vars.set(BrushContext.RUNTIME, BrushKeys.PITCH, pitch);
             vars.set(BrushContext.RUNTIME, BrushKeys.TARGET_BLOCK, ray.getTargetBlock());
+            vars.set(BrushContext.RUNTIME, BrushKeys.TARGET_FACE, ray.getTargetFace());
             // brushVariables.set("lastBlock", ray.getLastBlock());
             // TODO support gunpoweder alt action
             vars.set(BrushContext.RUNTIME, BrushKeys.LENGTH, ray.getLength());
             vars.set(BrushContext.RUNTIME, BrushKeys.PLAYER, sniper);
             //Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());
             sniper.getCurrentBrush().run(sniper, vars);
-        } catch (Exception e)
+        } catch (Throwable e)
         {
             if (!attemptedNullAction)
             {

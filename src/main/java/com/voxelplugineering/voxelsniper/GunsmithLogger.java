@@ -178,7 +178,7 @@ public class GunsmithLogger
         }
     }
 
-    public void error(Exception e, String msg)
+    public void error(Throwable e, String msg)
     {
         if (msg == null || msg.isEmpty() || e == null)
         {

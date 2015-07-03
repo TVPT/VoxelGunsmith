@@ -31,6 +31,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 @SuppressWarnings("javadoc")
 public enum Direction
 {
+    
     /*
      * These are the minecraft directions, I'm not sure at this time what the
      * best approach is to make this more platform independent. The easiest
@@ -44,6 +45,15 @@ public enum Direction
     SOUTH_EAST(SOUTH, EAST), SOUTH_WEST(SOUTH, WEST), WEST_NORTH_WEST(WEST, NORTH_WEST), NORTH_NORTH_WEST(NORTH, NORTH_WEST), NORTH_NORTH_EAST(NORTH,
             NORTH_EAST), EAST_NORTH_EAST(EAST, NORTH_EAST), EAST_SOUTH_EAST(EAST, SOUTH_EAST), SOUTH_SOUTH_EAST(SOUTH, SOUTH_EAST), SOUTH_SOUTH_WEST(
             SOUTH, SOUTH_WEST), WEST_SOUTH_WEST(WEST, SOUTH_WEST), SELF(0, 0, 0);
+
+    public static Direction of(int modx, int mody, int modz) {
+        for(Direction d: values()) {
+            if(d.getModX() == modx && d.getModY() == mody && d.getModZ() == modz) {
+                return d;
+            }
+        }
+        return Direction.SELF;
+    }
 
     private final int modX;
     private final int modY;

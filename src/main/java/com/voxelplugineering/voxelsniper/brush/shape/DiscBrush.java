@@ -21,42 +21,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brush.defaults;
+package com.voxelplugineering.voxelsniper.brush.shape;
 
-import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.entity.Player;
-import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
-import com.voxelplugineering.voxelsniper.shape.SingleMaterialShape;
-import com.voxelplugineering.voxelsniper.world.Block;
-import com.voxelplugineering.voxelsniper.world.material.Material;
-import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
+import com.voxelplugineering.voxelsniper.shape.csg.CylinderShape;
+import com.voxelplugineering.voxelsniper.util.Direction;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 
-public class MaterialBrush extends AbstractBrush {
+public class DiscBrush extends AbstractBrush {
 
-    public MaterialBrush() {
-        super("material", BrushPartType.EFFECT);
+    public DiscBrush() {
+        super("disc", BrushPartType.SHAPE);
     }
 
     @Override
     public void run(Player player, BrushVars args) {
-        Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
-        if(!s.isPresent()) {
-            player.sendMessage("You must have at least one shape brush before your material brush.");
-            return;
+        double size = args.get(BrushKeys.BRUSH_SIZE, Double.class).get();
+        boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(false);
+        Shape s = null;
+        if(face) {
+            Direction d = args.get(BrushKeys.TARGET_FACE, Direction.class).or(Direction.UP);
+            switch(d) {
+                case NORTH:
+                case SOUTH:
+                    s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size), Direction.SOUTH);
+                    break;
+                case EAST:
+                case WEST:
+                    s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size), Direction.EAST);
+                    break;
+                default:
+                    s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size));
+                    break;
+            }
+        } else {
+            s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size));
         }
-        Optional<Material> m = args.get(BrushKeys.MATERIAL, Material.class);
-        if(!m.isPresent()) {
-            player.sendMessage("You must select a material.");
-            return;
-        }
-        Optional<Block> l = args.get(BrushKeys.TARGET_BLOCK, Block.class);
-        MaterialShape ms = new SingleMaterialShape(s.get(), m.get());
-        new ShapeChangeQueue(player, l.get().getLocation(), ms).flush();
+        args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
     }
 
 }

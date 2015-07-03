@@ -115,13 +115,13 @@ public class PrintStreamLogger implements com.voxelplugineering.voxelsniper.serv
     }
 
     @Override
-    public void error(Exception e)
+    public void error(Throwable e)
     {
         e.printStackTrace();
     }
 
     @Override
-    public void error(Exception e, String msg)
+    public void error(Throwable e, String msg)
     {
         printWithPrefix("[ERROR]", msg);
         e.printStackTrace();

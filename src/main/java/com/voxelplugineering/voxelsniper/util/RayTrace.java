@@ -52,8 +52,8 @@ public class RayTrace
     private World world;
 
     /**
-     * A set of materials which are treated as non-solid to the ray (eg. the ray passes through them
-     * without stopping)
+     * A set of materials which are treated as non-solid to the ray (eg. the ray
+     * passes through them without stopping)
      */
     private List<Material> traversalBlocks = Lists.newArrayList();
 
@@ -61,10 +61,12 @@ public class RayTrace
      * The block targeted by the last trace.
      */
     private Block targetBlock = null;
+    private Direction targetDirection = null;
     /**
      * The last block targeted before the end of the trace.
      */
     private Block lastBlock = null;
+    private Direction lastDirection = null;
 
     /*
      * Values used internally for the calculation of the ray trace. length: the
@@ -104,7 +106,8 @@ public class RayTrace
     private Vector3d playerEyeOffset;
 
     /**
-     * Creates a new raytrace to reference with the given location yaw and pitch.
+     * Creates a new raytrace to reference with the given location yaw and
+     * pitch.
      * 
      * @param origin the origin location
      * @param yaw the yaw
@@ -211,6 +214,10 @@ public class RayTrace
         return this.targetBlock;
     }
 
+    public Direction getTargetFace() {
+        return this.targetDirection;
+    }
+
     /**
      * Returns the last block targeted before the current target block.
      * 
@@ -226,7 +233,8 @@ public class RayTrace
     }
 
     /**
-     * Returns the length of the last ray (the distance from the origin to the target block).
+     * Returns the length of the last ray (the distance from the origin to the
+     * target block).
      * 
      * @return the length
      */
@@ -294,6 +302,7 @@ public class RayTrace
         this.lastX = this.targetX;
         this.lastY = this.targetY;
         this.lastZ = this.targetZ;
+        this.lastDirection = this.targetDirection;
         // step until we find a new block in the line
         do
         {
@@ -306,8 +315,9 @@ public class RayTrace
             this.targetX = (int) Math.floor(this.currentX + this.origin.getX());
             this.targetY = (int) Math.floor(this.currentY + this.origin.getY());
             this.targetZ = (int) Math.floor(this.currentZ + this.origin.getZ());
-
         } while ((this.length <= this.range) && ((this.targetX == this.lastX) && (this.targetY == this.lastY) && (this.targetZ == this.lastZ)));
+
+        this.targetDirection = dirFromDiff(this.targetX, this.targetY, this.targetZ, this.lastX, this.lastY, this.lastZ);
 
         Optional<Block> next = this.world.getBlock(this.targetX, this.targetY, this.targetZ);
         if (!next.isPresent())
@@ -316,6 +326,7 @@ public class RayTrace
             this.targetX = this.lastX;
             this.targetY = this.lastY;
             this.targetZ = this.lastZ;
+            this.targetDirection = this.lastDirection;
             return;
         }
         if (!this.traversalBlocks.contains(next.get().getMaterial()))
@@ -330,12 +341,20 @@ public class RayTrace
             this.targetX = this.lastX;
             this.targetY = this.lastY;
             this.targetZ = this.lastZ;
+            this.targetDirection = this.lastDirection;
             this.length = this.range;
         } else
         {
             // continue
             step();
         }
+    }
+
+    private Direction dirFromDiff(int tx, int ty, int tz, int lx, int ly, int lz) {
+        int modx = Integer.signum(tx - lx);
+        int mody = Integer.signum(ty - ly);
+        int modz = Integer.signum(tz - lz);
+        return Direction.of(modx, mody, modz);
     }
 
     /**

@@ -37,7 +37,6 @@ public final class BrushKeys {
     public static final String RANGE = "range";
     public static final String TARGET_BLOCK = "targetBlock";
     public static final String TARGET_FACE = "targetFace";
-    public static final String USE_FACE = "face";
     public static final String YAW = "yaw";
 
     // Runtime
@@ -46,7 +45,9 @@ public final class BrushKeys {
     public static final String SHAPE = "shape";
 
     // Parameters
+    public static final String EXCLUDE_FLUID = "excludeFluid";
     public static final String HEIGHT = "height";
+    public static final String USE_FACE = "face";
     public static final String RADIUS_X = "rx";
     public static final String RADIUS_Y = "ry";
     public static final String RADIUS_Z = "rz";

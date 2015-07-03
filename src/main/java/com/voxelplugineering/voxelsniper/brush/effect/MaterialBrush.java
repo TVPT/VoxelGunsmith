@@ -21,29 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brush.defaults;
+package com.voxelplugineering.voxelsniper.brush.effect;
 
-import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.entity.Player;
+import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
-import com.voxelplugineering.voxelsniper.shape.csg.EllipsoidShape;
-import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.shape.SingleMaterialShape;
+import com.voxelplugineering.voxelsniper.world.Block;
+import com.voxelplugineering.voxelsniper.world.material.Material;
+import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
 
-public class BallBrush extends AbstractBrush {
+public class MaterialBrush extends AbstractBrush {
 
-    public BallBrush() {
-        super("ball", BrushPartType.SHAPE);
+    public MaterialBrush() {
+        super("material", BrushPartType.EFFECT);
     }
 
     @Override
     public void run(Player player, BrushVars args) {
-        double size = args.get(BrushKeys.BRUSH_SIZE, Double.class).get();
-        Shape s = new EllipsoidShape(size, size, size, new Vector3i(size, size, size));
-        args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
+        Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
+        if(!s.isPresent()) {
+            player.sendMessage("You must have at least one shape brush before your material brush.");
+            return;
+        }
+        Optional<Material> m = args.get(BrushKeys.MATERIAL, Material.class);
+        if(!m.isPresent()) {
+            player.sendMessage("You must select a material.");
+            return;
+        }
+        Optional<Block> l = args.get(BrushKeys.TARGET_BLOCK, Block.class);
+        MaterialShape ms = new SingleMaterialShape(s.get(), m.get());
+        new ShapeChangeQueue(player, l.get().getLocation(), ms).flush();
     }
 
 }

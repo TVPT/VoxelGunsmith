@@ -129,13 +129,13 @@ public class Log4jLogger implements com.voxelplugineering.voxelsniper.service.lo
     }
 
     @Override
-    public void error(Exception e)
+    public void error(Throwable e)
     {
         this.logger.error("", e);
     }
 
     @Override
-    public void error(Exception e, String msg)
+    public void error(Throwable e, String msg)
     {
         this.logger.error(msg, e);
     }

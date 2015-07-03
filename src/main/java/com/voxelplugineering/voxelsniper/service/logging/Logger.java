@@ -86,7 +86,7 @@ public interface Logger
      * 
      * @param e the exception, cannot be null
      */
-    void error(Exception e);
+    void error(Throwable e);
 
     /**
      * Logs an error to the output.
@@ -94,6 +94,6 @@ public interface Logger
      * @param e the exception, cannot be null
      * @param msg an included message, cannot be null or empty
      */
-    void error(Exception e, String msg);
+    void error(Throwable e, String msg);
 
 }

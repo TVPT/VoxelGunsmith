@@ -21,8 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brush.defaults;
+package com.voxelplugineering.voxelsniper.brush.shape;
 
+import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
@@ -62,7 +63,7 @@ public class EllipseBrush extends AbstractBrush {
                     break;
             }
         } else {
-            s = new CylinderShape(rx, 1, ry, new Vector3i(rx, 1, ry));
+            s = new CylinderShape(rx, 1, ry, new Vector3i(rx, 0, ry));
         }
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
     }
