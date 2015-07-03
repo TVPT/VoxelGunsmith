@@ -47,6 +47,7 @@ public final class BrushKeys
     public static final String POINT_A = "pointA";
     public static final String POINT_B = "pointB";
     public static final String SHAPE = "shape";
+    public static final String STRUCTURING_ELEMENT = "structuringElement";
     public static final String TARGET_BLOCK = "targetBlock";
     public static final String TARGET_FACE = "targetFace";
     public static final String YAW = "yaw";
@@ -55,6 +56,8 @@ public final class BrushKeys
     public static final String EXCLUDE_FLUID = "excludeFluid";
     public static final String HEIGHT = "height";
     public static final String USE_FACE = "face";
+    public static final String KERNEL = "kernel";
+    public static final String KERNEL_SIZE = "kernelSize";
     public static final String RADIUS_X = "rx";
     public static final String RADIUS_Y = "ry";
     public static final String RADIUS_Z = "rz";

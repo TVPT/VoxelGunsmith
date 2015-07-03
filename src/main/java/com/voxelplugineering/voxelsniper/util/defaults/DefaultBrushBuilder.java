@@ -25,13 +25,12 @@ package com.voxelplugineering.voxelsniper.util.defaults;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
-
-import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushManager;
-import com.voxelplugineering.voxelsniper.brush.effect.BlendBrush;
 import com.voxelplugineering.voxelsniper.brush.effect.MaterialBrush;
+import com.voxelplugineering.voxelsniper.brush.effect.OldBlendBrush;
+import com.voxelplugineering.voxelsniper.brush.effect.OldLinearBlendBrush;
+import com.voxelplugineering.voxelsniper.brush.effect.morphological.BlendBrush;
 import com.voxelplugineering.voxelsniper.brush.mask.MaterialMaskBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.BallBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.CylinderBrush;
@@ -42,8 +41,13 @@ import com.voxelplugineering.voxelsniper.brush.shape.SnipeBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.VoxelBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.VoxelDiscBrush;
 
+import com.google.common.collect.Maps;
+
+import java.util.Map;
+
 /**
- * In lieu of having flat file brushes this will temporarily serve as a builder for brushes at runtime for debugging during development.
+ * In lieu of having flat file brushes this will temporarily serve as a builder
+ * for brushes at runtime for debugging during development.
  */
 public final class DefaultBrushBuilder
 {
@@ -61,7 +65,8 @@ public final class DefaultBrushBuilder
     /**
      * Loads all the graphs from this utility into the global brush manager.
      * 
-     * @param manager the brush manager to load the brushes into
+     * @param manager
+     *            the brush manager to load the brushes into
      */
     public static void loadAll(BrushManager manager)
     {
@@ -76,7 +81,8 @@ public final class DefaultBrushBuilder
     /**
      * Saves all the brushes from this utility into the given directory.
      * 
-     * @param directory the directory to store the brush files in.
+     * @param directory
+     *            the directory to store the brush files in.
      */
     /*
      * public static void saveAll(File directory) { checkNotNull(directory); if
@@ -98,7 +104,7 @@ public final class DefaultBrushBuilder
      */
     public static void buildBrushes()
     {
-        //shape
+        // shape
         GRAPHS.put("ball", new BallBrush());
         GRAPHS.put("cylinder", new CylinderBrush());
         GRAPHS.put("disc", new DiscBrush());
@@ -108,12 +114,12 @@ public final class DefaultBrushBuilder
         GRAPHS.put("voxel", new VoxelBrush());
         GRAPHS.put("voxeldisc", new VoxelDiscBrush());
 
-        //mask
+        // mask
         GRAPHS.put("materialmask", new MaterialMaskBrush());
-
-        //effect
+        // effect
         GRAPHS.put("material", new MaterialBrush());
-        GRAPHS.put("blend", new BlendBrush());
+        GRAPHS.put("blend", new OldBlendBrush());
+        GRAPHS.put("linearblend", new OldLinearBlendBrush());
     }
 
 }

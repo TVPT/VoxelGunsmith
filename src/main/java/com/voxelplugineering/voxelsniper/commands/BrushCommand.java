@@ -37,7 +37,8 @@ import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
 /**
- * Standard brush command to select a brush and provide the necessary arguments to said brush.
+ * Standard brush command to select a brush and provide the necessary arguments
+ * to said brush.
  */
 public class BrushCommand extends Command
 {
@@ -126,6 +127,7 @@ public class BrushCommand extends Command
                     hasShape = true;
                 } else if (b.getType() == BrushPartType.EFFECT)
                 {
+                    hasEffect = true;
                     if (!hasShape)
                     {
                         sniper.sendMessage("You specified an effect without a shape preceeding it.");
