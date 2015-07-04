@@ -23,12 +23,17 @@
  */
 package com.voxelplugineering.voxelsniper.brush.shape;
 
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.BrushAction;
+import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
+import com.voxelplugineering.voxelsniper.world.Block;
+import com.voxelplugineering.voxelsniper.world.Location;
 
 
 public class LineBrush extends AbstractBrush
@@ -42,11 +47,21 @@ public class LineBrush extends AbstractBrush
     @Override
     public ExecutionResult run(Player player, BrushVars args)
     {
-        if(!args.has(BrushKeys.POINT_A)) {
-            
-            
+        BrushAction action = args.get(BrushKeys.ACTION, BrushAction.class).get();
+        Optional<Block> target = args.get(BrushKeys.TARGET_BLOCK, Block.class);
+        Location loc = target.get().getLocation();
+        if(action == BrushAction.PRIMARY) {
+            args.set(BrushContext.of(this), BrushKeys.POINT_A, loc);
+            player.sendMessage("Point A set to (" + loc.getFlooredX() + ", " + loc.getFlooredY() + ", " + loc.getFlooredZ() + ")");
+            player.sendMessage("Use the alternate action to draw lines from this point now.");
             return ExecutionResult.abortExecution();
         }
+        //if its not the alt action we need to create the line
+        if(!args.has(BrushKeys.POINT_A)) {
+            player.sendMessage("You must select a starting point first with the primary action.");
+            return ExecutionResult.abortExecution();
+        }
+        Location pointB = args.get(BrushKeys.POINT_A, Location.class).get();
         
         return ExecutionResult.continueExecution();
     }

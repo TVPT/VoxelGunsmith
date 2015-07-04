@@ -153,6 +153,7 @@ public class CommonEventHandler
             Location location = sniper.getLocation();
             double yaw = event.getYaw();
             double pitch = event.getPitch();
+            //TODO move min/max values form conf to world
             int minY = this.conf.get("minimumWorldDepth", int.class).or(0);
             int maxY = this.conf.get("maximumWorldHeight", int.class).or(255);
             double step = this.conf.get("rayTraceStep", double.class).or(0.2);
@@ -177,8 +178,9 @@ public class CommonEventHandler
             vars.set(BrushContext.RUNTIME, BrushKeys.PITCH, pitch);
             vars.set(BrushContext.RUNTIME, BrushKeys.TARGET_BLOCK, ray.getTargetBlock());
             vars.set(BrushContext.RUNTIME, BrushKeys.TARGET_FACE, ray.getTargetFace());
-            // brushVariables.set("lastBlock", ray.getLastBlock());
-            // TODO support gunpoweder alt action
+            vars.set(BrushContext.RUNTIME, BrushKeys.LAST_BLOCK, ray.getLastBlock());
+            vars.set(BrushContext.RUNTIME, BrushKeys.LAST_FACE, ray.getLastFace());
+            vars.set(BrushContext.RUNTIME, BrushKeys.ACTION, event.getAction());
             vars.set(BrushContext.RUNTIME, BrushKeys.LENGTH, ray.getLength());
             vars.set(BrushContext.RUNTIME, BrushKeys.PLAYER, sniper);
             //Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());

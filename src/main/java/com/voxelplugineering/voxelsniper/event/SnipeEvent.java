@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper.event;
 
 import static com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.ThreadingPolicy.ASYNCHRONOUS;
 
+import com.voxelplugineering.voxelsniper.brush.BrushAction;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy;
 
@@ -37,6 +38,7 @@ public class SnipeEvent extends SniperEvent
 
     private final double yaw;
     private final double pitch;
+    private final BrushAction action;
 
     /**
      * Constructs a new SnipeEvent for processing
@@ -45,11 +47,12 @@ public class SnipeEvent extends SniperEvent
      * @param y the yaw
      * @param p the pitch
      */
-    public SnipeEvent(Player sniper, double y, double p)
+    public SnipeEvent(Player sniper, double y, double p, BrushAction action)
     {
         super(sniper);
         this.yaw = y;
         this.pitch = p;
+        this.action = action;
     }
 
     /**
@@ -70,6 +73,11 @@ public class SnipeEvent extends SniperEvent
     public double getPitch()
     {
         return this.pitch;
+    }
+
+    public BrushAction getAction()
+    {
+        return this.action;
     }
 
 }

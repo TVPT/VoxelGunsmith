@@ -232,6 +232,11 @@ public class RayTrace
         return this.lastBlock;
     }
 
+    public Direction getLastFace()
+    {
+        return this.lastDirection;
+    }
+
     /**
      * Returns the length of the last ray (the distance from the origin to the
      * target block).
