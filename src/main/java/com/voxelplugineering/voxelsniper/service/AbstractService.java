@@ -45,7 +45,7 @@ public abstract class AbstractService implements Service
      */
     public AbstractService(Context context)
     {
-        
+
     }
 
     @Override
@@ -60,6 +60,9 @@ public abstract class AbstractService implements Service
         GunsmithLogger.getLogger().info("Started " + getClass().getName() + " service.");
     }
 
+    /**
+     * Initializes the service.
+     */
     protected abstract void _init();
 
     @Override
@@ -74,6 +77,9 @@ public abstract class AbstractService implements Service
         this.initialized = false;
     }
 
+    /**
+     * Shuts down the service.
+     */
     protected abstract void _shutdown();
 
     @Override
@@ -82,11 +88,17 @@ public abstract class AbstractService implements Service
         return this.initialized;
     }
 
-    protected void check(String s)
+    /**
+     * Checks that the service is started and throws an {@link IllegalStateException} with the given
+     * message if it is not.
+     *
+     * @param msg The message to use on error
+     */
+    protected void check(String msg)
     {
         if (!this.initialized)
         {
-            throw new IllegalStateException("Attempted to " + s + " while service was uninitialized.");
+            throw new IllegalStateException("Attempted to " + msg + " while service was uninitialized.");
         }
     }
 

@@ -97,7 +97,8 @@ public class ConfigurationService extends AbstractService implements Configurati
         check("get");
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
-        if(expectedType.isPrimitive()) {
+        if (expectedType.isPrimitive())
+        {
             expectedType = Primitives.wrap(expectedType);
         }
         if (has(name))
@@ -107,7 +108,9 @@ public class ConfigurationService extends AbstractService implements Configurati
             {
                 return Optional.of(expectedType.cast(o));
             }
-            GunsmithLogger.getLogger().warn("Cannot get config value " + name + " with expected type " + expectedType.getSimpleName() + " has type " + o.getClass().getSimpleName());
+            GunsmithLogger.getLogger().warn(
+                    "Cannot get config value " + name + " with expected type " + expectedType.getSimpleName() + " has type "
+                            + o.getClass().getSimpleName());
         }
         return Optional.absent();
     }

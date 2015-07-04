@@ -84,7 +84,7 @@ import com.voxelplugineering.voxelsniper.world.queue.OfflineUndoHandler;
 /**
  * The core service provider.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({ "checkstyle:javadocmethod", "javadoc" })
 public class CoreServiceProvider
 {
 

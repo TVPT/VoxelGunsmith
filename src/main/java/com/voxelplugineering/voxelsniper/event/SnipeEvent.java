@@ -75,6 +75,11 @@ public class SnipeEvent extends SniperEvent
         return this.pitch;
     }
 
+    /**
+     * Gets the brush action of this snipe.
+     * 
+     * @return The action
+     */
     public BrushAction getAction()
     {
         return this.action;

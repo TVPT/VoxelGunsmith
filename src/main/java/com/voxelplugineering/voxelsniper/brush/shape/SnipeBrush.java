@@ -34,15 +34,23 @@ import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
+/**
+ * Defines a single-block region.
+ */
+public class SnipeBrush extends AbstractBrush
+{
 
-public class SnipeBrush extends AbstractBrush {
-
-    public SnipeBrush() {
+    /**
+     * Creates a new {@link SnipeBrush}.
+     */
+    public SnipeBrush()
+    {
         super("snipe", BrushPartType.SHAPE);
     }
 
     @Override
-    public ExecutionResult run(Player player, BrushVars args) {
+    public ExecutionResult run(Player player, BrushVars args)
+    {
         Shape s = new CuboidShape(1, 1, 1, new Vector3i(0, 0, 0));
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
         return ExecutionResult.continueExecution();

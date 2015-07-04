@@ -29,8 +29,8 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * Represents a Cylindrical primitive shape.
  * 
- * <p>The axis code in this is half arsed at best and will not support anything
- * other than the cardinal axes TODO improve.</p>
+ * <p>The axis code in this is half arsed at best and will not support anything other than the
+ * cardinal axes TODO improve.</p>
  */
 public class CylinderShape extends OffsetShape
 {
@@ -57,7 +57,17 @@ public class CylinderShape extends OffsetShape
         this.axis = Direction.UP;
     }
 
-    public CylinderShape(double rx, int height, double rz, Vector3i origin, Direction axis) {
+    /**
+     * Creates a new {@link CylinderShape}.
+     * 
+     * @param rx The X radius
+     * @param height The height
+     * @param rz The Z radius
+     * @param origin The origin
+     * @param axis the axis to orient the cylinder around
+     */
+    public CylinderShape(double rx, int height, double rz, Vector3i origin, Direction axis)
+    {
         super(origin);
         this.rx = rx;
         this.height = height;
@@ -74,13 +84,16 @@ public class CylinderShape extends OffsetShape
             y -= getOrigin().getY();
             z -= getOrigin().getZ();
         }
-        if (this.axis.getModY() == 1) {
+        if (this.axis.getModY() == 1)
+        {
             return (x / this.rx) * (x / this.rx) + (z / this.rz) * (z / this.rz) <= 1 && y < this.height && y >= 0;
         }
-        if (this.axis.getModX() == 1) {
+        if (this.axis.getModX() == 1)
+        {
             return (y / this.rx) * (y / this.rx) + (z / this.rz) * (z / this.rz) <= 1 && x < this.height && x >= 0;
         }
-        if (this.axis.getModZ() == 1) {
+        if (this.axis.getModZ() == 1)
+        {
             return (x / this.rx) * (x / this.rx) + (y / this.rz) * (y / this.rz) <= 1 && z < this.height && z >= 0;
         }
         return false;
@@ -89,10 +102,12 @@ public class CylinderShape extends OffsetShape
     @Override
     public int getWidth()
     {
-        if (this.axis.getModY() == 1 || this.axis.getModZ() == 1) {
+        if (this.axis.getModY() == 1 || this.axis.getModZ() == 1)
+        {
             return (int) (this.rx * 2 + 1);
         }
-        if (this.axis.getModX() == 1) {
+        if (this.axis.getModX() == 1)
+        {
             return this.height;
         }
         return (int) (this.rx * 2 + 1);
@@ -101,13 +116,16 @@ public class CylinderShape extends OffsetShape
     @Override
     public int getHeight()
     {
-        if (this.axis.getModY() == 1) {
+        if (this.axis.getModY() == 1)
+        {
             return this.height;
         }
-        if (this.axis.getModX() == 1) {
+        if (this.axis.getModX() == 1)
+        {
             return (int) (this.rx * 2 + 1);
         }
-        if (this.axis.getModZ() == 1) {
+        if (this.axis.getModZ() == 1)
+        {
             return (int) (this.rz * 2 + 1);
         }
         return this.height;
@@ -116,10 +134,12 @@ public class CylinderShape extends OffsetShape
     @Override
     public int getLength()
     {
-        if (this.axis.getModY() == 1 || this.axis.getModX() == 1) {
+        if (this.axis.getModY() == 1 || this.axis.getModX() == 1)
+        {
             return (int) (this.rz * 2 + 1);
         }
-        if (this.axis.getModZ() == 1) {
+        if (this.axis.getModZ() == 1)
+        {
             return this.height;
         }
         return (int) (this.rz * 2 + 1);

@@ -25,46 +25,62 @@ package com.voxelplugineering.voxelsniper.brush;
 
 import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
 
-
-public abstract class AbstractBrush implements Brush {
+/**
+ * An abstract implementation for brushes.
+ */
+public abstract class AbstractBrush implements Brush
+{
 
     private final String name;
     private final BrushPartType type;
     private String help;
-    
-    public AbstractBrush(String name, BrushPartType type) {
+
+    /**
+     * Sets up the AbstractBrush.
+     * 
+     * @param name The brush name
+     * @param type The brush type
+     */
+    public AbstractBrush(String name, BrushPartType type)
+    {
         this.name = name;
         this.type = type;
         this.help = "No help is provided for this brush. :(";
     }
-    
+
     @Override
-    public void fromContainer(DataContainer container) {
+    public void fromContainer(DataContainer container)
+    {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public DataContainer toContainer() {
+    public DataContainer toContainer()
+    {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
 
     @Override
-    public BrushPartType getType() {
+    public BrushPartType getType()
+    {
         return this.type;
     }
 
     @Override
-    public String getHelp() {
+    public String getHelp()
+    {
         return this.help;
     }
 
     @Override
-    public void setHelp(String help) {
+    public void setHelp(String help)
+    {
         this.help = help;
     }
 

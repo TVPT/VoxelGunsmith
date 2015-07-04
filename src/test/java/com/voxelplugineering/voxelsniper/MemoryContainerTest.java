@@ -150,16 +150,26 @@ class TestCustomData implements DataSerializable
     }
 
     @Override
-    public boolean equals(Object other)
+    public int hashCode()
     {
-        if (other instanceof TestCustomData)
+        int result = 1;
+        result = 31 * result + this.test;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
         {
-            if (this.test == ((TestCustomData) other).test)
-            {
-                return true;
-            }
+            return true;
         }
-        return false;
+        if (!(obj instanceof TestCustomData))
+        {
+            return false;
+        }
+        TestCustomData other = (TestCustomData) obj;
+        return this.test == other.test;
     }
 
 }

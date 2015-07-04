@@ -37,9 +37,16 @@ import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 
+/**
+ * A brush mask which unsets all positions in the shape which are not currently set to the mask
+ * material.
+ */
 public class MaterialMaskBrush extends AbstractBrush
 {
 
+    /**
+     * Creates a new {@link MaterialMaskBrush}.
+     */
     public MaterialMaskBrush()
     {
         super("materialmask", BrushPartType.MASK);

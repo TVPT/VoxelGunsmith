@@ -34,17 +34,25 @@ import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
+/**
+ * A shape brush which defines a cubic area with a side length of {@code brushSize * 2 + 1}.
+ */
+public class VoxelBrush extends AbstractBrush
+{
 
-public class VoxelBrush extends AbstractBrush {
-
-    public VoxelBrush() {
+    /**
+     * Creates a new {@link VoxelBrush}.
+     */
+    public VoxelBrush()
+    {
         super("voxel", BrushPartType.SHAPE);
     }
 
     @Override
-    public ExecutionResult run(Player player, BrushVars args) {
+    public ExecutionResult run(Player player, BrushVars args)
+    {
         int size = (int) Math.floor(args.get(BrushKeys.BRUSH_SIZE, Double.class).get());
-        Shape s = new CuboidShape(size*2+1, size*2+1, size*2+1, new Vector3i(size, size, size));
+        Shape s = new CuboidShape(size * 2 + 1, size * 2 + 1, size * 2 + 1, new Vector3i(size, size, size));
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
         return ExecutionResult.continueExecution();
     }

@@ -23,29 +23,51 @@
  */
 package com.voxelplugineering.voxelsniper.brush;
 
-
+/**
+ * Represents the result of a brushes execution and whether the brush chain's execution should
+ * continue.
+ */
 public class ExecutionResult
 {
-    
+
     private static final ExecutionResult ABORT = new ExecutionResult(false);
     private static final ExecutionResult CONTINUE = new ExecutionResult(true);
 
-    public static ExecutionResult abortExecution() {
+    /**
+     * Gets an {@link ExecutionResult} which will abort brush chain execution.
+     * 
+     * @return The execution result
+     */
+    public static ExecutionResult abortExecution()
+    {
         return ABORT;
     }
 
-    public static ExecutionResult continueExecution() {
+    /**
+     * Gets an {@link ExecutionResult} which will continue brush chain execution.
+     * 
+     * @return The execution result
+     */
+    public static ExecutionResult continueExecution()
+    {
         return CONTINUE;
     }
-    
+
     private final boolean cont;
-    
-    private ExecutionResult(boolean c) {
+
+    private ExecutionResult(boolean c)
+    {
         this.cont = c;
     }
-    
-    public boolean shouldContinue() {
+
+    /**
+     * Gets whether the execution should continue.
+     * 
+     * @return Should continue
+     */
+    public boolean shouldContinue()
+    {
         return this.cont;
     }
-    
+
 }

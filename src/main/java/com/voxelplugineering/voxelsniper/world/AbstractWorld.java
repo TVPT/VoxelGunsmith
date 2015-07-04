@@ -160,7 +160,7 @@ public abstract class AbstractWorld<T> extends WeakWrapper<T> implements World
                         Optional<Block> block = getBlock(ox, oy, oz);
                         if (!block.isPresent())
                         {
-                            shape.unset(x, y, z, false);
+                            mat.unset(x, y, z, false);
                         } else
                         {
                             mat.setMaterial(x, y, z, false, block.get().getMaterial());

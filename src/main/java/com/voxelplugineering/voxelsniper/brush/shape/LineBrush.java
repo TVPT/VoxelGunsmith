@@ -35,10 +35,16 @@ import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
 
-
+/**
+ * Defines a region which is a line between the point specified by the alternate action to the
+ * target block.
+ */
 public class LineBrush extends AbstractBrush
 {
 
+    /**
+     * Creates a new {@link LineBrush}.
+     */
     public LineBrush()
     {
         super("line", BrushPartType.SHAPE);
@@ -50,19 +56,21 @@ public class LineBrush extends AbstractBrush
         BrushAction action = args.get(BrushKeys.ACTION, BrushAction.class).get();
         Optional<Block> target = args.get(BrushKeys.TARGET_BLOCK, Block.class);
         Location loc = target.get().getLocation();
-        if(action == BrushAction.PRIMARY) {
+        if (action == BrushAction.PRIMARY)
+        {
             args.set(BrushContext.of(this), BrushKeys.POINT_A, loc);
             player.sendMessage("Point A set to (" + loc.getFlooredX() + ", " + loc.getFlooredY() + ", " + loc.getFlooredZ() + ")");
             player.sendMessage("Use the alternate action to draw lines from this point now.");
             return ExecutionResult.abortExecution();
         }
         //if its not the alt action we need to create the line
-        if(!args.has(BrushKeys.POINT_A)) {
+        if (!args.has(BrushKeys.POINT_A))
+        {
             player.sendMessage("You must select a starting point first with the primary action.");
             return ExecutionResult.abortExecution();
         }
         Location pointB = args.get(BrushKeys.POINT_A, Location.class).get();
-        
+        //TODO
         return ExecutionResult.continueExecution();
     }
 

@@ -34,15 +34,23 @@ import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.csg.EllipsoidShape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
+/**
+ * The ball brush, defines a spherical region for later brushes to use.
+ */
+public class BallBrush extends AbstractBrush
+{
 
-public class BallBrush extends AbstractBrush {
-
-    public BallBrush() {
+    /**
+     * Creates a new {@link BallBrush}.
+     */
+    public BallBrush()
+    {
         super("ball", BrushPartType.SHAPE);
     }
 
     @Override
-    public ExecutionResult run(Player player, BrushVars args) {
+    public ExecutionResult run(Player player, BrushVars args)
+    {
         double size = args.get(BrushKeys.BRUSH_SIZE, Double.class).get();
         Shape s = new EllipsoidShape(size, size, size, new Vector3i(size, size, size));
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);

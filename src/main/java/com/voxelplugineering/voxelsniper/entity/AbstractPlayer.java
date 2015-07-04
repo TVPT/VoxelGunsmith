@@ -71,6 +71,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
      * 
      * @param player the player object
      * @param parentBrushManager The parent brush manager
+     * @param context The context
      */
     protected AbstractPlayer(T player, BrushManager parentBrushManager, Context context)
     {
@@ -84,6 +85,12 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         this.history = new CommonUndoQueue(this);
     }
 
+    /**
+     * Creates a new {@link AbstractPlayer} with a weak reference to the player.
+     * 
+     * @param player the player object
+     * @param context The context
+     */
     protected AbstractPlayer(T player, Context context)
     {
         super(player);
@@ -96,6 +103,9 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         this.history = new CommonUndoQueue(this);
     }
 
+    /**
+     * Initializes the player.
+     */
     public void init()
     {
         try
@@ -156,11 +166,14 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         String fullBrush = this.conf.get("defaultBrush", String.class).or("voxel material");
         fullBrush = getAliasHandler().getRegistry("brush").get().expand(fullBrush);
         BrushChain brush = new BrushChain(fullBrush);
-        for (String b : fullBrush.split(" ")) {
+        for (String b : fullBrush.split(" "))
+        {
             Optional<Brush> br = getBrushManager().getBrush(b);
-            if (br.isPresent()) {
+            if (br.isPresent())
+            {
                 brush.chain(br.get());
-            } else {
+            } else
+            {
                 sendMessage("Could not find brush: " + b);
             }
         }

@@ -23,11 +23,21 @@
  */
 package com.voxelplugineering.voxelsniper.brush;
 
-
+/**
+ * Represents the various actions that a player may use to trigger the execution of their brushes.
+ */
 public enum BrushAction
 {
 
+    /**
+     * The primary action is use for most standard operations.
+     */
     PRIMARY,
+    /**
+     * The alternate action is used for brushes with secondary functions. If a brush has no
+     * secondary function then it is used to cause the target block to be offset by one to be the
+     * block before the target block in the ray.
+     */
     ALTERNATE;
-    
+
 }

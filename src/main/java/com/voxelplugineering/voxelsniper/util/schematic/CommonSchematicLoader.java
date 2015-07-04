@@ -35,7 +35,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.service.command.MessageReceiver;
-import com.voxelplugineering.voxelsniper.service.logging.Logger;
 import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;

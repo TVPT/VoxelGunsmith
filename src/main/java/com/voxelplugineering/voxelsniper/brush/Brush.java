@@ -28,7 +28,7 @@ import com.voxelplugineering.voxelsniper.service.persistence.DataSerializable;
 
 /**
  * Represents a brush which may be run, only one brush instance should exist and be shared among all
- * users. A users individual runtime settings are stored within the {@link RuntimeState}.
+ * users. A users individual runtime settings are stored within the {@link BrushVars}.
  */
 public interface Brush extends DataSerializable
 {

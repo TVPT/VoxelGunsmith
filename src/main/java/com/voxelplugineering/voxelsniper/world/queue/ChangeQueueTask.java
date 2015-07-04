@@ -87,7 +87,8 @@ public class ChangeQueueTask implements Runnable
             while (p.hasPendingChanges() && actual < allocation)
             {
                 Optional<ChangeQueue> change = p.getNextPendingChange();
-                if(!change.isPresent()) {
+                if (!change.isPresent())
+                {
                     break;
                 }
                 try

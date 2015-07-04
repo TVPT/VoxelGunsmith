@@ -62,7 +62,6 @@ public class AnnotationCacheHelper
         {
             return;
         }
-        //System.out.println("Building cache for " + target.getName());
         Map<Class, List<Method>> anno = new MapMaker().weakKeys().makeMap();
         for (Method m : target.getMethods())
         {
@@ -72,7 +71,6 @@ public class AnnotationCacheHelper
                 {
                     anno.put(a.annotationType(), Lists.<Method>newArrayList());
                 }
-                //System.out.println("\t" + a.annotationType().getSimpleName() + " - " + m.toGenericString());
                 anno.get(a.annotationType()).add(m);
             }
         }

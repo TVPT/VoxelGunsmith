@@ -25,18 +25,11 @@ package com.voxelplugineering.voxelsniper.util.defaults;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushManager;
-import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.effect.BlendBrush;
 import com.voxelplugineering.voxelsniper.brush.effect.MaterialBrush;
 import com.voxelplugineering.voxelsniper.brush.mask.MaterialMaskBrush;
@@ -48,11 +41,6 @@ import com.voxelplugineering.voxelsniper.brush.shape.EllipsoidBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.SnipeBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.VoxelBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.VoxelDiscBrush;
-import com.voxelplugineering.voxelsniper.shape.Shape;
-import com.voxelplugineering.voxelsniper.world.Block;
-import com.voxelplugineering.voxelsniper.world.Chunk;
-import com.voxelplugineering.voxelsniper.world.biome.Biome;
-import com.voxelplugineering.voxelsniper.world.material.Material;
 
 /**
  * In lieu of having flat file brushes this will temporarily serve as a builder

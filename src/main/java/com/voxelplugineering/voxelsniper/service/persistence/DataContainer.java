@@ -118,7 +118,7 @@ public interface DataContainer extends DataView
 
     /**
      * Writes a type extending {@link DataSerializable} to the given path. The type is written as if
-     * by calling {@link DataSerializable#toContainer()} and passing it to {@link #writeContainer}.
+     * by calling {@link DataSerializable#toContainer()} and passing it to {@link #setContainer}.
      * 
      * @param path The path
      * @param data The value
@@ -133,7 +133,14 @@ public interface DataContainer extends DataView
      * @param data The value
      */
     void setContainer(String path, DataContainer data);
-    
+
+    /**
+     * Gets a {@link DataContainer} from the given path, or if there is no DataContainer found at
+     * the path a new container is created and set at the path.
+     * 
+     * @param path The path
+     * @return The DataContainer
+     */
     DataContainer getOrCreateContainer(String path);
 
     /**

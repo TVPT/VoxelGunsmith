@@ -35,35 +35,46 @@ import com.voxelplugineering.voxelsniper.shape.csg.CylinderShape;
 import com.voxelplugineering.voxelsniper.util.Direction;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
+/**
+ * A shape brush which defines a 2D ellipse.
+ */
+public class EllipseBrush extends AbstractBrush
+{
 
-public class EllipseBrush extends AbstractBrush {
-
-    public EllipseBrush() {
+    /**
+     * Creates a new {@link EllipseBrush}.
+     */
+    public EllipseBrush()
+    {
         super("ellipse", BrushPartType.SHAPE);
     }
 
     @Override
-    public ExecutionResult run(Player player, BrushVars args) {
+    public ExecutionResult run(Player player, BrushVars args)
+    {
         double rx = args.get(BrushKeys.RADIUS_X, Double.class).get();
         double ry = args.get(BrushKeys.RADIUS_Y, Double.class).get();
         boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(false);
         Shape s = null;
-        if(face) {
+        if (face)
+        {
             Direction d = args.get(BrushKeys.TARGET_FACE, Direction.class).or(Direction.UP);
-            switch(d) {
-                case NORTH:
-                case SOUTH:
-                    s = new CylinderShape(rx, 1, ry, new Vector3i(rx, 0, ry), Direction.SOUTH);
-                    break;
-                case EAST:
-                case WEST:
-                    s = new CylinderShape(rx, 1, ry, new Vector3i(rx, 0, ry), Direction.EAST);
-                    break;
-                default:
-                    s = new CylinderShape(rx, 1, ry, new Vector3i(rx, 0, ry));
-                    break;
+            switch (d)
+            {
+            case NORTH:
+            case SOUTH:
+                s = new CylinderShape(rx, 1, ry, new Vector3i(rx, 0, ry), Direction.SOUTH);
+                break;
+            case EAST:
+            case WEST:
+                s = new CylinderShape(rx, 1, ry, new Vector3i(rx, 0, ry), Direction.EAST);
+                break;
+            default:
+                s = new CylinderShape(rx, 1, ry, new Vector3i(rx, 0, ry));
+                break;
             }
-        } else {
+        } else
+        {
             s = new CylinderShape(rx, 1, ry, new Vector3i(rx, 0, ry));
         }
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);

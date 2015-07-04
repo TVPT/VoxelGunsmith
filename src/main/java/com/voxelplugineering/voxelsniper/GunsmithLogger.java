@@ -34,20 +34,36 @@ import com.voxelplugineering.voxelsniper.service.logging.LogLevel;
 import com.voxelplugineering.voxelsniper.service.logging.Logger;
 
 /**
- * A standard logging distributor.
+ * A logging distributor which handles the registration of child loggers and the distribution of all
+ * logged messages to these child loggers. If no loggers are registered then the logged messages are
+ * passed to standard out instread.
  */
-public class GunsmithLogger
+public class GunsmithLogger implements Logger
 {
+
     private static GunsmithLogger INSTANCE = null;
-    
-    public static GunsmithLogger getLogger() {
-        if(INSTANCE == null) {
+
+    /**
+     * Gets the global logger for gunsmith.
+     * 
+     * @return The gunsmith logger.
+     */
+    public static GunsmithLogger getLogger()
+    {
+        if (INSTANCE == null)
+        {
             INSTANCE = new GunsmithLogger();
         }
         return INSTANCE;
     }
-    
-    public static void setLogger(GunsmithLogger logger) {
+
+    /**
+     * Overrides the global logger with the given logger.
+     * 
+     * @param logger The new logger
+     */
+    public static void setLogger(GunsmithLogger logger)
+    {
         INSTANCE = logger;
     }
 
@@ -65,16 +81,19 @@ public class GunsmithLogger
         this.loggers = Maps.newHashMap();
     }
 
+    @Override
     public LogLevel getLevel()
     {
         return this.root;
     }
 
+    @Override
     public void setLevel(LogLevel level)
     {
         this.root = level;
     }
 
+    @Override
     public void log(LogLevel level, String msg)
     {
         if (msg == null || msg.isEmpty() || !level.isGEqual(this.root))
@@ -92,11 +111,7 @@ public class GunsmithLogger
         }
     }
 
-    public Collection<Logger> getLoggers()
-    {
-        return this.loggers.values();
-    }
-
+    @Override
     public void debug(String msg)
     {
         if (msg == null || msg.isEmpty() || !LogLevel.DEBUG.isGEqual(this.root))
@@ -110,6 +125,7 @@ public class GunsmithLogger
         }
     }
 
+    @Override
     public void info(String msg)
     {
         if (msg == null || msg.isEmpty() || !LogLevel.INFO.isGEqual(this.root))
@@ -127,6 +143,7 @@ public class GunsmithLogger
         }
     }
 
+    @Override
     public void warn(String msg)
     {
         if (msg == null || msg.isEmpty() || !LogLevel.WARN.isGEqual(this.root))
@@ -144,6 +161,7 @@ public class GunsmithLogger
         }
     }
 
+    @Override
     public void error(String msg)
     {
         if (msg == null || msg.isEmpty())
@@ -161,7 +179,8 @@ public class GunsmithLogger
         }
     }
 
-    public void error(Exception e)
+    @Override
+    public void error(Throwable e)
     {
         if (e == null)
         {
@@ -178,6 +197,7 @@ public class GunsmithLogger
         }
     }
 
+    @Override
     public void error(Throwable e, String msg)
     {
         if (msg == null || msg.isEmpty() || e == null)
@@ -196,7 +216,14 @@ public class GunsmithLogger
         }
     }
 
-    public void registerLogger(Logger logger, String name)
+    /**
+     * Registers a new child logger. Logged messages will be distributed to all registered child
+     * loggers.
+     * 
+     * @param name The name of the logger
+     * @param logger The logger
+     */
+    public void registerLogger(String name, Logger logger)
     {
         checkNotNull(logger, "Logger cannot be null!");
         checkNotNull(name, "Name cannot be null!");
@@ -204,11 +231,26 @@ public class GunsmithLogger
         this.loggers.put(name, logger);
     }
 
+    /**
+     * Removes the given logger by name.
+     * 
+     * @param name The name of the logger to remove
+     */
     public void removeLogger(String name)
     {
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         this.loggers.remove(name);
+    }
+
+    /**
+     * Gets all registered child loggers.
+     * 
+     * @return The registered loggers
+     */
+    public Collection<Logger> getLoggers()
+    {
+        return this.loggers.values();
     }
 
 }

@@ -42,6 +42,14 @@ import com.voxelplugineering.voxelsniper.world.material.Material;
 public class RayTrace
 {
 
+    private static Direction dirFromDiff(int tx, int ty, int tz, int lx, int ly, int lz)
+    {
+        int modx = Integer.signum(tx - lx);
+        int mody = Integer.signum(ty - ly);
+        int modz = Integer.signum(tz - lz);
+        return Direction.of(modx, mody, modz);
+    }
+
     /**
      * The starting point from which the ray is cast.
      */
@@ -52,8 +60,8 @@ public class RayTrace
     private World world;
 
     /**
-     * A set of materials which are treated as non-solid to the ray (eg. the ray
-     * passes through them without stopping)
+     * A set of materials which are treated as non-solid to the ray (eg. the ray passes through them
+     * without stopping)
      */
     private List<Material> traversalBlocks = Lists.newArrayList();
 
@@ -106,8 +114,7 @@ public class RayTrace
     private Vector3d playerEyeOffset;
 
     /**
-     * Creates a new raytrace to reference with the given location yaw and
-     * pitch.
+     * Creates a new raytrace to reference with the given location yaw and pitch.
      * 
      * @param origin the origin location
      * @param yaw the yaw
@@ -214,7 +221,13 @@ public class RayTrace
         return this.targetBlock;
     }
 
-    public Direction getTargetFace() {
+    /**
+     * Returns the block face traversed while the ray was entering the target block.
+     * 
+     * @return The target block face
+     */
+    public Direction getTargetFace()
+    {
         return this.targetDirection;
     }
 
@@ -232,14 +245,18 @@ public class RayTrace
         return this.lastBlock;
     }
 
+    /**
+     * Gets the last block face traversed before the last block.
+     * 
+     * @return The last face
+     */
     public Direction getLastFace()
     {
         return this.lastDirection;
     }
 
     /**
-     * Returns the length of the last ray (the distance from the origin to the
-     * target block).
+     * Returns the length of the last ray (the distance from the origin to the target block).
      * 
      * @return the length
      */
@@ -353,13 +370,6 @@ public class RayTrace
             // continue
             step();
         }
-    }
-
-    private Direction dirFromDiff(int tx, int ty, int tz, int lx, int ly, int lz) {
-        int modx = Integer.signum(tx - lx);
-        int mody = Integer.signum(ty - ly);
-        int modz = Integer.signum(tz - lz);
-        return Direction.of(modx, mody, modz);
     }
 
     /**

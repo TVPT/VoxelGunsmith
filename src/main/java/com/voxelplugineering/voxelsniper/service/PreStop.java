@@ -28,11 +28,22 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.voxelplugineering.voxelsniper.ServiceManager;
+
+/**
+ * Annotates a method which will be called by the {@link ServiceManager} prior to stopping the
+ * services.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface PreStop
 {
-    
+
+    /**
+     * Gets the priority.
+     * 
+     * @return The priority
+     */
     int priority() default 1000;
 
 }

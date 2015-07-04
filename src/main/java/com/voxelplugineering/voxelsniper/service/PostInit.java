@@ -28,11 +28,22 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.voxelplugineering.voxelsniper.ServiceManager;
+
+/**
+ * Annotates a method which will be called by the {@link ServiceManager} immediately after the
+ * services have been initialized.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface PostInit
 {
 
+    /**
+     * Gets the priority.
+     * 
+     * @return The priority
+     */
     int priority() default 1000;
-    
+
 }

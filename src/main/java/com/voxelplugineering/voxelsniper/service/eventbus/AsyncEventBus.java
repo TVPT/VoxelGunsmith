@@ -255,7 +255,8 @@ public class AsyncEventBus extends AbstractService implements EventBus
                 s.getMethod().invoke(s.getContainer(), event);
             } catch (Exception e)
             {
-                GunsmithLogger.getLogger().error(e, "Error executing event handler in " + s.getContainer().getClass().getName() + " " + s.getMethod().getName());
+                GunsmithLogger.getLogger().error(e,
+                        "Error executing event handler in " + s.getContainer().getClass().getName() + " " + s.getMethod().getName());
                 continue;
             }
         }
@@ -277,11 +278,13 @@ public class AsyncEventBus extends AbstractService implements EventBus
                 this.executor.submit(new EventCallable(event, s)).get();
             } catch (InterruptedException e)
             {
-                GunsmithLogger.getLogger().error(e, "Error executing event handler in " + s.getContainer().getClass().getName() + " " + s.getMethod().getName());
+                GunsmithLogger.getLogger().error(e,
+                        "Error executing event handler in " + s.getContainer().getClass().getName() + " " + s.getMethod().getName());
                 continue;
             } catch (ExecutionException e)
             {
-                GunsmithLogger.getLogger().error(e, "Error executing event handler in " + s.getContainer().getClass().getName() + " " + s.getMethod().getName());
+                GunsmithLogger.getLogger().error(e,
+                        "Error executing event handler in " + s.getContainer().getClass().getName() + " " + s.getMethod().getName());
                 continue;
             }
         }

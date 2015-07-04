@@ -27,19 +27,40 @@ import java.util.Map;
 
 import com.google.common.collect.MapMaker;
 
-public abstract class BrushContext {
+/**
+ * Represents the context of variables for use within a players {@link BrushVars}.
+ */
+public abstract class BrushContext
+{
 
+    /**
+     * The global context. This is the context for settings which do not change between brush
+     * executions or brush selections.
+     */
     public static final BrushContext GLOBAL = new Fixed("global");
+    /**
+     * The runtime context. This is the context for variables used during the execution of a brush
+     * chain, as well as the information about the ray trace.
+     */
     public static final BrushContext RUNTIME = new Fixed("runtime");
-    
+
     private static final Map<com.voxelplugineering.voxelsniper.brush.Brush, BrushContext.Brush> BRUSHES;
-    
-    static {
+
+    static
+    {
         BRUSHES = new MapMaker().weakKeys().makeMap();
     }
-    
-    public static BrushContext of(com.voxelplugineering.voxelsniper.brush.Brush brush) {
-        if(BRUSHES.containsKey(brush)) {
+
+    /**
+     * Gets a brush context for the given brush.
+     * 
+     * @param brush The brush
+     * @return The context for the given brush
+     */
+    public static BrushContext of(com.voxelplugineering.voxelsniper.brush.Brush brush)
+    {
+        if (BRUSHES.containsKey(brush))
+        {
             return BRUSHES.get(brush);
         }
         Brush c = new Brush(brush);
@@ -47,35 +68,63 @@ public abstract class BrushContext {
         return c;
     }
 
-    public static class Fixed extends BrushContext {
+    /**
+     * A simple named context.
+     */
+    public static class Fixed extends BrushContext
+    {
 
         private final String name;
-        
-        public Fixed(String name) {
+
+        /**
+         * Creates a new {@link Fixed} context.
+         * 
+         * @param name The context name.
+         */
+        public Fixed(String name)
+        {
             this.name = name;
         }
-        
+
         @Override
-        public String toString() {
+        public String toString()
+        {
             return this.name;
         }
-        
+
     }
 
-    public static class Brush extends BrushContext {
+    /**
+     * A brush context.
+     */
+    public static class Brush extends BrushContext
+    {
 
         private final com.voxelplugineering.voxelsniper.brush.Brush brush;
 
-        public Brush(com.voxelplugineering.voxelsniper.brush.Brush brush) {
+        /**
+         * Creates a new {@link Brush} context wrapping the given brush.
+         * 
+         * @param brush The brush
+         */
+        public Brush(com.voxelplugineering.voxelsniper.brush.Brush brush)
+        {
             this.brush = brush;
         }
-        
-        public com.voxelplugineering.voxelsniper.brush.Brush getBrush() {
+
+        /**
+         * Gets the brush wrapped by this context.
+         * 
+         * @return The brush
+         */
+        public com.voxelplugineering.voxelsniper.brush.Brush getBrush()
+        {
             return this.brush;
         }
-        
+
         @Override
-        public String toString() {
+        public String toString()
+        {
             return this.brush.getName();
         }
     }

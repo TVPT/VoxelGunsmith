@@ -87,12 +87,22 @@ public class ServiceManager implements Contextable
         this.state = State.STOPPED;
     }
 
+    /**
+     * Gets the context of this service manager.
+     * 
+     * @return The context
+     */
     public Context getContext()
     {
         return this.context;
     }
 
-    public boolean isInitialized()
+    /**
+     * Gets whether this service manager has completed the initialization stage and is running.
+     * 
+     * @return Is running
+     */
+    public boolean isRunning()
     {
         return this.state == State.RUNNING;
     }
@@ -158,8 +168,14 @@ public class ServiceManager implements Contextable
         List<TargettedMethod> inits = new ArrayList<TargettedMethod>();
         for (Map.Entry<Class<? extends Contextable>, List<TargettedMethod>> entry : this.inithooks.entrySet())
         {
-            if (!this.context.has(entry.getKey())) continue;
-            if (this.builders.get(entry.getKey()).phase == InitPhase.EARLY) continue;
+            if (!this.context.has(entry.getKey()))
+            {
+                continue;
+            }
+            if (this.builders.get(entry.getKey()).phase == InitPhase.EARLY)
+            {
+                continue;
+            }
             inits.addAll(entry.getValue());
 
         }
@@ -269,13 +285,19 @@ public class ServiceManager implements Contextable
         Class<?> cls = serviceProvider.getClass();
         for (Method m : cls.getDeclaredMethods())
         {
-            if (!m.isAnnotationPresent(Builder.class) || m.getParameterTypes().length != 1
-                    || !Context.class.isAssignableFrom(m.getParameterTypes()[0]))
+            if (!m.isAnnotationPresent(Builder.class))
+            {
+                continue;
+            }
+            if (m.getParameterTypes().length != 1 || !Context.class.isAssignableFrom(m.getParameterTypes()[0]))
             {
                 continue;
             }
             Builder builder = m.getAnnotation(Builder.class);
-            if (!m.getReturnType().isAssignableFrom(builder.target())) continue;
+            if (!m.getReturnType().isAssignableFrom(builder.target()))
+            {
+                continue;
+            }
             this.builders.put(builder.target(), new TargettedMethod(m, builder, serviceProvider));
         }
     }
@@ -285,7 +307,10 @@ public class ServiceManager implements Contextable
         Class<?> cls = serviceProvider.getClass();
         for (Method m : cls.getDeclaredMethods())
         {
-            if (!m.isAnnotationPresent(InitHook.class)) continue;
+            if (!m.isAnnotationPresent(InitHook.class))
+            {
+                continue;
+            }
             InitHook builder = m.getAnnotation(InitHook.class);
             if (m.getParameterTypes().length != 2 || !builder.target().isAssignableFrom(m.getParameterTypes()[1])
                     || !Context.class.isAssignableFrom(m.getParameterTypes()[0]))

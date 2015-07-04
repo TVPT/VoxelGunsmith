@@ -24,7 +24,6 @@
 package com.voxelplugineering.voxelsniper.config;
 
 import com.voxelplugineering.voxelsniper.service.config.ConfigurationContainer;
-import com.voxelplugineering.voxelsniper.service.logging.Logger;
 
 /**
  * Default base configuration values.

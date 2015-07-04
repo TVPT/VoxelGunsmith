@@ -48,10 +48,13 @@ public class ContextTestUtil
      */
     public static Context create(Configuration conf)
     {
-        Context c = new Context();  
+        Context c = new Context();
         if (conf != null)
         {
-            if (!conf.isInitialized()) conf.start();
+            if (!conf.isInitialized())
+            {
+                conf.start();
+            }
             c.put(conf);
         } else
         {

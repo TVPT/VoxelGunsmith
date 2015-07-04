@@ -35,7 +35,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
-import com.voxelplugineering.voxelsniper.service.logging.Logger;
 
 /**
  * A data source which serializes data to a file as Json.

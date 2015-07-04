@@ -94,6 +94,16 @@ public class Context
         return obj.get();
     }
 
+    /**
+     * Gets a {@link Contextable} object from this context and throws an
+     * {@link IllegalArgumentException} if the object is not found within the context. If the object
+     * is found and the object is a service then the given service is registered as a dependent
+     * service of the retrieved object.
+     * 
+     * @param cls The requested type
+     * @param serv The servers to set as dependent
+     * @return The object
+     */
     public <T extends Contextable> T getRequired(Class<T> cls, Service serv)
     {
         Optional<T> attempt = get(cls);

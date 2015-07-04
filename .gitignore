@@ -27,3 +27,4 @@ dependency-reduced-pom.xml
 .idea/
 
 #Specific files to the project
+*.checkstyle

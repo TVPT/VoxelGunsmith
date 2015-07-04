@@ -32,38 +32,48 @@ import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
-import com.voxelplugineering.voxelsniper.shape.csg.CylinderShape;
 import com.voxelplugineering.voxelsniper.util.Direction;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
+/**
+ * Defines a square 2d region.
+ */
+public class VoxelDiscBrush extends AbstractBrush
+{
 
-public class VoxelDiscBrush extends AbstractBrush {
-
-    public VoxelDiscBrush() {
+    /**
+     * Creates a new {@link VoxelDiscBrush}.
+     */
+    public VoxelDiscBrush()
+    {
         super("voxeldisc", BrushPartType.SHAPE);
     }
 
     @Override
-    public ExecutionResult run(Player player, BrushVars args) {
+    public ExecutionResult run(Player player, BrushVars args)
+    {
         int size = (int) Math.floor(args.get(BrushKeys.BRUSH_SIZE, Double.class).get());
         boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(false);
         Shape s = null;
-        if(face) {
+        if (face)
+        {
             Direction d = args.get(BrushKeys.TARGET_FACE, Direction.class).or(Direction.UP);
-            switch(d) {
-                case NORTH:
-                case SOUTH:
-                    s = new CuboidShape(size * 2 + 1, size * 2 + 1, 1, new Vector3i(size, size, 0));
-                    break;
-                case EAST:
-                case WEST:
-                    s = new CuboidShape(1, size * 2 + 1, size * 2 + 1, new Vector3i(0, size, size));
-                    break;
-                default:
-                    s = new CuboidShape(size * 2 + 1, 1, size * 2 + 1, new Vector3i(size, 0, size));
-                    break;
+            switch (d)
+            {
+            case NORTH:
+            case SOUTH:
+                s = new CuboidShape(size * 2 + 1, size * 2 + 1, 1, new Vector3i(size, size, 0));
+                break;
+            case EAST:
+            case WEST:
+                s = new CuboidShape(1, size * 2 + 1, size * 2 + 1, new Vector3i(0, size, size));
+                break;
+            default:
+                s = new CuboidShape(size * 2 + 1, 1, size * 2 + 1, new Vector3i(size, 0, size));
+                break;
             }
-        } else {
+        } else
+        {
             s = new CuboidShape(size * 2 + 1, 1, size * 2 + 1, new Vector3i(size, 0, size));
         }
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);

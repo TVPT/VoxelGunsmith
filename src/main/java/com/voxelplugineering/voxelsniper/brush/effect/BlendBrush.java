@@ -23,11 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.brush.effect;
 
-import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
@@ -44,9 +42,16 @@ import com.voxelplugineering.voxelsniper.world.World;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
+/**
+ * The blend brush. An effect brush which performs a 'blend' operation by setting blocks in the
+ * defined region to the mode material of the surrounding materials.
+ */
 public class BlendBrush extends AbstractBrush
 {
 
+    /**
+     * Creates a new {@link BlendBrush}.
+     */
     public BlendBrush()
     {
         super("blend", BrushPartType.EFFECT);
@@ -56,10 +61,11 @@ public class BlendBrush extends AbstractBrush
     public ExecutionResult run(Player player, BrushVars args)
     {
         boolean excludeFluid = true;
-        if(args.has(BrushKeys.EXCLUDE_FLUID)) {
+        if (args.has(BrushKeys.EXCLUDE_FLUID))
+        {
             excludeFluid = args.get(BrushKeys.EXCLUDE_FLUID, Boolean.class).get();
         }
-        
+
         Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
         if (!s.isPresent())
         {
@@ -123,16 +129,18 @@ public class BlendBrush extends AbstractBrush
                             n = e.getValue();
                         }
                     }
-                    
+
                     boolean tie = false;
 
                     for (Map.Entry<Material, Integer> e : mats.entrySet())
                     {
-                        if(e.getValue() == n && !e.getKey().equals(winner) && !(excludeFluid && e.getKey().isLiquid())) {
+                        if (e.getValue() == n && !e.getKey().equals(winner) && !(excludeFluid && e.getKey().isLiquid()))
+                        {
                             tie = true;
                         }
                     }
-                    if(!tie) {
+                    if (!tie)
+                    {
                         ms.setMaterial(x, y, z, false, winner);
                     }
                 }

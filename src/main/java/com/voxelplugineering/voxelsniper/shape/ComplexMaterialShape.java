@@ -58,7 +58,13 @@ public class ComplexMaterialShape implements MaterialShape
     {
         checkNotNull(shape);
         checkNotNull(defaultMaterial, "Default material cannot be null!");
-        this.shape = new ComplexShape(shape);
+        if (shape instanceof ComplexShape)
+        {
+            this.shape = shape;
+        } else
+        {
+            this.shape = new ComplexShape(shape);
+        }
         this.materialDictionary = HashBiMap.create();
         this.inverseDictionary = this.materialDictionary.inverse();
         this.materialsA = new byte[shape.getWidth() * shape.getLength() * shape.getHeight()];

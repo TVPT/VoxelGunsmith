@@ -37,22 +37,32 @@ import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
+/**
+ * An effect brush which sets all set positions of the shape to a material.
+ */
+public class MaterialBrush extends AbstractBrush
+{
 
-public class MaterialBrush extends AbstractBrush {
-
-    public MaterialBrush() {
+    /**
+     * Creates a new {@link MaterialBrush}.
+     */
+    public MaterialBrush()
+    {
         super("material", BrushPartType.EFFECT);
     }
 
     @Override
-    public ExecutionResult run(Player player, BrushVars args) {
+    public ExecutionResult run(Player player, BrushVars args)
+    {
         Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
-        if(!s.isPresent()) {
+        if (!s.isPresent())
+        {
             player.sendMessage("You must have at least one shape brush before your material brush.");
             return ExecutionResult.abortExecution();
         }
         Optional<Material> m = args.get(BrushKeys.MATERIAL, Material.class);
-        if(!m.isPresent()) {
+        if (!m.isPresent())
+        {
             player.sendMessage("You must select a material.");
             return ExecutionResult.abortExecution();
         }

@@ -28,10 +28,20 @@ package com.voxelplugineering.voxelsniper.util.math;
  * pitch, and roll.
  * 
  */
-public class Rot3d {
+public class Rot3d
+{
+
     private double[][] r = new double[3][3];
 
-    public Rot3d(double yaw, double pitch, double roll) {
+    /**
+     * Sets up a new {@link Rot3d} utility with the given yaw, pitch, and roll.
+     * 
+     * @param yaw The yaw
+     * @param pitch The pitch
+     * @param roll The roll
+     */
+    public Rot3d(double yaw, double pitch, double roll)
+    {
         double cos1 = Math.cos(yaw);
         double sin1 = Math.sin(yaw);
 
@@ -53,19 +63,26 @@ public class Rot3d {
 
     }
 
-    public Rot3d(Vector3i axis) {
-        this(Math.atan2(axis.getX(), axis.getZ()), Math.asin(axis.getY()/axis.length()), 0);
+    /**
+     * Sets up a new {@link Rot3d} utility with the given vector defining the rotation.
+     * 
+     * @param axis The rotation vector
+     */
+    public Rot3d(Vector3i axis)
+    {
+        this(Math.atan2(axis.getX(), axis.getZ()), Math.asin(axis.getY() / axis.length()), 0);
     }
 
     /**
      * Performs the rotation operation on the given x, y, and z coordinates relative to the origin.
      * 
-     * @param x
-     * @param y
-     * @param z
-     * @return the final position
+     * @param x The X position
+     * @param y The Y position
+     * @param z The Z position
+     * @return The final position
      */
-    public double[] doRotation(double x, double y, double z) {
+    public double[] doRotation(double x, double y, double z)
+    {
         double[] p = new double[3];
         p[0] = this.r[0][0] * x + this.r[0][1] * y + this.r[0][2] * z;
         p[1] = this.r[1][0] * x + this.r[1][1] * y + this.r[1][2] * z;
@@ -76,10 +93,11 @@ public class Rot3d {
     /**
      * Performs the rotation operation on the given x, y, and z coordinates relative to the origin.
      * 
-     * @param xyz
-     * @return the final position
+     * @param xyz The position as an array
+     * @return The final position
      */
-    public double[] doRotation(double[] xyz) {
+    public double[] doRotation(double[] xyz)
+    {
         double[] p = new double[3];
         p[0] = this.r[0][0] * xyz[0] + this.r[0][1] * xyz[1] + this.r[0][2] * xyz[2];
         p[1] = this.r[1][0] * xyz[0] + this.r[1][1] * xyz[1] + this.r[1][2] * xyz[2];
@@ -87,7 +105,14 @@ public class Rot3d {
         return p;
     }
 
-    public float[] doRotation(float[] xyz) {
+    /**
+     * Performs the rotation operation on the given x, y, and z coordinates relative to the origin.
+     * 
+     * @param xyz The position as an array
+     * @return The final position
+     */
+    public float[] doRotation(float[] xyz)
+    {
         float[] p = new float[3];
         p[0] = (float) (this.r[0][0] * xyz[0] + this.r[0][1] * xyz[1] + this.r[0][2] * xyz[2]);
         p[1] = (float) (this.r[1][0] * xyz[0] + this.r[1][1] * xyz[1] + this.r[1][2] * xyz[2]);

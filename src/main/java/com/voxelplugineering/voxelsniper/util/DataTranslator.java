@@ -29,59 +29,79 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 
-public class DataTranslator {
+/**
+ * A utility which handles translating data from one class to another if the transition requires
+ * additional work than casting.
+ */
+public class DataTranslator
+{
 
     private static Map<Class<?>, Map<Class<?>, Function<Object, Object>>> TRANSLATORS;
 
-    static {
+    static
+    {
         TRANSLATORS = Maps.newHashMap();
         Map<Class<?>, Function<Object, Object>> string = Maps.newHashMap();
-        string.put(Byte.class, new Function<Object, Object>() {
+        string.put(Byte.class, new Function<Object, Object>()
+        {
 
             @Override
-            public Object apply(Object s) {
+            public Object apply(Object s)
+            {
                 return Byte.valueOf((String) s);
             }
         });
-        string.put(Short.class, new Function<Object, Object>() {
+        string.put(Short.class, new Function<Object, Object>()
+        {
 
             @Override
-            public Object apply(Object s) {
+            public Object apply(Object s)
+            {
                 return Short.valueOf((String) s);
             }
         });
-        string.put(Integer.class, new Function<Object, Object>() {
+        string.put(Integer.class, new Function<Object, Object>()
+        {
 
             @Override
-            public Object apply(Object s) {
+            public Object apply(Object s)
+            {
                 return Integer.valueOf((String) s);
             }
         });
-        string.put(Long.class, new Function<Object, Object>() {
+        string.put(Long.class, new Function<Object, Object>()
+        {
 
             @Override
-            public Object apply(Object s) {
+            public Object apply(Object s)
+            {
                 return Long.valueOf((String) s);
             }
         });
-        string.put(Float.class, new Function<Object, Object>() {
+        string.put(Float.class, new Function<Object, Object>()
+        {
 
             @Override
-            public Object apply(Object s) {
+            public Object apply(Object s)
+            {
                 return Float.valueOf((String) s);
             }
         });
-        string.put(Double.class, new Function<Object, Object>() {
+        string.put(Double.class, new Function<Object, Object>()
+        {
 
             @Override
-            public Object apply(Object s) {
+            public Object apply(Object s)
+            {
                 return Double.valueOf((String) s);
             }
         });
-        string.put(Boolean.class, new Function<Object, Object>() {
+        string.put(Boolean.class, new Function<Object, Object>()
+        {
 
             @Override
-            public Object apply(Object s) {
+            public Object apply(Object s)
+            {
                 return Boolean.valueOf((String) s);
             }
         });
@@ -89,18 +109,36 @@ public class DataTranslator {
 
     }
 
-    public static <T> Optional<T> attempt(Object obj, Class<?> from, Class<T> to) {
-        if (!TRANSLATORS.containsKey(from)) {
+    /**
+     * Attempts to translate the given object
+     * 
+     * @param obj The object to translate
+     * @param to The type to translate it to
+     * @return The translated object, if successful
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Optional<T> attempt(Object obj, Class<T> to)
+    {
+        Class<?> from = obj.getClass();
+        if (from == to)
+        {
+            return Optional.of((T) obj);
+        }
+        if (!TRANSLATORS.containsKey(from))
+        {
             return Optional.absent();
         }
         Map<Class<?>, Function<Object, Object>> inner = TRANSLATORS.get(from);
-        if (!inner.containsKey(to)) {
+        if (!inner.containsKey(to))
+        {
             return Optional.absent();
         }
         Function<Object, Object> translator = inner.get(to);
-        try {
+        try
+        {
             return Optional.of(to.cast(translator.apply(obj)));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException e)
+        {
             return Optional.absent();
         }
     }

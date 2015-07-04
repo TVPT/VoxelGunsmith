@@ -38,6 +38,9 @@ import com.google.common.collect.Maps;
 public class MemoryContainer implements DataContainer
 {
 
+    /**
+     * The character which seperates differing levels of the path.
+     */
     public static final String PATH_SEPARATOR = ".";
     private final String path;
     private final Map<String, Object> data;
@@ -639,7 +642,8 @@ public class MemoryContainer implements DataContainer
     }
 
     @Override
-    public DataContainer getOrCreateContainer(String path) {
+    public DataContainer getOrCreateContainer(String path)
+    {
         if (path.contains(PATH_SEPARATOR))
         {
             int index = path.indexOf(PATH_SEPARATOR);

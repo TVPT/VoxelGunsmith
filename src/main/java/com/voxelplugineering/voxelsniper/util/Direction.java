@@ -31,7 +31,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 @SuppressWarnings("javadoc")
 public enum Direction
 {
-    
+
     /*
      * These are the minecraft directions, I'm not sure at this time what the
      * best approach is to make this more platform independent. The easiest
@@ -46,9 +46,21 @@ public enum Direction
             NORTH_EAST), EAST_NORTH_EAST(EAST, NORTH_EAST), EAST_SOUTH_EAST(EAST, SOUTH_EAST), SOUTH_SOUTH_EAST(SOUTH, SOUTH_EAST), SOUTH_SOUTH_WEST(
             SOUTH, SOUTH_WEST), WEST_SOUTH_WEST(WEST, SOUTH_WEST), SELF(0, 0, 0);
 
-    public static Direction of(int modx, int mody, int modz) {
-        for(Direction d: values()) {
-            if(d.getModX() == modx && d.getModY() == mody && d.getModZ() == modz) {
+    /**
+     * Attempts to get the {@link Direction} corresponding to the given xyz direction. If no
+     * matching direction is found then {@link Direction#SELF} is returned.
+     * 
+     * @param modx The X component
+     * @param mody The Y component
+     * @param modz The Z component
+     * @return The direction
+     */
+    public static Direction of(int modx, int mody, int modz)
+    {
+        for (Direction d : values())
+        {
+            if (d.getModX() == modx && d.getModY() == mody && d.getModZ() == modz)
+            {
                 return d;
             }
         }
@@ -133,7 +145,13 @@ public enum Direction
         return Direction.SELF;
     }
 
-    public Vector3i vector() {
+    /**
+     * Gets a vector representation of this direction. The vector may not be normalized.
+     * 
+     * @return The vector representation
+     */
+    public Vector3i vector()
+    {
         return this.vector;
     }
 

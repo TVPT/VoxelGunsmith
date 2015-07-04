@@ -23,8 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.brush;
 
+/**
+ * An enumeration of standard keys.
+ */
 @SuppressWarnings("javadoc")
-public final class BrushKeys {
+public final class BrushKeys
+{
 
     // Globals
     public static final String BRUSH_SIZE = "brushSize";
@@ -55,6 +59,7 @@ public final class BrushKeys {
     public static final String RADIUS_Y = "ry";
     public static final String RADIUS_Z = "rz";
 
-    private BrushKeys() {
+    private BrushKeys()
+    {
     }
 }

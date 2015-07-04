@@ -100,7 +100,6 @@ public class CommonUndoQueue implements UndoQueue
         }
         while (this.pointer.next != null && n > 0)
         {
-            //System.out.println("reset");
             this.pointer = this.pointer.next;
             this.owner.addPending(this.pointer.redo);
             n--;

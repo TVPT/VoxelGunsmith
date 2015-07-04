@@ -34,15 +34,23 @@ import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.csg.EllipsoidShape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
+/**
+ * A shape brush which defines an ellipsoid.
+ */
+public class EllipsoidBrush extends AbstractBrush
+{
 
-public class EllipsoidBrush extends AbstractBrush {
-
-    public EllipsoidBrush() {
+    /**
+     * Creates a new {@link EllipsoidBrush}.
+     */
+    public EllipsoidBrush()
+    {
         super("ellipsoid", BrushPartType.SHAPE);
     }
 
     @Override
-    public ExecutionResult run(Player player, BrushVars args) {
+    public ExecutionResult run(Player player, BrushVars args)
+    {
         double rx = args.get(BrushKeys.RADIUS_X, Double.class).get();
         double ry = args.get(BrushKeys.RADIUS_Y, Double.class).get();
         double rz = args.get(BrushKeys.RADIUS_Z, Double.class).get();

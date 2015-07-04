@@ -31,8 +31,9 @@
     <module name="FileTabCharacter">
         <property name="eachLine" value="true"/>
     </module>
-
+	
     <module name="TreeWalker">
+	    <module name="SuppressWarningsHolder" />
         <module name="OuterTypeFilename"/>
         <module name="IllegalTokenText">
             <property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>
@@ -187,4 +188,5 @@
             <property name="checkMethods" value="false"/>
         </module>
     </module>
+	<module name="SuppressWarningsFilter" />
 </module>

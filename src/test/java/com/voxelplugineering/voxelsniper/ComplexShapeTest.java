@@ -36,12 +36,10 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * A set of tests for the {@link ComplexShape}.
  */
+@SuppressWarnings({ "checkstyle:javadocmethod", "javadoc" })
 public class ComplexShapeTest
 {
 
-    /**
-     * 
-     */
     @Test
     public void testBasic()
     {
@@ -55,9 +53,6 @@ public class ComplexShapeTest
         assertEquals(false, shape.get(0, 0, 0, false));
     }
 
-    /**
-     * 
-     */
     @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void testBasicOOB2()
     {
@@ -65,9 +60,6 @@ public class ComplexShapeTest
         shape.set(1, 1, 1, false);
     }
 
-    /**
-     * 
-     */
     @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void testBasicOOB3()
     {
@@ -75,9 +67,6 @@ public class ComplexShapeTest
         shape.get(1, 1, 1, false);
     }
 
-    /**
-     * 
-     */
     @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void testBasicOOB()
     {
@@ -85,9 +74,6 @@ public class ComplexShapeTest
         shape.unset(1, 1, 1, false);
     }
 
-    /**
-     * 
-     */
     @Test
     public void testBasic2()
     {
@@ -101,9 +87,6 @@ public class ComplexShapeTest
         assertEquals(false, shape.get(-2, -2, -2, true));
     }
 
-    /**
-     * 
-     */
     @Test
     public void testMoveOrigin()
     {
@@ -114,9 +97,6 @@ public class ComplexShapeTest
         assertEquals(false, shape.get(-2, -2, -2, true));
     }
 
-    /**
-     * 
-     */
     @Test
     public void testFromShape()
     {
@@ -125,9 +105,6 @@ public class ComplexShapeTest
         assertShapesEqual(s, c);
     }
 
-    /**
-     * 
-     */
     @Test
     public void testClone()
     {
@@ -136,9 +113,6 @@ public class ComplexShapeTest
         assertShapesEqual(shape, clone);
     }
 
-    /**
-     * 
-     */
     @Test
     public void testGrow()
     {
@@ -154,9 +128,6 @@ public class ComplexShapeTest
         assertEquals(0, shape.getOrigin().getZ());
     }
 
-    /**
-     * 
-     */
     @Test
     public void testGrow2()
     {
@@ -173,9 +144,6 @@ public class ComplexShapeTest
         assertEquals(1, shape.getOrigin().getZ());
     }
 
-    /**
-     * 
-     */
     @Test
     public void testGrow3()
     {
@@ -191,9 +159,6 @@ public class ComplexShapeTest
         assertEquals(1, shape.getOrigin().getZ());
     }
 
-    /**
-     * 
-     */
     @Test
     public void testShrink()
     {
@@ -209,9 +174,6 @@ public class ComplexShapeTest
         assertEquals(0, shape.getOrigin().getZ());
     }
 
-    /**
-     * 
-     */
     @Test
     public void testShrink2()
     {
@@ -228,9 +190,6 @@ public class ComplexShapeTest
         assertEquals(0, shape.getOrigin().getZ());
     }
 
-    /**
-     * 
-     */
     @Test
     public void testShrink3()
     {
@@ -246,9 +205,6 @@ public class ComplexShapeTest
         assertEquals(-1, shape.getOrigin().getZ());
     }
 
-    /**
-     * 
-     */
     @Test
     public void testMatchsize()
     {
@@ -272,9 +228,6 @@ public class ComplexShapeTest
         assertShapesEqual(shape2, shape1);
     }
 
-    /**
-     * 
-     */
     @Test
     public void testMatchsize3()
     {
@@ -285,9 +238,6 @@ public class ComplexShapeTest
         assertShapesEqual(shape2, shape1);
     }
 
-    /**
-     * 
-     */
     @Test
     public void testMatchsize4()
     {
@@ -298,9 +248,6 @@ public class ComplexShapeTest
         assertShapesEqual(shape2, shape1);
     }
 
-    /**
-     * 
-     */
     @Test
     public void testMatchsize5()
     {
@@ -311,9 +258,6 @@ public class ComplexShapeTest
         assertShapesEqual(shape2, shape1);
     }
 
-    /**
-     * 
-     */
     @Test
     public void testMatchsize6()
     {
@@ -324,9 +268,6 @@ public class ComplexShapeTest
         assertShapesEqual(shape2, shape1);
     }
 
-    /**
-     * 
-     */
     @Test
     public void testFlatten()
     {
@@ -339,9 +280,6 @@ public class ComplexShapeTest
         assertShapesDeepEqual(shape1, shape2);
     }
 
-    /**
-     * 
-     */
     @Test
     public void testFlatten4()
     {
@@ -353,9 +291,6 @@ public class ComplexShapeTest
         assertShapesDeepEqual(shape1, shape2);
     }
 
-    /**
-     * 
-     */
     @Test
     public void testGetShape()
     {
@@ -369,9 +304,6 @@ public class ComplexShapeTest
         assertVectorEquals(new Vector3i(3, 0, 0), points[1]);
     }
 
-    /**
-     * 
-     */
     @Test
     public void testResizePositive()
     {
@@ -387,9 +319,6 @@ public class ComplexShapeTest
         assertEquals(0, shape.getOrigin().getZ());
     }
 
-    /**
-     * 
-     */
     @Test
     public void testResizePositive2()
     {
@@ -405,9 +334,6 @@ public class ComplexShapeTest
         assertEquals(0, shape.getOrigin().getZ());
     }
 
-    /**
-     * 
-     */
     @Test
     public void testResizeNegative()
     {
@@ -423,9 +349,6 @@ public class ComplexShapeTest
         assertEquals(0, shape.getOrigin().getZ());
     }
 
-    /**
-     * 
-     */
     @Test
     public void testResizeNegative2()
     {
@@ -441,9 +364,6 @@ public class ComplexShapeTest
         assertEquals(0, shape.getOrigin().getZ());
     }
 
-    /**
-     * 
-     */
     @Test
     public void testInvert()
     {
@@ -454,9 +374,6 @@ public class ComplexShapeTest
         assertShapesDeepEqual(shape2, shape1);
     }
 
-    /**
-     * 
-     */
     // @Test
     public void testCombine()
     {
@@ -470,9 +387,6 @@ public class ComplexShapeTest
         assertShapesDeepEqual(shape3, shape1);
     }
 
-    /**
-     * 
-     */
     // @Test
     public void testAdd()
     {
@@ -487,9 +401,6 @@ public class ComplexShapeTest
         assertShapesDeepEqual(shape3, shape1);
     }
 
-    /**
-     * 
-     */
     // @Test
     public void testAdd2()
     {

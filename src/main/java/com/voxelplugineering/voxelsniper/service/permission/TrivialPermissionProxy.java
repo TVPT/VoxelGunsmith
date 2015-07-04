@@ -27,9 +27,17 @@ import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.AbstractService;
 import com.voxelplugineering.voxelsniper.util.Context;
 
+/**
+ * A trivially implemented {@link PermissionProxy} which always returns true.
+ */
 public class TrivialPermissionProxy extends AbstractService implements PermissionProxy
 {
 
+    /**
+     * Creates a new {@link TrivialPermissionProxy}.
+     * 
+     * @param context The context
+     */
     public TrivialPermissionProxy(Context context)
     {
         super(context);

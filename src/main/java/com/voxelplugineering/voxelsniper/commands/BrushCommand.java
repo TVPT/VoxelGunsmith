@@ -37,8 +37,7 @@ import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
 /**
- * Standard brush command to select a brush and provide the necessary arguments
- * to said brush.
+ * Standard brush command to select a brush and provide the necessary arguments to said brush.
  */
 public class BrushCommand extends Command
 {
@@ -99,32 +98,40 @@ public class BrushCommand extends Command
             String fullBrush = StringUtilities.getSection(args, 0, args.length - 1);
             fullBrush = sniper.getAliasHandler().getRegistry("brush").get().expand(fullBrush);
             BrushChain brush = new BrushChain(fullBrush);
-            for (String b : fullBrush.split(" ")) {
+            for (String b : fullBrush.split(" "))
+            {
                 Optional<Brush> br = sniper.getBrushManager().getBrush(b);
-                if (br.isPresent()) {
+                if (br.isPresent())
+                {
                     brush.chain(br.get());
-                } else {
+                } else
+                {
                     sniper.sendMessage("Could not find brush: " + b);
                     return true;
                 }
             }
             sniper.setCurrentBrush(brush);
             sniper.sendMessage(this.brushSetMessage, brush.getName());
-            
+
             boolean hasShape = false;
             boolean hasEffect = false;
-            
-            for(Brush b: brush.getBrushes()) {
-                if(b.getType() == BrushPartType.SHAPE) {
+
+            for (Brush b : brush.getBrushes())
+            {
+                if (b.getType() == BrushPartType.SHAPE)
+                {
                     hasShape = true;
-                } else if(b.getType() == BrushPartType.EFFECT) {
-                    if(!hasShape) {
+                } else if (b.getType() == BrushPartType.EFFECT)
+                {
+                    if (!hasShape)
+                    {
                         sniper.sendMessage("You specified an effect without a shape preceeding it.");
                         return true;
                     }
                 }
             }
-            if(hasShape && !hasEffect) {
+            if (hasShape && !hasEffect)
+            {
                 sniper.sendMessage("You specified a shape without an effect.");
             }
 

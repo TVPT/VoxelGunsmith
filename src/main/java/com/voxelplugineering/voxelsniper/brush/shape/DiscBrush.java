@@ -35,34 +35,45 @@ import com.voxelplugineering.voxelsniper.shape.csg.CylinderShape;
 import com.voxelplugineering.voxelsniper.util.Direction;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
+/**
+ * A shape brush which defines a 2D disc.
+ */
+public class DiscBrush extends AbstractBrush
+{
 
-public class DiscBrush extends AbstractBrush {
-
-    public DiscBrush() {
+    /**
+     * Creates a new {@link DiscBrush}.
+     */
+    public DiscBrush()
+    {
         super("disc", BrushPartType.SHAPE);
     }
 
     @Override
-    public ExecutionResult run(Player player, BrushVars args) {
+    public ExecutionResult run(Player player, BrushVars args)
+    {
         double size = args.get(BrushKeys.BRUSH_SIZE, Double.class).get();
         boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(false);
         Shape s = null;
-        if(face) {
+        if (face)
+        {
             Direction d = args.get(BrushKeys.TARGET_FACE, Direction.class).or(Direction.UP);
-            switch(d) {
-                case NORTH:
-                case SOUTH:
-                    s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size), Direction.SOUTH);
-                    break;
-                case EAST:
-                case WEST:
-                    s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size), Direction.EAST);
-                    break;
-                default:
-                    s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size));
-                    break;
+            switch (d)
+            {
+            case NORTH:
+            case SOUTH:
+                s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size), Direction.SOUTH);
+                break;
+            case EAST:
+            case WEST:
+                s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size), Direction.EAST);
+                break;
+            default:
+                s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size));
+                break;
             }
-        } else {
+        } else
+        {
             s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size));
         }
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);

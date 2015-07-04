@@ -37,6 +37,7 @@ import com.voxelplugineering.voxelsniper.service.alias.CommonAliasRegistry;
 /**
  * A test suite for the alias system
  */
+@SuppressWarnings({ "checkstyle:javadocmethod", "javadoc" })
 public class AliasTest
 {
 
