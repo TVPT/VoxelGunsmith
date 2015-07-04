@@ -219,9 +219,9 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     }
 
     @Override
-    public void clearNextPending()
+    public void clearNextPending(boolean force)
     {
-        if (!this.pending.isEmpty() && this.pending.peek().isFinished())
+        if (!this.pending.isEmpty() && (this.pending.peek().isFinished() || force))
         {
             this.pending.remove();
         }

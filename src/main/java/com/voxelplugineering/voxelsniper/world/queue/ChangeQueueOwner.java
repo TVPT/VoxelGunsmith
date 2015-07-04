@@ -70,7 +70,7 @@ public interface ChangeQueueOwner extends MessageReceiver
     /**
      * Removes the next pending change if it has finished.
      */
-    void clearNextPending();
+    void clearNextPending(boolean force);
 
     /**
      * Gets the undo history manager.

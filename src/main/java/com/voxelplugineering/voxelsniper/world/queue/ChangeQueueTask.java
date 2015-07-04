@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.world.queue;
 
+import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.config.Configuration;
@@ -85,17 +86,21 @@ public class ChangeQueueTask implements Runnable
             int actual = 0;
             while (p.hasPendingChanges() && actual < allocation)
             {
+                Optional<ChangeQueue> change = p.getNextPendingChange();
+                if(!change.isPresent()) {
+                    break;
+                }
                 try
                 {
-                    actual += p.getNextPendingChange().get().perform(allocation);
+                    actual += change.get().perform(allocation);
                 } catch (Exception e)
                 {
                     GunsmithLogger.getLogger().error(e, "Error while performing change operation!");
-                    p.clearNextPending();
+                    p.clearNextPending(true);
                 }
-                if (p.getNextPendingChange().get().isFinished())
+                if (change.get().isFinished())
                 {
-                    p.clearNextPending();
+                    p.clearNextPending(false);
                 }
             }
             remaining -= actual;

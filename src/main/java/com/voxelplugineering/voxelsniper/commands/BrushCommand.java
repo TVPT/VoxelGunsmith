@@ -30,6 +30,7 @@ import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushChain;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.util.Context;
@@ -104,10 +105,28 @@ public class BrushCommand extends Command
                     brush.chain(br.get());
                 } else {
                     sniper.sendMessage("Could not find brush: " + b);
+                    return true;
                 }
             }
             sniper.setCurrentBrush(brush);
             sniper.sendMessage(this.brushSetMessage, brush.getName());
+            
+            boolean hasShape = false;
+            boolean hasEffect = false;
+            
+            for(Brush b: brush.getBrushes()) {
+                if(b.getType() == BrushPartType.SHAPE) {
+                    hasShape = true;
+                } else if(b.getType() == BrushPartType.EFFECT) {
+                    if(!hasShape) {
+                        sniper.sendMessage("You specified an effect without a shape preceeding it.");
+                        return true;
+                    }
+                }
+            }
+            if(hasShape && !hasEffect) {
+                sniper.sendMessage("You specified a shape without an effect.");
+            }
 
             return true;
         }
