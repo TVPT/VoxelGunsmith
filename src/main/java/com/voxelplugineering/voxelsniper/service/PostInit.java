@@ -41,8 +41,6 @@ public @interface PostInit
 
     /**
      * Gets the priority.
-     * 
-     * @return The priority
      */
     int priority() default 1000;
 

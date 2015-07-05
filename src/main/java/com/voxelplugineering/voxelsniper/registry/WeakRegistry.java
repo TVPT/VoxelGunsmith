@@ -34,9 +34,8 @@ import com.google.common.collect.MapMaker;
 import com.voxelplugineering.voxelsniper.service.registry.Registry;
 
 /**
- * A registry for values which are referenced both by a name and a custom key. The key is only
- * weakly referenced and in the event that it is garbage collected the associated value is
- * dereferenced from this registry as well.
+ * A registry for values which are referenced both by a name and a custom key. The key is only weakly referenced and in the event that it is garbage
+ * collected the associated value is dereferenced from this registry as well.
  * 
  * @param <K> the key type
  * @param <V> the value type
@@ -44,14 +43,8 @@ import com.voxelplugineering.voxelsniper.service.registry.Registry;
 public class WeakRegistry<K, V> implements Registry<K, V>
 {
 
-    /**
-     * The core key-value weakly referencing map.
-     */
-    Map<K, V> registry;
-    /**
-     * A map of name to value.
-     */
-    Map<String, K> nameRegistry;
+    private final Map<K, V> registry;
+    private final Map<String, K> nameRegistry;
 
     private boolean caseSensitiveKeys = true;
 
@@ -65,8 +58,8 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     }
 
     /**
-     * Sets whether the keys of this registry are case sensitive. If the keys are case insensitive
-     * then all keys in all operations are cast to upper case.
+     * Sets whether the keys of this registry are case sensitive. If the keys are case insensitive then all keys in all operations are cast to upper
+     * case.
      * 
      * @param c is case sensitive
      */

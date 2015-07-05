@@ -54,5 +54,5 @@ public enum Action
     /**
      * When the user has right-clicked a block being pointed at.
      */
-    RIGHT_CLICK_BLOCK, ;
+    RIGHT_CLICK_BLOCK;
 }

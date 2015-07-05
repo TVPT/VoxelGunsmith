@@ -23,9 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper;
 
-import java.io.IOException;
-
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.brush.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.commands.AliasCommand;
@@ -52,6 +49,7 @@ import com.voxelplugineering.voxelsniper.service.InitPhase;
 import com.voxelplugineering.voxelsniper.service.OfflineUndoHandlerService;
 import com.voxelplugineering.voxelsniper.service.PostInit;
 import com.voxelplugineering.voxelsniper.service.PreStop;
+import com.voxelplugineering.voxelsniper.service.ServicePriorities;
 import com.voxelplugineering.voxelsniper.service.alias.CommonAliasHandler;
 import com.voxelplugineering.voxelsniper.service.alias.GlobalAliasHandler;
 import com.voxelplugineering.voxelsniper.service.alias.SimpleAliasOwner;
@@ -81,6 +79,10 @@ import com.voxelplugineering.voxelsniper.util.defaults.DefaultAliasBuilder;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueTask;
 import com.voxelplugineering.voxelsniper.world.queue.OfflineUndoHandler;
 
+import com.google.common.base.Optional;
+
+import java.io.IOException;
+
 /**
  * The core service provider.
  */
@@ -88,32 +90,40 @@ import com.voxelplugineering.voxelsniper.world.queue.OfflineUndoHandler;
 public class CoreServiceProvider
 {
 
-    @Builder(target = DataSourceFactory.class, priority = -1000, initPhase = InitPhase.EARLY)
-    public DataSourceFactory buildPersistence(Context context)
+    private static final String CONFIG_CONTAINER = "VoxelSniperConfiguration";
+    private static final int DEFAULT_CHANGE_INTERVAL = 100;
+
+    public CoreServiceProvider()
+    {
+
+    }
+
+    @Builder(target = DataSourceFactory.class, priority = ServicePriorities.DATA_SOURCE_FACTORY_PRIORITY, initPhase = InitPhase.EARLY)
+    public final DataSourceFactory buildPersistence(Context context)
     {
         return new DataSourceFactoryService(context);
     }
 
-    @Builder(target = Configuration.class, priority = 1000)
-    public Configuration buildConfig(Context context)
+    @Builder(target = Configuration.class, priority = ServicePriorities.CONFIGURATION_PRIORITY)
+    public final Configuration buildConfig(Context context)
     {
         return new ConfigurationService(context);
     }
 
-    @Builder(target = TextFormatParser.class, priority = 0)
-    public TextFormatParser buildFormatProxy(Context context)
+    @Builder(target = TextFormatParser.class, priority = ServicePriorities.TEXT_FORMAT_PRIORITY)
+    public final TextFormatParser buildFormatProxy(Context context)
     {
         return new TextFormatParser.TrivialTextFormatParser(context);
     }
 
-    @Builder(target = EventBus.class, priority = 2000)
-    public EventBus buildEventBus(Context context)
+    @Builder(target = EventBus.class, priority = ServicePriorities.EVENT_BUS_PRIORITY)
+    public final EventBus buildEventBus(Context context)
     {
         return new AsyncEventBus(context);
     }
 
-    @Builder(target = GlobalAliasHandler.class, priority = 5000)
-    public GlobalAliasHandler buildAliasRegistry(Context context)
+    @Builder(target = GlobalAliasHandler.class, priority = ServicePriorities.GLOBAL_ALIAS_HANDLER_PRIORITY)
+    public final GlobalAliasHandler buildAliasRegistry(Context context)
     {
         PlatformProxy platform = context.getRequired(PlatformProxy.class);
         Configuration conf = context.getRequired(Configuration.class);
@@ -126,13 +136,13 @@ public class CoreServiceProvider
     }
 
     @InitHook(target = EventBus.class)
-    public void initEventBus(Context context, EventBus service)
+    public final void initEventBus(Context context, EventBus service)
     {
         service.register(new CommonEventHandler(context));
     }
 
     @InitHook(target = DataSourceFactory.class)
-    public void initPersistence(Context context, DataSourceFactory factory)
+    public final void initPersistence(Context context, DataSourceFactory factory)
     {
         factory.register("stdout", StandardOutDataSource.class, StandardOutDataSource.BUILDER);
         factory.register("file", FileDataSource.class, FileDataSource.BUILDER);
@@ -140,14 +150,14 @@ public class CoreServiceProvider
     }
 
     @InitHook(target = Configuration.class)
-    public void initConfig(Context context, Configuration configuration)
+    public final void initConfig(Context context, Configuration configuration)
     {
         configuration.registerContainer(BaseConfiguration.class);
         configuration.registerContainer(VoxelSniperConfiguration.class);
     }
 
     @InitHook(target = GlobalAliasHandler.class)
-    public void initAlias(Context context, GlobalAliasHandler service)
+    public final void initAlias(Context context, GlobalAliasHandler service)
     {
         service.registerTarget("brush");
         service.registerTarget("material");
@@ -155,20 +165,20 @@ public class CoreServiceProvider
         DefaultAliasBuilder.loadDefaultAliases(service);
     }
 
-    @Builder(target = GlobalBrushManager.class, priority = 7500)
-    public GlobalBrushManager getGlobalBrushManager(Context context)
+    @Builder(target = GlobalBrushManager.class, priority = ServicePriorities.GLOBAL_BRUSH_MANAGER_PRIORITY)
+    public final GlobalBrushManager getGlobalBrushManager(Context context)
     {
         return new BrushManagerService(context, new CommonBrushManager());
     }
 
-    @Builder(target = CommandHandler.class, priority = 10000)
-    public CommandHandler getCommandHandler(Context context)
+    @Builder(target = CommandHandler.class, priority = ServicePriorities.COMMAND_HANDLER_PRIORITY)
+    public final CommandHandler getCommandHandler(Context context)
     {
         return new CommandHandlerService(context);
     }
 
     @InitHook(target = CommandHandler.class)
-    public void registerCommands(Context context, CommandHandler cmd)
+    public final void registerCommands(Context context, CommandHandler cmd)
     {
         cmd.registerCommand(new BrushCommand(context));
         cmd.registerCommand(new MaterialCommand(context));
@@ -182,29 +192,29 @@ public class CoreServiceProvider
         cmd.registerCommand(new ParameterCommand(context));
     }
 
-    @Builder(target = OfflineUndoHandler.class, priority = 13000)
-    public OfflineUndoHandler getOfflineUndo(Context context)
+    @Builder(target = OfflineUndoHandler.class, priority = ServicePriorities.UNDO_HANDLER_PRIORITY)
+    public final OfflineUndoHandler getOfflineUndo(Context context)
     {
         return new OfflineUndoHandlerService(context);
     }
 
-    @Builder(target = PlatformProxy.class, priority = 4000)
-    public PlatformProxy getTrivialPlatform(Context context)
+    @Builder(target = PlatformProxy.class, priority = ServicePriorities.PLATFORM_PROXY_PRIORITY)
+    public final PlatformProxy getTrivialPlatform(Context context)
     {
         return new TrivialPlatformProxy(context);
     }
 
-    @Builder(target = PermissionProxy.class, priority = 7000)
-    public PermissionProxy getPermissionsProxy(Context context)
+    @Builder(target = PermissionProxy.class, priority = ServicePriorities.PERMISSION_PROXY_PRIORITY)
+    public final PermissionProxy getPermissionsProxy(Context context)
     {
         return new TrivialPermissionProxy(context);
     }
 
     /**
-     * Post init
+     * Post init.
      */
     @PostInit
-    public void post(Context context)
+    public final void post(Context context)
     {
         PlatformProxy proxy = context.getRequired(PlatformProxy.class);
         Configuration configuration = context.getRequired(Configuration.class);
@@ -235,18 +245,18 @@ public class CoreServiceProvider
                 {
                     GunsmithLogger.getLogger().info("Loading config from " + config.getName().or("an unknown source"));
                     DataContainer values = config.read();
-                    Optional<ConfigurationContainer> container = configuration.getContainer("VoxelSniperConfiguration");
+                    Optional<ConfigurationContainer> container = configuration.getContainer(CONFIG_CONTAINER);
                     if (container.isPresent())
                     {
                         container.get().fromContainer(values);
-                        configuration.refreshContainer("VoxelSniperConfiguration");
+                        configuration.refreshContainer(CONFIG_CONTAINER);
                     } else
                     {
                         GunsmithLogger.getLogger().warn("Could not find config container for VoxelSniperConfiguration");
                     }
                 } else
                 {
-                    Optional<ConfigurationContainer> container = configuration.getContainer("VoxelSniperConfiguration");
+                    Optional<ConfigurationContainer> container = configuration.getContainer(CONFIG_CONTAINER);
                     if (container.isPresent())
                     {
                         GunsmithLogger.getLogger().info("Saving config to " + config.getName().or("an unknown source"));
@@ -331,19 +341,19 @@ public class CoreServiceProvider
         if (sched.isPresent())
         {
             //Gunsmith.getScheduler().startSynchronousTask(aliasTask, configuration.get("aliasInterval", int.class).or(30000));
-            sched.get().startSynchronousTask(new ChangeQueueTask(players, configuration),
-                    configuration.get("changeInterval", int.class).or(100));
+            int interval = configuration.get("changeInterval", int.class).or(DEFAULT_CHANGE_INTERVAL);
+            sched.get().startSynchronousTask(new ChangeQueueTask(players, configuration), interval);
         }
     }
 
     /**
-     * Stop hook
+     * Stop hook.
      */
     @PreStop
-    public void onStop(Context context)
+    public final void onStop(Context context)
     {
         /*
-         * TODO persistence File globalAliases = new
+         * persistence File globalAliases = new
          * File(platformProxy.getDataFolder(), "aliases.json"); JsonDataSource
          * data = new JsonDataSource(globalAliases); try { if
          * (!globalAliases.exists()) { globalAliases.createNewFile(); }

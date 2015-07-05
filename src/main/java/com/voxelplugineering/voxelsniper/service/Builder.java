@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
 import com.voxelplugineering.voxelsniper.util.Contextable;
 
 /**
- * An annotation
+ * An annotation to mark methods as providers for a {@link Contextable} object.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

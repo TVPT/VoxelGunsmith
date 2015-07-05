@@ -26,19 +26,18 @@ package com.voxelplugineering.voxelsniper.service;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Maps;
-import com.google.common.primitives.Primitives;
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.service.config.ConfigurationContainer;
 import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 import com.voxelplugineering.voxelsniper.util.Context;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
+import com.google.common.primitives.Primitives;
+
+import java.util.Map;
 
 /**
  * The configuration storage.
@@ -50,7 +49,9 @@ public class ConfigurationService extends AbstractService implements Configurati
     private Map<String, ConfigurationContainer> containers;
 
     /**
-     * Constructs a new Configuration
+     * Constructs a new {@link ConfigurationService}.
+     * 
+     * @param context The context
      */
     public ConfigurationService(Context context)
     {
@@ -167,14 +168,7 @@ public class ConfigurationService extends AbstractService implements Configurati
     public ConfigurationContainer[] getContainers()
     {
         check("getContainers");
-        Set<Entry<String, ConfigurationContainer>> entries = this.containers.entrySet();
-        ConfigurationContainer[] containers = new ConfigurationContainer[entries.size()];
-        int i = 0;
-        for (Entry<String, ConfigurationContainer> e : entries)
-        {
-            containers[i++] = e.getValue();
-        }
-        return containers;
+        return this.containers.values().toArray(new ConfigurationContainer[this.containers.values().size()]);
     }
 
     @Override

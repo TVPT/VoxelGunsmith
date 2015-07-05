@@ -33,16 +33,19 @@ import com.voxelplugineering.voxelsniper.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.world.queue.UndoQueue;
 
 /**
- * A standard offline undo handler which caches player {@link UndoQueue}s for a period of 60 minutes
- * before discarding.
+ * A standard offline undo handler which caches player {@link UndoQueue}s for a period of 60 minutes before discarding.
  */
 public class OfflineUndoHandlerService extends AbstractService implements OfflineUndoHandler
 {
+
+    private static final int CACHE_EXPIRY_TIME = 60;
 
     private Cache<String, UndoQueue> cache;
 
     /**
      * Creates a new {@link OfflineUndoHandlerService}.
+     * 
+     * @param context The context
      */
     public OfflineUndoHandlerService(Context context)
     {
@@ -52,7 +55,7 @@ public class OfflineUndoHandlerService extends AbstractService implements Offlin
     @Override
     protected void _init()
     {
-        this.cache = CacheBuilder.newBuilder().expireAfterAccess(60, TimeUnit.MINUTES).build();
+        this.cache = CacheBuilder.newBuilder().expireAfterAccess(CACHE_EXPIRY_TIME, TimeUnit.MINUTES).build();
     }
 
     @Override

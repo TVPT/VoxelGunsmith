@@ -36,6 +36,6 @@ public interface AliasOwner
      * 
      * @return The data folder
      */
-    public DataSourceReader getAliasSource();
+    DataSourceReader getAliasSource();
 
 }

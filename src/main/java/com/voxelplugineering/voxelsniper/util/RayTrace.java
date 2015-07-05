@@ -331,7 +331,7 @@ public class RayTrace
             this.length += this.step;
 
             this.currentX = (this.length * this.rotYCos) * this.rotXCos;
-            this.currentY = (this.length * this.rotYSin);
+            this.currentY = this.length * this.rotYSin;
             this.currentZ = (this.length * this.rotYCos) * this.rotXSin;
 
             this.targetX = (int) Math.floor(this.currentX + this.origin.getX());
@@ -390,7 +390,7 @@ public class RayTrace
                     this.length += this.step;
 
                     this.currentX = (this.length * this.rotYCos) * this.rotXCos;
-                    this.currentY = (this.length * this.rotYSin);
+                    this.currentY = this.length * this.rotYSin;
                     this.currentZ = (this.length * this.rotYCos) * this.rotXSin;
 
                     this.targetX = (int) Math.floor(this.currentX + this.origin.getX());
@@ -413,7 +413,7 @@ public class RayTrace
                     this.length += this.step;
 
                     this.currentX = (this.length * this.rotYCos) * this.rotXCos;
-                    this.currentY = (this.length * this.rotYSin);
+                    this.currentY = this.length * this.rotYSin;
                     this.currentZ = (this.length * this.rotYCos) * this.rotXSin;
 
                     this.targetX = (int) Math.floor(this.currentX + this.origin.getX());

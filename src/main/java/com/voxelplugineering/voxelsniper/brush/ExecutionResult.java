@@ -53,11 +53,16 @@ public class ExecutionResult
         return CONTINUE;
     }
 
-    private final boolean cont;
+    private final boolean shouldContinue;
 
-    private ExecutionResult(boolean c)
+    /**
+     * Create a new {@link ExecutionResult}.
+     * 
+     * @param cont If the execution should continue
+     */
+    protected ExecutionResult(boolean cont)
     {
-        this.cont = c;
+        this.shouldContinue = cont;
     }
 
     /**
@@ -67,7 +72,7 @@ public class ExecutionResult
      */
     public boolean shouldContinue()
     {
-        return this.cont;
+        return this.shouldContinue;
     }
 
 }

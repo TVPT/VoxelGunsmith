@@ -21,55 +21,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.commands;
+package com.voxelplugineering.voxelsniper.util;
 
-import com.voxelplugineering.voxelsniper.entity.Player;
-import com.voxelplugineering.voxelsniper.service.command.CommandSender;
-import com.voxelplugineering.voxelsniper.service.text.TextFormat;
-import com.voxelplugineering.voxelsniper.util.Context;
+import com.voxelplugineering.voxelsniper.service.event.Event;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 /**
- * A command get fetching the help information for a brush.
+ * A {@link Callable} which waits for all {@link Future}s from a collection of futures to complete.
  */
-public class UndoCommand extends Command
+public class FutureFutureCallable implements Callable<Event>
 {
 
+    private final Collection<Future<Event>> watchList;
+    private final Event returnValue;
+
     /**
-     * Creates a new Command instance.
+     * Creates a new {@link FutureFutureCallable}.
      * 
-     * @param context The context
+     * @param futures The collection of futures to watch
+     * @param event The event to return once the futures are complete
      */
-    public UndoCommand(Context context)
+    public FutureFutureCallable(Collection<Future<Event>> futures, Event event)
     {
-        super("undo", "Undoes your last n changes. Usage: /undo [n]", context);
-        setAliases("u", "vundo");
-        setPermissions("voxelsniper.command.undo");
+        this.watchList = futures;
+        this.returnValue = event;
     }
 
     @Override
-    public boolean execute(CommandSender sender, String[] args)
+    public Event call() throws Exception
     {
-        int n = 1;
-        if (args.length > 0)
+        for (Iterator<Future<Event>> it = this.watchList.iterator(); it.hasNext();)
         {
+            Future<Event> next = it.next();
             try
             {
-                n = Integer.parseInt(args[0]);
-            } catch (NumberFormatException ignored)
+                next.get();
+            } catch (Exception ignored)
             {
                 assert true;
-            }
-            if (n < 1)
+            } finally
             {
-                n = 1;
+                it.remove();
             }
         }
-        if (sender.isPlayer())
-        {
-            ((Player) sender).undoHistory(n);
-            return true;
-        }
-        sender.sendMessage(TextFormat.RED + "Sorry, this is a player only command.");
-        return true;
+        return this.returnValue;
     }
+
 }

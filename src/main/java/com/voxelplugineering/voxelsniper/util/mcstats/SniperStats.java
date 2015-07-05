@@ -36,9 +36,9 @@ import com.voxelplugineering.voxelsniper.service.platform.PlatformProxy;
 public final class SniperStats extends Metrics
 {
 
-    static int snipesDone = 0;
-    static long snipeCounterInitTimeStamp = 0;
-    static Map<String, Integer> brushUsageCounter = Maps.newHashMap();
+    private static int snipesDone;
+    private static long snipeCounterInitTimeStamp;
+    private static Map<String, Integer> brushUsageCounter = Maps.newHashMap();
 
     /**
      * Increase the Snipes Counter.

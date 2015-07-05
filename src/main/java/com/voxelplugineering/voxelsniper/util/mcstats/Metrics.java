@@ -50,77 +50,75 @@ import java.util.UUID;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * Metrics from
+ * Metrics collector for mcstats.
  */
 public abstract class Metrics
 {
 
-    //TODO move to persistence
-
     /**
-     * The current revision number
+     * The current revision number.
      */
     private static final int REVISION = 7;
 
     /**
-     * The base url of the metrics domain
+     * The base url of the metrics domain.
      */
     private static final String BASE_URL = "http://report.mcstats.org";
 
     /**
-     * The url used to report a server's status
+     * The url used to report a server's status.
      */
     private static final String REPORT_URL = "/plugin/%s";
 
     /**
-     * Interval of time to ping (in minutes)
+     * Interval of time to ping (in minutes).
      */
     private static final int PING_INTERVAL = 15;
 
     /**
-     * Debug mode
+     * Debug mode.
      */
     private final boolean debug;
 
     /**
-     * All of the custom graphs to submit to metrics
+     * All of the custom graphs to submit to metrics.
      */
     private final Set<Graph> graphs = Collections.synchronizedSet(new HashSet<Graph>());
 
     /**
-     * The plugin configuration file
+     * The plugin configuration file.
      */
     private final Properties properties = new Properties();
 
     /**
-     * The plugin's name
+     * The plugin's name.
      */
     private final String pluginName;
 
     /**
-     * The plugin's version
+     * The plugin's version.
      */
     private final String pluginVersion;
 
     /**
-     * The plugin configuration file
+     * The plugin configuration file.
      */
     private final File configurationFile;
 
     /**
-     * Unique server id
+     * Unique server id.
      */
     private final String guid;
 
     /**
-     * Lock for synchronization
+     * Lock for synchronization.
      */
     private final Object optOutLock = new Object();
 
     /**
-     * The thread submission is running on
+     * The thread submission is running on.
      */
-    private Thread thread = null;
+    private Thread thread;
 
     /**
      * Creates a new Metrics manager.
@@ -167,14 +165,14 @@ public abstract class Metrics
     }
 
     /**
-     * Get the full server version
+     * Get the full server version.
      * 
      * @return The server version
      */
     public abstract String getServerVersion();
 
     /**
-     * Get the amount of players online
+     * Get the amount of players online.
      * 
      * @return Players online
      */
@@ -182,7 +180,7 @@ public abstract class Metrics
 
     /**
      * Gets the File object of the config file that should be used to store data such as the GUID
-     * and opt-out status
+     * and opt-out status.
      * 
      * @return the File object for the config file
      */
@@ -215,7 +213,7 @@ public abstract class Metrics
 
     /**
      * Add a Graph object to SpoutMetrics that represents data for the plugin that should be sent to
-     * the backend
+     * the backend.
      * 
      * @param graph The name of the graph
      */
@@ -257,7 +255,7 @@ public abstract class Metrics
 
                 private boolean firstPost = true;
 
-                private long nextPost = 0L;
+                private long nextPost;
 
                 @Override
                 public void run()
@@ -412,7 +410,7 @@ public abstract class Metrics
     }
 
     /**
-     * Generic method that posts a plugin to the metrics website
+     * Generic method that posts a plugin to the metrics website.
      */
     void postPlugin(final boolean isPing) throws IOException
     {
@@ -568,7 +566,7 @@ public abstract class Metrics
             throw new IOException(response);
         }
         // Is this the first update this hour?
-        if (response.equals("1") || response.contains("This is your first update this hour"))
+        if ("1".equals(response) || "This is your first update this hour".contains(response))
         {
             synchronized (this.graphs)
             {
@@ -588,7 +586,7 @@ public abstract class Metrics
     }
 
     /**
-     * GZip compress a string of bytes
+     * GZip compress a string of bytes.
      * 
      * @param input The input
      * @return The gziped string The input compressed
@@ -653,7 +651,7 @@ public abstract class Metrics
 
         try
         {
-            if (value.equals("0") || !value.endsWith("0"))
+            if ("0".equals(value) || !"0".endsWith(value))
             {
                 Double.parseDouble(value);
                 isValueNumeric = true;
@@ -681,7 +679,7 @@ public abstract class Metrics
     }
 
     /**
-     * Escape a string to create a valid JSON string
+     * Escape a string to create a valid JSON string.
      * 
      * @param text The text to escape
      * @return The escaped text
@@ -732,7 +730,7 @@ public abstract class Metrics
     }
 
     /**
-     * Encode text as UTF-8
+     * Encode text as UTF-8.
      * 
      * @param text the text to encode
      * @return the encoded text, as UTF-8
@@ -743,19 +741,19 @@ public abstract class Metrics
     }
 
     /**
-     * Represents a custom graph on the website
+     * Represents a custom graph on the website.
      */
     public static class Graph
     {
 
         /**
          * The graph's name, alphanumeric and spaces only :) If it does not comply to the above when
-         * submitted, it is rejected
+         * submitted, it is rejected.
          */
         private final String name;
 
         /**
-         * The set of plotters that are contained within this graph
+         * The set of plotters that are contained within this graph.
          */
         private final Set<Plotter> plotters = new LinkedHashSet<Plotter>();
 
@@ -765,7 +763,7 @@ public abstract class Metrics
         }
 
         /**
-         * Gets the graph's name
+         * Gets the graph's name.
          * 
          * @return the Graph's name
          */
@@ -775,7 +773,7 @@ public abstract class Metrics
         }
 
         /**
-         * Add a plotter to the graph, which will be used to plot entries
+         * Add a plotter to the graph, which will be used to plot entries.
          * 
          * @param plotter the plotter to add to the graph
          */
@@ -785,7 +783,7 @@ public abstract class Metrics
         }
 
         /**
-         * Remove a plotter from the graph
+         * Remove a plotter from the graph.
          * 
          * @param plotter the plotter to remove from the graph
          */
@@ -795,7 +793,7 @@ public abstract class Metrics
         }
 
         /**
-         * Gets an <b>unmodifiable</b> set of the plotter objects in the graph
+         * Gets an <b>unmodifiable</b> set of the plotter objects in the graph.
          * 
          * @return an unmodifiable {@link java.util.Set} of the plotter objects
          */
@@ -832,18 +830,18 @@ public abstract class Metrics
     }
 
     /**
-     * Interface used to collect custom data for a plugin
+     * Interface used to collect custom data for a plugin.
      */
     public abstract static class Plotter
     {
 
         /**
-         * The plot's name
+         * The plot's name.
          */
         private final String name;
 
         /**
-         * Construct a plotter with the default plot name
+         * Construct a plotter with the default plot name.
          */
         public Plotter()
         {
@@ -851,7 +849,7 @@ public abstract class Metrics
         }
 
         /**
-         * Construct a plotter with a specific plot name
+         * Construct a plotter with a specific plot name.
          * 
          * @param name the name of the plotter to use, which will show up on the website
          */
@@ -871,7 +869,7 @@ public abstract class Metrics
         public abstract int getValue();
 
         /**
-         * Get the column name for the plotted point
+         * Get the column name for the plotted point.
          * 
          * @return the plotted point's column name
          */
@@ -881,7 +879,7 @@ public abstract class Metrics
         }
 
         /**
-         * Called after the website graphs have been updated
+         * Called after the website graphs have been updated.
          */
         public void reset()
         {

@@ -25,7 +25,7 @@
 package com.voxelplugineering.voxelsniper.service;
 
 /**
- * An enum of the phases of service initialization.
+ * An enumeration of the phases of service initialization.
  */
 @SuppressWarnings("javadoc")
 public enum InitPhase

@@ -26,27 +26,24 @@ package com.voxelplugineering.voxelsniper;
 /**
  * The main class for utility operations.
  */
-public class GunsmithMain
+public final class GunsmithMain
 {
+
+    private GunsmithMain()
+    {
+    }
 
     /**
      * The main method.
-     * 
+     *
      * @param args The program arguments.
      */
     public static void main(String[] args)
     {
-        if (args.length == 1 && args[0].equalsIgnoreCase("--testinit"))
+        if (args.length == 1 && "--testinit".equalsIgnoreCase(args[0]))
         {
             System.out.println("Starting init -> stop cycle test.");
             Gunsmith.getServiceManager().start();
-            try
-            {
-                Thread.sleep(1000);
-            } catch (InterruptedException ignored)
-            {
-                // Interrupted, skip the wait and stop immediately
-            }
             System.out.println();
             Gunsmith.getServiceManager().shutdown();
         } else

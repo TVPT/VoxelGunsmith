@@ -24,7 +24,7 @@
 package com.voxelplugineering.voxelsniper.entity;
 
 /**
- * Represents a living entity
+ * Represents a living entity.
  */
 public interface Living extends Entity
 {

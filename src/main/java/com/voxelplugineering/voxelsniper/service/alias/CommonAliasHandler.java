@@ -50,6 +50,7 @@ public class CommonAliasHandler implements AliasHandler
      * Creates a new {@link AliasHandler}.
      * 
      * @param owner The owner
+     * @param caseSensitive If this alias keys should be case sensitive
      */
     public CommonAliasHandler(AliasOwner owner, boolean caseSensitive)
     {
@@ -59,8 +60,9 @@ public class CommonAliasHandler implements AliasHandler
     /**
      * Sets the parent alias handler.
      * 
-     * @param parent The new parent
      * @param owner The owner
+     * @param parent The new parent
+     * @param caseSensitive If this alias keys should be case sensitive
      */
     public CommonAliasHandler(AliasOwner owner, AliasHandler parent, boolean caseSensitive)
     {

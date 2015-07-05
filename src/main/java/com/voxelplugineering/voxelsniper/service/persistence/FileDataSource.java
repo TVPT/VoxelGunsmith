@@ -56,7 +56,7 @@ public class FileDataSource extends StreamDataSource
     private final File file;
 
     /**
-     * Sets up this {@link FileDataSource}
+     * Sets up this {@link FileDataSource}.
      * 
      * @param file The file
      */

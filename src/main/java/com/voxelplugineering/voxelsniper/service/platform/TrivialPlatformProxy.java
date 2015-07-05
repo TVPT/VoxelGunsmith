@@ -46,6 +46,8 @@ public class TrivialPlatformProxy extends AbstractService implements PlatformPro
 
     /**
      * Creates a new {@link TrivialPlatformProxy}.
+     * 
+     * @param context The context
      */
     public TrivialPlatformProxy(Context context)
     {

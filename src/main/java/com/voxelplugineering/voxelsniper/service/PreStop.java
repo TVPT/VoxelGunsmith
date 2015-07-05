@@ -41,8 +41,6 @@ public @interface PreStop
 
     /**
      * Gets the priority.
-     * 
-     * @return The priority
      */
     int priority() default 1000;
 

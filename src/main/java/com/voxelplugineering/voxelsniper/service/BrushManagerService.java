@@ -43,6 +43,7 @@ public class BrushManagerService extends AbstractService implements GlobalBrushM
     /**
      * Creates a new {@link BrushManagerService}.
      * 
+     * @param context The context
      * @param manager The manager to use within this service
      */
     public BrushManagerService(Context context, BrushManager manager)

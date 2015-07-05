@@ -31,8 +31,13 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * A set of utilities for validating various shapes.
  */
-public class ShapeValidation
+public final class ShapeValidation
 {
+
+    private ShapeValidation()
+    {
+
+    }
 
     /**
      * Checks whether the given shape is a disc.

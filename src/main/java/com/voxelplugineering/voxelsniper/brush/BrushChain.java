@@ -83,6 +83,7 @@ public class BrushChain
     /**
      * Executes this brush chain.
      * 
+     * @param player The player
      * @param brushVariables The execution variables
      */
     public void run(Player player, BrushVars brushVariables)

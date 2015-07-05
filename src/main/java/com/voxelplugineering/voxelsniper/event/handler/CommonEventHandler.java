@@ -60,7 +60,9 @@ public class CommonEventHandler
     private final double rayTraceRange;
 
     /**
-     * Constructs a new CommonEventHandler
+     * Constructs a new {@link CommonEventHandler}.
+     * 
+     * @param context The context
      */
     public CommonEventHandler(Context context)
     {
@@ -182,6 +184,7 @@ public class CommonEventHandler
             vars.set(BrushContext.RUNTIME, BrushKeys.LAST_FACE, ray.getLastFace());
             vars.set(BrushContext.RUNTIME, BrushKeys.ACTION, event.getAction());
             vars.set(BrushContext.RUNTIME, BrushKeys.LENGTH, ray.getLength());
+            //TODO move player to the global context not runtime
             vars.set(BrushContext.RUNTIME, BrushKeys.PLAYER, sniper);
             //Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());
             sniper.getCurrentBrush().run(sniper, vars);

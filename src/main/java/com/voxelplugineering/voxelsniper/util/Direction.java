@@ -79,7 +79,7 @@ public enum Direction
      */
     public static Direction[] getCardinals()
     {
-        return new Direction[] { NORTH, SOUTH, EAST, WEST, UP, DOWN };
+        return new Direction[] {NORTH, SOUTH, EAST, WEST, UP, DOWN};
     }
 
     private Direction(final int modX, final int modY, final int modZ)

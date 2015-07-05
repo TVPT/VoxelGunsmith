@@ -49,15 +49,17 @@ public class MaskMaterialCommand extends Command
     private String materialSetMessage;
 
     /**
-     * Constructs a new BrushCommand
+     * Constructs a new {@link MaskMaterialCommand}.
+     * 
+     * @param context The context
      */
     public MaskMaterialCommand(Context context)
     {
         super("maskmaterial", "Sets your current secondary brush material", context);
         setAliases("vr");
         setPermissions("voxelsniper.command.materialmask");
-        this.materialNotFoundMessage = this.config.get("materialNotFoundMessage", String.class).or("Could not find that material.");
-        this.materialSetMessage = this.config.get("materialMaskSetMessage", String.class).or("Set secondary material to %s");
+        this.materialNotFoundMessage = getConfig().get("materialNotFoundMessage", String.class).or("Could not find that material.");
+        this.materialSetMessage = getConfig().get("materialMaskSetMessage", String.class).or("Set secondary material to %s");
     }
 
     @Override

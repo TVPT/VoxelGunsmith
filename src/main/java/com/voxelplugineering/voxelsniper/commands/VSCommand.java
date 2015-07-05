@@ -42,13 +42,16 @@ import com.voxelplugineering.voxelsniper.util.Context;
  */
 public class VSCommand extends Command
 {
+    
+    private static final String EQUALS_SEPARATOR = "=";
 
     private final PlatformProxy platform;
-
-    private Map<String, SubCommand> subcommands;
+    private final Map<String, SubCommand> subcommands;
 
     /**
-     * Constructs a new BrushCommand
+     * Constructs a new {@link VSCommand}.
+     * 
+     * @param context The context
      */
     public VSCommand(Context context)
     {
@@ -89,9 +92,9 @@ public class VSCommand extends Command
             full += part + " ";
         }
         full = full.trim();
-        if (full.contains("="))
+        if (full.contains(EQUALS_SEPARATOR))
         {
-            String[] split = full.split("=");
+            String[] split = full.split(EQUALS_SEPARATOR);
             String key = split[0].trim().toLowerCase();
             String value = split[1].trim();
             sniper.getBrushVars().set(BrushContext.GLOBAL, key, value);
@@ -108,13 +111,13 @@ public class VSCommand extends Command
 
     private void setupSubcommands()
     {
-        this.subcommands.put("version", new SubCommand(this.config, this.platform)
+        this.subcommands.put("version", new SubCommand(getConfig(), this.platform)
         {
 
             @Override
             boolean execute(CommandSender sender, String[] args)
             {
-                sender.sendMessage("VoxelSniper version " + this.platform.getFullVersion());
+                sender.sendMessage("VoxelSniper version " + getPlatform().getFullVersion());
                 return true;
             }
 
@@ -125,7 +128,7 @@ public class VSCommand extends Command
             }
 
         });
-        this.subcommands.put("range", new SubCommand(this.config, this.platform)
+        this.subcommands.put("range", new SubCommand(getConfig(), this.platform)
         {
 
             @Override
@@ -138,9 +141,9 @@ public class VSCommand extends Command
                 Player player = (Player) sender;
                 if (args.length >= 1)
                 {
-                    if (args[0].equalsIgnoreCase("reset"))
+                    if ("reset".equalsIgnoreCase(args[0]))
                     {
-                        double range = this.conf.get("rayTraceRange", Double.class).get();
+                        double range = getConfig().get("rayTraceRange", Double.class).get();
                         player.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.RANGE, range);
                         sender.sendMessage("Reset your maximum range to %d", range);
                     }
@@ -190,22 +193,35 @@ public class VSCommand extends Command
 
         });*/
     }
-}
 
-abstract class SubCommand
-{
-
-    protected final Configuration conf;
-    protected final PlatformProxy platform;
-
-    public SubCommand(Configuration conf, PlatformProxy platform)
+    /**
+     * A subcommand.
+     */
+    private abstract static class SubCommand
     {
-        this.conf = conf;
-        this.platform = platform;
+
+        private final Configuration conf;
+        private final PlatformProxy platform;
+
+        public SubCommand(Configuration conf, PlatformProxy platform)
+        {
+            this.conf = conf;
+            this.platform = platform;
+        }
+
+        public Configuration getConfig()
+        {
+            return this.conf;
+        }
+
+        public PlatformProxy getPlatform()
+        {
+            return this.platform;
+        }
+
+        abstract boolean execute(CommandSender sender, String[] args);
+
+        abstract String getHelp();
+
     }
-
-    abstract boolean execute(CommandSender sender, String[] args);
-
-    abstract String getHelp();
-
 }

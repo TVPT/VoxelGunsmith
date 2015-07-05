@@ -35,7 +35,7 @@ import com.voxelplugineering.voxelsniper.util.Context;
 public abstract class AbstractService implements Service
 {
 
-    private boolean initialized = false;
+    private boolean initialized;
     private List<Service> dependants = Lists.newArrayList();
 
     /**

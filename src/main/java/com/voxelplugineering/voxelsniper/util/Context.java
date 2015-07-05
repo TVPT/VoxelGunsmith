@@ -84,6 +84,7 @@ public class Context
      * {@link IllegalArgumentException} if the object is not found within the context.
      * 
      * @param cls The requested type
+     * @param <T> The type
      * @return The object
      */
     public <T extends Contextable> T getRequired(Class<T> cls)
@@ -102,6 +103,7 @@ public class Context
      * 
      * @param cls The requested type
      * @param serv The servers to set as dependent
+     * @param <T> The type
      * @return The object
      */
     public <T extends Contextable> T getRequired(Class<T> cls, Service serv)

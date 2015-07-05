@@ -61,7 +61,7 @@ public interface SchematicLoader
     /**
      * A schematic format converter.
      */
-    public static interface Converter
+    public interface Converter
     {
 
         /**

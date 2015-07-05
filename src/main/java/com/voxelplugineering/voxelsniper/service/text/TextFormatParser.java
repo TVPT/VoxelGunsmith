@@ -49,6 +49,8 @@ public interface TextFormatParser extends Service
 
         /**
          * Creates a new {@link TrivialTextFormatParser}.
+         * 
+         * @param context The context
          */
         public TrivialTextFormatParser(Context context)
         {

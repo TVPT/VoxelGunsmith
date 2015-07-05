@@ -28,8 +28,7 @@ import java.io.IOException;
 import com.google.common.base.Optional;
 
 /**
- * A {@link StreamDataSource} which ouputs data to {@link System#out} as a UFT-8 encoded String. <p>
- * {@link #read()} is no supported. </p>
+ * A {@link StreamDataSource} which ouputs data to {@link System#out} as a UFT-8 encoded String. <p> {@link #read()} is no supported. </p>
  */
 public class StandardOutDataSource extends StreamDataSource
 {
@@ -46,6 +45,14 @@ public class StandardOutDataSource extends StreamDataSource
             return Optional.of(new StandardOutDataSource());
         }
     };
+
+    /**
+     * Creates a new {@link StandardOutDataSource}.
+     */
+    public StandardOutDataSource()
+    {
+
+    }
 
     @Override
     public Optional<String> getName()

@@ -35,7 +35,7 @@ import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
  * An abstract configuration container which supports serializing configuration values stored in the
  * fields of the class.
  */
-public class ConfigurationContainer implements DataSerializable
+public abstract class ConfigurationContainer implements DataSerializable
 {
 
     @Override

@@ -37,7 +37,7 @@ public abstract class AbstractBrush implements Brush
 
     /**
      * Sets up the AbstractBrush.
-     * 
+     *
      * @param name The brush name
      * @param type The brush type
      */

@@ -112,7 +112,7 @@ public final class ListTag extends Tag
     {
         String name = getName();
         String append = "";
-        if (name != null && !name.equals(""))
+        if (!"".equals(name))
         {
             append = "(\"" + this.getName() + "\")";
         }

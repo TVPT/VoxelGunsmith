@@ -27,8 +27,8 @@ import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.persistence.DataSerializable;
 
 /**
- * Represents a brush which may be run, only one brush instance should exist and be shared among all
- * users. A users individual runtime settings are stored within the {@link BrushVars}.
+ * Represents a brush which may be run, only one brush instance should exist and be shared among all users. A users individual runtime settings are
+ * stored within the {@link BrushVars}.
  */
 public interface Brush extends DataSerializable
 {
@@ -63,6 +63,11 @@ public interface Brush extends DataSerializable
 
     /**
      * Executes this brush.
+     * 
+     * @param player The player executing the brush
+     * @param args The player's brush variables
+     * @return The execution result
      */
     ExecutionResult run(Player player, BrushVars args);
+
 }

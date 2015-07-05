@@ -47,7 +47,7 @@ public abstract class AbstractWorld<T> extends WeakWrapper<T> implements World
     private final MaterialRegistry<?> mats;
 
     /**
-     * Sets up the {@link AbstractWorld}
+     * Sets up the {@link AbstractWorld}.
      * 
      * @param value The underlying world object
      */

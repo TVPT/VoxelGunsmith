@@ -37,30 +37,13 @@ import com.voxelplugineering.voxelsniper.util.Context;
 public abstract class Command
 {
 
-    protected final PermissionProxy permsProxy;
-    protected final Configuration config;
-
-    /**
-     * Aliases for this command.
-     */
-    protected String[] aliases = new String[0];
-    /**
-     * The name of this command, the primary command alias.
-     */
+    private final PermissionProxy permsProxy;
+    private final Configuration config;
+    private String[] aliases = new String[0];
     private final String name;
-    /**
-     * A help message for this command.
-     */
     private String helpMsg;
-    /**
-     * If this command is player only or usable by the console as well.
-     */
-    private boolean playerOnly = false;
-    /**
-     * An array of permissions nodes, a sniper must have at least one of these in order to execute
-     * this command.
-     */
-    private String[] permissions = null;
+    private boolean playerOnly;
+    private String[] permissions;
 
     /**
      * Constructs a new command with the given name and help.
@@ -77,6 +60,26 @@ public abstract class Command
         this.permsProxy = context.getRequired(PermissionProxy.class);
         this.config = context.getRequired(Configuration.class);
         this.helpMsg = this.config.get("defaultHelpMessage", String.class).or("No help was provided for this command.");
+    }
+
+    /**
+     * Gets the configuration service.
+     * 
+     * @return The config service
+     */
+    protected Configuration getConfig()
+    {
+        return this.config;
+    }
+
+    /**
+     * Gets the permission proxy service.
+     * 
+     * @return The permission proxy
+     */
+    protected PermissionProxy getPerms()
+    {
+        return this.permsProxy;
     }
 
     /**
@@ -160,8 +163,7 @@ public abstract class Command
     }
 
     /**
-     * Returns the permission nodes for this command. A sniper is required to have at least one of
-     * these in order to execute the command.
+     * Returns the permission nodes for this command. A sniper is required to have at least one of these in order to execute the command.
      * 
      * @return the permissions
      */

@@ -39,6 +39,8 @@ public class HelpCommand extends Command
 
     /**
      * Creates a new Command instance.
+     * 
+     * @param context The context
      */
     public HelpCommand(Context context)
     {

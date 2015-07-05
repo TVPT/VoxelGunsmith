@@ -37,8 +37,16 @@ import com.google.common.collect.Maps;
 /**
  * A helper utility for checking annotations.
  */
-public class AnnotationHelper
+public final class AnnotationHelper
 {
+
+    /**
+     * No instance for you.
+     */
+    private AnnotationHelper()
+    {
+
+    }
 
     private static Map<Class<?>, List<Class<? extends Annotation>>> annotationCache = new MapMaker().concurrencyLevel(8).weakKeys().makeMap();
     private static Map<Class<?>, Map<Class<? extends Annotation>, Annotation>> annotationValueCache = new MapMaker().concurrencyLevel(8).weakKeys()

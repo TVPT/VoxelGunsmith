@@ -52,14 +52,10 @@ import com.voxelplugineering.voxelsniper.util.nbt.Tag;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 
 /**
- * A {@link SchematicLoader} for NBT stored schematics
+ * A {@link SchematicLoader} for NBT stored schematics.
  */
 public class CommonSchematicLoader implements SchematicLoader
 {
-
-    /*
-     * TODO unit tests for this
-     */
 
     private final MaterialRegistry<?> mats;
 
@@ -89,7 +85,7 @@ public class CommonSchematicLoader implements SchematicLoader
         int length = schematicTag.getInt("Length").get();
         int height = schematicTag.getInt("Height").get();
         String materials = schematicTag.getString("Materials").get();
-        if (!materials.equals("Alpha"))
+        if (!"Alpha".equals(materials))
         {
             throw new UnsupportedOperationException("Schematic file is not an Alpha schematic");
         }

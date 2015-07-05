@@ -31,14 +31,19 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Common utilities class for Gunsmith
+ * Common string utilities class for Gunsmith.
  */
-public class StringUtilities
+public final class StringUtilities
 {
 
+    private StringUtilities()
+    {
+
+    }
+
     /**
-     * This method uses a region to check case-insensitive equality. This means the internal array
-     * does not need to be copied like a toLowerCase() call would.
+     * This method uses a region to check case-insensitive equality. This means the internal array does not need to be copied like a toLowerCase()
+     * call would.
      * 
      * @param string String to check
      * @param prefix Prefix of string to compare
@@ -46,7 +51,7 @@ public class StringUtilities
      * @throws NullPointerException if prefix is null
      * @throws IllegalArgumentException if string is null
      */
-    public static boolean startsWithIgnoreCase(final String string, final String prefix) throws IllegalArgumentException, NullPointerException
+    public static boolean startsWithIgnoreCase(final String string, final String prefix)
     {
         checkNotNull(string, "Cannot check a null string for a match");
         return string.length() >= prefix.length() && string.regionMatches(true, 0, prefix, 0, prefix.length());
@@ -60,15 +65,13 @@ public class StringUtilities
      * @param collection The collection to add matches to
      * @param <T> the collection to use
      * @return the collection provided that would have the elements copied into
-     * @throws UnsupportedOperationException if the collection is immutable and originals contains a
-     *             string which starts with the specified search string.
+     * @throws UnsupportedOperationException if the collection is immutable and originals contains a string which starts with the specified search
+     *             string.
      * @throws IllegalArgumentException if any parameter is is null
-     * @throws IllegalArgumentException if originals contains a null element. <b>Note: the
-     *             collection may be modified before this is thrown</b>
+     * @throws IllegalArgumentException if originals contains a null element. <b>Note: the collection may be modified before this is thrown</b>
      */
     public static <T extends Collection<? super String>> T
-            copyPartialMatches(final String token, final Iterable<String> originals, final T collection) throws UnsupportedOperationException,
-                    IllegalArgumentException
+            copyPartialMatches(final String token, final Iterable<String> originals, final T collection)
     {
         checkNotNull(token, "Search token cannot be null");
         checkNotNull(collection, "Collection cannot be null");
@@ -105,8 +108,7 @@ public class StringUtilities
     }
 
     /**
-     * Returns the array positions between start and end (both inclusive) concatenated as a space
-     * separated string.
+     * Returns the array positions between start and end (both inclusive) concatenated as a space separated string.
      * 
      * @param array the array
      * @param start the start point (inclusive)
@@ -134,8 +136,7 @@ public class StringUtilities
     }
 
     /**
-     * Returns an array which is equivalent to source[o:start-1] + insert[o:length] +
-     * source[end+1:length].
+     * Returns an array which is equivalent to source[o:start-1] + insert[o:length] + source[end+1:length].
      * 
      * @param source the source array
      * @param insert the array to insert

@@ -43,16 +43,20 @@ import com.voxelplugineering.voxelsniper.brush.shape.VoxelBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.VoxelDiscBrush;
 
 /**
- * In lieu of having flat file brushes this will temporarily serve as a builder
- * for brushes at runtime for debugging during development.
+ * In lieu of having flat file brushes this will temporarily serve as a builder for brushes at runtime for debugging during development.
  */
-public class DefaultBrushBuilder
+public final class DefaultBrushBuilder
 {
+
+    private DefaultBrushBuilder()
+    {
+
+    }
 
     /**
      * A map of all graphs created from this temporary utility.
      */
-    private static final Map<String, Brush> graphs = Maps.newHashMap();
+    private static final Map<String, Brush> GRAPHS = Maps.newHashMap();
 
     /**
      * Loads all the graphs from this utility into the global brush manager.
@@ -62,9 +66,9 @@ public class DefaultBrushBuilder
     public static void loadAll(BrushManager manager)
     {
         checkNotNull(manager);
-        for (String name : graphs.keySet())
+        for (String name : GRAPHS.keySet())
         {
-            Brush brush = graphs.get(name);
+            Brush brush = GRAPHS.get(name);
             manager.loadBrush(name, brush);
         }
     }
@@ -95,21 +99,21 @@ public class DefaultBrushBuilder
     public static void buildBrushes()
     {
         //shape
-        graphs.put("ball", new BallBrush());
-        graphs.put("cylinder", new CylinderBrush());
-        graphs.put("disc", new DiscBrush());
-        graphs.put("ellipse", new EllipseBrush());
-        graphs.put("ellipsoid", new EllipsoidBrush());
-        graphs.put("snipe", new SnipeBrush());
-        graphs.put("voxel", new VoxelBrush());
-        graphs.put("voxeldisc", new VoxelDiscBrush());
-        
+        GRAPHS.put("ball", new BallBrush());
+        GRAPHS.put("cylinder", new CylinderBrush());
+        GRAPHS.put("disc", new DiscBrush());
+        GRAPHS.put("ellipse", new EllipseBrush());
+        GRAPHS.put("ellipsoid", new EllipsoidBrush());
+        GRAPHS.put("snipe", new SnipeBrush());
+        GRAPHS.put("voxel", new VoxelBrush());
+        GRAPHS.put("voxeldisc", new VoxelDiscBrush());
+
         //mask
-        graphs.put("materialmask", new MaterialMaskBrush());
-        
+        GRAPHS.put("materialmask", new MaterialMaskBrush());
+
         //effect
-        graphs.put("material", new MaterialBrush());
-        graphs.put("blend", new BlendBrush());
+        GRAPHS.put("material", new MaterialBrush());
+        GRAPHS.put("blend", new BlendBrush());
     }
 
 }

@@ -64,7 +64,7 @@ public interface MaterialShape extends Shape
     void setMaterial(int x, int y, int z, boolean relative, Material material);
 
     /**
-     * Floods the shape with the given material
+     * Floods the shape with the given material.
      * 
      * @param material The new material
      */

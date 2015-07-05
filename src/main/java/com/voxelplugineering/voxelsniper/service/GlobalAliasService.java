@@ -43,6 +43,9 @@ public class GlobalAliasService extends AbstractService implements GlobalAliasHa
 
     /**
      * Creates a new {@link GlobalAliasService}.
+     * 
+     * @param context The context
+     * @param wrapped The wrapped AliasHandler
      */
     public GlobalAliasService(Context context, AliasHandler wrapped)
     {

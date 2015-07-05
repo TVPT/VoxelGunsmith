@@ -110,10 +110,11 @@ public class DataTranslator
     }
 
     /**
-     * Attempts to translate the given object
+     * Attempts to translate the given object.
      * 
      * @param obj The object to translate
      * @param to The type to translate it to
+     * @param <T> The end type
      * @return The translated object, if successful
      */
     @SuppressWarnings("unchecked")

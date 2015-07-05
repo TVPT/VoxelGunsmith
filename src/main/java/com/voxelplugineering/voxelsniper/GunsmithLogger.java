@@ -38,38 +38,35 @@ import com.voxelplugineering.voxelsniper.service.logging.Logger;
  * logged messages to these child loggers. If no loggers are registered then the logged messages are
  * passed to standard out instread.
  */
-public class GunsmithLogger implements Logger
+public final class GunsmithLogger implements Logger
 {
 
-    private static GunsmithLogger INSTANCE = null;
+    private static GunsmithLogger instance;
 
     /**
      * Gets the global logger for gunsmith.
-     * 
+     *
      * @return The gunsmith logger.
      */
     public static GunsmithLogger getLogger()
     {
-        if (INSTANCE == null)
+        if (instance == null)
         {
-            INSTANCE = new GunsmithLogger();
+            instance = new GunsmithLogger();
         }
-        return INSTANCE;
+        return instance;
     }
 
     /**
      * Overrides the global logger with the given logger.
-     * 
+     *
      * @param logger The new logger
      */
     public static void setLogger(GunsmithLogger logger)
     {
-        INSTANCE = logger;
+        instance = logger;
     }
 
-    /**
-     * The collection of loggers to distribute the logging messages to.
-     */
     private final Map<String, Logger> loggers;
     private LogLevel root = LogLevel.DEBUG;
 
@@ -219,7 +216,7 @@ public class GunsmithLogger implements Logger
     /**
      * Registers a new child logger. Logged messages will be distributed to all registered child
      * loggers.
-     * 
+     *
      * @param name The name of the logger
      * @param logger The logger
      */
@@ -233,7 +230,7 @@ public class GunsmithLogger implements Logger
 
     /**
      * Removes the given logger by name.
-     * 
+     *
      * @param name The name of the logger to remove
      */
     public void removeLogger(String name)
@@ -245,7 +242,7 @@ public class GunsmithLogger implements Logger
 
     /**
      * Gets all registered child loggers.
-     * 
+     *
      * @return The registered loggers
      */
     public Collection<Logger> getLoggers()

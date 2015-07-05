@@ -88,7 +88,7 @@ public abstract class SniperEvent extends Event
     {
 
         /**
-         * Creates a new {@link SniperDestroyEvent}
+         * Creates a new {@link SniperDestroyEvent}.
          * 
          * @param sniper The player
          */

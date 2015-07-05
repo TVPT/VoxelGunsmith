@@ -35,6 +35,8 @@ public class SimpleAliasOwner implements AliasOwner
 
     /**
      * Creates a new {@link SimpleAliasOwner}.
+     * 
+     * @param source The persistent alias data source
      */
     public SimpleAliasOwner(DataSourceReader source)
     {

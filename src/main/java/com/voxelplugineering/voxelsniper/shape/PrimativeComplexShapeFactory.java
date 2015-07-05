@@ -161,12 +161,12 @@ public class PrimativeComplexShapeFactory
             for (double x = 0; x <= rx; x++)
             {
 
-                final double xSquared = (x / (rx)) * (x / (rx));
+                final double xSquared = (x / rx) * (x / rx);
 
                 for (double y = 0; y <= ry; y++)
                 {
 
-                    final double zSquared = (y / (ry)) * (y / (ry));
+                    final double zSquared = (y / ry) * (y / ry);
 
                     for (int z = 0; z < height; z++)
                     {
@@ -188,12 +188,12 @@ public class PrimativeComplexShapeFactory
             for (double x = 0; x <= rx; x++)
             {
 
-                final double xSquared = (x / (rx)) * (x / (rx));
+                final double xSquared = (x / rx) * (x / rx);
 
                 for (double y = 0; y <= ry; y++)
                 {
 
-                    final double zSquared = (y / (ry)) * (y / (ry));
+                    final double zSquared = (y / ry) * (y / ry);
 
                     for (int z = 0; z < height; z++)
                     {
@@ -216,12 +216,12 @@ public class PrimativeComplexShapeFactory
             for (double x = 0; x <= rx; x++)
             {
 
-                final double xSquared = (x / (rx)) * (x / (rx));
+                final double xSquared = (x / rx) * (x / rx);
 
                 for (double y = 0; y <= ry; y++)
                 {
 
-                    final double zSquared = (y / (ry)) * (y / (ry));
+                    final double zSquared = (y / ry) * (y / ry);
 
                     for (int z = 0; z < height; z++)
                     {

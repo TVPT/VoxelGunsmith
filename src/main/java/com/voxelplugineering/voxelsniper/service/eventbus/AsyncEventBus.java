@@ -25,9 +25,23 @@ package com.voxelplugineering.voxelsniper.service.eventbus;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.voxelplugineering.voxelsniper.GunsmithLogger;
+import com.voxelplugineering.voxelsniper.service.AbstractService;
+import com.voxelplugineering.voxelsniper.service.config.Configuration;
+import com.voxelplugineering.voxelsniper.service.event.DeadEvent;
+import com.voxelplugineering.voxelsniper.service.event.Event;
+import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.ThreadingPolicy;
+import com.voxelplugineering.voxelsniper.util.Context;
+import com.voxelplugineering.voxelsniper.util.FutureFutureCallable;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.MapMaker;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -37,24 +51,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.MapMaker;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
-import com.voxelplugineering.voxelsniper.service.AbstractService;
-import com.voxelplugineering.voxelsniper.service.config.Configuration;
-import com.voxelplugineering.voxelsniper.service.event.DeadEvent;
-import com.voxelplugineering.voxelsniper.service.event.Event;
-import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.ThreadingPolicy;
-import com.voxelplugineering.voxelsniper.util.Context;
-
 /**
- * An {@link EventBus} implementation supporting all {@link ThreadingPolicy} types. Optionally takes
- * an {@link ExecutorService} to use for asynchronous task delegation. <p> This class is safe for
- * concurrent use. </p>
+ * An {@link EventBus} implementation supporting all {@link ThreadingPolicy} types. Optionally takes an {@link ExecutorService} to use for
+ * asynchronous task delegation. <p> This class is safe for concurrent use. </p>
  */
 public class AsyncEventBus extends AbstractService implements EventBus
 {
@@ -64,11 +63,12 @@ public class AsyncEventBus extends AbstractService implements EventBus
     private ListeningExecutorService executor;
     private Map<Class<? extends Event>, SubscriberList> registry;
     private boolean built;
-    private boolean explicitExecutor = false;
+    private boolean explicitExecutor;
 
     /**
      * Creates a new {@link AsyncEventBus}.
      * 
+     * @param context The context
      * @param executorService The {@link ExecutorService} to use for asynchronous task delegation
      */
     public AsyncEventBus(Context context, ExecutorService executorService)
@@ -80,8 +80,9 @@ public class AsyncEventBus extends AbstractService implements EventBus
     }
 
     /**
-     * Creates a new {@link AsyncEventBus}. This defaults to using
-     * {@link Executors#newCachedThreadPool()} for event handler delegation.
+     * Creates a new {@link AsyncEventBus}. This defaults to using {@link Executors#newCachedThreadPool()} for event handler delegation.
+     * 
+     * @param context The context
      */
     public AsyncEventBus(Context context)
     {
@@ -104,7 +105,7 @@ public class AsyncEventBus extends AbstractService implements EventBus
             {
 
                 private final ThreadGroup group;
-                private int count = 0;
+                private int count;
 
                 {
                     this.group = Thread.currentThread().getThreadGroup();
@@ -307,59 +308,28 @@ public class AsyncEventBus extends AbstractService implements EventBus
         return this.executor.submit(new FutureFutureCallable(futures, event));
     }
 
-}
-
-class FutureFutureCallable implements Callable<Event>
-{
-
-    private final Collection<Future<Event>> watchList;
-    private final Event returnValue;
-
-    public FutureFutureCallable(Collection<Future<Event>> w, Event r)
+    /**
+     * A {@link Callable} for posting an event to a subscriber.
+     */
+    private static class EventCallable implements Callable<Event>
     {
-        this.watchList = w;
-        this.returnValue = r;
-    }
 
-    @Override
-    public Event call() throws Exception
-    {
-        for (Iterator<Future<Event>> it = this.watchList.iterator(); it.hasNext();)
+        private final Event event;
+        private final Subscriber sub;
+
+        public EventCallable(Event e, Subscriber s)
         {
-            Future<Event> next = it.next();
-            try
-            {
-                next.get();
-            } catch (Exception ignored)
-            {
-                assert true;
-            } finally
-            {
-                it.remove();
-            }
+            this.event = e;
+            this.sub = s;
         }
-        return this.returnValue;
-    }
 
-}
+        @Override
+        public Event call() throws Exception
+        {
+            this.sub.getMethod().invoke(this.sub.getContainer(), this.event);
+            return this.event;
+        }
 
-class EventCallable implements Callable<Event>
-{
-
-    private final Event event;
-    private final Subscriber sub;
-
-    public EventCallable(Event e, Subscriber s)
-    {
-        this.event = e;
-        this.sub = s;
-    }
-
-    @Override
-    public Event call() throws Exception
-    {
-        this.sub.getMethod().invoke(this.sub.getContainer(), this.event);
-        return this.event;
     }
 
 }

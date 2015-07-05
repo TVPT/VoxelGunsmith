@@ -28,7 +28,7 @@ import com.voxelplugineering.voxelsniper.service.Service;
 import com.voxelplugineering.voxelsniper.world.biome.Biome;
 
 /**
- * A registry for biome type.s
+ * A registry for biome type.
  * 
  * @param <T> The biome type
  */

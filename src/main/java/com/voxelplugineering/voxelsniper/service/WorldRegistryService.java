@@ -48,6 +48,7 @@ public class WorldRegistryService<T> extends AbstractService implements WorldReg
     /**
      * Creates a new {@link WorldRegistryService}.
      * 
+     * @param context The context
      * @param provider The provider for new worlds
      */
     public WorldRegistryService(Context context, RegistryProvider<T, World> provider)

@@ -29,8 +29,13 @@ import com.voxelplugineering.voxelsniper.service.alias.AliasRegistry;
 /**
  * A utility for loading default aliases.
  */
-public class DefaultAliasBuilder
+public final class DefaultAliasBuilder
 {
+
+    private DefaultAliasBuilder()
+    {
+
+    }
 
     /**
      * Loads the standard default aliases into the given {@link AliasHandler}.

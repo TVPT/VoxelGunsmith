@@ -43,6 +43,8 @@ public class AliasCommand extends Command
 
     /**
      * Constructs a new {@link AliasCommand}.
+     * 
+     * @param context The context
      */
     public AliasCommand(Context context)
     {
@@ -69,7 +71,7 @@ public class AliasCommand extends Command
             return true;
         }
         String target = args[0];
-        boolean global = args[1].equalsIgnoreCase("-g") && this.permsProxy.hasPermission(sniper, "voxelsniper.command.alias.global");
+        boolean global = "-g".equalsIgnoreCase(args[1]) && getPerms().hasPermission(sniper, "voxelsniper.command.alias.global");
         AliasHandler alias = global ? this.aliases : sniper.getAliasHandler();
         int n = global ? 2 : 1;
         if (alias.hasTarget(target))

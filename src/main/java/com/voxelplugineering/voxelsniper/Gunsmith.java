@@ -25,24 +25,24 @@ package com.voxelplugineering.voxelsniper;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Collection;
-import java.util.List;
-
-import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.expansion.Expansion;
 import com.voxelplugineering.voxelsniper.expansion.ExpansionManager;
 import com.voxelplugineering.voxelsniper.service.Service;
 
+import com.google.common.collect.Lists;
+
+import java.util.Collection;
+import java.util.List;
+
 /**
  * The core service and expansion manager.
  */
-public class Gunsmith extends ServiceManager implements ExpansionManager
+public final class Gunsmith extends ServiceManager implements ExpansionManager
 {
 
     /**
-     * Gets the {@link ServiceManager} which is in change of the registration, initialization, and
-     * shutdown of all {@link Service}s.
-     * 
+     * Gets the {@link ServiceManager} which is in change of the registration, initialization, and shutdown of all {@link Service}s.
+     *
      * @return The service manager
      */
     public static ServiceManager getServiceManager()
@@ -51,9 +51,8 @@ public class Gunsmith extends ServiceManager implements ExpansionManager
     }
 
     /**
-     * Gets the {@link ExpansionManager} which is in change of the registration of all
-     * {@link Expansion}s.
-     * 
+     * Gets the {@link ExpansionManager} which is in change of the registration of all {@link Expansion}s.
+     *
      * @return The expansion manager
      */
     public static ExpansionManager getExpansionManager()
@@ -63,7 +62,7 @@ public class Gunsmith extends ServiceManager implements ExpansionManager
 
     /**
      * Gets the main thread of the system.
-     * 
+     *
      * @return The main thread
      */
     public static Thread getMainThread()
@@ -73,7 +72,7 @@ public class Gunsmith extends ServiceManager implements ExpansionManager
 
     /**
      * Gets the system {@link ClassLoader}.
-     * 
+     *
      * @return The class loader
      */
     public static ClassLoader getClassLoader()
@@ -81,15 +80,9 @@ public class Gunsmith extends ServiceManager implements ExpansionManager
         return Holder.INSTANCE.classloader;
     }
 
-    private static class Holder
-    {
-
-        protected static final Gunsmith INSTANCE = new Gunsmith();
-    }
-
-    private Thread mainThread;
     private ClassLoader classloader;
     private List<Expansion> expansions;
+    private Thread mainThread;
 
     private Gunsmith()
     {
@@ -133,6 +126,19 @@ public class Gunsmith extends ServiceManager implements ExpansionManager
     public Collection<Expansion> getExpansions()
     {
         return this.expansions;
+    }
+
+    /**
+     * An on demand holder for the Gunsmith instance.
+     */
+    private static final class Holder
+    {
+
+        protected static final Gunsmith INSTANCE = new Gunsmith();
+
+        private Holder()
+        {
+        }
     }
 
 }

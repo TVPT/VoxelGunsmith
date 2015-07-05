@@ -32,12 +32,12 @@ public enum LogLevel
 
     OFF(-1), DEBUG(0), INFO(1), WARN(2), ERROR(3);
 
+    private final int value;
+
     LogLevel(int level)
     {
         this.value = level;
     }
-
-    private final int value;
 
     /**
      * Gets whether the given LogLevel has a value which is greater than or equal to this log

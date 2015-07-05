@@ -35,7 +35,7 @@ public abstract class Event
 
     private final boolean isCancelable;
     private final ThreadingPolicy allowsAsync;
-    private boolean isCanceled = false;
+    private boolean isCanceled;
 
     /**
      * Sets up the event attributes.

@@ -46,8 +46,8 @@ public class DirectoryDataSourceProvider implements DataSourceProvider
     // Decided to use a cache due to how often has and read will be called close
     // together looking for the same file.
     private final LoadingCache<String, File> cache;
-    private Class<? extends DataSourceReader> reader = null;
-    private DataContainer readerArgs = null;
+    private Class<? extends DataSourceReader> reader;
+    private DataContainer readerArgs;
 
     /**
      * Creates a new {@link DirectoryDataSourceProvider}.

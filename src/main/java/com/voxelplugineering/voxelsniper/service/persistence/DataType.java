@@ -33,7 +33,7 @@ import com.google.common.collect.Maps;
  * An enumeration of data types accepted by a {@link DataContainer}.
  */
 @SuppressWarnings("javadoc")
-public class DataType
+public final class DataType
 {
 
     public static final DataType BYTE = new DataType(byte.class, Byte.class);

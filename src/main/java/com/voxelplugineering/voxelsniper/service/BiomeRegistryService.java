@@ -45,11 +45,13 @@ public class BiomeRegistryService<T> extends AbstractService implements BiomeReg
     private final Configuration conf;
 
     private WeakRegistry<T, Biome> registry;
-    private Biome defaultBiome = null;
+    private Biome defaultBiome;
     private String defaultBiomeName;
 
     /**
      * Creates a new {@link BiomeRegistryService}.
+     * 
+     * @param context The context
      */
     public BiomeRegistryService(Context context)
     {

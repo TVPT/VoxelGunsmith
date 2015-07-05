@@ -310,9 +310,9 @@ public class ComplexShape implements Shape
         int dx = other.getWidth() - this.getWidth();
         int dy = other.getHeight() - this.getHeight();
         int dz = other.getLength() - this.getLength();
-        int odx = (other.getOrigin().getX() - this.origin.getX());
-        int ody = (other.getOrigin().getY() - this.origin.getY());
-        int odz = (other.getOrigin().getZ() - this.origin.getZ());
+        int odx = other.getOrigin().getX() - this.origin.getX();
+        int ody = other.getOrigin().getY() - this.origin.getY();
+        int odz = other.getOrigin().getZ() - this.origin.getZ();
         int fdx = dx - odx;
         int fdy = dy - ody;
         int fdz = dz - odz;

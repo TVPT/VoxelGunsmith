@@ -78,7 +78,7 @@ public class JsonDataSourceReader implements DataSourceReader
     }
 
     private final StreamDataSource source;
-    private boolean pretty = false;
+    private boolean pretty;
 
     /**
      * Creates a new {@link JsonDataSourceReader} based on the given stream source.

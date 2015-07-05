@@ -53,19 +53,22 @@ public class BrushCommand extends Command
 
     /**
      * Constructs a new BrushCommand.
+     * 
+     * @param context The context
      */
     public BrushCommand(Context context)
     {
         super("brush", "Sets your current brush", context);
         setAliases("b");
         setPermissions("voxelsniper.command.brush");
-        this.brushSizeChangeMessage = this.config.get("brushSizeChangedMessage", String.class).or("Your brush size was changed to %.1f");
-        this.brushSetMessage = this.config.get("brushSetMessage", String.class).or("Your brush has been set to %s");
+        this.brushSizeChangeMessage = getConfig().get("brushSizeChangedMessage", String.class).or("Your brush size was changed to %.1f");
+        this.brushSetMessage = getConfig().get("brushSetMessage", String.class).or("Your brush has been set to %s");
     }
 
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {
+        //TODO reduce NPath complexity
         checkNotNull(sender, "Cannot have a null sniper!");
 
         if (!sender.isPlayer())
@@ -74,7 +77,7 @@ public class BrushCommand extends Command
             return true;
         }
         Player sniper = (Player) sender;
-        if (!this.permsProxy.hasPermission(sniper, "voxelsniper.command.brush"))
+        if (!getPerms().hasPermission(sniper, "voxelsniper.command.brush"))
         {
             sender.sendMessage("Sorry you lack the required permissions for this command");
             return true;

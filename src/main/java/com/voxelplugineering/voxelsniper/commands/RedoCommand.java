@@ -36,6 +36,8 @@ public class RedoCommand extends Command
 
     /**
      * Creates a new Command instance.
+     * 
+     * @param context The context
      */
     public RedoCommand(Context context)
     {

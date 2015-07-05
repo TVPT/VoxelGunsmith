@@ -41,7 +41,7 @@ public abstract class WeakWrapper<T>
     private final WeakReference<T> reference;
 
     /**
-     * Creates a new {@link WeakWrapper}
+     * Creates a new {@link WeakWrapper}.
      * 
      * @param value the reference to wrap
      */

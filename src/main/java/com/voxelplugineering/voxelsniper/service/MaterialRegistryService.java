@@ -52,6 +52,8 @@ public class MaterialRegistryService<T> extends AbstractService implements Mater
 
     /**
      * Creates a new {@link MaterialRegistryService}.
+     * 
+     * @param context The context
      */
     public MaterialRegistryService(Context context)
     {

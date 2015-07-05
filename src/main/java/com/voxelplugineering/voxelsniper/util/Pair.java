@@ -54,7 +54,7 @@ public class Pair<K, V>
     }
 
     /**
-     * Returns the first value
+     * Gets the first value.
      * 
      * @return the first
      */
@@ -64,7 +64,7 @@ public class Pair<K, V>
     }
 
     /**
-     * Returns the second value
+     * Gets the second value.
      * 
      * @return the second
      */

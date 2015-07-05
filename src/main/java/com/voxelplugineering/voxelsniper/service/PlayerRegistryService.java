@@ -50,6 +50,7 @@ public class PlayerRegistryService<T> extends AbstractService implements PlayerR
     /**
      * Creates a new {@link PlayerRegistryService}.
      * 
+     * @param context The context
      * @param provider The provider for getting new players
      * @param console The console sender proxy
      */

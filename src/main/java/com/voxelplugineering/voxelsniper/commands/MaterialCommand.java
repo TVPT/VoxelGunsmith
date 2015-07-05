@@ -39,10 +39,6 @@ import com.voxelplugineering.voxelsniper.world.material.Material;
 public class MaterialCommand extends Command
 {
 
-    /*
-     * TODO block states ?
-     */
-
     /**
      * The message sent to the player if their chosen material is not found in the registry.
      */
@@ -53,15 +49,17 @@ public class MaterialCommand extends Command
     private String materialSetMessage;
 
     /**
-     * Constructs a new BrushCommand
+     * Constructs a new {@link MaterialCommand}.
+     * 
+     * @param context The context
      */
     public MaterialCommand(Context context)
     {
         super("material", "Sets your current brush material", context);
         setAliases("v");
         setPermissions("voxelsniper.command.material");
-        this.materialNotFoundMessage = this.config.get("materialNotFoundMessage", String.class).or("Could not find that material.");
-        this.materialSetMessage = this.config.get("materialSetMessage", String.class).or("Set material to %s");
+        this.materialNotFoundMessage = getConfig().get("materialNotFoundMessage", String.class).or("Could not find that material.");
+        this.materialSetMessage = getConfig().get("materialSetMessage", String.class).or("Set material to %s");
     }
 
     @Override

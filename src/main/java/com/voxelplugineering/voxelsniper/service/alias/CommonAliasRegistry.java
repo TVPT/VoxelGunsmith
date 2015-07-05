@@ -59,6 +59,7 @@ public class CommonAliasRegistry implements AliasRegistry
      * Creates a new {@link AliasRegistry} with no parent.
      * 
      * @param name The registry name
+     * @param caseSensitive If this alias keys should be case sensitive
      */
     public CommonAliasRegistry(String name, boolean caseSensitive)
     {
@@ -70,6 +71,7 @@ public class CommonAliasRegistry implements AliasRegistry
      * 
      * @param name The registry name
      * @param parent the parent registry
+     * @param caseSensitive If this alias keys should be case sensitive
      */
     public CommonAliasRegistry(String name, AliasRegistry parent, boolean caseSensitive)
     {

@@ -47,6 +47,14 @@ public interface ArgumentParser<T>
     public static class RawParser implements ArgumentParser<String>
     {
 
+        /**
+         * Creates a new {@link com.voxelplugineering.voxelsniper.service.command.ArgumentParser.RawParser}.
+         */
+        public RawParser()
+        {
+
+        }
+
         @Override
         public Optional<String> get(String arg)
         {

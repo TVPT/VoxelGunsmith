@@ -41,11 +41,12 @@ public class SnipeEvent extends SniperEvent
     private final BrushAction action;
 
     /**
-     * Constructs a new SnipeEvent for processing
+     * Constructs a new SnipeEvent for processing.
      * 
      * @param sniper the sniper involved
      * @param y the yaw
      * @param p the pitch
+     * @param action The brush action
      */
     public SnipeEvent(Player sniper, double y, double p, BrushAction action)
     {

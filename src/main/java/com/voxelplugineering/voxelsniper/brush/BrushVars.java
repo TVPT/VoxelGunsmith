@@ -1,5 +1,4 @@
 /*
- /*
  * The MIT License (MIT)
  *
  * Copyright (c) 2014 The Voxel Plugineering Team
@@ -104,6 +103,7 @@ public class BrushVars
      * 
      * @param path The path to retrieve
      * @param type The expected type
+     * @param <T> The expected type
      * @return The value, if found
      */
     public <T> Optional<T> get(String path, Class<T> type)

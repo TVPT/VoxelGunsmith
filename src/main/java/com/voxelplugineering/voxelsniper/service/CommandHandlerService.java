@@ -58,10 +58,12 @@ public class CommandHandlerService extends AbstractService implements CommandHan
 
     private Map<String, Command> commands;
     private List<Command> unique;
-    private CommandRegistrar registrar = null;
+    private CommandRegistrar registrar;
 
     /**
-     * Constructs a command handler
+     * Constructs a command handler.
+     * 
+     * @param context The context
      */
     public CommandHandlerService(Context context)
     {

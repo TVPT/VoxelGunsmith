@@ -52,6 +52,9 @@ public interface Service extends Contextable
     /**
      * Adds a service as depending on this service. Dependent services will be shutdown before this
      * service.
+     * 
+     * @param service The service
+     * @param <T> The service type
      */
     <T extends Service> void addDependent(T service);
 

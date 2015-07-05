@@ -53,7 +53,7 @@ public interface PlayerRegistry<T> extends Service
     Optional<Player> getPlayer(String name);
 
     /**
-     * Gets the player representing the given underlying player object
+     * Gets the player representing the given underlying player object.
      * 
      * @param player The underlying player object
      * @return The gunsmith player object

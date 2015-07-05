@@ -80,7 +80,7 @@ public class Vector3i implements Serializable, Cloneable
     }
 
     /**
-     * Returns the x-axis value
+     * Returns the x-axis value.
      * 
      * @return x value
      */
@@ -90,7 +90,7 @@ public class Vector3i implements Serializable, Cloneable
     }
 
     /**
-     * Returns the y-axis value
+     * Returns the y-axis value.
      * 
      * @return y value
      */
@@ -100,7 +100,7 @@ public class Vector3i implements Serializable, Cloneable
     }
 
     /**
-     * Returns the z-axis value
+     * Returns the z-axis value.
      * 
      * @return z value
      */
