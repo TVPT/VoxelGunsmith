@@ -34,6 +34,7 @@ public final class BrushKeys
     public static final String BRUSH_SIZE = "brushSize";
     public static final String MASK_MATERIAL = "maskmaterial";
     public static final String MATERIAL = "setMaterial";
+	public static final String MATERIALDATA = "materialData";
     public static final String RANGE = "range";
 
     // Runtime

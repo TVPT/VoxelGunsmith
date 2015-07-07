@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper.world;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.world.material.DataSnapshot;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 
 /**
@@ -60,6 +61,9 @@ public interface BlockVolume
      */
     Optional<Block> getBlock(Vector3i vector);
 
+    Optional<Material> getMaterial(int x, int y, int z);
+
+	Optional<DataSnapshot> getDataSnapshot(int x, int y, int z);
     /**
      * Sets the block at the given xyz coordinates to the given material.
      * 
@@ -90,5 +94,7 @@ public interface BlockVolume
      * @param vector The position
      */
     void setBlock(Material material, Vector3i vector);
+
+	void setBlock(Material material, int x, int y, int z, DataSnapshot data);
 
 }

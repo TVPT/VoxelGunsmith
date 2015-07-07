@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper.world;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.world.material.DataSnapshot;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 
 /**
@@ -70,6 +71,6 @@ public interface Block
      */
     Optional<Block> withOffset(Vector3i offset);
 
-    //TODO block states?
+    Optional<DataSnapshot> getDataShapshot();
 
 }

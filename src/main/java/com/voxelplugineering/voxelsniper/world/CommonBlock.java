@@ -27,6 +27,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.world.material.DataSnapshot;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 
 /**
@@ -36,7 +37,6 @@ public class CommonBlock implements Block
 {
 
     private final Location location;
-    private final Material material;
 
     /**
      * Creates a new CommonBlock with the given location and material.
@@ -44,10 +44,9 @@ public class CommonBlock implements Block
      * @param location the location, cannot be null
      * @param material the material, cannot be null
      */
-    public CommonBlock(Location location, Material material)
+    public CommonBlock(Location location)
     {
         this.location = checkNotNull(location, "Location cannot be null");
-        this.material = checkNotNull(material, "Material cannot be null");
     }
 
     @Override
@@ -59,7 +58,7 @@ public class CommonBlock implements Block
     @Override
     public Material getMaterial()
     {
-        return this.material;
+        return this.location.getWorld().getMaterial(this.location.getFlooredX(), this.location.getFlooredY(), this.location.getFlooredZ()).orNull();
     }
 
     @Override
@@ -79,6 +78,12 @@ public class CommonBlock implements Block
     {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public Optional<DataSnapshot> getDataShapshot()
+    {
+        return this.location.getWorld().getDataSnapshot(this.location.getFlooredX(), this.location.getFlooredY(), this.location.getFlooredZ());
     }
 
 }

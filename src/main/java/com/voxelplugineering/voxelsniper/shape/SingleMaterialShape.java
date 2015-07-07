@@ -30,6 +30,7 @@ import java.util.Map;
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.world.material.DataSnapshot;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 
 /**
@@ -40,6 +41,7 @@ public class SingleMaterialShape implements MaterialShape
 
     private Shape shape;
     private Material material;
+    private DataSnapshot data;
 
     /**
      * Creates a new {@link SingleMaterialShape}.
@@ -51,6 +53,12 @@ public class SingleMaterialShape implements MaterialShape
     {
         this.shape = checkNotNull(shape);
         this.material = checkNotNull(material);
+    }
+
+    public SingleMaterialShape(Shape shape, Material material, DataSnapshot dataSnapshot)
+    {
+        this(shape, material);
+        this.data = dataSnapshot;
     }
 
     @Override

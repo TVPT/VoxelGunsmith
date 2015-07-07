@@ -34,6 +34,7 @@ import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.SingleMaterialShape;
 import com.voxelplugineering.voxelsniper.world.Block;
+import com.voxelplugineering.voxelsniper.world.material.DataSnapshot;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
@@ -66,8 +67,16 @@ public class MaterialBrush extends AbstractBrush
             player.sendMessage("You must select a material.");
             return ExecutionResult.abortExecution();
         }
+        Optional<DataSnapshot> data = args.get(BrushKeys.MATERIALDATA, DataSnapshot.class);
         Optional<Block> l = args.get(BrushKeys.TARGET_BLOCK, Block.class);
-        MaterialShape ms = new SingleMaterialShape(s.get(), m.get());
+        MaterialShape ms;
+        if (data.isPresent())
+        {
+            ms = new SingleMaterialShape(s.get(), m.get(), data.get());
+        } else
+        {
+            ms = new SingleMaterialShape(s.get(), m.get());
+        }
         new ShapeChangeQueue(player, l.get().getLocation(), ms).flush();
         return ExecutionResult.continueExecution();
     }

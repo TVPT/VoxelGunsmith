@@ -195,6 +195,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         sendMessage("Set material to " + mat.getName());
         getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MATERIAL, mat);
         getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL, mat);
+        getBrushVars().remove(BrushContext.GLOBAL, BrushKeys.MATERIALDATA);
     }
 
     @Override
