@@ -31,6 +31,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.util.Context;
+import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 
 /**
@@ -90,7 +91,13 @@ public class MaskMaterialCommand extends Command
             sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL, material.get());
         } else
         {
-            sniper.sendMessage(this.getHelpMsg());
+            Optional<Block> target = sniper.getTargetBlock();
+            if(target.isPresent()) {
+                sniper.sendMessage(this.materialSetMessage, target.get().getMaterial().getName());
+                sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL, target.get().getMaterial());
+            } else {
+                sniper.sendMessage("Could not fetch your target block.");
+            }
         }
         return true;
     }
