@@ -187,6 +187,7 @@
         <module name="RequireThis">
             <property name="checkMethods" value="false"/>
         </module>
+        <module name="MissingOverride"/>
     </module>
 	<module name="SuppressWarningsFilter" />
 </module>
