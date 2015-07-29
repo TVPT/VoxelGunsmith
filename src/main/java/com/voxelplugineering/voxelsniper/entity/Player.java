@@ -27,7 +27,10 @@ import com.voxelplugineering.voxelsniper.brush.BrushHolder;
 import com.voxelplugineering.voxelsniper.service.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.service.alias.AliasOwner;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
+import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueOwner;
+
+import com.google.common.base.Optional;
 
 /**
  * Representation of a user within Gunsmith. Holds all state information relevant to the user.
@@ -41,5 +44,7 @@ public interface Player extends CommandSender, Living, BrushHolder, ChangeQueueO
      * @return the alias handler
      */
     AliasHandler getAliasHandler();
+
+    Optional<Block> getTargetBlock();
 
 }

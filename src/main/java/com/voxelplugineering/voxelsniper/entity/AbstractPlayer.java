@@ -44,6 +44,10 @@ import com.voxelplugineering.voxelsniper.service.alias.GlobalAliasHandler;
 import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.util.Context;
+import com.voxelplugineering.voxelsniper.util.RayTrace;
+import com.voxelplugineering.voxelsniper.util.math.Vector3d;
+import com.voxelplugineering.voxelsniper.world.Block;
+import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueue;
 import com.voxelplugineering.voxelsniper.world.queue.CommonUndoQueue;
@@ -256,6 +260,18 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     public UndoQueue getUndoHistory()
     {
         return this.history;
+    }
+
+    @Override
+    public Optional<Block> getTargetBlock() {
+        int minY = this.conf.get("minimumWorldDepth", int.class).or(0);
+        int maxY = this.conf.get("maximumWorldHeight", int.class).or(255);
+        double step = this.conf.get("rayTraceStep", double.class).or(0.2);
+        Vector3d eyeOffs = new Vector3d(0, this.conf.get("playerEyeHeight", double.class).or(1.62), 0);
+        double range = this.conf.get("rayTraceRange", double.class).or(250.0);
+        RayTrace ray = new RayTrace(getLocation(), getYaw(), getPitch(), range, minY, maxY, step, eyeOffs);
+        ray.trace();
+        return Optional.fromNullable(ray.getTargetBlock());
     }
 
 }

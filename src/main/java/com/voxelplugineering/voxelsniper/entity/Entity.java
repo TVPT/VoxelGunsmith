@@ -84,6 +84,12 @@ public interface Entity
      * @return The rotation
      */
     Vector3d getRotation();
+    
+    double getYaw();
+    
+    double getPitch();
+    
+    double getRoll();
 
     /**
      * Sets the rotation of this entity. The vector components represent yaw, pitch, and roll in
