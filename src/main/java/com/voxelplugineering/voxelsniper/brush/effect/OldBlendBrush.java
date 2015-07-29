@@ -85,7 +85,6 @@ public class OldBlendBrush extends AbstractBrush
 
         Optional<String> kernalShape = args.get(BrushKeys.KERNEL, String.class);
         Optional<Double> kernalSize = args.get(BrushKeys.KERNEL_SIZE, Double.class);
-        System.out.println("Using strings " + kernalShape.or("empty") + " and " + kernalSize.or(0.0));
         double size = kernalSize.or(1.0);
         String kernelString = kernalShape.or("voxel");
         Optional<Shape> se = PrimativeShapeFactory.createShape(kernelString, size);
