@@ -31,14 +31,20 @@ import com.voxelplugineering.voxelsniper.util.math.Maths;
 import com.voxelplugineering.voxelsniper.world.World;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 
+/**
+ * A {@link FilterOperation} for the basic blend operation.
+ */
 public class BlendMaterialOperation implements FilterOperation
 {
 
     private Map<Material, Integer> mats;
 
+    /**
+     * Creates a new {@link BlendMaterialOperation}.
+     */
     public BlendMaterialOperation()
     {
-        mats = Maps.newHashMapWithExpectedSize(10);
+        this.mats = Maps.newHashMapWithExpectedSize(10);
     }
 
     @Override
@@ -56,12 +62,12 @@ public class BlendMaterialOperation implements FilterOperation
             // Minecraft.
             int clampedY = Maths.clamp(y + dy, 0, 255);
             Material mat = w.getBlock(x + dx, clampedY, z + dz).get().getMaterial();
-            if (mats.containsKey(mat))
+            if (this.mats.containsKey(mat))
             {
-                mats.put(mat, mats.get(mat) + 1);
+                this.mats.put(mat, this.mats.get(mat) + 1);
             } else
             {
-                mats.put(mat, 1);
+                this.mats.put(mat, 1);
             }
         }
         return false;
@@ -73,7 +79,7 @@ public class BlendMaterialOperation implements FilterOperation
         // Select the material which occurred the most.
         int n = 0;
         Material winner = null;
-        for (Map.Entry<Material, Integer> e : mats.entrySet())
+        for (Map.Entry<Material, Integer> e : this.mats.entrySet())
         {
             if (e.getValue() > n)
             {
@@ -85,7 +91,7 @@ public class BlendMaterialOperation implements FilterOperation
         // If multiple materials occurred the most, the tie check will become
         // true.
         boolean tie = false;
-        for (Map.Entry<Material, Integer> e : mats.entrySet())
+        for (Map.Entry<Material, Integer> e : this.mats.entrySet())
         {
             if (e.getValue() == n && !e.getKey().equals(winner))
             {
@@ -104,7 +110,7 @@ public class BlendMaterialOperation implements FilterOperation
     @Override
     public void reset()
     {
-        Map<Material, Integer> mats = Maps.newHashMapWithExpectedSize(10);
+        this.mats = Maps.newHashMapWithExpectedSize(10);
     }
 
 }

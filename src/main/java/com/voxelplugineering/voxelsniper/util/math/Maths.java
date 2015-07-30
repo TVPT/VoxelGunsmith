@@ -23,12 +23,27 @@
  */
 package com.voxelplugineering.voxelsniper.util.math;
 
+/**
+ * A utility with basic math operations.
+ */
 public final class Maths
 {
-	private Maths() {
-	}
-	
-	public static int clamp(int value, int min, int max) {
-		return value < min ? min : value > max ? max : value;
-	}	
+
+    private Maths()
+    {
+    }
+
+    /**
+     * Clamps the given value to be between the minimum and maximum values (both inclusive) and
+     * returns the result.
+     * 
+     * @param value The input value
+     * @param min The minimum value
+     * @param max The maximum value
+     * @return The clamped value
+     */
+    public static int clamp(int value, int min, int max)
+    {
+        return value < min ? min : value > max ? max : value;
+    }
 }

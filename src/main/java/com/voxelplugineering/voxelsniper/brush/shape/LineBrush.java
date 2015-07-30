@@ -69,7 +69,7 @@ public class LineBrush extends AbstractBrush
             player.sendMessage("You must select a starting point first with the primary action.");
             return ExecutionResult.abortExecution();
         }
-        Location pointB = args.get(BrushKeys.POINT_A, Location.class).get();
+        //Location pointB = args.get(BrushKeys.POINT_B, Location.class).get();
         //TODO
         return ExecutionResult.continueExecution();
     }

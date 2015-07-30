@@ -93,10 +93,12 @@ public class MaterialCommand extends Command
         } else
         {
             Optional<Block> target = sniper.getTargetBlock();
-            if(target.isPresent()) {
+            if (target.isPresent())
+            {
                 sniper.sendMessage(this.materialSetMessage, target.get().getMaterial().getName());
                 sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MATERIAL, target.get().getMaterial());
-            } else {
+            } else
+            {
                 sniper.sendMessage("Could not fetch your target block.");
             }
         }

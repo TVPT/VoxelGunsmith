@@ -30,7 +30,6 @@ import com.voxelplugineering.voxelsniper.brush.BrushManager;
 import com.voxelplugineering.voxelsniper.brush.effect.MaterialBrush;
 import com.voxelplugineering.voxelsniper.brush.effect.OldBlendBrush;
 import com.voxelplugineering.voxelsniper.brush.effect.OldLinearBlendBrush;
-import com.voxelplugineering.voxelsniper.brush.effect.morphological.BlendBrush;
 import com.voxelplugineering.voxelsniper.brush.mask.MaterialMaskBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.BallBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.CylinderBrush;

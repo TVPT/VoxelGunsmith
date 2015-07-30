@@ -344,7 +344,6 @@ public class ServiceManager implements Contextable
 
         private final Method method;
         private Class<? extends Contextable> target;
-        private Class<?> annotation;
         private final Object object;
         private final int priority;
         private InitPhase phase;
@@ -356,7 +355,6 @@ public class ServiceManager implements Contextable
             this.object = obj;
             this.priority = anno.priority();
             this.phase = anno.initPhase();
-            this.annotation = anno.getClass();
         }
 
         public TargettedMethod(Method m, InitHook anno, Object obj)
@@ -366,7 +364,6 @@ public class ServiceManager implements Contextable
             this.object = obj;
             this.priority = anno.priority();
             this.phase = null;
-            this.annotation = anno.getClass();
         }
 
         public TargettedMethod(Method m, PostInit anno, Object obj)
@@ -374,7 +371,6 @@ public class ServiceManager implements Contextable
             this.method = m;
             this.object = obj;
             this.priority = anno.priority();
-            this.annotation = anno.getClass();
         }
 
         public TargettedMethod(Method m, PreStop anno, Object obj)
@@ -382,7 +378,6 @@ public class ServiceManager implements Contextable
             this.method = m;
             this.object = obj;
             this.priority = anno.priority();
-            this.annotation = anno.getClass();
         }
 
     }

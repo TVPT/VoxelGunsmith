@@ -31,6 +31,9 @@ import com.voxelplugineering.voxelsniper.util.math.Maths;
 import com.voxelplugineering.voxelsniper.world.World;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 
+/**
+ * A {@link FilterOperation} for a linear blend effect.
+ */
 public class LinearBlendMaterialOperation implements FilterOperation
 {
 
@@ -39,6 +42,9 @@ public class LinearBlendMaterialOperation implements FilterOperation
 
     private Map<Material, Double> mats;
 
+    /**
+     * Creates a new {@link LinearBlendMaterialOperation}.
+     */
     public LinearBlendMaterialOperation()
     {
         this.reset();
@@ -59,15 +65,16 @@ public class LinearBlendMaterialOperation implements FilterOperation
             // Minecraft.
             int clampedY = Maths.clamp(y + dy, 0, 255);
             Material mat = w.getBlock(x + dx, clampedY, z + dz).get().getMaterial();
-            if (mats.containsKey(mat))
+            if (this.mats.containsKey(mat))
             {
-                mats.put(mat, mats.get(mat) + Math.sqrt(dx * dx + dy * dy + dz * dz));
+                this.mats.put(mat, this.mats.get(mat) + Math.sqrt(dx * dx + dy * dy + dz * dz));
             } else
             {
-                mats.put(mat, Math.sqrt(dx * dx + dy * dy + dz * dz));
+                this.mats.put(mat, Math.sqrt(dx * dx + dy * dy + dz * dz));
             }
-            count++;
-            maxDistance = (Math.sqrt(dx * dx + dy * dy + dz * dz) > maxDistance) ? Math.sqrt(dx * dx + dy * dy + dz * dz) : maxDistance;
+            this.count++;
+            this.maxDistance =
+                    (Math.sqrt(dx * dx + dy * dy + dz * dz) > this.maxDistance) ? Math.sqrt(dx * dx + dy * dy + dz * dz) : this.maxDistance;
         }
         return false;
     }
@@ -78,9 +85,9 @@ public class LinearBlendMaterialOperation implements FilterOperation
         // Select the material which occurred the most.
         double n = 0;
         Material winner = null;
-        for (Map.Entry<Material, Double> e : mats.entrySet())
+        for (Map.Entry<Material, Double> e : this.mats.entrySet())
         {
-            if (count * maxDistance - e.getValue() > n)
+            if (this.count * this.maxDistance - e.getValue() > n)
             {
                 winner = e.getKey();
                 n = e.getValue();
@@ -90,7 +97,7 @@ public class LinearBlendMaterialOperation implements FilterOperation
         // If multiple materials occurred the most, the tie check will become
         // true.
         boolean tie = false;
-        for (Map.Entry<Material, Double> e : mats.entrySet())
+        for (Map.Entry<Material, Double> e : this.mats.entrySet())
         {
             if (e.getValue() == n && !e.getKey().equals(winner))
             {
@@ -109,8 +116,8 @@ public class LinearBlendMaterialOperation implements FilterOperation
     @Override
     public void reset()
     {
-        Map<Material, Integer> mats = Maps.newHashMapWithExpectedSize(10);
-        count = 0;
-        maxDistance = 0;
+        this.mats = Maps.newHashMapWithExpectedSize(10);
+        this.count = 0;
+        this.maxDistance = 0;
     }
 }

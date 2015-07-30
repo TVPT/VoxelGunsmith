@@ -47,9 +47,16 @@ import com.google.common.collect.Maps;
 
 import java.util.Map;
 
+/**
+ * A blend brush which modifies the impact of materials within its structuring element depending on
+ * their distance from the target point.
+ */
 public class OldLinearBlendBrush extends AbstractBrush
 {
 
+    /**
+     * Creates a new {@link OldLinearBlendBrush}.
+     */
     public OldLinearBlendBrush()
     {
         super("linearblend", BrushPartType.EFFECT);
@@ -83,9 +90,9 @@ public class OldLinearBlendBrush extends AbstractBrush
         double size = kernalSize.or(2.0);
         String kernelString = kernalShape.or("voxel");
         Optional<Shape> se = PrimativeShapeFactory.createShape(kernelString, size);
-        if(!se.isPresent())
+        if (!se.isPresent())
         {
-            se = Optional.<Shape> of(new CuboidShape(5, 5, 5, new Vector3i(2, 2, 2)));
+            se = Optional.<Shape>of(new CuboidShape(5, 5, 5, new Vector3i(2, 2, 2)));
         }
 
         Optional<Block> l = args.get(BrushKeys.TARGET_BLOCK, Block.class);
@@ -95,7 +102,7 @@ public class OldLinearBlendBrush extends AbstractBrush
         Location loc = l.get().getLocation();
         Shape shape = s.get();
         Shape structElem = se.get();
-        
+
         double maxX = Math.max(structElem.getWidth() - structElem.getOrigin().getX() - 1, structElem.getOrigin().getX());
         double maxY = Math.max(structElem.getHeight() - structElem.getOrigin().getY() - 1, structElem.getOrigin().getY());
         double maxZ = Math.max(structElem.getLength() - structElem.getOrigin().getZ() - 1, structElem.getOrigin().getZ());
@@ -132,7 +139,7 @@ public class OldLinearBlendBrush extends AbstractBrush
                                 int a0 = a - structElem.getOrigin().getX();
                                 int b0 = b - structElem.getOrigin().getY();
                                 int c0 = c - structElem.getOrigin().getZ();
-                                
+
                                 // TODO: Use world bounds instead of
                                 // hardcoded magical values from Minecraft.
                                 int clampedY = Maths.clamp(y0 + b0, 0, 255);

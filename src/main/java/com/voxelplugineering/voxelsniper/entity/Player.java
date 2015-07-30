@@ -45,6 +45,11 @@ public interface Player extends CommandSender, Living, BrushHolder, ChangeQueueO
      */
     AliasHandler getAliasHandler();
 
+    /**
+     * Gets the {@link Block} targeted by the player currently.
+     * 
+     * @return The targeted block
+     */
     Optional<Block> getTargetBlock();
 
 }

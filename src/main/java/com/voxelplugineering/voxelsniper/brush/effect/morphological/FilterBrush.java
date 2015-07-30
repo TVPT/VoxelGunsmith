@@ -43,20 +43,26 @@ import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
 import com.google.common.base.Optional;
 
-/*
- * An abstract notion of a Morphological hit-or-miss transform with a moving window termed a 'Structuring Element'.
+/**
+ * An abstract notion of a Morphological hit-or-miss transform with a moving window termed a
+ * 'Structuring Element'.
  * 
- * This brush takes a shape, structuring element and morphological material operation, and changes the material of
- * the shape by the operation applied with the structuring element.
+ * This brush takes a shape, structuring element and morphological material operation, and changes
+ * the material of the shape by the operation applied with the structuring element.
  * 
- * New operations should therefore be implementations of MorphologicalMaterialOperation, and associated with their
- * own brush that instantiates this class.
+ * New operations should therefore be implementations of MorphologicalMaterialOperation, and
+ * associated with their own brush that instantiates this class.
  */
 public class FilterBrush extends AbstractBrush
 {
 
     private FilterOperation operation;
 
+    /**
+     * Creates a new {@link FilterBrush}.
+     * 
+     * @param operation The filter operation
+     */
     public FilterBrush(FilterOperation operation)
     {
         super(operation.getName(), BrushPartType.EFFECT);
@@ -90,9 +96,9 @@ public class FilterBrush extends AbstractBrush
         double size = kernalSize.or(1.0);
         String kernelString = kernalShape.or("voxel");
         Optional<Shape> se = PrimativeShapeFactory.createShape(kernelString, size);
-        if(!se.isPresent())
+        if (!se.isPresent())
         {
-            se = Optional.<Shape> of(new CuboidShape(3, 3, 3, new Vector3i(1, 1, 1)));
+            se = Optional.<Shape>of(new CuboidShape(3, 3, 3, new Vector3i(1, 1, 1)));
         }
 
         Optional<Block> l = args.get(BrushKeys.TARGET_BLOCK, Block.class);
@@ -102,7 +108,7 @@ public class FilterBrush extends AbstractBrush
         Location loc = l.get().getLocation();
         Shape shape = s.get();
         Shape structElem = se.get();
-        
+
         //Extract the location in the world to x0, y0 and z0.
         for (int x = 0; x < ms.getWidth(); x++)
         {
@@ -141,17 +147,18 @@ public class FilterBrush extends AbstractBrush
 
                                 // Request visitor to perform check operation on
                                 // relevant voxel.
-                                operation.checkPosition(x0, y0, z0, a0, b0, c0, world, world.getBlock(x0 + a0, y0 + b0, z0 + c0).get().getMaterial());
+                                Material mat = world.getBlock(x0 + a0, y0 + b0, z0 + c0).get().getMaterial();
+                                this.operation.checkPosition(x0, y0, z0, a0, b0, c0, world, mat);
                             }
                         }
                     }
 
                     // Request visitor to decide final material.
-                    if (operation.getResult().isPresent())
+                    if (this.operation.getResult().isPresent())
                     {
-                        ms.setMaterial(x, y, z, false, operation.getResult().get());
+                        ms.setMaterial(x, y, z, false, this.operation.getResult().get());
                     }
-                    operation.reset();
+                    this.operation.reset();
                 }
             }
         }

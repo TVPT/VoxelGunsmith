@@ -27,9 +27,15 @@ import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
 
+/**
+ * A basic blend effect brush.
+ */
 public class BlendBrush extends FilterBrush
 {
 
+    /**
+     * Creates a new {@link BlendBrush}.
+     */
     public BlendBrush()
     {
         super(new BlendMaterialOperation());

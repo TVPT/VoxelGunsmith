@@ -25,10 +25,6 @@ package com.voxelplugineering.voxelsniper.entity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushChain;
@@ -47,11 +43,15 @@ import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.RayTrace;
 import com.voxelplugineering.voxelsniper.util.math.Vector3d;
 import com.voxelplugineering.voxelsniper.world.Block;
-import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueue;
 import com.voxelplugineering.voxelsniper.world.queue.CommonUndoQueue;
 import com.voxelplugineering.voxelsniper.world.queue.UndoQueue;
+
+import com.google.common.base.Optional;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * An abstract player.
@@ -263,7 +263,8 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     }
 
     @Override
-    public Optional<Block> getTargetBlock() {
+    public Optional<Block> getTargetBlock()
+    {
         int minY = this.conf.get("minimumWorldDepth", int.class).or(0);
         int maxY = this.conf.get("maximumWorldHeight", int.class).or(255);
         double step = this.conf.get("rayTraceStep", double.class).or(0.2);
