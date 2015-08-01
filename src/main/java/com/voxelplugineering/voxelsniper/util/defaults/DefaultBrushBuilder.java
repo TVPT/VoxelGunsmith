@@ -37,6 +37,7 @@ import com.voxelplugineering.voxelsniper.brush.shape.CylinderBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.DiscBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.EllipseBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.EllipsoidBrush;
+import com.voxelplugineering.voxelsniper.brush.shape.SetBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.SnipeBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.VoxelBrush;
 import com.voxelplugineering.voxelsniper.brush.shape.VoxelDiscBrush;
@@ -110,6 +111,7 @@ public final class DefaultBrushBuilder
         GRAPHS.put("disc", new DiscBrush());
         GRAPHS.put("ellipse", new EllipseBrush());
         GRAPHS.put("ellipsoid", new EllipsoidBrush());
+        GRAPHS.put("set", new SetBrush());
         GRAPHS.put("snipe", new SnipeBrush());
         GRAPHS.put("voxel", new VoxelBrush());
         GRAPHS.put("voxeldisc", new VoxelDiscBrush());
