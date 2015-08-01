@@ -41,6 +41,7 @@ import com.voxelplugineering.voxelsniper.service.Service;
 import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.Contextable;
+import com.voxelplugineering.voxelsniper.util.DataTranslator;
 
 /**
  * A manager for service initialization and destruction.
@@ -210,6 +211,7 @@ public class ServiceManager implements Contextable
                 System.exit(1);
             }
         }
+        DataTranslator.initialize(this.context);
     }
 
     /**

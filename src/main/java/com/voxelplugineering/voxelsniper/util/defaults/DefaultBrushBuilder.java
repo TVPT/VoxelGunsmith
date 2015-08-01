@@ -27,6 +27,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushManager;
+import com.voxelplugineering.voxelsniper.brush.effect.BiomeBrush;
 import com.voxelplugineering.voxelsniper.brush.effect.MaterialBrush;
 import com.voxelplugineering.voxelsniper.brush.effect.OldBlendBrush;
 import com.voxelplugineering.voxelsniper.brush.effect.OldLinearBlendBrush;
@@ -116,6 +117,7 @@ public final class DefaultBrushBuilder
         // mask
         GRAPHS.put("materialmask", new MaterialMaskBrush());
         // effect
+        GRAPHS.put("biome", new BiomeBrush());
         GRAPHS.put("material", new MaterialBrush());
         GRAPHS.put("blend", new OldBlendBrush());
         GRAPHS.put("linearblend", new OldLinearBlendBrush());

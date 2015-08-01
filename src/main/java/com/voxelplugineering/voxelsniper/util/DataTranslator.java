@@ -25,6 +25,9 @@ package com.voxelplugineering.voxelsniper.util;
 
 import java.util.Map;
 
+import com.voxelplugineering.voxelsniper.service.registry.BiomeRegistry;
+import com.voxelplugineering.voxelsniper.world.biome.Biome;
+
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
@@ -35,11 +38,20 @@ import com.google.common.collect.Maps;
  */
 public class DataTranslator
 {
+    
+    private static BiomeRegistry<?> BIOME_REGISTRY;
 
     private static Map<Class<?>, Map<Class<?>, Function<Object, Object>>> TRANSLATORS;
 
-    static
+    /**
+     * Initializes the {@link DataTranslator}.
+     * 
+     * @param context 
+     */
+    public static void initialize(Context context)
     {
+        BIOME_REGISTRY = context.getRequired(BiomeRegistry.class);
+        
         TRANSLATORS = Maps.newHashMap();
         Map<Class<?>, Function<Object, Object>> string = Maps.newHashMap();
         string.put(Byte.class, new Function<Object, Object>()
@@ -103,6 +115,15 @@ public class DataTranslator
             public Object apply(Object s)
             {
                 return Boolean.valueOf((String) s);
+            }
+        });
+        string.put(Biome.class, new Function<Object, Object>()
+        {
+
+            @Override
+            public Object apply(Object s)
+            {
+                return BIOME_REGISTRY.getBiome((String) s).orNull();
             }
         });
         TRANSLATORS.put(String.class, string);

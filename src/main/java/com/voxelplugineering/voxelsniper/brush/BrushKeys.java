@@ -53,6 +53,7 @@ public final class BrushKeys
     public static final String YAW = "yaw";
 
     // Parameters
+    public static final String BIOME = "biome";
     public static final String EXCLUDE_FLUID = "excludeFluid";
     public static final String HEIGHT = "height";
     public static final String USE_FACE = "face";
