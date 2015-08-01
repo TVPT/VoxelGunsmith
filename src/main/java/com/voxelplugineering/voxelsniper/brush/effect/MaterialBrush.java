@@ -66,7 +66,7 @@ public class MaterialBrush extends AbstractBrush
             player.sendMessage("You must select a material.");
             return ExecutionResult.abortExecution();
         }
-        Optional<Block> l = args.get(BrushKeys.TARGET_BLOCK, Block.class);
+        Optional<Block> l = getTargetBlock(args);
         MaterialShape ms = new SingleMaterialShape(s.get(), m.get());
         new ShapeChangeQueue(player, l.get().getLocation(), ms).flush();
         return ExecutionResult.continueExecution();

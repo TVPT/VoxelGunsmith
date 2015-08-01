@@ -67,7 +67,7 @@ public class MaterialMaskBrush extends AbstractBrush
             player.sendMessage("You must select a secondary material.");
             return ExecutionResult.abortExecution();
         }
-        Optional<Block> l = args.get(BrushKeys.TARGET_BLOCK, Block.class);
+        Optional<Block> l = getTargetBlock(args);
         Location loc = l.get().getLocation();
         ComplexShape shape;
         if (s.get() instanceof ComplexShape)

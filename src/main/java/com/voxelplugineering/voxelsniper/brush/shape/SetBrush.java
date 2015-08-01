@@ -24,7 +24,6 @@
 package com.voxelplugineering.voxelsniper.brush.shape;
 
 import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
-import com.voxelplugineering.voxelsniper.brush.BrushAction;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
@@ -50,7 +49,7 @@ public class SetBrush extends AbstractBrush
     @Override
     public ExecutionResult run(Player player, BrushVars args)
     {
-        Optional<Block> target = args.get(BrushKeys.TARGET_BLOCK, Block.class);
+        Optional<Block> target = getTargetBlock(args);
         Optional<Location> pointA = args.get(BrushKeys.POINT_A, Location.class);
         if (!pointA.isPresent())
         {

@@ -65,7 +65,7 @@ public class BiomeBrush extends AbstractBrush
             return ExecutionResult.abortExecution();
         }
         Shape shape = s.get();
-        Optional<Block> l = args.get(BrushKeys.TARGET_BLOCK, Block.class);
+        Optional<Block> l = getTargetBlock(args);
         Location loc = l.get().getLocation();
         World world = player.getWorld();
         Optional<Biome> b = args.get(BrushKeys.BIOME, Biome.class);

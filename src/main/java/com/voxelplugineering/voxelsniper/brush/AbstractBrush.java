@@ -24,6 +24,9 @@
 package com.voxelplugineering.voxelsniper.brush;
 
 import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
+import com.voxelplugineering.voxelsniper.world.Block;
+
+import com.google.common.base.Optional;
 
 /**
  * An abstract implementation for brushes.
@@ -82,6 +85,14 @@ public abstract class AbstractBrush implements Brush
     public void setHelp(String help)
     {
         this.help = help;
+    }
+    
+    protected Optional<Block> getTargetBlock(BrushVars args) {
+        BrushAction action = args.get(BrushKeys.ACTION, BrushAction.class).get();
+        if(action == BrushAction.PRIMARY) {
+            return args.get(BrushKeys.TARGET_BLOCK, Block.class);
+        }
+        return args.get(BrushKeys.LAST_BLOCK, Block.class);
     }
 
 }
