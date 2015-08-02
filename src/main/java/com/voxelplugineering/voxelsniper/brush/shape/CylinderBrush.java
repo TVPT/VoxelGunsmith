@@ -23,9 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.brush.shape;
 
-import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
@@ -36,19 +36,14 @@ import com.voxelplugineering.voxelsniper.shape.csg.CylinderShape;
 import com.voxelplugineering.voxelsniper.util.Direction;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
+import com.google.common.base.Optional;
+
 /**
  * A shape brush which defines a cylindrical region.
  */
-public class CylinderBrush extends AbstractBrush
+@BrushInfo(name = "cylinder", type = BrushPartType.SHAPE)
+public class CylinderBrush implements Brush
 {
-
-    /**
-     * Creates a new {@link CylinderBrush}.
-     */
-    public CylinderBrush()
-    {
-        super("cylinder", BrushPartType.SHAPE);
-    }
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)

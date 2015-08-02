@@ -23,7 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.brush.effect;
 
-import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.Brush;
+import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
@@ -51,16 +52,9 @@ import java.util.Map;
  * The blend brush. An effect brush which performs a 'blend' operation by setting blocks in the defined region to the mode material of the surrounding
  * materials.
  */
-public class OldBlendBrush extends AbstractBrush
+@BrushInfo(name = "blend", type = BrushPartType.EFFECT)
+public class OldBlendBrush implements Brush
 {
-
-    /**
-     * Creates a new {@link OldBlendBrush}.
-     */
-    public OldBlendBrush()
-    {
-        super("blend", BrushPartType.EFFECT);
-    }
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)

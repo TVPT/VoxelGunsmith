@@ -25,16 +25,18 @@ package com.voxelplugineering.voxelsniper.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushChain;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
+import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
+
+import com.google.common.base.Optional;
 
 /**
  * Standard brush command to select a brush and provide the necessary arguments
@@ -104,7 +106,7 @@ public class BrushCommand extends Command
             BrushChain brush = new BrushChain(fullBrush);
             for (String b : fullBrush.split(" "))
             {
-                Optional<Brush> br = sniper.getBrushManager().getBrush(b);
+                Optional<BrushWrapper> br = sniper.getBrushManager().getBrush(b);
                 if (br.isPresent())
                 {
                     brush.chain(br.get());
@@ -120,7 +122,7 @@ public class BrushCommand extends Command
             boolean hasShape = false;
             boolean hasEffect = false;
 
-            for (Brush b : brush.getBrushes())
+            for (BrushWrapper b : brush.getBrushes())
             {
                 if (b.getType() == BrushPartType.SHAPE)
                 {

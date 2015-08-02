@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.commands;
 
-import com.voxelplugineering.voxelsniper.brush.Brush;
+import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
 import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
@@ -55,7 +55,7 @@ public class HelpCommand extends Command
     {
         if (args.length > 0)
         {
-            Brush brush;
+            BrushWrapper brush;
             if (sender instanceof Player)
             {
                 brush = ((Player) sender).getBrushManager().getBrush(args[0]).orNull();

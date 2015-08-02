@@ -21,26 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brush.effect.morphological;
+package com.voxelplugineering.voxelsniper.brush;
 
-/**
- * A basic blend effect brush.
- */
-public class BlendBrush extends FilterBrush
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface BrushInfo
 {
 
-    /**
-     * Creates a new {@link BlendBrush}.
-     */
-    public BlendBrush()
-    {
-        super(new BlendMaterialOperation());
-    }
-
-    @Override
-    protected String getName()
-    {
-        return "blend";
-    }
-
+    String name();
+    
+    BrushPartType type();
+    
+    String help() default "No help is provided for this brush.";
+    
 }

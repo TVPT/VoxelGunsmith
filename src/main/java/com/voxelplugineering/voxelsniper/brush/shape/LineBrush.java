@@ -23,32 +23,32 @@
  */
 package com.voxelplugineering.voxelsniper.brush.shape;
 
-import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushAction;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushInfo;
+import com.voxelplugineering.voxelsniper.brush.BrushInstance;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
+import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
 
+import com.google.common.base.Optional;
+
 /**
  * Defines a region which is a line between the point specified by the alternate action to the
  * target block.
  */
-public class LineBrush extends AbstractBrush
+@BrushInfo(name = "line", type = BrushPartType.SHAPE)
+public class LineBrush implements Brush
 {
 
-    /**
-     * Creates a new {@link LineBrush}.
-     */
-    public LineBrush()
-    {
-        super("line", BrushPartType.SHAPE);
-    }
+    @BrushInstance
+    private BrushWrapper instance;
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)
@@ -58,19 +58,19 @@ public class LineBrush extends AbstractBrush
         Location loc = target.get().getLocation();
         if (action == BrushAction.PRIMARY)
         {
-            args.set(BrushContext.of(this), BrushKeys.POINT_A, loc);
+            args.set(BrushContext.of(this.instance), BrushKeys.POINT_A, loc);
             player.sendMessage("Point A set to (" + loc.getFlooredX() + ", " + loc.getFlooredY() + ", " + loc.getFlooredZ() + ")");
             player.sendMessage("Use the alternate action to draw lines from this point now.");
             return ExecutionResult.abortExecution();
         }
-        //if its not the alt action we need to create the line
+        // if its not the alt action we need to create the line
         if (!args.has(BrushKeys.POINT_A))
         {
             player.sendMessage("You must select a starting point first with the primary action.");
             return ExecutionResult.abortExecution();
         }
-        //Location pointB = args.get(BrushKeys.POINT_B, Location.class).get();
-        //TODO
+        // Location pointB = args.get(BrushKeys.POINT_B, Location.class).get();
+        // TODO
         return ExecutionResult.continueExecution();
     }
 

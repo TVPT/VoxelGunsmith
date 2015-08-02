@@ -23,7 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.brush.effect;
 
-import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.Brush;
+import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
@@ -51,16 +52,9 @@ import java.util.Map;
  * A blend brush which modifies the impact of materials within its structuring element depending on
  * their distance from the target point.
  */
-public class OldLinearBlendBrush extends AbstractBrush
+@BrushInfo(name = "linearblend", type = BrushPartType.EFFECT)
+public class OldLinearBlendBrush implements Brush
 {
-
-    /**
-     * Creates a new {@link OldLinearBlendBrush}.
-     */
-    public OldLinearBlendBrush()
-    {
-        super("linearblend", BrushPartType.EFFECT);
-    }
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)

@@ -23,14 +23,18 @@
  */
 package com.voxelplugineering.voxelsniper.service;
 
-import java.util.List;
+import com.voxelplugineering.voxelsniper.GunsmithLogger;
+import com.voxelplugineering.voxelsniper.brush.Brush;
+import com.voxelplugineering.voxelsniper.brush.BrushInfo;
+import com.voxelplugineering.voxelsniper.brush.BrushInstance;
+import com.voxelplugineering.voxelsniper.brush.BrushManager;
+import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
+import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
+import com.voxelplugineering.voxelsniper.util.Context;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.brush.Brush;
-import com.voxelplugineering.voxelsniper.brush.BrushManager;
-import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceReader;
-import com.voxelplugineering.voxelsniper.util.Context;
+
+import java.lang.reflect.Field;
 
 /**
  * A service containing a {@link BrushManager}.
@@ -72,21 +76,7 @@ public class BrushManagerService extends AbstractService implements GlobalBrushM
     }
 
     @Override
-    public void loadBrush(String identifier)
-    {
-        check("loadBrush");
-        this.wrapped.loadBrush(identifier);
-    }
-
-    @Override
-    public void addLoader(DataSourceReader loader)
-    {
-        check("addLoader");
-        this.wrapped.addLoader(loader);
-    }
-
-    @Override
-    public Optional<Brush> getBrush(String identifier)
+    public Optional<BrushWrapper> getBrush(String identifier)
     {
         check("getBrush");
         return this.wrapped.getBrush(identifier);
@@ -105,17 +95,38 @@ public class BrushManagerService extends AbstractService implements GlobalBrushM
     }
 
     @Override
-    public List<DataSourceReader> getAllLoaders()
+    public void consume(Class<?> cls)
     {
-        check("getAllLoaders");
-        return this.wrapped.getAllLoaders();
+        if(!Brush.class.isAssignableFrom(cls)) {
+            GunsmithLogger.getLogger().warn("Class " + cls.getName() + " was annotated with @BrushInfo but is not a Brush");
+            return;
+        }
+        try
+        {
+            Brush brush = (Brush) cls.newInstance();
+            BrushInfo info = cls.getAnnotation(BrushInfo.class);
+            GunsmithLogger.getLogger().debug("Loaded brush " + info.name() + " from " + cls.getName());
+            loadBrush(info.name(), brush);
+            //Inject instance fields
+            BrushWrapper bw = getBrush(info.name()).get();
+            for(Field f: cls.getDeclaredFields()) {
+                if(f.isAnnotationPresent(BrushInstance.class) && BrushWrapper.class.equals(f.getType())) {
+                    f.setAccessible(true);
+                    f.set(brush, bw);
+                }
+            }
+        } catch (InstantiationException e)
+        {
+            GunsmithLogger.getLogger().warn("Class " + cls.getName() + " was annotated with @BrushInfo but has no accessible no-args constructor");
+            e.printStackTrace();
+            return;
+        } catch (IllegalAccessException e)
+        {
+            GunsmithLogger.getLogger().warn("Class " + cls.getName() + " was annotated with @BrushInfo but has no accessible no-args constructor");
+            e.printStackTrace();
+            return;
+        }
     }
 
-    @Override
-    public void clearLoaders()
-    {
-        check("clearLoaders");
-        this.wrapped.clearLoaders();
-    }
 
 }

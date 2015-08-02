@@ -23,9 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.brush.mask;
 
-import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
@@ -33,24 +33,20 @@ import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.ComplexShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.util.brush.BrushVarsHelper;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.material.Material;
+
+import com.google.common.base.Optional;
 
 /**
  * A brush mask which unsets all positions in the shape which are not currently set to the mask
  * material.
  */
-public class MaterialMaskBrush extends AbstractBrush
+@BrushInfo(name = "materialmask", type = BrushPartType.MASK)
+public class MaterialMaskBrush implements Brush
 {
-
-    /**
-     * Creates a new {@link MaterialMaskBrush}.
-     */
-    public MaterialMaskBrush()
-    {
-        super("materialmask", BrushPartType.MASK);
-    }
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)
@@ -67,7 +63,7 @@ public class MaterialMaskBrush extends AbstractBrush
             player.sendMessage("You must select a secondary material.");
             return ExecutionResult.abortExecution();
         }
-        Optional<Block> l = getTargetBlock(args);
+        Optional<Block> l = BrushVarsHelper.getTargetBlock(args);
         Location loc = l.get().getLocation();
         ComplexShape shape;
         if (s.get() instanceof ComplexShape)

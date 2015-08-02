@@ -23,13 +23,15 @@
  */
 package com.voxelplugineering.voxelsniper.brush.effect;
 
-import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.Brush;
+import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.util.brush.BrushVarsHelper;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Chunk;
 import com.voxelplugineering.voxelsniper.world.Location;
@@ -44,16 +46,9 @@ import java.util.List;
 /**
  * An effect brush which sets your shape area to your specified biome.
  */
-public class BiomeBrush extends AbstractBrush
+@BrushInfo(name = "biome", type = BrushPartType.EFFECT)
+public class BiomeBrush implements Brush
 {
-
-    /**
-     * Creates a new {@link BiomeBrush}.
-     */
-    public BiomeBrush()
-    {
-        super("biome", BrushPartType.EFFECT);
-    }
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)
@@ -65,7 +60,7 @@ public class BiomeBrush extends AbstractBrush
             return ExecutionResult.abortExecution();
         }
         Shape shape = s.get();
-        Optional<Block> l = getTargetBlock(args);
+        Optional<Block> l = BrushVarsHelper.getTargetBlock(args);
         Location loc = l.get().getLocation();
         World world = player.getWorld();
         Optional<Biome> b = args.get(BrushKeys.BIOME, Biome.class);

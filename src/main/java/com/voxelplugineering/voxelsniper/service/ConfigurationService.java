@@ -79,7 +79,7 @@ public class ConfigurationService extends AbstractService implements Configurati
         checkNotNull(name, "Name cannot be null!");
         checkArgument(!name.isEmpty(), "Name cannot be empty");
         checkNotNull(value, "Value cannot be null!");
-        GunsmithLogger.getLogger().info("Set config: " + name + " " + value.toString());
+        GunsmithLogger.getLogger().debug("Set config: " + name + " " + value.toString());
         this.config.put(name, value);
     }
 
@@ -133,7 +133,7 @@ public class ConfigurationService extends AbstractService implements Configurati
         {
             obj = container.newInstance();
             this.containers.put(name, obj);
-            GunsmithLogger.getLogger().info("Loading configuration container: " + name);
+            GunsmithLogger.getLogger().debug("Loading configuration container: " + name);
             DataContainer data = obj.toContainer();
             for (Map.Entry<String, Object> entry : data.entrySet())
             {

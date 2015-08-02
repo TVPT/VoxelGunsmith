@@ -23,8 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.brush.shape;
 
-import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
@@ -37,16 +38,9 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * The ball brush, defines a spherical region for later brushes to use.
  */
-public class BallBrush extends AbstractBrush
+@BrushInfo(name = "ball", type = BrushPartType.SHAPE)
+public class BallBrush implements Brush
 {
-
-    /**
-     * Creates a new {@link BallBrush}.
-     */
-    public BallBrush()
-    {
-        super("ball", BrushPartType.SHAPE);
-    }
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)

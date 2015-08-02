@@ -28,6 +28,8 @@ package com.voxelplugineering.voxelsniper.service;
  */
 public final class ServicePriorities
 {
+    /** AnnotationScanner service builder priority. */
+    public static final int ANNOTATION_SCANNER_PRIORITY = -2000;
     /** DataSourceFactory service builder priority. */
     public static final int DATA_SOURCE_FACTORY_PRIORITY = -1000;
     /** TextFormatParser service builder priority. */

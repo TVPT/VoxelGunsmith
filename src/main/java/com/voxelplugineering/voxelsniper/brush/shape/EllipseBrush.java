@@ -23,8 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.brush.shape;
 
-import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
@@ -38,16 +39,9 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * A shape brush which defines a 2D ellipse.
  */
-public class EllipseBrush extends AbstractBrush
+@BrushInfo(name = "ellipse", type = BrushPartType.SHAPE)
+public class EllipseBrush implements Brush
 {
-
-    /**
-     * Creates a new {@link EllipseBrush}.
-     */
-    public EllipseBrush()
-    {
-        super("ellipse", BrushPartType.SHAPE);
-    }
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)

@@ -23,8 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.brush.shape;
 
-import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
@@ -38,16 +39,9 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * Defines a square 2d region.
  */
-public class VoxelDiscBrush extends AbstractBrush
+@BrushInfo(name = "voxeldisc", type = BrushPartType.SHAPE)
+public class VoxelDiscBrush implements Brush
 {
-
-    /**
-     * Creates a new {@link VoxelDiscBrush}.
-     */
-    public VoxelDiscBrush()
-    {
-        super("voxeldisc", BrushPartType.SHAPE);
-    }
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)

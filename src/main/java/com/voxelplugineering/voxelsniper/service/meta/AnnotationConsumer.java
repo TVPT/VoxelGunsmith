@@ -21,26 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brush.effect.morphological;
+package com.voxelplugineering.voxelsniper.service.meta;
 
-/**
- * A basic blend effect brush.
- */
-public class BlendBrush extends FilterBrush
-{
+public interface AnnotationConsumer {
 
-    /**
-     * Creates a new {@link BlendBrush}.
-     */
-    public BlendBrush()
-    {
-        super(new BlendMaterialOperation());
-    }
-
-    @Override
-    protected String getName()
-    {
-        return "blend";
-    }
-
+    void consume(Class<?> cls);
+    
 }

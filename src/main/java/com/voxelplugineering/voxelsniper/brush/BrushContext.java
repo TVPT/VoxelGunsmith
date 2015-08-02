@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.brush;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Map;
 
 import com.google.common.collect.MapMaker;
@@ -44,7 +46,7 @@ public abstract class BrushContext
      */
     public static final BrushContext RUNTIME = new Fixed("runtime");
 
-    private static final Map<com.voxelplugineering.voxelsniper.brush.Brush, BrushContext.Brush> BRUSHES;
+    private static final Map<BrushWrapper, BrushContext.Brush> BRUSHES;
 
     static
     {
@@ -57,8 +59,10 @@ public abstract class BrushContext
      * @param brush The brush
      * @return The context for the given brush
      */
-    public static BrushContext of(com.voxelplugineering.voxelsniper.brush.Brush brush)
+    public static BrushContext of(BrushWrapper brush)
     {
+        //TODO could change this to use the Brush instances rather than the wrapper
+        checkNotNull(brush);
         if (BRUSHES.containsKey(brush))
         {
             return BRUSHES.get(brush);
@@ -100,14 +104,14 @@ public abstract class BrushContext
     public static class Brush extends BrushContext
     {
 
-        private final com.voxelplugineering.voxelsniper.brush.Brush brush;
+        private final BrushWrapper brush;
 
         /**
          * Creates a new {@link Brush} context wrapping the given brush.
          * 
          * @param brush The brush
          */
-        public Brush(com.voxelplugineering.voxelsniper.brush.Brush brush)
+        public Brush(BrushWrapper brush)
         {
             this.brush = brush;
         }
@@ -117,7 +121,7 @@ public abstract class BrushContext
          * 
          * @return The brush
          */
-        public com.voxelplugineering.voxelsniper.brush.Brush getBrush()
+        public BrushWrapper getBrush()
         {
             return this.brush;
         }

@@ -23,9 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.brush.effect.morphological;
 
-import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
-import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
@@ -53,10 +52,10 @@ import com.google.common.base.Optional;
  * New operations should therefore be implementations of MorphologicalMaterialOperation, and
  * associated with their own brush that instantiates this class.
  */
-public class FilterBrush extends AbstractBrush
+public abstract class FilterBrush implements Brush
 {
 
-    private FilterOperation operation;
+    private final FilterOperation operation;
 
     /**
      * Creates a new {@link FilterBrush}.
@@ -65,8 +64,10 @@ public class FilterBrush extends AbstractBrush
      */
     public FilterBrush(FilterOperation operation)
     {
-        super(operation.getName(), BrushPartType.EFFECT);
+        this.operation = operation;
     }
+    
+    protected abstract String getName();
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)

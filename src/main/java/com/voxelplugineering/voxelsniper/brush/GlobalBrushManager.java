@@ -24,11 +24,12 @@
 package com.voxelplugineering.voxelsniper.brush;
 
 import com.voxelplugineering.voxelsniper.service.Service;
+import com.voxelplugineering.voxelsniper.service.meta.AnnotationConsumer;
 
 /**
  * A marker interface for the global {@link BrushManager} service.
  */
-public interface GlobalBrushManager extends BrushManager, Service
+public interface GlobalBrushManager extends BrushManager, Service, AnnotationConsumer
 {
 
 }

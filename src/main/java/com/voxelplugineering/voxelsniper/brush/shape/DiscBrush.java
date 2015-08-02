@@ -23,8 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.brush.shape;
 
-import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
+import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
@@ -38,16 +39,9 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * A shape brush which defines a 2D disc.
  */
-public class DiscBrush extends AbstractBrush
+@BrushInfo(name = "disc", type = BrushPartType.SHAPE)
+public class DiscBrush implements Brush
 {
-
-    /**
-     * Creates a new {@link DiscBrush}.
-     */
-    public DiscBrush()
-    {
-        super("disc", BrushPartType.SHAPE);
-    }
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)

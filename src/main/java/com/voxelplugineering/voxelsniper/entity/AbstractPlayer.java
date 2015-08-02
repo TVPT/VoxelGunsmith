@@ -32,6 +32,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushManager;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
+import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
 import com.voxelplugineering.voxelsniper.brush.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.service.alias.AliasHandler;
@@ -172,7 +173,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         BrushChain brush = new BrushChain(fullBrush);
         for (String b : fullBrush.split(" "))
         {
-            Optional<Brush> br = getBrushManager().getBrush(b);
+            Optional<BrushWrapper> br = getBrushManager().getBrush(b);
             if (br.isPresent())
             {
                 brush.chain(br.get());

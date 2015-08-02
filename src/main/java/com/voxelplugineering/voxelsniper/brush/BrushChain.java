@@ -39,7 +39,7 @@ public class BrushChain
 {
 
     private final String cmd;
-    private final Queue<Brush> brushes;
+    private final Queue<BrushWrapper> brushes;
 
     /**
      * Creates a new {@link BrushChain}.
@@ -48,7 +48,7 @@ public class BrushChain
      */
     public BrushChain(String cmd)
     {
-        this(cmd, new Brush[0]);
+        this(cmd, new BrushWrapper[0]);
     }
 
     /**
@@ -57,13 +57,13 @@ public class BrushChain
      * @param cmd The command
      * @param brushes The brushes to see the chain with
      */
-    public BrushChain(String cmd, Brush... brushes)
+    public BrushChain(String cmd, BrushWrapper... brushes)
     {
         this.cmd = checkNotNull(cmd);
         this.brushes = Queues.newArrayDeque();
         if (brushes != null)
         {
-            for (Brush b : brushes)
+            for (BrushWrapper b : brushes)
             {
                 this.brushes.add(b);
             }
@@ -75,9 +75,9 @@ public class BrushChain
      * 
      * @return The brushes
      */
-    public Brush[] getBrushes()
+    public BrushWrapper[] getBrushes()
     {
-        return this.brushes.toArray(new Brush[this.brushes.size()]);
+        return this.brushes.toArray(new BrushWrapper[this.brushes.size()]);
     }
 
     /**
@@ -89,11 +89,11 @@ public class BrushChain
     public void run(Player player, BrushVars brushVariables)
     {
         checkNotNull(brushVariables);
-        for (Iterator<Brush> it = this.brushes.iterator(); it.hasNext();)
+        for (Iterator<BrushWrapper> it = this.brushes.iterator(); it.hasNext();)
         {
-            Brush next = it.next();
+            BrushWrapper next = it.next();
             brushVariables.setContext(BrushContext.of(next));
-            ExecutionResult ex = next.run(player, brushVariables);
+            ExecutionResult ex = next.getBrush().run(player, brushVariables);
             if (!ex.shouldContinue())
             {
                 break;
@@ -106,7 +106,7 @@ public class BrushChain
      * 
      * @param brush The new brush
      */
-    public void chain(Brush brush)
+    public void chain(BrushWrapper brush)
     {
         checkNotNull(brush);
         this.brushes.add(brush);

@@ -53,33 +53,6 @@ public interface BrushManager
     void setParent(BrushManager parent);
 
     /**
-     * Gets an ordered list of all loaders registered in this manager.
-     * 
-     * @return The brush loaders
-     */
-    List<DataSourceReader> getAllLoaders();
-
-    /**
-     * Adds a loader to the list of loaders used by this manager for loading brushes by name. The
-     * loader is added top the end of the existing list of loaders.
-     * 
-     * @param loader the new loader, cannot be null
-     */
-    void addLoader(DataSourceReader loader);
-
-    /**
-     * Clears this managers list of brush loaders.
-     */
-    void clearLoaders();
-
-    /**
-     * Walks through registered loaders in order and attempts to load the brush with the given name.
-     * 
-     * @param identifier the brush name, cannot be null or empty
-     */
-    void loadBrush(String identifier);
-
-    /**
      * Loads the given brush into this manager. If the brush had been previously loaded then a check
      * is done of the brush version and the copy with the higher version is kept loaded.
      * 
@@ -96,6 +69,6 @@ public interface BrushManager
      * @param identifier the brush name to be loaded, cannot be null or empty
      * @return an instance of the brush
      */
-    Optional<Brush> getBrush(String identifier);
+    Optional<BrushWrapper> getBrush(String identifier);
 
 }

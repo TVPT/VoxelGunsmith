@@ -25,14 +25,15 @@ package com.voxelplugineering.voxelsniper.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushManager;
+import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
+
+import com.google.common.base.Optional;
 
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.
@@ -70,7 +71,7 @@ public class ParameterCommand extends Command
         }
         String target = args[0];
         BrushManager brushes = sniper.getBrushManager();
-        Optional<Brush> brush = brushes.getBrush(target);
+        Optional<BrushWrapper> brush = brushes.getBrush(target);
         if (brush.isPresent())
         {
             String arg = StringUtilities.getSection(args, 1, args.length - 1);

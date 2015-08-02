@@ -23,8 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.brush.effect;
 
-import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.brush.AbstractBrush;
+import com.voxelplugineering.voxelsniper.brush.Brush;
+import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
@@ -33,23 +33,19 @@ import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.SingleMaterialShape;
+import com.voxelplugineering.voxelsniper.util.brush.BrushVarsHelper;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
+import com.google.common.base.Optional;
+
 /**
  * An effect brush which sets all set positions of the shape to a material.
  */
-public class MaterialBrush extends AbstractBrush
+@BrushInfo(name = "material", type = BrushPartType.EFFECT)
+public class MaterialBrush implements Brush
 {
-
-    /**
-     * Creates a new {@link MaterialBrush}.
-     */
-    public MaterialBrush()
-    {
-        super("material", BrushPartType.EFFECT);
-    }
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)
@@ -66,7 +62,7 @@ public class MaterialBrush extends AbstractBrush
             player.sendMessage("You must select a material.");
             return ExecutionResult.abortExecution();
         }
-        Optional<Block> l = getTargetBlock(args);
+        Optional<Block> l = BrushVarsHelper.getTargetBlock(args);
         MaterialShape ms = new SingleMaterialShape(s.get(), m.get());
         new ShapeChangeQueue(player, l.get().getLocation(), ms).flush();
         return ExecutionResult.continueExecution();

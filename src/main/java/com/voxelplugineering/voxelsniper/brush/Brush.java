@@ -24,42 +24,13 @@
 package com.voxelplugineering.voxelsniper.brush;
 
 import com.voxelplugineering.voxelsniper.entity.Player;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSerializable;
 
 /**
- * Represents a brush which may be run, only one brush instance should exist and be shared among all users. A users individual runtime settings are
- * stored within the {@link BrushVars}.
+ * Represents a brush which may be run, only one brush instance should exist and be shared among all
+ * users. A users individual runtime settings are stored within the {@link BrushVars}.
  */
-public interface Brush extends DataSerializable
+public interface Brush
 {
-
-    /**
-     * Gets the name of this brush, otherwise known as the primary alias.
-     * 
-     * @return The name
-     */
-    String getName();
-
-    /**
-     * Gets the type of this brush.
-     * 
-     * @return The type
-     */
-    BrushPartType getType();
-
-    /**
-     * Gets any provided help for the usage of this brush.
-     * 
-     * @return The help
-     */
-    String getHelp();
-
-    /**
-     * Sets the help message for this brush.
-     * 
-     * @param help The new help
-     */
-    void setHelp(String help);
 
     /**
      * Executes this brush.

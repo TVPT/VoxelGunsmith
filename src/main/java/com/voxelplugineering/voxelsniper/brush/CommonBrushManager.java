@@ -26,13 +26,10 @@ package com.voxelplugineering.voxelsniper.brush;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceReader;
+
+import java.util.Map;
 
 /**
  * A standard brush manager.
@@ -41,8 +38,7 @@ public class CommonBrushManager implements BrushManager
 {
 
     private BrushManager parent = null;
-    private final Map<String, Brush> brushes;
-    private final List<DataSourceReader> loaders;
+    private final Map<String, BrushWrapper> brushes;
 
     /**
      * Creates a new CommonBrushManager.
@@ -61,24 +57,6 @@ public class CommonBrushManager implements BrushManager
     {
         this.parent = parent;
         this.brushes = Maps.newHashMap();
-        this.loaders = Lists.newArrayList();
-        /*TODO BrushLoader
-         * 
-         * if (Gunsmith.getPlatformProxy() != null)
-        {
-            DataSourceReader loader = Gunsmith.getPlatformProxy().getBrushLoader();
-            if(loader != null)
-            {
-                this.loaders.add(loader);
-            }
-        }*/
-    }
-
-    @Override
-    public void addLoader(DataSourceReader loader)
-    {
-        checkNotNull(loader);
-        this.loaders.add(0, loader);
     }
 
     @Override
@@ -87,40 +65,15 @@ public class CommonBrushManager implements BrushManager
         checkNotNull(identifier, "Name cannot be null!");
         checkArgument(!identifier.isEmpty(), "Name cannot be empty");
         checkNotNull(graph, "Brush class cannot be null!");
-        // TODO: Check version if already loaded
-        this.brushes.put(identifier, graph);
+        this.brushes.put(identifier, new BrushWrapper(graph));
     }
 
     @Override
-    public void loadBrush(String identifier)
+    public Optional<BrushWrapper> getBrush(String identifier)
     {
         checkNotNull(identifier, "Name cannot be null!");
         checkArgument(!identifier.isEmpty(), "Name cannot be empty");
-        /*Brush graph = null;
-         TODO brush loading
-         * 
-         * for (Iterator<DataSourceReader> iter = this.loaders.iterator(); iter.hasNext();)
-        {
-            DataSourceReader loader = iter.next();
-            Optional<Brush> brush = Gunsmith.getBrushFactory();
-            if(brush.isPresent())
-            {
-                graph = brush.get();
-                break;
-            }
-        }
-        if (graph != null)
-        {
-            loadBrush(identifier, graph);
-        }*/
-    }
-
-    @Override
-    public Optional<Brush> getBrush(String identifier)
-    {
-        checkNotNull(identifier, "Name cannot be null!");
-        checkArgument(!identifier.isEmpty(), "Name cannot be empty");
-        Brush br = this.brushes.get(identifier);
+        BrushWrapper br = this.brushes.get(identifier);
         if (br == null)
         {
             if (this.parent != null)
@@ -142,18 +95,6 @@ public class CommonBrushManager implements BrushManager
     public BrushManager getParent()
     {
         return this.parent;
-    }
-
-    @Override
-    public List<DataSourceReader> getAllLoaders()
-    {
-        return this.loaders;
-    }
-
-    @Override
-    public void clearLoaders()
-    {
-        this.loaders.clear();
     }
 
 }

@@ -23,15 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.voxelplugineering.voxelsniper.service.AnnotationScanner;
 import com.voxelplugineering.voxelsniper.service.Builder;
 import com.voxelplugineering.voxelsniper.service.InitHook;
 import com.voxelplugineering.voxelsniper.service.InitPhase;
@@ -42,6 +34,17 @@ import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.Contextable;
 import com.voxelplugineering.voxelsniper.util.DataTranslator;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import java.lang.reflect.Method;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A manager for service initialization and destruction.
@@ -142,7 +145,7 @@ public class ServiceManager implements Contextable
             try
             {
                 Contextable obj = (Contextable) m.method.invoke(m.object, this.context);
-                System.out.println("Built " + m.target.getSimpleName());
+                GunsmithLogger.getLogger().debug("Built " + m.target.getSimpleName());
                 this.context.put(obj);
                 if (obj instanceof Service)
                 {
@@ -160,13 +163,14 @@ public class ServiceManager implements Contextable
                     for (TargettedMethod tm : inits)
                     {
                         tm.method.invoke(tm.object, this.context, this.context.get(tm.target).get());
-                        System.out.println("Called init hook " + tm.method.toGenericString());
+                        GunsmithLogger.getLogger().debug("Called init hook " + tm.method.toGenericString());
                     }
                 }
             } catch (Exception e)
             {
+                GunsmithLogger.getLogger().error("Error loading " + m.target.getName() + " from " + m.method.toGenericString());
                 e.printStackTrace();
-                System.exit(1);
+                this.inithooks.remove(m.target);
             }
         }
 
@@ -191,11 +195,11 @@ public class ServiceManager implements Contextable
             try
             {
                 m.method.invoke(m.object, this.context, this.context.get(m.target).get());
-                System.out.println("Called init hook " + m.method.toGenericString());
+                GunsmithLogger.getLogger().debug("Called init hook " + m.method.toGenericString());
             } catch (Exception e)
             {
                 e.printStackTrace();
-                System.exit(1);
+                //System.exit(1);
             }
         }
 
@@ -204,14 +208,15 @@ public class ServiceManager implements Contextable
             try
             {
                 m.method.invoke(m.object, this.context);
-                System.out.println("Called post init hook " + m.method.toGenericString());
+                GunsmithLogger.getLogger().debug("Called post init hook " + m.method.toGenericString());
             } catch (Exception e)
             {
                 e.printStackTrace();
-                System.exit(1);
+                //System.exit(1);
             }
         }
         DataTranslator.initialize(this.context);
+        this.context.getRequired(AnnotationScanner.class).scanClassPath((URLClassLoader) Gunsmith.getClassLoader());
     }
 
     /**
@@ -224,7 +229,7 @@ public class ServiceManager implements Contextable
             try
             {
                 m.method.invoke(m.object, this.context);
-                System.out.println("Called pre stop hook " + m.method.toGenericString());
+                GunsmithLogger.getLogger().debug("Called pre stop hook " + m.method.toGenericString());
             } catch (Exception e)
             {
                 e.printStackTrace();

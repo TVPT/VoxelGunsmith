@@ -23,76 +23,44 @@
  */
 package com.voxelplugineering.voxelsniper.brush;
 
-import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.world.Block;
-
-import com.google.common.base.Optional;
-
-/**
- * An abstract implementation for brushes.
- */
-public abstract class AbstractBrush implements Brush
+public class BrushWrapper
 {
 
+    private final Brush brush;
     private final String name;
+    private final String help;
     private final BrushPartType type;
-    private String help;
 
-    /**
-     * Sets up the AbstractBrush.
-     *
-     * @param name The brush name
-     * @param type The brush type
-     */
-    public AbstractBrush(String name, BrushPartType type)
+    public BrushWrapper(Brush brush)
     {
-        this.name = name;
-        this.type = type;
-        this.help = "No help is provided for this brush. :(";
+        this.brush = brush;
+        if(!brush.getClass().isAnnotationPresent(BrushInfo.class)) {
+            throw new IllegalArgumentException("Cannot wrap brush without BrushInfo annotation.");
+        }
+        BrushInfo info = brush.getClass().getAnnotation(BrushInfo.class);
+        this.name = info.name();
+        this.help = info.help();
+        this.type = info.type();
     }
 
-    @Override
-    public void fromContainer(DataContainer container)
+    public Brush getBrush()
     {
-        throw new UnsupportedOperationException();
+        return this.brush;
     }
 
-    @Override
-    public DataContainer toContainer()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public String getName()
     {
         return this.name;
     }
 
-    @Override
     public BrushPartType getType()
     {
         return this.type;
     }
 
-    @Override
     public String getHelp()
     {
         return this.help;
-    }
-
-    @Override
-    public void setHelp(String help)
-    {
-        this.help = help;
-    }
-    
-    protected Optional<Block> getTargetBlock(BrushVars args) {
-        BrushAction action = args.get(BrushKeys.ACTION, BrushAction.class).get();
-        if(action == BrushAction.PRIMARY) {
-            return args.get(BrushKeys.TARGET_BLOCK, Block.class);
-        }
-        return args.get(BrushKeys.LAST_BLOCK, Block.class);
     }
 
 }
