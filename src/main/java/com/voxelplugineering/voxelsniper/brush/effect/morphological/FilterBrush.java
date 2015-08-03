@@ -37,7 +37,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.World;
-import com.voxelplugineering.voxelsniper.world.material.Material;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
 import com.google.common.base.Optional;
@@ -85,7 +85,7 @@ public abstract class FilterBrush implements Brush
             return ExecutionResult.abortExecution();
         }
 
-        Optional<Material> m = args.get(BrushKeys.MATERIAL, Material.class);
+        Optional<MaterialState> m = args.get(BrushKeys.MATERIAL, MaterialState.class);
         if (!m.isPresent())
         {
             player.sendMessage("You must select a material.");
@@ -141,14 +141,14 @@ public abstract class FilterBrush implements Brush
                                 int b0 = b - structElem.getOrigin().getY();
                                 int c0 = c - structElem.getOrigin().getZ();
 
-                                if (excludeFluid && world.getBlock(x0 + a0, y0 + b0, z0 + c0).get().getMaterial().isLiquid())
+                                if (excludeFluid && world.getBlock(x0 + a0, y0 + b0, z0 + c0).get().getMaterial().getType().isLiquid())
                                 {
                                     continue;
                                 }
 
                                 // Request visitor to perform check operation on
                                 // relevant voxel.
-                                Material mat = world.getBlock(x0 + a0, y0 + b0, z0 + c0).get().getMaterial();
+                                MaterialState mat = world.getBlock(x0 + a0, y0 + b0, z0 + c0).get().getMaterial();
                                 this.operation.checkPosition(x0, y0, z0, a0, b0, c0, world, mat);
                             }
                         }

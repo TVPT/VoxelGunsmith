@@ -31,6 +31,8 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.MapMaker;
+
+import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.service.registry.Registry;
 
 /**

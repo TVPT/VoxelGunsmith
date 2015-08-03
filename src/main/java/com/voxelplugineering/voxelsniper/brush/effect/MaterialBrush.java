@@ -36,6 +36,7 @@ import com.voxelplugineering.voxelsniper.shape.SingleMaterialShape;
 import com.voxelplugineering.voxelsniper.util.brush.BrushVarsHelper;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.material.Material;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
 import com.google.common.base.Optional;
@@ -56,7 +57,7 @@ public class MaterialBrush implements Brush
             player.sendMessage("You must have at least one shape brush before your material brush.");
             return ExecutionResult.abortExecution();
         }
-        Optional<Material> m = args.get(BrushKeys.MATERIAL, Material.class);
+        Optional<MaterialState> m = args.get(BrushKeys.MATERIAL, MaterialState.class);
         if (!m.isPresent())
         {
             player.sendMessage("You must select a material.");

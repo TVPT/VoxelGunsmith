@@ -26,6 +26,7 @@ package com.voxelplugineering.voxelsniper.world;
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.material.Material;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 /**
  * Represents a material at a location in a world.
@@ -60,7 +61,7 @@ public interface Block
      * 
      * @return The material
      */
-    Material getMaterial();
+    MaterialState getMaterial();
 
     /**
      * Gets the block at the given offset relative to this block.

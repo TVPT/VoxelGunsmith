@@ -25,14 +25,15 @@ package com.voxelplugineering.voxelsniper.shape;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Arrays;
-import java.util.Map;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.voxelplugineering.voxelsniper.util.math.Vector3i;
-import com.voxelplugineering.voxelsniper.world.material.Material;
+
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * A {@link MaterialShape} which a material for each point in the shape.
@@ -41,12 +42,12 @@ public class ComplexMaterialShape implements MaterialShape
 {
 
     private short nextId = 1;
-    private BiMap<Short, Material> materialDictionary;
-    private BiMap<Material, Short> inverseDictionary;
+    private BiMap<Short, MaterialState> materialDictionary;
+    private BiMap<MaterialState, Short> inverseDictionary;
     private byte[] materialsA;
     private byte[] materialsB;
     private Shape shape;
-    private Material defaultMaterial;
+    private MaterialState defaultMaterial;
 
     /**
      * Creates a new {@link MaterialShape}.
@@ -54,7 +55,7 @@ public class ComplexMaterialShape implements MaterialShape
      * @param shape the shape
      * @param defaultMaterial the default material for the shape
      */
-    public ComplexMaterialShape(Shape shape, Material defaultMaterial)
+    public ComplexMaterialShape(Shape shape, MaterialState defaultMaterial)
     {
         checkNotNull(shape);
         checkNotNull(defaultMaterial, "Default material cannot be null!");
@@ -100,7 +101,7 @@ public class ComplexMaterialShape implements MaterialShape
      * @return the material, or {@link Optional#absent()} if the point in the shape is not set
      */
     @Override
-    public Optional<Material> getMaterial(int x, int y, int z, boolean relative)
+    public Optional<MaterialState> getMaterial(int x, int y, int z, boolean relative)
     {
         if (this.getShape().get(x, y, z, relative))
         {
@@ -108,7 +109,7 @@ public class ComplexMaterialShape implements MaterialShape
             {
                 set(x, y, z, (short) 0); // the default material
             }
-            return Optional.<Material>of(this.materialDictionary.get(get(x, y, z)));
+            return Optional.of(this.materialDictionary.get(get(x, y, z)));
         }
         return Optional.absent();
     }
@@ -149,7 +150,7 @@ public class ComplexMaterialShape implements MaterialShape
      * @param material the material to set the given point to
      */
     @Override
-    public void setMaterial(int x, int y, int z, boolean relative, Material material)
+    public void setMaterial(int x, int y, int z, boolean relative, MaterialState material)
     {
         checkNotNull(material);
         if (!this.shape.isMutable())
@@ -205,7 +206,7 @@ public class ComplexMaterialShape implements MaterialShape
      * @param material the material
      */
     @Override
-    public void flood(Material material)
+    public void flood(MaterialState material)
     {
         short id = this.getOrRegisterMaterial(material);
         for (int x = 0; x < getShape().getWidth(); x++)
@@ -233,7 +234,7 @@ public class ComplexMaterialShape implements MaterialShape
      * @param y The starting y layer
      * @param height The height of the area to fill
      */
-    public void setHorizontalLayer(Material material, int y, int height)
+    public void setHorizontalLayer(MaterialState material, int y, int height)
     {
         short id = this.getOrRegisterMaterial(material);
         int startIndex = getIndex(0, y, 0);
@@ -257,7 +258,7 @@ public class ComplexMaterialShape implements MaterialShape
      * @param material the material to fetch
      * @return the id for the material
      */
-    private short getOrRegisterMaterial(Material material)
+    private short getOrRegisterMaterial(MaterialState material)
     {
         if (this.inverseDictionary.containsKey(material))
         {
@@ -363,7 +364,7 @@ public class ComplexMaterialShape implements MaterialShape
     }
 
     @Override
-    public Material getDefaultMaterial()
+    public MaterialState getDefaultMaterial()
     {
         return this.defaultMaterial;
     }
@@ -389,7 +390,7 @@ public class ComplexMaterialShape implements MaterialShape
     }
 
     @Override
-    public Map<Short, Material> getMaterialsDictionary()
+    public Map<Short, MaterialState> getMaterialsDictionary()
     {
         return this.materialDictionary;
     }
@@ -406,20 +407,20 @@ public class ComplexMaterialShape implements MaterialShape
      * @param key The key
      * @param material The material
      */
-    protected void registerMaterial(short key, Material material)
+    protected void registerMaterial(short key, MaterialState material)
     {
         this.materialDictionary.put(key, material);
         this.nextId = (short) Math.max(this.nextId, key);
     }
 
     @Override
-    public void setDefaultMaterial(Material material)
+    public void setDefaultMaterial(MaterialState material)
     {
         if (this.defaultMaterial.equals(material))
         {
             return;
         }
-        Material existing = this.defaultMaterial;
+        MaterialState existing = this.defaultMaterial;
         this.defaultMaterial = material;
         short other = getOrRegisterMaterial(material);
         this.materialDictionary.put((short) 0, material);
@@ -429,7 +430,7 @@ public class ComplexMaterialShape implements MaterialShape
         if (this.materialsB != null)
         {
             for (int i = 0; i < this.materialsA.length; i++)
-            {
+            {   
                 if (this.materialsA[i] == (other & 0xff) && this.materialsB[i] == (other & 0xff00 >> 8))
                 {
                     this.materialsA[i] = 0;

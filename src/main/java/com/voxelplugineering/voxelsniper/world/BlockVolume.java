@@ -26,6 +26,7 @@ package com.voxelplugineering.voxelsniper.world;
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.material.Material;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 /**
  * Represents a volume of space with discrete block data within it.
@@ -68,7 +69,7 @@ public interface BlockVolume
      * @param y The Y position
      * @param z The Z position
      */
-    void setBlock(Material material, int x, int y, int z);
+    void setBlock(MaterialState material, int x, int y, int z);
 
     /*
      * TODO no-phys Support changing blocks without notifying surrounding blocks
@@ -81,7 +82,7 @@ public interface BlockVolume
      * @param material The material
      * @param location The location
      */
-    void setBlock(Material material, Location location);
+    void setBlock(MaterialState material, Location location);
 
     /**
      * Sets the block at the given vector position to the given material.
@@ -89,6 +90,6 @@ public interface BlockVolume
      * @param material The material
      * @param vector The position
      */
-    void setBlock(Material material, Vector3i vector);
+    void setBlock(MaterialState material, Vector3i vector);
 
 }

@@ -26,6 +26,8 @@ package com.voxelplugineering.voxelsniper.commands;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Optional;
+
+import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.entity.Player;
@@ -89,13 +91,13 @@ public class MaterialCommand extends Command
                 return false;
             }
             sniper.sendMessage(this.materialSetMessage, material.get().getName());
-            sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MATERIAL, material.get());
+            sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MATERIAL, material.get().getDefaultState());
         } else
         {
             Optional<Block> target = sniper.getTargetBlock();
             if (target.isPresent())
             {
-                sniper.sendMessage(this.materialSetMessage, target.get().getMaterial().getName());
+                sniper.sendMessage(this.materialSetMessage, target.get().getMaterial().getType().getName());
                 sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MATERIAL, target.get().getMaterial());
             } else
             {

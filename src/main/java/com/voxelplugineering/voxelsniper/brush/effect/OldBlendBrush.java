@@ -40,7 +40,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.World;
-import com.voxelplugineering.voxelsniper.world.material.Material;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
 import com.google.common.base.Optional;
@@ -70,7 +70,7 @@ public class OldBlendBrush implements Brush
         {
             return ExecutionResult.abortExecution();
         }
-        Optional<Material> m = args.get(BrushKeys.MATERIAL, Material.class);
+        Optional<MaterialState> m = args.get(BrushKeys.MATERIAL, MaterialState.class);
         if (!m.isPresent())
         {
             player.sendMessage("You must select a material.");
@@ -112,7 +112,7 @@ public class OldBlendBrush implements Brush
 
                     // Represents a histogram of material occurrences hit by the
                     // structuring element.
-                    Map<Material, Integer> mats = Maps.newHashMapWithExpectedSize(10);
+                    Map<MaterialState, Integer> mats = Maps.newHashMapWithExpectedSize(10);
 
                     for (int a = 0; a < structElem.getWidth(); a++)
                     {
@@ -134,7 +134,7 @@ public class OldBlendBrush implements Brush
                                     // TODO: Use world bounds instead of
                                     // hardcoded magical values from Minecraft.
                                     int clampedY = Maths.clamp(y0 + b0, 0, 255);
-                                    Material mat = world.getBlock(x0 + a0, clampedY, z0 + c0).get().getMaterial();
+                                    MaterialState mat = world.getBlock(x0 + a0, clampedY, z0 + c0).get().getMaterial();
                                     if (mats.containsKey(mat))
                                     {
                                         mats.put(mat, mats.get(mat) + 1);
@@ -149,10 +149,10 @@ public class OldBlendBrush implements Brush
 
                     // Select the material which occured the most.
                     int n = 0;
-                    Material winner = null;
-                    for (Map.Entry<Material, Integer> e : mats.entrySet())
+                    MaterialState winner = null;
+                    for (Map.Entry<MaterialState, Integer> e : mats.entrySet())
                     {
-                        if (e.getValue() > n && !(excludeFluid && e.getKey().isLiquid()))
+                        if (e.getValue() > n && !(excludeFluid && e.getKey().getType().isLiquid()))
                         {
                             winner = e.getKey();
                             n = e.getValue();
@@ -162,9 +162,9 @@ public class OldBlendBrush implements Brush
                     // If multiple materials occurred the most, the tie check
                     // will become true.
                     boolean tie = false;
-                    for (Map.Entry<Material, Integer> e : mats.entrySet())
+                    for (Map.Entry<MaterialState, Integer> e : mats.entrySet())
                     {
-                        if (e.getValue() == n && !(excludeFluid && e.getKey().isLiquid()) && !e.getKey().equals(winner))
+                        if (e.getValue() == n && !(excludeFluid && e.getKey().getType().isLiquid()) && !e.getKey().equals(winner))
                         {
                             tie = true;
                         }

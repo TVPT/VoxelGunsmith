@@ -88,14 +88,16 @@ public class MaskMaterialCommand extends Command
                 return false;
             }
             sniper.sendMessage(this.materialSetMessage, material.get().getName());
-            sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL, material.get());
+            sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL, material.get().getDefaultState());
+            sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL_WILDCARD, true);
         } else
         {
             Optional<Block> target = sniper.getTargetBlock();
             if (target.isPresent())
             {
-                sniper.sendMessage(this.materialSetMessage, target.get().getMaterial().getName());
+                sniper.sendMessage(this.materialSetMessage, target.get().getMaterial().getType().getName());
                 sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL, target.get().getMaterial());
+                sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL_WILDCARD, false);
             } else
             {
                 sniper.sendMessage("Could not fetch your target block.");

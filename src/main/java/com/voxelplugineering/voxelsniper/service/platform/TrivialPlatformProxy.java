@@ -97,7 +97,11 @@ public class TrivialPlatformProxy extends AbstractService implements PlatformPro
     {
         try
         {
-            File directory = new File(Gunsmith.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+            String path = Gunsmith.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+            if(path == null) {
+                path = "";
+            }
+            File directory = new File(path);
             if (!directory.isDirectory())
             {
                 directory = directory.getParentFile();

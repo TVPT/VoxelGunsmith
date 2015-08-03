@@ -28,6 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.material.Material;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 /**
  * A combination location and material representation of a single voxel. The location is immutable.
@@ -36,7 +37,7 @@ public class CommonBlock implements Block
 {
 
     private final Location location;
-    private final Material material;
+    private final MaterialState material;
 
     /**
      * Creates a new CommonBlock with the given location and material.
@@ -44,7 +45,7 @@ public class CommonBlock implements Block
      * @param location the location, cannot be null
      * @param material the material, cannot be null
      */
-    public CommonBlock(Location location, Material material)
+    public CommonBlock(Location location, MaterialState material)
     {
         this.location = checkNotNull(location, "Location cannot be null");
         this.material = checkNotNull(material, "Material cannot be null");
@@ -57,7 +58,7 @@ public class CommonBlock implements Block
     }
 
     @Override
-    public Material getMaterial()
+    public MaterialState getMaterial()
     {
         return this.material;
     }

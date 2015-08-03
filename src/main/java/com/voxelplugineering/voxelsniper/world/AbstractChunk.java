@@ -29,6 +29,7 @@ import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.registry.WeakWrapper;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.material.Material;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 /**
  * An abstract chunk.
@@ -71,7 +72,7 @@ public abstract class AbstractChunk<T> extends WeakWrapper<T> implements Chunk
     }
 
     @Override
-    public void setBlock(Material material, Location location)
+    public void setBlock(MaterialState material, Location location)
     {
         checkNotNull(material);
         checkNotNull(location);
@@ -83,7 +84,7 @@ public abstract class AbstractChunk<T> extends WeakWrapper<T> implements Chunk
     }
 
     @Override
-    public void setBlock(Material material, Vector3i vector)
+    public void setBlock(MaterialState material, Vector3i vector)
     {
         checkNotNull(material);
         checkNotNull(vector);

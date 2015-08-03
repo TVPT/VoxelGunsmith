@@ -30,6 +30,8 @@ import java.util.List;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+
+import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.util.math.Vector3d;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
@@ -305,6 +307,10 @@ public class RayTrace
      */
     public void trace()
     {
+        GunsmithLogger.getLogger().debug("Traversing: ");
+        for(Material m: this.traversalBlocks) {
+            GunsmithLogger.getLogger().debug("\t" + m.getName() + " " + m.toString());
+        }
         init();
         checkOutOfWorld();
         if (this.length <= this.range)
@@ -351,9 +357,10 @@ public class RayTrace
             this.targetDirection = this.lastDirection;
             return;
         }
-        if (!this.traversalBlocks.contains(next.get().getMaterial()))
+        if (!this.traversalBlocks.contains(next.get().getMaterial().getType()))
         {
             // Abort - found non-traversal block
+            GunsmithLogger.getLogger().debug("Found non-traversal block: " + next.get().getMaterial().getType().getName() + " breaking. " + next.get().getMaterial().getType().toString());
             return;
         }
 

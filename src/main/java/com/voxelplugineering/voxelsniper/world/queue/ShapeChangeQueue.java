@@ -23,11 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.world.queue;
 
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
-import com.voxelplugineering.voxelsniper.world.material.Material;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
+
+import com.google.common.base.Optional;
 
 /**
  * A special change queue for setting all of a shape to a single material.
@@ -115,9 +116,9 @@ public class ShapeChangeQueue extends ChangeQueue
                         {
                             continue;
                         }
-                        Material existingMaterial = block.get().getMaterial();
-                        Optional<Material> newMaterial = this.shape.getMaterial(x, (int) this.position, z, false);
-                        if (newMaterial.isPresent() && (existingMaterial.isLiquid() || existingMaterial.isReliantOnEnvironment()))
+                        MaterialState existingMaterial = block.get().getMaterial();
+                        Optional<MaterialState> newMaterial = this.shape.getMaterial(x, (int) this.position, z, false);
+                        if (newMaterial.isPresent() && (existingMaterial.getType().isLiquid() || existingMaterial.getType().isReliantOnEnvironment()))
                         {
                             this.world.setBlock(newMaterial.get(), x + this.originOffset.getFlooredX(),
                                     (int) this.position + this.originOffset.getFlooredY(), z + this.originOffset.getFlooredZ());
@@ -155,9 +156,9 @@ public class ShapeChangeQueue extends ChangeQueue
                 {
                     continue;
                 }
-                Material existingMaterial = block.get().getMaterial();
-                Optional<Material> newMaterial = this.shape.getMaterial(x, y, z, false);
-                if (newMaterial.isPresent() && !(existingMaterial.isLiquid() || existingMaterial.isReliantOnEnvironment()))
+                MaterialState existingMaterial = block.get().getMaterial();
+                Optional<MaterialState> newMaterial = this.shape.getMaterial(x, y, z, false);
+                if (newMaterial.isPresent() && !(existingMaterial.getType().isLiquid() || existingMaterial.getType().isReliantOnEnvironment()))
                 {
                     count++;
                     this.world.setBlock(newMaterial.get(), x + this.originOffset.getFlooredX(), y + this.originOffset.getFlooredY(), z

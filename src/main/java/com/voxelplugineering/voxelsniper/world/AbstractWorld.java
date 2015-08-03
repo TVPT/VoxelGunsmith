@@ -35,6 +35,7 @@ import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.biome.Biome;
 import com.voxelplugineering.voxelsniper.world.material.Material;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 /**
  * An abstract world.
@@ -76,7 +77,7 @@ public abstract class AbstractWorld<T> extends WeakWrapper<T> implements World
     }
 
     @Override
-    public void setBlock(Material material, Location location)
+    public void setBlock(MaterialState material, Location location)
     {
         checkNotNull(material);
         checkNotNull(location);
@@ -88,7 +89,7 @@ public abstract class AbstractWorld<T> extends WeakWrapper<T> implements World
     }
 
     @Override
-    public void setBlock(Material material, Vector3i vector)
+    public void setBlock(MaterialState material, Vector3i vector)
     {
         checkNotNull(material);
         checkNotNull(vector);
@@ -145,7 +146,7 @@ public abstract class AbstractWorld<T> extends WeakWrapper<T> implements World
     {
         checkNotNull(origin);
         checkNotNull(shape);
-        MaterialShape mat = new ComplexMaterialShape(shape, this.mats.getAirMaterial());
+        MaterialShape mat = new ComplexMaterialShape(shape, this.mats.getAirMaterial().getDefaultState());
         for (int x = 0; x < shape.getWidth(); x++)
         {
             int ox = x + origin.getFlooredX() - shape.getOrigin().getX();

@@ -25,12 +25,13 @@ package com.voxelplugineering.voxelsniper.shape;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.util.math.Vector3i;
-import com.voxelplugineering.voxelsniper.world.material.Material;
+
+import java.util.Map;
 
 /**
  * Represents a single material applied to an entire shape.
@@ -39,7 +40,7 @@ public class SingleMaterialShape implements MaterialShape
 {
 
     private Shape shape;
-    private Material material;
+    private MaterialState material;
 
     /**
      * Creates a new {@link SingleMaterialShape}.
@@ -47,7 +48,7 @@ public class SingleMaterialShape implements MaterialShape
      * @param shape The shape
      * @param material The material
      */
-    public SingleMaterialShape(Shape shape, Material material)
+    public SingleMaterialShape(Shape shape, MaterialState material)
     {
         this.shape = checkNotNull(shape);
         this.material = checkNotNull(material);
@@ -116,7 +117,7 @@ public class SingleMaterialShape implements MaterialShape
     }
 
     @Override
-    public Optional<Material> getMaterial(int x, int y, int z, boolean relative)
+    public Optional<MaterialState> getMaterial(int x, int y, int z, boolean relative)
     {
         if (!get(x, y, z, relative))
         {
@@ -126,13 +127,13 @@ public class SingleMaterialShape implements MaterialShape
     }
 
     @Override
-    public void setMaterial(int x, int y, int z, boolean b, Material material)
+    public void setMaterial(int x, int y, int z, boolean b, MaterialState material)
     {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void flood(Material material)
+    public void flood(MaterialState material)
     {
         this.material = material;
     }
@@ -155,7 +156,7 @@ public class SingleMaterialShape implements MaterialShape
     }
 
     @Override
-    public Material getDefaultMaterial()
+    public MaterialState getDefaultMaterial()
     {
         return this.material;
     }
@@ -179,9 +180,9 @@ public class SingleMaterialShape implements MaterialShape
     }
 
     @Override
-    public Map<Short, Material> getMaterialsDictionary()
+    public Map<Short, MaterialState> getMaterialsDictionary()
     {
-        Map<Short, Material> ret = Maps.newHashMap();
+        Map<Short, MaterialState> ret = Maps.newHashMap();
         ret.put((short) 0, this.material);
         return ret;
     }
@@ -193,7 +194,7 @@ public class SingleMaterialShape implements MaterialShape
     }
 
     @Override
-    public void setDefaultMaterial(Material material)
+    public void setDefaultMaterial(MaterialState material)
     {
         this.material = material;
     }

@@ -119,7 +119,7 @@ public class ServiceManager implements Contextable
      */
     public void start()
     {
-        //TODO: reduce NPath complexity
+        // TODO: reduce NPath complexity
         if (this.state != State.STOPPED)
         {
             throw new IllegalStateException("Attempted to launch an already started service manager");
@@ -199,7 +199,7 @@ public class ServiceManager implements Contextable
             } catch (Exception e)
             {
                 e.printStackTrace();
-                //System.exit(1);
+                // System.exit(1);
             }
         }
 
@@ -212,7 +212,7 @@ public class ServiceManager implements Contextable
             } catch (Exception e)
             {
                 e.printStackTrace();
-                //System.exit(1);
+                // System.exit(1);
             }
         }
         DataTranslator.initialize(this.context);
@@ -233,7 +233,7 @@ public class ServiceManager implements Contextable
             } catch (Exception e)
             {
                 e.printStackTrace();
-                System.exit(1);
+                // System.exit(1);
             }
         }
         for (Service serv : this.services)
@@ -256,6 +256,7 @@ public class ServiceManager implements Contextable
         {
             throw new IllegalStateException("Attempted to register service providers while manager was running.");
         }
+        GunsmithLogger.getLogger().debug("Registered service provider: " + serviceProvider.getClass().getName());
         detectBuilders(serviceProvider);
         detectInitHooks(serviceProvider);
         detectPostInit(serviceProvider);
@@ -266,80 +267,96 @@ public class ServiceManager implements Contextable
     private void detectPostInit(Object serviceProvider)
     {
         Class<?> cls = serviceProvider.getClass();
-        for (Method m : cls.getDeclaredMethods())
+        while (cls != null && cls != Object.class)
         {
-            if (!m.isAnnotationPresent(PostInit.class) || m.getParameterTypes().length != 1
-                    || !Context.class.isAssignableFrom(m.getParameterTypes()[0]))
+            for (Method m : cls.getDeclaredMethods())
             {
-                continue;
+                if (!m.isAnnotationPresent(PostInit.class) || m.getParameterTypes().length != 1
+                        || !Context.class.isAssignableFrom(m.getParameterTypes()[0]))
+                {
+                    continue;
+                }
+                PostInit anno = m.getAnnotation(PostInit.class);
+                this.postInit.add(new TargettedMethod(m, anno, serviceProvider));
             }
-            PostInit anno = m.getAnnotation(PostInit.class);
-            this.postInit.add(new TargettedMethod(m, anno, serviceProvider));
+            cls = cls.getSuperclass();
         }
     }
 
     private void detectPreStop(Object serviceProvider)
     {
         Class<?> cls = serviceProvider.getClass();
-        for (Method m : cls.getDeclaredMethods())
+        while (cls != null && cls != Object.class)
         {
-            if (!m.isAnnotationPresent(PreStop.class) || m.getParameterTypes().length != 1
-                    || !Context.class.isAssignableFrom(m.getParameterTypes()[0]))
+            for (Method m : cls.getDeclaredMethods())
             {
-                continue;
+                if (!m.isAnnotationPresent(PreStop.class) || m.getParameterTypes().length != 1
+                        || !Context.class.isAssignableFrom(m.getParameterTypes()[0]))
+                {
+                    continue;
+                }
+                PreStop anno = m.getAnnotation(PreStop.class);
+                this.preStop.add(new TargettedMethod(m, anno, serviceProvider));
             }
-            PreStop anno = m.getAnnotation(PreStop.class);
-            this.preStop.add(new TargettedMethod(m, anno, serviceProvider));
+            cls = cls.getSuperclass();
         }
     }
 
     private void detectBuilders(Object serviceProvider)
     {
         Class<?> cls = serviceProvider.getClass();
-        for (Method m : cls.getDeclaredMethods())
+        while (cls != null && cls != Object.class)
         {
-            if (!m.isAnnotationPresent(Builder.class))
+            for (Method m : cls.getDeclaredMethods())
             {
-                continue;
+                if (!m.isAnnotationPresent(Builder.class))
+                {
+                    continue;
+                }
+                if (m.getParameterTypes().length != 1 || !Context.class.isAssignableFrom(m.getParameterTypes()[0]))
+                {
+                    continue;
+                }
+                Builder builder = m.getAnnotation(Builder.class);
+                if (!m.getReturnType().isAssignableFrom(builder.target()))
+                {
+                    continue;
+                }
+                this.builders.put(builder.target(), new TargettedMethod(m, builder, serviceProvider));
             }
-            if (m.getParameterTypes().length != 1 || !Context.class.isAssignableFrom(m.getParameterTypes()[0]))
-            {
-                continue;
-            }
-            Builder builder = m.getAnnotation(Builder.class);
-            if (!m.getReturnType().isAssignableFrom(builder.target()))
-            {
-                continue;
-            }
-            this.builders.put(builder.target(), new TargettedMethod(m, builder, serviceProvider));
+            cls = cls.getSuperclass();
         }
     }
 
     private void detectInitHooks(Object serviceProvider)
     {
         Class<?> cls = serviceProvider.getClass();
-        for (Method m : cls.getDeclaredMethods())
+        while (cls != null && cls != Object.class)
         {
-            if (!m.isAnnotationPresent(InitHook.class))
+            for (Method m : cls.getDeclaredMethods())
             {
-                continue;
+                if (!m.isAnnotationPresent(InitHook.class))
+                {
+                    continue;
+                }
+                InitHook builder = m.getAnnotation(InitHook.class);
+                if (m.getParameterTypes().length != 2 || !builder.target().isAssignableFrom(m.getParameterTypes()[1])
+                        || !Context.class.isAssignableFrom(m.getParameterTypes()[0]))
+                {
+                    continue;
+                }
+                List<TargettedMethod> list;
+                if (this.inithooks.containsKey(builder.target()))
+                {
+                    list = this.inithooks.get(builder.target());
+                } else
+                {
+                    list = Lists.newArrayList();
+                    this.inithooks.put(builder.target(), list);
+                }
+                list.add(new TargettedMethod(m, builder, serviceProvider));
             }
-            InitHook builder = m.getAnnotation(InitHook.class);
-            if (m.getParameterTypes().length != 2 || !builder.target().isAssignableFrom(m.getParameterTypes()[1])
-                    || !Context.class.isAssignableFrom(m.getParameterTypes()[0]))
-            {
-                continue;
-            }
-            List<TargettedMethod> list;
-            if (this.inithooks.containsKey(builder.target()))
-            {
-                list = this.inithooks.get(builder.target());
-            } else
-            {
-                list = Lists.newArrayList();
-                this.inithooks.put(builder.target(), list);
-            }
-            list.add(new TargettedMethod(m, builder, serviceProvider));
+            cls = cls.getSuperclass();
         }
     }
 

@@ -23,10 +23,11 @@
  */
 package com.voxelplugineering.voxelsniper.shape;
 
-import java.util.Map;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.world.material.Material;
+
+import java.util.Map;
 
 /**
  * Represents a material mask and shape combined.
@@ -50,7 +51,7 @@ public interface MaterialShape extends Shape
      * @param relative Whether to offset by the origin
      * @return The material
      */
-    Optional<Material> getMaterial(int x, int y, int z, boolean relative);
+    Optional<MaterialState> getMaterial(int x, int y, int z, boolean relative);
 
     /**
      * Sets the material at the given location.
@@ -61,14 +62,14 @@ public interface MaterialShape extends Shape
      * @param relative Whether to offset by the origin
      * @param material The new material
      */
-    void setMaterial(int x, int y, int z, boolean relative, Material material);
+    void setMaterial(int x, int y, int z, boolean relative, MaterialState material);
 
     /**
      * Floods the shape with the given material.
      * 
      * @param material The new material
      */
-    void flood(Material material);
+    void flood(MaterialState material);
 
     /**
      * Resets the shape to the default material.
@@ -80,7 +81,7 @@ public interface MaterialShape extends Shape
      * 
      * @return The material
      */
-    Material getDefaultMaterial();
+    MaterialState getDefaultMaterial();
 
     /**
      * Gets the least significant byte of the material data for this shape.
@@ -109,7 +110,7 @@ public interface MaterialShape extends Shape
      * 
      * @param material The new material
      */
-    void setDefaultMaterial(Material material);
+    void setDefaultMaterial(MaterialState material);
 
     /**
      * Gets the material dictionary for this shape. This dictionary is a mapping of shorts to the
@@ -117,7 +118,7 @@ public interface MaterialShape extends Shape
      * 
      * @return The material dictionary
      */
-    Map<Short, Material> getMaterialsDictionary();
+    Map<Short, MaterialState> getMaterialsDictionary();
 
     /**
      * Gets the largest id used in the material dictionary.

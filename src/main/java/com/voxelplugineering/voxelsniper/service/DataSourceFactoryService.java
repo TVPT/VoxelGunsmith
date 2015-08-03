@@ -75,7 +75,7 @@ public class DataSourceFactoryService extends AbstractService implements DataSou
     public <T extends DataSource> void register(String name, Class<T> type, DataSourceBuilder<T> builder)
     {
         check("register");
-        GunsmithLogger.getLogger().info("Registering DataSourceBuilder " + name + " " + type.getName());
+        GunsmithLogger.getLogger().debug("Registering DataSourceBuilder " + name + " " + type.getName());
         this.builders.put(name, builder);
         this.names.put(type, name);
     }

@@ -23,13 +23,14 @@
  */
 package com.voxelplugineering.voxelsniper.brush.effect.morphological;
 
-import java.util.Map;
+import com.voxelplugineering.voxelsniper.util.math.Maths;
+import com.voxelplugineering.voxelsniper.world.World;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.util.math.Maths;
-import com.voxelplugineering.voxelsniper.world.World;
-import com.voxelplugineering.voxelsniper.world.material.Material;
+
+import java.util.Map;
 
 /**
  * A {@link FilterOperation} for the basic blend operation.
@@ -37,7 +38,7 @@ import com.voxelplugineering.voxelsniper.world.material.Material;
 public class BlendMaterialOperation implements FilterOperation
 {
 
-    private Map<Material, Integer> mats;
+    private Map<MaterialState, Integer> mats;
 
     /**
      * Creates a new {@link BlendMaterialOperation}.
@@ -54,14 +55,14 @@ public class BlendMaterialOperation implements FilterOperation
     }
 
     @Override
-    public boolean checkPosition(int x, int y, int z, int dx, int dy, int dz, World w, Material m)
+    public boolean checkPosition(int x, int y, int z, int dx, int dy, int dz, World w, MaterialState m)
     {
         if (!(dx == 0 && dy == 0 && dz == 0))
         {
             // TODO: Use world bounds instead of hardcoded magical values from
             // Minecraft.
             int clampedY = Maths.clamp(y + dy, 0, 255);
-            Material mat = w.getBlock(x + dx, clampedY, z + dz).get().getMaterial();
+            MaterialState mat = w.getBlock(x + dx, clampedY, z + dz).get().getMaterial();
             if (this.mats.containsKey(mat))
             {
                 this.mats.put(mat, this.mats.get(mat) + 1);
@@ -74,12 +75,12 @@ public class BlendMaterialOperation implements FilterOperation
     }
 
     @Override
-    public Optional<Material> getResult()
+    public Optional<MaterialState> getResult()
     {
         // Select the material which occurred the most.
         int n = 0;
-        Material winner = null;
-        for (Map.Entry<Material, Integer> e : this.mats.entrySet())
+        MaterialState winner = null;
+        for (Map.Entry<MaterialState, Integer> e : this.mats.entrySet())
         {
             if (e.getValue() > n)
             {
@@ -91,7 +92,7 @@ public class BlendMaterialOperation implements FilterOperation
         // If multiple materials occurred the most, the tie check will become
         // true.
         boolean tie = false;
-        for (Map.Entry<Material, Integer> e : this.mats.entrySet())
+        for (Map.Entry<MaterialState, Integer> e : this.mats.entrySet())
         {
             if (e.getValue() == n && !e.getKey().equals(winner))
             {

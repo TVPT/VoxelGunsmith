@@ -82,7 +82,7 @@ public class AnnotationScannerService extends AbstractService implements Annotat
     private static Set<String> SCANNER_EXCLUSIONS = Sets.newHashSet();
     
     static {
-        SCANNER_EXCLUSIONS.add("java./");
+        SCANNER_EXCLUSIONS.add("java/");
         SCANNER_EXCLUSIONS.add("sun/");
         SCANNER_EXCLUSIONS.add("javax/");
         SCANNER_EXCLUSIONS.add("org/lwjgl/");

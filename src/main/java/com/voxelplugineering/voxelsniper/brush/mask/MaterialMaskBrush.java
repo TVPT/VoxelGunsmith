@@ -37,6 +37,7 @@ import com.voxelplugineering.voxelsniper.util.brush.BrushVarsHelper;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.material.Material;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 import com.google.common.base.Optional;
 
@@ -57,12 +58,13 @@ public class MaterialMaskBrush implements Brush
             player.sendMessage("You must have at least one shape brush before your material brush.");
             return ExecutionResult.abortExecution();
         }
-        Optional<Material> m = args.get(BrushKeys.MASK_MATERIAL, Material.class);
+        Optional<MaterialState> m = args.get(BrushKeys.MASK_MATERIAL, MaterialState.class);
         if (!m.isPresent())
         {
             player.sendMessage("You must select a secondary material.");
             return ExecutionResult.abortExecution();
         }
+        boolean wildcard = args.get(BrushKeys.MASK_MATERIAL_WILDCARD, boolean.class).or(false);
         Optional<Block> l = BrushVarsHelper.getTargetBlock(args);
         Location loc = l.get().getLocation();
         ComplexShape shape;
@@ -87,9 +89,16 @@ public class MaterialMaskBrush implements Brush
                     {
                         continue;
                     }
-                    if (!m.get().equals(player.getWorld().getBlock(x0, y0, z0).get().getMaterial()))
-                    {
-                        shape.unset(x, y, z, false);
+                    if(wildcard) {
+                        if (!m.get().getType().equals(player.getWorld().getBlock(x0, y0, z0).get().getMaterial().getType()))
+                        {
+                            shape.unset(x, y, z, false);
+                        }
+                    } else {
+                        if (!m.get().equals(player.getWorld().getBlock(x0, y0, z0).get().getMaterial()))
+                        {
+                            shape.unset(x, y, z, false);
+                        }
                     }
                 }
             }

@@ -26,6 +26,7 @@ package com.voxelplugineering.voxelsniper.brush.effect.morphological;
 import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.world.World;
 import com.voxelplugineering.voxelsniper.world.material.Material;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 /**
  * 
@@ -51,12 +52,12 @@ public interface FilterOperation
      * 
      * TODO: Add argument for type of border-check to perform when outside the world's extent.
      */
-    boolean checkPosition(int x, int y, int z, int dx, int dy, int dz, World w, Material m);
+    boolean checkPosition(int x, int y, int z, int dx, int dy, int dz, World w, MaterialState m);
 
     /**
      * Provides a material as a result of the morphological operation.
      */
-    Optional<Material> getResult();
+    Optional<MaterialState> getResult();
 
     /**
      * Clears any memory relating to the previous operation performed or being performed to a state

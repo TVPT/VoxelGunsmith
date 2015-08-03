@@ -23,12 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.shape;
 
-import java.util.Map;
-
 import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.util.nbt.CompoundTag;
-import com.voxelplugineering.voxelsniper.world.material.Material;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
+
+import java.util.Map;
 
 /**
  * A named {@link ComplexMaterialShape}.
@@ -44,7 +44,7 @@ public class NamedWorldSection extends ComplexMaterialShape
      * @param shape The shape
      * @param defaultMaterial The default material
      */
-    public NamedWorldSection(Shape shape, Material defaultMaterial)
+    public NamedWorldSection(Shape shape, MaterialState defaultMaterial)
     {
         super(shape, defaultMaterial);
         this.name = "";
@@ -67,7 +67,7 @@ public class NamedWorldSection extends ComplexMaterialShape
      * @param shape The shape
      * @param materialDict The material dictionary to use
      */
-    public NamedWorldSection(CuboidShape shape, Map<Short, Material> materialDict)
+    public NamedWorldSection(CuboidShape shape, Map<Short, MaterialState> materialDict)
     {
         super(shape, materialDict.get(0));
         for (short key : materialDict.keySet())

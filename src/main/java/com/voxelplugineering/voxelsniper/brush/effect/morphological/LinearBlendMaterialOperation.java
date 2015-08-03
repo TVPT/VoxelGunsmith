@@ -23,13 +23,14 @@
  */
 package com.voxelplugineering.voxelsniper.brush.effect.morphological;
 
-import java.util.Map;
+import com.voxelplugineering.voxelsniper.util.math.Maths;
+import com.voxelplugineering.voxelsniper.world.World;
+import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.util.math.Maths;
-import com.voxelplugineering.voxelsniper.world.World;
-import com.voxelplugineering.voxelsniper.world.material.Material;
+
+import java.util.Map;
 
 /**
  * A {@link FilterOperation} for a linear blend effect.
@@ -40,7 +41,7 @@ public class LinearBlendMaterialOperation implements FilterOperation
     private int count;
     private double maxDistance;
 
-    private Map<Material, Double> mats;
+    private Map<MaterialState, Double> mats;
 
     /**
      * Creates a new {@link LinearBlendMaterialOperation}.
@@ -57,14 +58,14 @@ public class LinearBlendMaterialOperation implements FilterOperation
     }
 
     @Override
-    public boolean checkPosition(int x, int y, int z, int dx, int dy, int dz, World w, Material m)
+    public boolean checkPosition(int x, int y, int z, int dx, int dy, int dz, World w, MaterialState m)
     {
         if (!(dx == 0 && dy == 0 && dz == 0))
         {
             // TODO: Use world bounds instead of hardcoded magical values from
             // Minecraft.
             int clampedY = Maths.clamp(y + dy, 0, 255);
-            Material mat = w.getBlock(x + dx, clampedY, z + dz).get().getMaterial();
+            MaterialState mat = w.getBlock(x + dx, clampedY, z + dz).get().getMaterial();
             if (this.mats.containsKey(mat))
             {
                 this.mats.put(mat, this.mats.get(mat) + Math.sqrt(dx * dx + dy * dy + dz * dz));
@@ -80,12 +81,12 @@ public class LinearBlendMaterialOperation implements FilterOperation
     }
 
     @Override
-    public Optional<Material> getResult()
+    public Optional<MaterialState> getResult()
     {
         // Select the material which occurred the most.
         double n = 0;
-        Material winner = null;
-        for (Map.Entry<Material, Double> e : this.mats.entrySet())
+        MaterialState winner = null;
+        for (Map.Entry<MaterialState, Double> e : this.mats.entrySet())
         {
             if (this.count * this.maxDistance - e.getValue() > n)
             {
@@ -97,7 +98,7 @@ public class LinearBlendMaterialOperation implements FilterOperation
         // If multiple materials occurred the most, the tie check will become
         // true.
         boolean tie = false;
-        for (Map.Entry<Material, Double> e : this.mats.entrySet())
+        for (Map.Entry<MaterialState, Double> e : this.mats.entrySet())
         {
             if (e.getValue() == n && !e.getKey().equals(winner))
             {

@@ -23,56 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.world.material;
 
-/**
- * Represents a material that may be applied to a block.
- */
-public interface Material
+public interface MaterialState
 {
 
-    /**
-     * Return the name of this material.
-     * 
-     * @return the name
-     */
-    String getName();
-
-    /**
-     * Returns whether the material is representing a voxel which mat be placed within the world.
-     * 
-     * @return is a placeable block
-     */
-    boolean isBlock();
-
-    /**
-     * Returns whether the material is affected by gravity within the world.
-     * 
-     * @return is affected by gravity
-     */
-    boolean isAffectedByGravity();
-
-    /**
-     * Returns if the material is solid (eg. whether a user could pass through the material
-     * unhindered).
-     * 
-     * @return is a solid block
-     */
-    boolean isSolid();
-
-    /**
-     * Returns if the material is a liquid.
-     * 
-     * @return is a liquid
-     */
-    boolean isLiquid();
-
-    /**
-     * Returns if the material is reliant on its environment. (ex. a torch hanging from a wall is
-     * reliant on the wall).
-     * 
-     * @return is reliant on the environment
-     */
-    boolean isReliantOnEnvironment();
+    Material getType();
     
-    MaterialState getDefaultState();
-
 }

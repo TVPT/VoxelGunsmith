@@ -30,6 +30,8 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+
+import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.registry.WeakRegistry;
 import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.service.registry.MaterialRegistry;
