@@ -25,10 +25,10 @@ package com.voxelplugineering.voxelsniper.world;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
-import com.voxelplugineering.voxelsniper.world.material.Material;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
+
+import com.google.common.base.Optional;
 
 /**
  * A combination location and material representation of a single voxel. The location is immutable.

@@ -23,17 +23,16 @@
  */
 package com.voxelplugineering.voxelsniper.service.alias;
 
+import com.google.common.base.Optional;
+
 import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSerializable;
-
 /**
  * Represents a registry for aliases.
  */
-public interface AliasRegistry extends DataSerializable
+public interface AliasRegistry
 {
 
     /**
@@ -69,8 +68,8 @@ public interface AliasRegistry extends DataSerializable
     boolean remove(String alias);
 
     /**
-     * Gets all keys of this collection. Including, if the deep flag is set, all keys of its
-     * parent registries as well.
+     * Gets all keys of this collection. Including, if the deep flag is set, all keys of its parent
+     * registries as well.
      * 
      * @param deep whether to include keys from parent registries as well
      * @return the keys
@@ -78,8 +77,8 @@ public interface AliasRegistry extends DataSerializable
     Collection<? extends String> getKeys(boolean deep);
 
     /**
-     * Gets a Set of all entries in this registry. Intended for use in serialization only, nor
-     * for fetching aliases, use {@link #getAlias(String)} instead.
+     * Gets a Set of all entries in this registry. Intended for use in serialization only, nor for
+     * fetching aliases, use {@link #getAlias(String)} instead.
      * 
      * @return the set of entries
      */

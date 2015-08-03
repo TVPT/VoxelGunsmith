@@ -28,15 +28,33 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Marks a class as being a brush part and provides basic information about the brush.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface BrushInfo
 {
 
+    /**
+     * Gets the brush part name.
+     * 
+     * @return The brush name
+     */
     String name();
-    
+
+    /**
+     * Gets the type of the brush part.
+     * 
+     * @return The brush part type
+     */
     BrushPartType type();
-    
+
+    /**
+     * Gets the help information for the brush part.
+     * 
+     * @return The help message
+     */
     String help() default "No help is provided for this brush.";
-    
+
 }

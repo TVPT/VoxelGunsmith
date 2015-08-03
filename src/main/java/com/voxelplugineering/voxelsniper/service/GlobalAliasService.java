@@ -23,15 +23,15 @@
  */
 package com.voxelplugineering.voxelsniper.service;
 
-import java.util.Set;
-
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.service.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.service.alias.AliasOwner;
 import com.voxelplugineering.voxelsniper.service.alias.AliasRegistry;
 import com.voxelplugineering.voxelsniper.service.alias.GlobalAliasHandler;
-import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
 import com.voxelplugineering.voxelsniper.util.Context;
+
+import com.google.common.base.Optional;
+
+import java.util.Set;
 
 /**
  * A service wrapping an {@link AliasHandler}.
@@ -51,18 +51,6 @@ public class GlobalAliasService extends AbstractService implements GlobalAliasHa
     {
         super(context);
         this.wrapped = wrapped;
-    }
-
-    @Override
-    public void fromContainer(DataContainer container)
-    {
-        this.wrapped.fromContainer(container);
-    }
-
-    @Override
-    public DataContainer toContainer()
-    {
-        return this.wrapped.toContainer();
     }
 
     @Override

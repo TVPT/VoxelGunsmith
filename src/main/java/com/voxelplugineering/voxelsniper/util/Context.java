@@ -61,7 +61,7 @@ public class Context
         Object obj = this.data.get(cls);
         if (obj == null)
         {
-            //No direct match found, fall back to checking isAssignableFrom
+            // No direct match found, fall back to checking isAssignableFrom
             for (Class<? extends Contextable> key : this.data.keySet())
             {
                 if (cls.isAssignableFrom(key))
@@ -72,7 +72,7 @@ public class Context
             }
             if (obj == null)
             {
-                //Failed to match any class
+                // Failed to match any class
                 return Optional.absent();
             }
         }

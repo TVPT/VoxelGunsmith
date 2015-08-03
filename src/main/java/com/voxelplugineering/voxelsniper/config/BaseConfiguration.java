@@ -23,33 +23,35 @@
  */
 package com.voxelplugineering.voxelsniper.config;
 
+import com.voxelplugineering.voxelsniper.service.config.ConfigValue;
 import com.voxelplugineering.voxelsniper.service.config.ConfigurationContainer;
 
 /**
  * Default base configuration values.
  */
-public class BaseConfiguration extends ConfigurationContainer
+@ConfigurationContainer(name = "additional", createByDefault = false)
+@SuppressWarnings("javadoc")
+public class BaseConfiguration
 {
 
-    double playerEyeHeight = 1.62;
-    int minimumWorldDepth = 0;
-    int maximumWorldHeight = 255;
-    double rayTraceStep = 0.2;
+    @ConfigValue(hidden = true)
+    public static double playerEyeHeight = 1.62;
+    @ConfigValue(hidden = true)
+    public static int minimumWorldDepth = 0;
+    @ConfigValue(hidden = true)
+    public static int maximumWorldHeight = 255;
+    @ConfigValue(hidden = true)
+    public static double rayTraceStep = 0.2;
 
-    String defaultBiomeName = "plains";
-    String defaultMaterialName = "air";
+    public static String defaultBiomeName = "plains";
+    public static String defaultMaterialName = "air";
 
-    String playerSysVarName = "__PLAYER__";
-    String brushArgumentRegex = "([\\S&&[^\\{]]+)[\\s]*(?:((?:\\{[^\\}]*\\}[\\s]*)+))?";
-    String eventBusThreadPrefix = "VoxelSniperEventBus-";
+    @ConfigValue(hidden = true)
+    public static String eventBusThreadPrefix = "VoxelSniperEventBus-";
 
-    String originVariable = "origin";
-    String yawVariable = "yaw";
-    String pitchVariable = "pitch";
-    String targetBlockVariable = "targetBlock";
-    String lengthVariable = "length";
-
-    int aliasInterval = 30000;
-    int changeInterval = 100;
+    @ConfigValue(hidden = true)
+    public static int aliasInterval = 30000;
+    @ConfigValue(hidden = true)
+    public static int changeInterval = 100;
 
 }

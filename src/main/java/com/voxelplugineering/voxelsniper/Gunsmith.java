@@ -41,7 +41,8 @@ public final class Gunsmith extends ServiceManager implements ExpansionManager
 {
 
     /**
-     * Gets the {@link ServiceManager} which is in change of the registration, initialization, and shutdown of all {@link Service}s.
+     * Gets the {@link ServiceManager} which is in change of the registration, initialization, and
+     * shutdown of all {@link Service}s.
      *
      * @return The service manager
      */
@@ -51,7 +52,8 @@ public final class Gunsmith extends ServiceManager implements ExpansionManager
     }
 
     /**
-     * Gets the {@link ExpansionManager} which is in change of the registration of all {@link Expansion}s.
+     * Gets the {@link ExpansionManager} which is in change of the registration of all
+     * {@link Expansion}s.
      *
      * @return The expansion manager
      */

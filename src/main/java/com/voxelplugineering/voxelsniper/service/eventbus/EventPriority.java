@@ -31,6 +31,10 @@ package com.voxelplugineering.voxelsniper.service.eventbus;
 public enum EventPriority
 {
 
-    HIGHEST, HIGH, STANDARD, LOW, LOWEST
+    HIGHEST,
+    HIGH,
+    STANDARD,
+    LOW,
+    LOWEST
 
 }

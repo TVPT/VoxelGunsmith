@@ -49,8 +49,8 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 
 /**
- * The blend brush. An effect brush which performs a 'blend' operation by setting blocks in the defined region to the mode material of the surrounding
- * materials.
+ * The blend brush. An effect brush which performs a 'blend' operation by setting blocks in the
+ * defined region to the mode material of the surrounding materials.
  */
 @BrushInfo(name = "blend", type = BrushPartType.EFFECT)
 public class OldBlendBrush implements Brush

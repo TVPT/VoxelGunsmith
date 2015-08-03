@@ -46,7 +46,7 @@ repositories {
 
 dependencies {
     compile 'com.google.guava:guava:17.0'
-	compile 'com.google.code.gson:gson:2.3'
+	compile 'ninja.leaping.configurate:configurate-hocon:2.0'
 	compile 'org.apache.logging.log4j:log4j-core:2.1'
 	compile 'org.ow2.asm:asm-all:5.0.3'
 	testCompile 'org.mockito:mockito-core:1.9.5'

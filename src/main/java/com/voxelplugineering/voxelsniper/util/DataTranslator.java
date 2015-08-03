@@ -38,7 +38,7 @@ import com.google.common.collect.Maps;
  */
 public class DataTranslator
 {
-    
+
     private static BiomeRegistry<?> BIOME_REGISTRY;
 
     private static Map<Class<?>, Map<Class<?>, Function<Object, Object>>> TRANSLATORS;
@@ -46,12 +46,12 @@ public class DataTranslator
     /**
      * Initializes the {@link DataTranslator}.
      * 
-     * @param context 
+     * @param context
      */
     public static void initialize(Context context)
     {
-        BIOME_REGISTRY = context.getRequired(BiomeRegistry.class);
-        
+        BIOME_REGISTRY = context.get(BiomeRegistry.class).orNull();
+
         TRANSLATORS = Maps.newHashMap();
         Map<Class<?>, Function<Object, Object>> string = Maps.newHashMap();
         string.put(Byte.class, new Function<Object, Object>()
@@ -117,15 +117,18 @@ public class DataTranslator
                 return Boolean.valueOf((String) s);
             }
         });
-        string.put(Biome.class, new Function<Object, Object>()
+        if (BIOME_REGISTRY != null)
         {
-
-            @Override
-            public Object apply(Object s)
+            string.put(Biome.class, new Function<Object, Object>()
             {
-                return BIOME_REGISTRY.getBiome((String) s).orNull();
-            }
-        });
+
+                @Override
+                public Object apply(Object s)
+                {
+                    return BIOME_REGISTRY.getBiome((String) s).orNull();
+                }
+            });
+        }
         TRANSLATORS.put(String.class, string);
 
     }
@@ -142,7 +145,7 @@ public class DataTranslator
     public static <T> Optional<T> attempt(Object obj, Class<T> to)
     {
         Class<?> from = obj.getClass();
-        if (from == to)
+        if (from == to || to.isPrimitive())
         {
             return Optional.of((T) obj);
         }

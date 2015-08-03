@@ -25,7 +25,6 @@ package com.voxelplugineering.voxelsniper.world;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.registry.WeakWrapper;
 import com.voxelplugineering.voxelsniper.service.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.shape.ComplexMaterialShape;
@@ -34,15 +33,16 @@ import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.biome.Biome;
-import com.voxelplugineering.voxelsniper.world.material.Material;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
+
+import com.google.common.base.Optional;
 
 /**
  * An abstract world.
  * 
  * @param <T> The specific world type
  */
-public abstract class AbstractWorld<T> extends WeakWrapper<T> implements World
+public abstract class AbstractWorld<T> extends WeakWrapper<T>implements World
 {
 
     private final MaterialRegistry<?> mats;

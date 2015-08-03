@@ -25,12 +25,12 @@ package com.voxelplugineering.voxelsniper.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushChain;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.util.Context;
@@ -39,20 +39,10 @@ import com.voxelplugineering.voxelsniper.util.StringUtilities;
 import com.google.common.base.Optional;
 
 /**
- * Standard brush command to select a brush and provide the necessary arguments
- * to said brush.
+ * Standard brush command to select a brush and provide the necessary arguments to said brush.
  */
 public class BrushCommand extends Command
 {
-
-    /**
-     * The message sent to players when their brush size is changed.
-     */
-    private String brushSizeChangeMessage;
-    /**
-     * The message sent to players when their brush is set.
-     */
-    private String brushSetMessage;
 
     /**
      * Constructs a new BrushCommand.
@@ -64,14 +54,12 @@ public class BrushCommand extends Command
         super("brush", "Sets your current brush", context);
         setAliases("b");
         setPermissions("voxelsniper.command.brush");
-        this.brushSizeChangeMessage = getConfig().get("brushSizeChangedMessage", String.class).or("Your brush size was changed to %.1f");
-        this.brushSetMessage = getConfig().get("brushSetMessage", String.class).or("Your brush has been set to %s");
     }
 
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {
-        //TODO reduce NPath complexity
+        // TODO reduce NPath complexity
         checkNotNull(sender, "Cannot have a null sniper!");
 
         if (!sender.isPlayer())
@@ -92,7 +80,7 @@ public class BrushCommand extends Command
                 double brushSize = Double.parseDouble(args[0]);
                 sniper.getBrushVars().setContext(BrushContext.GLOBAL);
                 sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.BRUSH_SIZE, brushSize);
-                sniper.sendMessage(this.brushSizeChangeMessage, brushSize);
+                sniper.sendMessage(VoxelSniperConfiguration.brushSizeChangedMessage, brushSize);
                 return true;
             } catch (NumberFormatException ignored)
             {
@@ -112,12 +100,12 @@ public class BrushCommand extends Command
                     brush.chain(br.get());
                 } else
                 {
-                    sniper.sendMessage("Could not find brush: " + b);
+                    sniper.sendMessage(String.format(VoxelSniperConfiguration.brushNotFoundMessage, b));
                     return true;
                 }
             }
             sniper.setCurrentBrush(brush);
-            sniper.sendMessage(this.brushSetMessage, brush.getName());
+            sniper.sendMessage(VoxelSniperConfiguration.brushSetMessage, brush.getName());
 
             boolean hasShape = false;
             boolean hasEffect = false;

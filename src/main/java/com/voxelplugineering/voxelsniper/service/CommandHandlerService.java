@@ -26,21 +26,22 @@ package com.voxelplugineering.voxelsniper.service;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.commands.Command;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.service.command.CommandRegistrar;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
-import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.service.permission.PermissionProxy;
 import com.voxelplugineering.voxelsniper.util.Context;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A handler for commands which handles registration of command handlers and commands. Also
@@ -51,10 +52,7 @@ import com.voxelplugineering.voxelsniper.util.Context;
 public class CommandHandlerService extends AbstractService implements CommandHandler
 {
 
-    private final Configuration config;
     private final PermissionProxy perms;
-
-    private String permissionMessage;
 
     private Map<String, Command> commands;
     private List<Command> unique;
@@ -68,15 +66,12 @@ public class CommandHandlerService extends AbstractService implements CommandHan
     public CommandHandlerService(Context context)
     {
         super(context);
-        this.config = context.getRequired(Configuration.class, this);
         this.perms = context.getRequired(PermissionProxy.class, this);
     }
 
     @Override
     protected void _init()
     {
-        Optional<String> pmsg = this.config.get("permissionsRequiredMessage", String.class);
-        this.permissionMessage = pmsg.or("You lack the required permission for this command.");
         this.commands = Maps.newHashMap();
         this.unique = Lists.newArrayList();
 
@@ -85,7 +80,6 @@ public class CommandHandlerService extends AbstractService implements CommandHan
     @Override
     protected void _shutdown()
     {
-        this.permissionMessage = null;
         this.commands = null;
         this.unique = null;
     }
@@ -158,7 +152,7 @@ public class CommandHandlerService extends AbstractService implements CommandHan
             }
         } else
         {
-            sender.sendMessage(this.permissionMessage);
+            sender.sendMessage(VoxelSniperConfiguration.permissionsRequiredMessage);
         }
     }
 

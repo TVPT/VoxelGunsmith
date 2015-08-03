@@ -25,31 +25,22 @@ package com.voxelplugineering.voxelsniper.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Optional;
-
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 
+import com.google.common.base.Optional;
+
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.
  */
 public class MaterialCommand extends Command
 {
-
-    /**
-     * The message sent to the player if their chosen material is not found in the registry.
-     */
-    private String materialNotFoundMessage;
-    /**
-     * The message sent to the player when their material is set.
-     */
-    private String materialSetMessage;
 
     /**
      * Constructs a new {@link MaterialCommand}.
@@ -61,8 +52,6 @@ public class MaterialCommand extends Command
         super("material", "Sets your current brush material", context);
         setAliases("v");
         setPermissions("voxelsniper.command.material");
-        this.materialNotFoundMessage = getConfig().get("materialNotFoundMessage", String.class).or("Could not find that material.");
-        this.materialSetMessage = getConfig().get("materialSetMessage", String.class).or("Set material to %s");
     }
 
     @Override
@@ -87,17 +76,17 @@ public class MaterialCommand extends Command
             Optional<Material> material = sniper.getWorld().getMaterialRegistry().getMaterial(materialName);
             if (!material.isPresent())
             {
-                sniper.sendMessage(this.materialNotFoundMessage);
+                sniper.sendMessage(VoxelSniperConfiguration.materialNotFoundMessage);
                 return false;
             }
-            sniper.sendMessage(this.materialSetMessage, material.get().getName());
+            sniper.sendMessage(VoxelSniperConfiguration.materialSetMessage, material.get().getName());
             sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MATERIAL, material.get().getDefaultState());
         } else
         {
             Optional<Block> target = sniper.getTargetBlock();
             if (target.isPresent())
             {
-                sniper.sendMessage(this.materialSetMessage, target.get().getMaterial().getType().getName());
+                sniper.sendMessage(VoxelSniperConfiguration.materialSetMessage, target.get().getMaterial().getType().getName());
                 sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MATERIAL, target.get().getMaterial());
             } else
             {

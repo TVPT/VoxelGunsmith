@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.service.command;
 
-
 /**
  * An interface for any command source.
  */

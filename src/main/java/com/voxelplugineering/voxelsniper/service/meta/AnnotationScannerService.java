@@ -55,6 +55,9 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+/**
+ * An implementation of the {@link AnnotationScanner} service.
+ */
 public class AnnotationScannerService extends AbstractService implements AnnotationScanner
 {
 
@@ -79,26 +82,35 @@ public class AnnotationScannerService extends AbstractService implements Annotat
         }
     };
 
-    private static Set<String> SCANNER_EXCLUSIONS = Sets.newHashSet();
-    
-    static {
-        SCANNER_EXCLUSIONS.add("java/");
-        SCANNER_EXCLUSIONS.add("sun/");
-        SCANNER_EXCLUSIONS.add("javax/");
-        SCANNER_EXCLUSIONS.add("org/lwjgl/");
-        SCANNER_EXCLUSIONS.add("org/bukkit/");
-        SCANNER_EXCLUSIONS.add("org/spongepowered/");
-        SCANNER_EXCLUSIONS.add("net/minecraft/");
-        SCANNER_EXCLUSIONS.add("net/minecraftforge/");
-        SCANNER_EXCLUSIONS.add("com/google/");
-        SCANNER_EXCLUSIONS.add("org/objectweb/asm/");
-    }
-    
-    private final Map<String, List<AnnotationConsumer>> consumers = Maps.newHashMap();
+    private static Set<String> DEFAULT_SCANNER_EXCLUSIONS = Sets.newHashSet();
 
+    static
+    {
+        DEFAULT_SCANNER_EXCLUSIONS.add("java/");
+        DEFAULT_SCANNER_EXCLUSIONS.add("sun/");
+        DEFAULT_SCANNER_EXCLUSIONS.add("com/sun/");
+        DEFAULT_SCANNER_EXCLUSIONS.add("javax/");
+        DEFAULT_SCANNER_EXCLUSIONS.add("org/lwjgl/");
+        DEFAULT_SCANNER_EXCLUSIONS.add("org/bukkit/");
+        DEFAULT_SCANNER_EXCLUSIONS.add("org/spongepowered/");
+        DEFAULT_SCANNER_EXCLUSIONS.add("net/minecraft/");
+        DEFAULT_SCANNER_EXCLUSIONS.add("net/minecraftforge/");
+        DEFAULT_SCANNER_EXCLUSIONS.add("com/google/");
+        DEFAULT_SCANNER_EXCLUSIONS.add("org/objectweb/asm/");
+    }
+
+    private final Map<String, List<AnnotationConsumer>> consumers = Maps.newHashMap();
+    private Set<String> scannerExclusions = Sets.newHashSet();
+
+    /**
+     * Creates a new {@link AnnotationScannerService}.
+     * 
+     * @param context the context
+     */
     public AnnotationScannerService(Context context)
     {
         super(context);
+        this.scannerExclusions.addAll(DEFAULT_SCANNER_EXCLUSIONS);
     }
 
     @Override
@@ -113,15 +125,21 @@ public class AnnotationScannerService extends AbstractService implements Annotat
 
     }
 
+    @Override
+    public void addScannerExclusion(String exc)
+    {
+        this.scannerExclusions.add(exc);
+    }
+
     private List<AnnotationConsumer> getOrCreateConsumers(Class<?> cls)
     {
         String desc = Type.getDescriptor(cls);
         if (this.consumers.containsKey(desc))
         {
-            return consumers.get(desc);
+            return this.consumers.get(desc);
         }
         List<AnnotationConsumer> list = Lists.newArrayList();
-        consumers.put(desc, list);
+        this.consumers.put(desc, list);
         return list;
     }
 
@@ -136,6 +154,10 @@ public class AnnotationScannerService extends AbstractService implements Annotat
     public void scanClassPath(URLClassLoader loader)
     {
         GunsmithLogger.getLogger().debug("Scanning classloader for annotations");
+        for (String ex : this.scannerExclusions)
+        {
+            GunsmithLogger.getLogger().debug("\tExcluding: " + ex);
+        }
         Set<URI> sources = Sets.newHashSet();
 
         for (URL url : loader.getURLs())
@@ -258,8 +280,10 @@ public class AnnotationScannerService extends AbstractService implements Annotat
         ClassReader reader = new ClassReader(in);
         ClassNode classNode = new ClassNode();
         reader.accept(classNode, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
-        for(String exc: SCANNER_EXCLUSIONS) {
-            if(classNode.name.startsWith(exc)) {
+        for (String exc : this.scannerExclusions)
+        {
+            if (classNode.name.startsWith(exc))
+            {
                 return;
             }
         }

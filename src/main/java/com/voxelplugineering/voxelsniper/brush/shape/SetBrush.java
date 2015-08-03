@@ -42,6 +42,10 @@ import com.voxelplugineering.voxelsniper.world.Location;
 
 import com.google.common.base.Optional;
 
+/**
+ * A shape brush that allows the user to select two points and then creates a cuboidal shape
+ * covering the region between the two points.
+ */
 @BrushInfo(name = "set", type = BrushPartType.SHAPE)
 public class SetBrush implements Brush
 {
@@ -63,7 +67,12 @@ public class SetBrush implements Brush
         Location a = pointA.get();
         Location b = target.get().getLocation();
         player.sendMessage("Set second point to (" + b.getFlooredX() + ", " + b.getFlooredY() + ", " + b.getFlooredZ());
-        int w, h, l, ox, oy, oz;
+        int w;
+        int h;
+        int l;
+        int ox;
+        int oy;
+        int oz;
         if (a.getFlooredX() < b.getFlooredX())
         {
             w = b.getFlooredX() - a.getFlooredX() + 1;

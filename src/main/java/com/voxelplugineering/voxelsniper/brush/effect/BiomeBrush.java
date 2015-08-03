@@ -82,8 +82,9 @@ public class BiomeBrush implements Brush
                     if (shape.get(x, y, z, false))
                     {
                         world.setBiome(b.get(), x0, y0, z0);
-                        Chunk chunk = world.getChunk(x0/16, y0/16, z0/16).orNull();
-                        if(chunk != null && !toUpdate.contains(chunk)) {
+                        Chunk chunk = world.getChunk(x0 / 16, y0 / 16, z0 / 16).orNull();
+                        if (chunk != null && !toUpdate.contains(chunk))
+                        {
                             toUpdate.add(chunk);
                         }
                         break;
@@ -91,7 +92,8 @@ public class BiomeBrush implements Brush
                 }
             }
         }
-        for(Chunk c: toUpdate) {
+        for (Chunk c : toUpdate)
+        {
             c.refreshChunk();
         }
         return ExecutionResult.continueExecution();

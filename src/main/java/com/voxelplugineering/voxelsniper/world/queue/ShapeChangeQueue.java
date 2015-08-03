@@ -79,11 +79,8 @@ public class ShapeChangeQueue extends ChangeQueue
             getOwner().sendMessage("Shape too large, skipping undo storage.");
         } else
         {
-            this.owner.getUndoHistory()
-                    .addHistory(
-                            this,
-                            new ShapeChangeQueue(getOwner(), this.origin, this.originOffset.getWorld().getShapeFromWorld(this.origin,
-                                    this.shape.getShape())));
+            this.owner.getUndoHistory().addHistory(this, new ShapeChangeQueue(getOwner(), this.origin,
+                    this.originOffset.getWorld().getShapeFromWorld(this.origin, this.shape.getShape())));
         }
         this.getOwner().addPending(this);
     }
@@ -149,9 +146,8 @@ public class ShapeChangeQueue extends ChangeQueue
                 int z = (int) (this.position / (this.shape.getWidth() * this.shape.getHeight()));
                 int y = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) / this.shape.getWidth());
                 int x = (int) ((this.position % (this.shape.getWidth() * this.shape.getHeight())) % this.shape.getWidth());
-                Optional<Block> block =
-                        this.world.getBlock(x + this.originOffset.getFlooredX(), y + this.originOffset.getFlooredY(),
-                                z + this.originOffset.getFlooredZ());
+                Optional<Block> block = this.world.getBlock(x + this.originOffset.getFlooredX(), y + this.originOffset.getFlooredY(),
+                        z + this.originOffset.getFlooredZ());
                 if (!block.isPresent())
                 {
                     continue;
@@ -161,8 +157,8 @@ public class ShapeChangeQueue extends ChangeQueue
                 if (newMaterial.isPresent() && !(existingMaterial.getType().isLiquid() || existingMaterial.getType().isReliantOnEnvironment()))
                 {
                     count++;
-                    this.world.setBlock(newMaterial.get(), x + this.originOffset.getFlooredX(), y + this.originOffset.getFlooredY(), z
-                            + this.originOffset.getFlooredZ());
+                    this.world.setBlock(newMaterial.get(), x + this.originOffset.getFlooredX(), y + this.originOffset.getFlooredY(),
+                            z + this.originOffset.getFlooredZ());
                 }
             }
             if (this.position == this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength())
@@ -196,5 +192,8 @@ public class ShapeChangeQueue extends ChangeQueue
  */
 enum ExecutionState
 {
-    UNSTARTED, BREAKABLE, INCREMENTAL, DONE;
+    UNSTARTED,
+    BREAKABLE,
+    INCREMENTAL,
+    DONE;
 }

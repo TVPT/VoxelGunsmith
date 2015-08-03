@@ -26,6 +26,12 @@ package com.voxelplugineering.voxelsniper.service.alias;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
+import com.voxelplugineering.voxelsniper.util.StringUtilities;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,12 +44,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Optional;
-import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
-import com.voxelplugineering.voxelsniper.util.StringUtilities;
-
 /**
  * A registry for aliases. <p> TODO: clean up {@link #expand(String)} </p>
  */
@@ -52,18 +52,16 @@ public class CommonAliasRegistry implements AliasRegistry
 
     private Map<String, String> aliases;
     private AliasRegistry parent;
-    private boolean caseSensitive = true;
     private final String registryName;
 
     /**
      * Creates a new {@link AliasRegistry} with no parent.
      * 
      * @param name The registry name
-     * @param caseSensitive If this alias keys should be case sensitive
      */
-    public CommonAliasRegistry(String name, boolean caseSensitive)
+    public CommonAliasRegistry(String name)
     {
-        this(name, null, caseSensitive);
+        this(name, null);
     }
 
     /**
@@ -71,9 +69,8 @@ public class CommonAliasRegistry implements AliasRegistry
      * 
      * @param name The registry name
      * @param parent the parent registry
-     * @param caseSensitive If this alias keys should be case sensitive
      */
-    public CommonAliasRegistry(String name, AliasRegistry parent, boolean caseSensitive)
+    public CommonAliasRegistry(String name, AliasRegistry parent)
     {
         checkNotNull(name);
         this.aliases = Maps.newTreeMap(new Comparator<String>()
@@ -91,18 +88,7 @@ public class CommonAliasRegistry implements AliasRegistry
             }
         });
         this.parent = parent;
-        this.caseSensitive = caseSensitive;
         this.registryName = name;
-    }
-
-    /**
-     * Sets whether the keys of this registry should be case sensitive.
-     * 
-     * @param cs Case sensitivity
-     */
-    public void setCaseSensitive(boolean cs)
-    {
-        this.caseSensitive = cs;
     }
 
     @Override
@@ -119,7 +105,7 @@ public class CommonAliasRegistry implements AliasRegistry
         checkArgument(!alias.isEmpty(), "Alias cannot be empty.");
         checkArgument(!value.isEmpty(), "Value cannot be empty.");
 
-        if (!this.caseSensitive)
+        if (!VoxelSniperConfiguration.caseSensitiveAliases)
         {
             alias = alias.toLowerCase();
         }
@@ -137,7 +123,7 @@ public class CommonAliasRegistry implements AliasRegistry
     {
         checkNotNull(alias, "Alias cannot be null.");
         checkArgument(!alias.isEmpty(), "Alias cannot be empty.");
-        if (!this.caseSensitive)
+        if (!VoxelSniperConfiguration.caseSensitiveAliases)
         {
             alias = alias.toLowerCase();
         }
@@ -182,7 +168,7 @@ public class CommonAliasRegistry implements AliasRegistry
         return expand_(finalBrush);
     }
 
-    //TODO cleanup these methods
+    // TODO cleanup these methods
     private static boolean validate(String fullBrush)
     {
         int co = 0;
@@ -242,7 +228,7 @@ public class CommonAliasRegistry implements AliasRegistry
             {
                 String section = StringUtilities.getSection(split, i, j);
 
-                if (!this.caseSensitive)
+                if (!VoxelSniperConfiguration.caseSensitiveAliases)
                 {
                     section = section.toLowerCase();
                 }
@@ -290,30 +276,6 @@ public class CommonAliasRegistry implements AliasRegistry
     public Set<Entry<String, String>> getEntries()
     {
         return Collections.unmodifiableSet(this.aliases.entrySet());
-    }
-
-    @Override
-    public void fromContainer(DataContainer container)
-    {
-        for (String key : container.keySet())
-        {
-            Optional<String> alias = container.getString(key);
-            if (alias.isPresent())
-            {
-                this.register(key, alias.get());
-            }
-        }
-    }
-
-    @Override
-    public DataContainer toContainer()
-    {
-        MemoryContainer container = new MemoryContainer(this.registryName);
-        for (String key : this.aliases.keySet())
-        {
-            container.setString(key, this.aliases.get(key));
-        }
-        return container;
     }
 
     @Override

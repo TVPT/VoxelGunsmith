@@ -79,16 +79,14 @@ public class RayTrace
     private Direction lastDirection = null;
 
     /*
-     * Values used internally for the calculation of the ray trace. length: the
-     * length of the ray range: the maximum length of the ray before stopping
-     * minWorldY: the minimum y value of the world maxWorldY: the maximum y
-     * value of the world yaw: the yaw of the direction of the ray pitch: the
-     * pitch of the direction of the ray currentX|Y|Z: the current position of
-     * the ray, relative to the origin targetX|Y|Z: the position of the target
-     * block lastX|Y|Z: the position of the last block rotX|Y: the yaw and pitch
-     * of the ray shifted to the same context as the world, as well as the sine
-     * and cosine of each step: the increment amount of the step of the ray
-     * trace
+     * Values used internally for the calculation of the ray trace. length: the length of the ray
+     * range: the maximum length of the ray before stopping minWorldY: the minimum y value of the
+     * world maxWorldY: the maximum y value of the world yaw: the yaw of the direction of the ray
+     * pitch: the pitch of the direction of the ray currentX|Y|Z: the current position of the ray,
+     * relative to the origin targetX|Y|Z: the position of the target block lastX|Y|Z: the position
+     * of the last block rotX|Y: the yaw and pitch of the ray shifted to the same context as the
+     * world, as well as the sine and cosine of each step: the increment amount of the step of the
+     * ray trace
      */
 
     private double length;
@@ -308,7 +306,8 @@ public class RayTrace
     public void trace()
     {
         GunsmithLogger.getLogger().debug("Traversing: ");
-        for(Material m: this.traversalBlocks) {
+        for (Material m : this.traversalBlocks)
+        {
             GunsmithLogger.getLogger().debug("\t" + m.getName() + " " + m.toString());
         }
         init();
@@ -360,7 +359,8 @@ public class RayTrace
         if (!this.traversalBlocks.contains(next.get().getMaterial().getType()))
         {
             // Abort - found non-traversal block
-            GunsmithLogger.getLogger().debug("Found non-traversal block: " + next.get().getMaterial().getType().getName() + " breaking. " + next.get().getMaterial().getType().toString());
+            GunsmithLogger.getLogger().debug("Found non-traversal block: " + next.get().getMaterial().getType().getName() + " breaking. "
+                    + next.get().getMaterial().getType().toString());
             return;
         }
 

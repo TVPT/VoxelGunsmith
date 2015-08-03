@@ -23,10 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.world;
 
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
-import com.voxelplugineering.voxelsniper.world.material.Material;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
+
+import com.google.common.base.Optional;
 
 /**
  * Represents a material at a location in a world.
@@ -71,6 +71,6 @@ public interface Block
      */
     Optional<Block> withOffset(Vector3i offset);
 
-    //TODO block states?
+    // TODO block states?
 
 }

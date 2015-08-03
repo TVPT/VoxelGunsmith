@@ -28,11 +28,38 @@ import com.voxelplugineering.voxelsniper.service.meta.AnnotationConsumer;
 import java.lang.annotation.Annotation;
 import java.net.URLClassLoader;
 
+/**
+ * A service for scanning over all classes in a classloader and detecting classes annotated with
+ * registered annotations.
+ */
 public interface AnnotationScanner extends Service
 {
 
+    /**
+     * Registers a consumer for a particular annotation. All classes in scanned classloaders which
+     * are annotated with this annotation will be passed to the given consumer.
+     * 
+     * @param target The targeted annotation
+     * @param consumer The annotation consumer
+     */
     void register(Class<? extends Annotation> target, AnnotationConsumer consumer);
 
+    /**
+     * Scans the given {@link URLClassLoader} for registered annotations.
+     * 
+     * @param loader The class loader to scan
+     */
     void scanClassPath(URLClassLoader loader);
-    
+
+    /**
+     * Adds an exclusion to the scanner. All classes with fully qualified names which start with an
+     * item in the exclusion list will be ignored.
+     * 
+     * <p>Packages should be deliminated with a '/' for the purposes of this exclusion list (eg.
+     * 'com/sun/' would exclude all classes in the com.sun package).</p>
+     * 
+     * @param exc The new scanner exclusion
+     */
+    void addScannerExclusion(String exc);
+
 }

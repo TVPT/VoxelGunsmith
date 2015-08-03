@@ -430,7 +430,7 @@ public class ComplexMaterialShape implements MaterialShape
         if (this.materialsB != null)
         {
             for (int i = 0; i < this.materialsA.length; i++)
-            {   
+            {
                 if (this.materialsA[i] == (other & 0xff) && this.materialsB[i] == (other & 0xff00 >> 8))
                 {
                     this.materialsA[i] = 0;

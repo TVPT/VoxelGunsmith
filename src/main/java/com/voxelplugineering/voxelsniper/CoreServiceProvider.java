@@ -37,17 +37,13 @@ import com.voxelplugineering.voxelsniper.commands.ResetCommand;
 import com.voxelplugineering.voxelsniper.commands.UndoCommand;
 import com.voxelplugineering.voxelsniper.commands.VSCommand;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
-import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.event.handler.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.service.AnnotationScanner;
 import com.voxelplugineering.voxelsniper.service.BrushManagerService;
 import com.voxelplugineering.voxelsniper.service.Builder;
 import com.voxelplugineering.voxelsniper.service.CommandHandlerService;
-import com.voxelplugineering.voxelsniper.service.ConfigurationService;
-import com.voxelplugineering.voxelsniper.service.DataSourceFactoryService;
 import com.voxelplugineering.voxelsniper.service.GlobalAliasService;
 import com.voxelplugineering.voxelsniper.service.InitHook;
-import com.voxelplugineering.voxelsniper.service.InitPhase;
 import com.voxelplugineering.voxelsniper.service.OfflineUndoHandlerService;
 import com.voxelplugineering.voxelsniper.service.PostInit;
 import com.voxelplugineering.voxelsniper.service.PreStop;
@@ -58,19 +54,12 @@ import com.voxelplugineering.voxelsniper.service.alias.SimpleAliasOwner;
 import com.voxelplugineering.voxelsniper.service.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.service.config.ConfigurationContainer;
+import com.voxelplugineering.voxelsniper.service.config.ConfigurationService;
 import com.voxelplugineering.voxelsniper.service.eventbus.AsyncEventBus;
 import com.voxelplugineering.voxelsniper.service.eventbus.EventBus;
 import com.voxelplugineering.voxelsniper.service.meta.AnnotationScannerService;
 import com.voxelplugineering.voxelsniper.service.permission.PermissionProxy;
 import com.voxelplugineering.voxelsniper.service.permission.TrivialPermissionProxy;
-import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceFactory;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceProvider;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceReader;
-import com.voxelplugineering.voxelsniper.service.persistence.FileDataSource;
-import com.voxelplugineering.voxelsniper.service.persistence.JsonDataSourceReader;
-import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
-import com.voxelplugineering.voxelsniper.service.persistence.StandardOutDataSource;
 import com.voxelplugineering.voxelsniper.service.platform.PlatformProxy;
 import com.voxelplugineering.voxelsniper.service.platform.TrivialPlatformProxy;
 import com.voxelplugineering.voxelsniper.service.registry.PlayerRegistry;
@@ -78,23 +67,23 @@ import com.voxelplugineering.voxelsniper.service.scheduler.Scheduler;
 import com.voxelplugineering.voxelsniper.service.text.TextFormatParser;
 import com.voxelplugineering.voxelsniper.util.AnnotationHelper;
 import com.voxelplugineering.voxelsniper.util.Context;
+import com.voxelplugineering.voxelsniper.util.DataTranslator;
 import com.voxelplugineering.voxelsniper.util.defaults.DefaultAliasBuilder;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueTask;
 import com.voxelplugineering.voxelsniper.world.queue.OfflineUndoHandler;
 
 import com.google.common.base.Optional;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URLClassLoader;
 
 /**
  * The core service provider.
  */
-@SuppressWarnings({ "checkstyle:javadocmethod", "javadoc" })
+@SuppressWarnings({ "checkstyle:javadocmethod", "javadoc", "static-method" })
 public class CoreServiceProvider
 {
-
-    private static final String CONFIG_CONTAINER = "VoxelSniperConfiguration";
-    private static final int DEFAULT_CHANGE_INTERVAL = 100;
 
     public CoreServiceProvider()
     {
@@ -105,12 +94,6 @@ public class CoreServiceProvider
     public final AnnotationScanner buildAnnotationScanner(Context context)
     {
         return new AnnotationScannerService(context);
-    }
-
-    @Builder(target = DataSourceFactory.class, priority = ServicePriorities.DATA_SOURCE_FACTORY_PRIORITY, initPhase = InitPhase.EARLY)
-    public final DataSourceFactory buildPersistence(Context context)
-    {
-        return new DataSourceFactoryService(context);
     }
 
     @Builder(target = Configuration.class, priority = ServicePriorities.CONFIGURATION_PRIORITY)
@@ -135,13 +118,9 @@ public class CoreServiceProvider
     public final GlobalAliasHandler buildAliasRegistry(Context context)
     {
         PlatformProxy platform = context.getRequired(PlatformProxy.class);
-        Configuration conf = context.getRequired(Configuration.class);
 
-        DataSourceReader aliases = platform.getRootDataSourceProvider().getWithReader("aliases.json", JsonDataSourceReader.class).get();
-        boolean caseSensitive = conf.get("caseSensitiveAliases", boolean.class).or(false);
-
-        SimpleAliasOwner owner = new SimpleAliasOwner(aliases);
-        return new GlobalAliasService(context, new CommonAliasHandler(owner, caseSensitive));
+        SimpleAliasOwner owner = new SimpleAliasOwner(new File(platform.getRoot(), "aliases.json"));
+        return new GlobalAliasService(context, new CommonAliasHandler(owner));
     }
 
     @InitHook(target = EventBus.class)
@@ -150,19 +129,10 @@ public class CoreServiceProvider
         service.register(new CommonEventHandler(context));
     }
 
-    @InitHook(target = DataSourceFactory.class)
-    public final void initPersistence(Context context, DataSourceFactory factory)
-    {
-        factory.register("stdout", StandardOutDataSource.class, StandardOutDataSource.BUILDER);
-        factory.register("file", FileDataSource.class, FileDataSource.BUILDER);
-        factory.register("json", JsonDataSourceReader.class, JsonDataSourceReader.getBuilder(factory));
-    }
-
     @InitHook(target = Configuration.class)
     public final void initConfig(Context context, Configuration configuration)
     {
-        configuration.registerContainer(BaseConfiguration.class);
-        configuration.registerContainer(VoxelSniperConfiguration.class);
+        context.getRequired(AnnotationScanner.class).register(ConfigurationContainer.class, (ConfigurationService) configuration);
     }
 
     @InitHook(target = GlobalAliasHandler.class)
@@ -231,99 +201,26 @@ public class CoreServiceProvider
     @PostInit
     public final void post(Context context)
     {
-        PlatformProxy proxy = context.getRequired(PlatformProxy.class);
-        Configuration configuration = context.getRequired(Configuration.class);
+        DataTranslator.initialize(context);
+
+        context.getRequired(AnnotationScanner.class).scanClassPath((URLClassLoader) Gunsmith.getClassLoader());
+
         PlayerRegistry<?> players = context.getRequired(PlayerRegistry.class);
 
-        Optional<DataSourceReader> oconfig = proxy.getConfigDataSource();
-        DataSourceReader config = null;
+        Configuration conf = context.getRequired(Configuration.class);
+        PlatformProxy platform = context.getRequired(PlatformProxy.class);
+        try
+        {
+            conf.initialize(platform.getRoot(), false);
+        } catch (IOException e)
+        {
+            GunsmithLogger.getLogger().error(e, "Error initializing configuration files.");
+        }
 
-        if (!oconfig.isPresent())
-        {
-            DataSourceProvider provider = proxy.getRootDataSourceProvider();
-            DataContainer args = new MemoryContainer("");
-            DataSourceReader reader = provider.getWithReader("VoxelSniperConfiguration.json", JsonDataSourceReader.class, args).orNull();
-            if (reader != null)
-            {
-                ((JsonDataSourceReader) reader).setPrettyOutput(true);
-                config = reader;
-            }
-        } else
-        {
-            config = oconfig.get();
-        }
-        if (config != null)
-        {
-            try
-            {
-                if (config.exists())
-                {
-                    GunsmithLogger.getLogger().info("Loading config from " + config.getName().or("an unknown source"));
-                    DataContainer values = config.read();
-                    Optional<ConfigurationContainer> container = configuration.getContainer(CONFIG_CONTAINER);
-                    if (container.isPresent())
-                    {
-                        container.get().fromContainer(values);
-                        configuration.refreshContainer(CONFIG_CONTAINER);
-                    } else
-                    {
-                        GunsmithLogger.getLogger().warn("Could not find config container for VoxelSniperConfiguration");
-                    }
-                } else
-                {
-                    Optional<ConfigurationContainer> container = configuration.getContainer(CONFIG_CONTAINER);
-                    if (container.isPresent())
-                    {
-                        GunsmithLogger.getLogger().info("Saving config to " + config.getName().or("an unknown source"));
-                        config.write(container.get());
-                    }
-                }
-            } catch (IOException e)
-            {
-                GunsmithLogger.getLogger().error(e, "Error loading configuration values.");
-            }
-        } else
-        {
-            GunsmithLogger.getLogger().warn("Could not find the configuration data source, and no fallback could be created.");
-        }
-        /*
-         * Runnable aliasTask = new AliasSaveTask();
-         * 
-         * String aliasSource = configuration.get("aliasDataSource", String.class).or("json");
-         * Optional<DataContainer> aliasSourceArgs = configuration.get("aliasDataSourceArgs",
-         * DataContainer.class); DataContainer args = null; if (!aliasSourceArgs.isPresent()) { args
-         * = new MemoryContainer(""); } else { args = aliasSourceArgs.get(); }
-         * 
-         * Optional<DataSource> aliassave = Gunsmith.getPersistence().build(aliasSource, args);
-         * DataSourceReader aliassource = null;
-         * 
-         * if (!oconfig.isPresent()) { DataContainer aliasargs = new MemoryContainer(""); config =
-         * (DataSourceReader) Gunsmith.getPlatformProxy().getRootDataSourceProvider()
-         * .getWithReader("VoxelSniperConfiguration.json", JsonDataSourceReader.class, args); } else
-         * { config = (DataSourceReader) oconfig.get(); } try { if (config.exists()) { DataContainer
-         * values = config.read(); Optional<AbstractConfigurationContainer> container =
-         * configuration.getContainer("VoxelSniperConfiguration"); if (container.isPresent()) {
-         * container.get().fromContainer(values); } } else {
-         * 
-         * Optional<AbstractConfigurationContainer> container =
-         * configuration.getContainer("VoxelSniperConfiguration"); if (container.isPresent()) {
-         * config.write(container.get()); } } } catch (IOException e) {
-         * Gunsmith.getLogger().error(e, "Error loading configuration values."); }
-         * 
-         * File globalAliases = new File(platformProxy.getDataFolder(), "aliases.json");
-         * JsonDataSource data = new JsonDataSource(globalAliases); if (globalAliases.exists()) {
-         * try { data.read(globalAliasRegistries); } catch (IOException e) { getLogger().error(e,
-         * "Error loading global aliases"); } } else {
-         * DefaultAliasBuilder.loadDefaultAliases(globalAliasRegistries);
-         * aliasTask.addDirty(globalAliasRegistries); }
-         */
         Optional<Scheduler> sched = context.get(Scheduler.class);
         if (sched.isPresent())
         {
-            // Gunsmith.getScheduler().startSynchronousTask(aliasTask,
-            // configuration.get("aliasInterval", int.class).or(30000));
-            int interval = configuration.get("changeInterval", int.class).or(DEFAULT_CHANGE_INTERVAL);
-            sched.get().startSynchronousTask(new ChangeQueueTask(players, configuration), interval);
+            sched.get().startSynchronousTask(new ChangeQueueTask(players), BaseConfiguration.changeInterval);
         }
     }
 
@@ -333,19 +230,6 @@ public class CoreServiceProvider
     @PreStop
     public final void onStop(Context context)
     {
-        /*
-         * persistence File globalAliases = new File(platformProxy.getDataFolder(), "aliases.json");
-         * JsonDataSource data = new JsonDataSource(globalAliases); try { if
-         * (!globalAliases.exists()) { globalAliases.createNewFile(); }
-         * data.write(getGlobalAliasHandler()); } catch (IOException e) { getLogger().error(e,
-         * "Error saving global aliases"); } // save all player's personal aliases for (Player
-         * player : sniperRegistry.getAllPlayers()) { File playerFolder = new
-         * File(Gunsmith.platformProxy.getDataFolder(), "players/" +
-         * player.getUniqueId().toString()); File aliases = new File(playerFolder, "aliases.json");
-         * JsonDataSource playerData = new JsonDataSource(aliases); try { if (aliases.exists()) {
-         * aliases.createNewFile(); } playerData.write(player.getPersonalAliasHandler()); } catch
-         * (IOException e) { Gunsmith.getLogger().error(e, "Error saving player aliases!"); } }
-         */
         Optional<Scheduler> sched = context.get(Scheduler.class);
         if (sched.isPresent())
         {

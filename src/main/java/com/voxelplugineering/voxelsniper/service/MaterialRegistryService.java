@@ -23,20 +23,19 @@
  */
 package com.voxelplugineering.voxelsniper.service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
+import com.voxelplugineering.voxelsniper.registry.WeakRegistry;
+import com.voxelplugineering.voxelsniper.service.registry.MaterialRegistry;
+import com.voxelplugineering.voxelsniper.util.Context;
+import com.voxelplugineering.voxelsniper.world.material.Material;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
-import com.voxelplugineering.voxelsniper.registry.WeakRegistry;
-import com.voxelplugineering.voxelsniper.service.config.Configuration;
-import com.voxelplugineering.voxelsniper.service.registry.MaterialRegistry;
-import com.voxelplugineering.voxelsniper.util.Context;
-import com.voxelplugineering.voxelsniper.world.material.Material;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A standard material registry for materials.
@@ -45,8 +44,6 @@ import com.voxelplugineering.voxelsniper.world.material.Material;
  */
 public class MaterialRegistryService<T> extends AbstractService implements MaterialRegistry<T>
 {
-
-    private final Configuration conf;
 
     private WeakRegistry<T, Material> registry;
     private Material air;
@@ -60,7 +57,6 @@ public class MaterialRegistryService<T> extends AbstractService implements Mater
     public MaterialRegistryService(Context context)
     {
         super(context);
-        this.conf = context.getRequired(Configuration.class, this);
     }
 
     @Override
@@ -68,7 +64,7 @@ public class MaterialRegistryService<T> extends AbstractService implements Mater
     {
         this.registry = new WeakRegistry<T, Material>();
         this.registry.setCaseSensitiveKeys(false);
-        this.defaultMaterialName = this.conf.get("defaultMaterialName", String.class).or("air");
+        this.defaultMaterialName = BaseConfiguration.defaultMaterialName;
     }
 
     @Override

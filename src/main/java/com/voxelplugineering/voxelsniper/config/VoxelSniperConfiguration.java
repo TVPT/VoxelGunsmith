@@ -23,40 +23,53 @@
  */
 package com.voxelplugineering.voxelsniper.config;
 
+import com.voxelplugineering.voxelsniper.service.config.ConfigValue;
 import com.voxelplugineering.voxelsniper.service.config.ConfigurationContainer;
 import com.voxelplugineering.voxelsniper.service.text.TextFormat;
 
 /**
  * A configuration container which is exposed for user settings.
  */
-public class VoxelSniperConfiguration extends ConfigurationContainer
+@SuppressWarnings("javadoc")
+@ConfigurationContainer(name = "voxelsniper")
+public class VoxelSniperConfiguration
 {
 
     // Default constants
-    double rayTraceRange = 250;
-    int blockChangesPerSecond = 80000;
-    int undoHistorySize = 20;
-    int statusMessageThreshold = 80000;
-    String playerDataDirectory = "players/";
+    public static double rayTraceRange = 250;
+    public static int blockChangesPerSecond = 80000;
+    public static int undoHistorySize = 20;
+    public static int statusMessageThreshold = 80000;
+    public static String playerDataDirectory = "players/";
 
     // Default brush settings
-    String defaultBrush = "voxel material";
-    double defaultBrushSize = 3;
-    String defaultBrushMaterial = "AIR";
+    @ConfigValue(section = "defaults")
+    public static String defaultBrush = "voxel material";
+    @ConfigValue(section = "defaults")
+    public static double defaultBrushSize = 3;
+    @ConfigValue(section = "defaults")
+    public static String defaultBrushMaterial = "AIR";
 
     // Default messages
-    // Gunsmith.getConfiguration().get("", String.class).or("");
-    String permissionsRequiredMessage = TextFormat.DARK_RED + "You require more permissions in order to perform this action.";
-    String defaultHelpMessage = TextFormat.RED + "No help is provided for this command.";
-    String defaultBrushHelpMessage = TextFormat.RED + "No help is provided for this brush part.";
-    String brushSizeChangedMessage = TextFormat.GREEN + "Your brush size was changed to " + TextFormat.GOLD + "%.1f";
-    String brushNotFoundMessage = TextFormat.RED + "Could not find a brush part named " + TextFormat.GOLD + "%s";
-    String brushSetMessage = TextFormat.GREEN + "Your brush has been set to " + TextFormat.GOLD + "%s";
-    String materialNotFoundMessage = TextFormat.RED + "Could not find that material.";
-    String materialSetMessage = TextFormat.GREEN + "Set material to " + TextFormat.GOLD + "%s";
-    String materialMaskSetMessage = TextFormat.GREEN + "Set secondary material to " + TextFormat.GOLD + "%s";
+    @ConfigValue(section = "messages")
+    public static String permissionsRequiredMessage = TextFormat.DARK_RED + "You require more permissions in order to perform this action.";
+    @ConfigValue(section = "messages")
+    public static String defaultHelpMessage = TextFormat.RED + "No help is provided for this command.";
+    @ConfigValue(section = "messages")
+    public static String defaultBrushHelpMessage = TextFormat.RED + "No help is provided for this brush part.";
+    public static String brushSizeChangedMessage = TextFormat.GREEN + "Your brush size was changed to " + TextFormat.GOLD + "%.1f";
+    @ConfigValue(section = "messages")
+    public static String brushNotFoundMessage = TextFormat.RED + "Could not find a brush part named " + TextFormat.GOLD + "%s";
+    @ConfigValue(section = "messages")
+    public static String brushSetMessage = TextFormat.GREEN + "Your brush has been set to " + TextFormat.GOLD + "%s";
+    @ConfigValue(section = "messages")
+    public static String materialNotFoundMessage = TextFormat.RED + "Could not find that material.";
+    @ConfigValue(section = "messages")
+    public static String materialSetMessage = TextFormat.GREEN + "Set material to " + TextFormat.GOLD + "%s";
+    @ConfigValue(section = "messages")
+    public static String materialMaskSetMessage = TextFormat.GREEN + "Set secondary material to " + TextFormat.GOLD + "%s";
 
     // Alias Settings
-    boolean caseSensitiveAliases = true;
+    public static boolean caseSensitiveAliases = true;
 
 }

@@ -23,93 +23,49 @@
  */
 package com.voxelplugineering.voxelsniper.service.config;
 
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.service.Service;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSerializable;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * A storage space for configuration.
  */
-public interface Configuration extends DataSerializable, Service
+public interface Configuration extends Service
 {
 
     /**
-     * Returns a value from configuration.
+     * Registers the given configuration container.
      * 
-     * @param name the name or key to search and return from the configuration storage, cannot be
-     *            null or empty
-     * @return the value stored in configuration, or null if the key is not found
+     * @param cls The configuration container class
      */
-    Optional<Object> get(String name);
+    void register(Class<?> cls);
 
     /**
-     * Returns a value from configuration. The the type of the config value is not assignable to the
-     * expectedType then {@link Optional#absent()} is returned.
+     * Initializes available configuration containers into the given directory. This will load
+     * configuration values from config files if they exist, and create new files if they do not.
      * 
-     * @param name the name or key to search and return from the configuration storage, cannot be
-     *            null or empty
-     * @param expectedType The expected type of the config value
-     * @param <T> The expected type
-     * @return the value stored in configuration, or null if the key is not found
+     * @param dir The directory
+     * @param includeHidden If this should include hidden configuration
+     * @throws IOException If there is an issue writing or reading the configuration files
      */
-    <T> Optional<T> get(String name, Class<T> expectedType);
+    void initialize(File dir, boolean includeHidden) throws IOException;
 
     /**
-     * Sets a value in configuration.
+     * Saves all available configuration containers into the given directory.
      * 
-     * @param name the name of the configuration key, cannot be null or empty
-     * @param value the new value, cannot be null
+     * @param dir The directory
+     * @param includeHidden If this should include hidden configuration
+     * @throws IOException If there is an issue writing the configuration files
      */
-    void set(String name, Object value);
+    void save(File dir, boolean includeHidden) throws IOException;
 
     /**
-     * Returns whether the given key exists within this configuration registry.
+     * Loads all available configuration containers from the given directory.
      * 
-     * @param name the key to check, cannot be null or empty
-     * @return whether the key exists
+     * @param dir The directory
+     * @throws IOException If there is an issue reading the configuration files
      */
-    boolean has(String name);
-
-    /**
-     * Returns the Class of a previously registered container. Returns null if no container matching
-     * the given name has been registered previously.
-     * 
-     * @param containerName the name of the container, cannot be null or empty
-     * @return the container class
-     */
-    Optional<ConfigurationContainer> getContainer(String containerName);
-
-    /**
-     * Attempts to register the container with this configuration storage. This will load all values
-     * from the fields of the given object and place them into the configuration. It will also keep
-     * the Class of the Object as a reference to the fields contained within this container in order
-     * to store or load them from/to a source. <p> If any of the fields have names matching keys
-     * already stored within this configuration storage the values in this configuration storage
-     * will be overwritten. </p>
-     * 
-     * @param container the new container to load, cannot be null
-     * @param <T> The container type
-     */
-    <T extends ConfigurationContainer> void registerContainer(Class<T> container);
-
-    /**
-     * Returns an array of the Classes all previously registered containers.
-     * 
-     * @return an array of Classes
-     */
-    ConfigurationContainer[] getContainers();
-
-    /**
-     * Refreshes the given container.
-     * 
-     * @param containerName The container to refresh
-     */
-    void refreshContainer(String containerName);
-
-    /**
-     * Refreshes the values of all registered configuration containers. <P> TODO need a priority for
-     * containers, probably just the registration order </p>
-     */
-    void refreshAllContainers();
+    void load(File dir) throws IOException;
 
 }

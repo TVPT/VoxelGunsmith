@@ -72,7 +72,12 @@ public interface Material
      * @return is reliant on the environment
      */
     boolean isReliantOnEnvironment();
-    
+
+    /**
+     * Gets the default {@link MaterialState} for this material.
+     * 
+     * @return The default state
+     */
     MaterialState getDefaultState();
 
 }

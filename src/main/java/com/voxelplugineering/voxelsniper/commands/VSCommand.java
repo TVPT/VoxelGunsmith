@@ -30,9 +30,9 @@ import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
 import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
-import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.service.platform.PlatformProxy;
 import com.voxelplugineering.voxelsniper.util.Context;
 
@@ -118,7 +118,7 @@ public class VSCommand extends Command
 
     private void setupSubcommands(Context context)
     {
-        this.subcommands.put("version", new SubCommand(context, getConfig(), this.platform)
+        this.subcommands.put("version", new SubCommand(context, this.platform)
         {
 
             @Override
@@ -135,7 +135,7 @@ public class VSCommand extends Command
             }
 
         });
-        this.subcommands.put("brushes", new SubCommand(context, getConfig(), this.platform)
+        this.subcommands.put("brushes", new SubCommand(context, this.platform)
         {
 
             @Override
@@ -174,7 +174,7 @@ public class VSCommand extends Command
             }
 
         });
-        this.subcommands.put("range", new SubCommand(context, getConfig(), this.platform)
+        this.subcommands.put("range", new SubCommand(context, this.platform)
         {
 
             @Override
@@ -189,7 +189,7 @@ public class VSCommand extends Command
                 {
                     if ("reset".equalsIgnoreCase(args[0]))
                     {
-                        double range = getConfig().get("rayTraceRange", Double.class).get();
+                        double range = VoxelSniperConfiguration.rayTraceRange;
                         player.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.RANGE, range);
                         sender.sendMessage("Reset your maximum range to %d", range);
                     }
@@ -224,19 +224,12 @@ public class VSCommand extends Command
     {
 
         private final Context context;
-        private final Configuration conf;
         private final PlatformProxy platform;
 
-        public SubCommand(Context context, Configuration conf, PlatformProxy platform)
+        public SubCommand(Context context, PlatformProxy platform)
         {
             this.context = context;
-            this.conf = conf;
             this.platform = platform;
-        }
-
-        public Configuration getConfig()
-        {
-            return this.conf;
         }
 
         public PlatformProxy getPlatform()

@@ -31,6 +31,7 @@ package com.voxelplugineering.voxelsniper.service;
 public enum InitPhase
 {
 
-    EARLY, NORMAL;
+    EARLY,
+    NORMAL;
 
 }

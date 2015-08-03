@@ -25,18 +25,18 @@ package com.voxelplugineering.voxelsniper.world;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.registry.WeakWrapper;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
-import com.voxelplugineering.voxelsniper.world.material.Material;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
+
+import com.google.common.base.Optional;
 
 /**
  * An abstract chunk.
  * 
  * @param <T> The type of the underlying chunk.
  */
-public abstract class AbstractChunk<T> extends WeakWrapper<T> implements Chunk
+public abstract class AbstractChunk<T> extends WeakWrapper<T>implements Chunk
 {
 
     private final World world;

@@ -61,7 +61,7 @@ public abstract class BrushContext
      */
     public static BrushContext of(BrushWrapper brush)
     {
-        //TODO could change this to use the Brush instances rather than the wrapper
+        // TODO could change this to use the Brush instances rather than the wrapper
         checkNotNull(brush);
         if (BRUSHES.containsKey(brush))
         {

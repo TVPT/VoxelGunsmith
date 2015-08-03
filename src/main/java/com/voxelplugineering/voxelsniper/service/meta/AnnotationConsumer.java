@@ -23,8 +23,20 @@
  */
 package com.voxelplugineering.voxelsniper.service.meta;
 
-public interface AnnotationConsumer {
+import com.voxelplugineering.voxelsniper.service.AnnotationScanner;
 
+/**
+ * A consumer which may be registered into an {@link AnnotationScanner} and will be passed all
+ * classes annotated with the registered annotation type.
+ */
+public interface AnnotationConsumer
+{
+
+    /**
+     * Consume the given class.
+     * 
+     * @param cls The class
+     */
     void consume(Class<?> cls);
-    
+
 }

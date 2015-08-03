@@ -66,7 +66,7 @@ public abstract class FilterBrush implements Brush
     {
         this.operation = operation;
     }
-    
+
     protected abstract String getName();
 
     @Override
@@ -110,7 +110,7 @@ public abstract class FilterBrush implements Brush
         Shape shape = s.get();
         Shape structElem = se.get();
 
-        //Extract the location in the world to x0, y0 and z0.
+        // Extract the location in the world to x0, y0 and z0.
         for (int x = 0; x < ms.getWidth(); x++)
         {
             int x0 = loc.getFlooredX() + x - shape.getOrigin().getX();

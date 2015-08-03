@@ -23,16 +23,17 @@
  */
 package com.voxelplugineering.voxelsniper.service;
 
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
+import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
 import com.voxelplugineering.voxelsniper.registry.WeakRegistry;
-import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.service.registry.BiomeRegistry;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.world.biome.Biome;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * A common biome registry for biomes.
@@ -41,8 +42,6 @@ import com.voxelplugineering.voxelsniper.world.biome.Biome;
  */
 public class BiomeRegistryService<T> extends AbstractService implements BiomeRegistry<T>
 {
-
-    private final Configuration conf;
 
     private WeakRegistry<T, Biome> registry;
     private Biome defaultBiome;
@@ -56,7 +55,6 @@ public class BiomeRegistryService<T> extends AbstractService implements BiomeReg
     public BiomeRegistryService(Context context)
     {
         super(context);
-        this.conf = context.getRequired(Configuration.class, this);
     }
 
     @Override
@@ -64,7 +62,7 @@ public class BiomeRegistryService<T> extends AbstractService implements BiomeReg
     {
         this.registry = new WeakRegistry<T, Biome>();
         this.registry.setCaseSensitiveKeys(false);
-        this.defaultBiomeName = this.conf.get("defaultBiomeName", String.class).or("plains");
+        this.defaultBiomeName = BaseConfiguration.defaultBiomeName;
     }
 
     @Override

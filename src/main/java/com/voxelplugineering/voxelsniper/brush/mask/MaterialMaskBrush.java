@@ -36,7 +36,6 @@ import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.brush.BrushVarsHelper;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
-import com.voxelplugineering.voxelsniper.world.material.Material;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 import com.google.common.base.Optional;
@@ -89,12 +88,14 @@ public class MaterialMaskBrush implements Brush
                     {
                         continue;
                     }
-                    if(wildcard) {
+                    if (wildcard)
+                    {
                         if (!m.get().getType().equals(player.getWorld().getBlock(x0, y0, z0).get().getMaterial().getType()))
                         {
                             shape.unset(x, y, z, false);
                         }
-                    } else {
+                    } else
+                    {
                         if (!m.get().equals(player.getWorld().getBlock(x0, y0, z0).get().getMaterial()))
                         {
                             shape.unset(x, y, z, false);

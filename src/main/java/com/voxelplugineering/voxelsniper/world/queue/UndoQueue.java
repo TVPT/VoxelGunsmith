@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.world.queue;
 
-
 /**
  * A manager for the undo history of a {@link ChangeQueueOwner}.
  */

@@ -30,12 +30,23 @@ import com.voxelplugineering.voxelsniper.world.Block;
 
 import com.google.common.base.Optional;
 
+/**
+ * A utility for getting common values from the {@link BrushVars}.
+ */
 public final class BrushVarsHelper
 {
-    
-    public static Optional<Block> getTargetBlock(BrushVars args) {
+
+    /**
+     * Gets the target block adjusting for whether the player used the primary or alternate action.
+     * 
+     * @param args The brush vars
+     * @return The adjusted target block
+     */
+    public static Optional<Block> getTargetBlock(BrushVars args)
+    {
         BrushAction action = args.get(BrushKeys.ACTION, BrushAction.class).get();
-        if(action == BrushAction.PRIMARY) {
+        if (action == BrushAction.PRIMARY)
+        {
             return args.get(BrushKeys.TARGET_BLOCK, Block.class);
         }
         return args.get(BrushKeys.LAST_BLOCK, Block.class);

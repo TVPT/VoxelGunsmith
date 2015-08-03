@@ -315,7 +315,7 @@ public abstract class Metrics
                             Thread.sleep(100L);
                         } catch (InterruptedException e)
                         {
-                            //ignored
+                            // ignored
                         }
                     }
                 }
@@ -612,7 +612,7 @@ public abstract class Metrics
                     gzos.close();
                 } catch (IOException ignore)
                 {
-                    //ignored
+                    // ignored
                 }
             }
         }

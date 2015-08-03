@@ -23,10 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.world;
 
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
-import com.voxelplugineering.voxelsniper.world.material.Material;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
+
+import com.google.common.base.Optional;
 
 /**
  * Represents a volume of space with discrete block data within it.
@@ -72,8 +72,7 @@ public interface BlockVolume
     void setBlock(MaterialState material, int x, int y, int z);
 
     /*
-     * TODO no-phys Support changing blocks without notifying surrounding blocks
-     * of the change.
+     * TODO no-phys Support changing blocks without notifying surrounding blocks of the change.
      */
 
     /**

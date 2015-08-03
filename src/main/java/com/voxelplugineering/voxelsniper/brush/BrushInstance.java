@@ -28,6 +28,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Only valid for a field of type {@link BrushWrapper} within a brush class. The annotated field
+ * will be automatically filled with the {@link BrushWrapper} instace for that brush.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface BrushInstance

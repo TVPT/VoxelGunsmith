@@ -21,30 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.service.persistence;
+package com.voxelplugineering.voxelsniper.service.config;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * A type which may be serialized from/to a {@link DataContainer}. Types implementing this interface
- * may optionally implement a static method with the following signature: <p>
- * {@code public static T buildFromContainer(DataContainer container)} </p> <p> This static method
- * will be used to construct new instances of the implementing type based on a {@link DataContainer}
- * . </p>
+ * Annotates a field within a {@link ConfigurationContainer} to provide extra control and
+ * information.
  */
-public interface DataSerializable
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface ConfigValue
 {
 
     /**
-     * Loads the data from the given {@link DataContainer} to this object.
+     * Gets the section of the value within the container.
      * 
-     * @param container The container to load from
+     * @return The section
      */
-    void fromContainer(DataContainer container);
+    String section() default "";
 
     /**
-     * Writes the data of this object to a new {@link DataContainer}.
+     * Gets the name of the value. If not set the name will default to the field name.
      * 
-     * @return The data container representing this object
+     * @return The name
      */
-    DataContainer toContainer();
+    String name() default "";
+
+    /**
+     * Gets whether this value should be written out to its configuration file by default.
+     * 
+     * @return Is hidden
+     */
+    boolean hidden() default false;
 
 }

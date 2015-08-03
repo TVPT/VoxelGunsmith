@@ -23,17 +23,17 @@
  */
 package com.voxelplugineering.voxelsniper.event.handler;
 
-import com.google.common.eventbus.DeadEvent;
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
+import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.event.SnipeEvent;
 import com.voxelplugineering.voxelsniper.event.SniperEvent;
 import com.voxelplugineering.voxelsniper.event.SniperEvent.SniperCreateEvent;
 import com.voxelplugineering.voxelsniper.event.SniperEvent.SniperDestroyEvent;
-import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.service.eventbus.EventHandler;
 import com.voxelplugineering.voxelsniper.service.permission.PermissionProxy;
 import com.voxelplugineering.voxelsniper.service.registry.PlayerRegistry;
@@ -43,21 +43,22 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3d;
 import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.queue.OfflineUndoHandler;
 
+import com.google.common.eventbus.DeadEvent;
+
 /**
  * An event handler for the default behavior for events.
  */
 public class CommonEventHandler
 {
 
-    private final Configuration conf;
     private final PlayerRegistry<?> players;
     private final OfflineUndoHandler undo;
     private final PermissionProxy perms;
 
-    //private final String playerFolderName = this.conf.get("playerDataDirectory", String.class).or("players/");
-    //private final String aliasFile = this.conf.get("aliasesFileName", String.class).or("aliases.json");
-
-    private final double rayTraceRange;
+    // private final String playerFolderName = this.conf.get("playerDataDirectory",
+    // String.class).or("players/");
+    // private final String aliasFile = this.conf.get("aliasesFileName",
+    // String.class).or("aliases.json");
 
     /**
      * Constructs a new {@link CommonEventHandler}.
@@ -66,12 +67,9 @@ public class CommonEventHandler
      */
     public CommonEventHandler(Context context)
     {
-        this.conf = context.getRequired(Configuration.class);
         this.players = context.getRequired(PlayerRegistry.class);
         this.undo = context.getRequired(OfflineUndoHandler.class);
         this.perms = context.getRequired(PermissionProxy.class);
-
-        this.rayTraceRange = this.conf.get("rayTraceRange", Double.class).or(250.0);
     }
 
     /**
@@ -84,23 +82,16 @@ public class CommonEventHandler
     public void onPlayerJoin(SniperEvent.SniperCreateEvent event)
     {
 
-        //TODO persistence
-        /*Player player = event.getSniper();
-        File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName + player.getUniqueId().toString());
-        playerFolder.mkdirs();
-        File aliases = new File(playerFolder, this.aliasFile);
-        JsonDataSource data = new JsonDataSource(aliases);
-        if (aliases.exists())
-        {
-            try
-            {
-                data.read(player.getPersonalAliasHandler());
-            } catch (IOException e)
-            {
-                Gunsmith.getLogger().error(e, "Error loading player aliases!");
-            }
-        }*/
-        //Gunsmith.getOfflineUndoHandler().invalidate(player.getName());
+        // TODO persistence
+        /*
+         * Player player = event.getSniper(); File playerFolder = new
+         * File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName +
+         * player.getUniqueId().toString()); playerFolder.mkdirs(); File aliases = new
+         * File(playerFolder, this.aliasFile); JsonDataSource data = new JsonDataSource(aliases); if
+         * (aliases.exists()) { try { data.read(player.getPersonalAliasHandler()); } catch
+         * (IOException e) { Gunsmith.getLogger().error(e, "Error loading player aliases!"); } }
+         */
+        // Gunsmith.getOfflineUndoHandler().invalidate(player.getName());
     }
 
     /**
@@ -113,31 +104,24 @@ public class CommonEventHandler
     {
         Player player = event.getSniper();
         // TODO persistence
-        /*File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName + player.getUniqueId().toString());
-        playerFolder.mkdirs();
-        File aliases = new File(playerFolder, this.aliasFile);
-        JsonDataSource data = new JsonDataSource(aliases);
-
-        try
-        {
-            if (aliases.exists())
-            {
-                aliases.createNewFile();
-            }
-            data.write(player.getPersonalAliasHandler());
-        } catch (IOException e)
-        {
-            Gunsmith.getLogger().error(e, "Error saving player aliases!");
-        }*/
+        /*
+         * File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(),
+         * this.playerFolderName + player.getUniqueId().toString()); playerFolder.mkdirs(); File
+         * aliases = new File(playerFolder, this.aliasFile); JsonDataSource data = new
+         * JsonDataSource(aliases);
+         * 
+         * try { if (aliases.exists()) { aliases.createNewFile(); }
+         * data.write(player.getPersonalAliasHandler()); } catch (IOException e) {
+         * Gunsmith.getLogger().error(e, "Error saving player aliases!"); }
+         */
 
         this.undo.register(player.getName(), player.getUndoHistory());
         this.players.invalidate(player.getName());
     }
 
     /**
-     * Processes the given {@link com.voxelplugineering.voxelsniper.event.SnipeEvent} and
-     * performs all necessary checks of the event. This event handler is supports asynchronous
-     * callback.
+     * Processes the given {@link com.voxelplugineering.voxelsniper.event.SnipeEvent} and performs
+     * all necessary checks of the event. This event handler is supports asynchronous callback.
      * 
      * @param event the snipe event to perform
      */
@@ -155,18 +139,17 @@ public class CommonEventHandler
             Location location = sniper.getLocation();
             double yaw = event.getYaw();
             double pitch = event.getPitch();
-            //TODO move min/max values form conf to world
-            int minY = this.conf.get("minimumWorldDepth", int.class).or(0);
-            int maxY = this.conf.get("maximumWorldHeight", int.class).or(255);
-            double step = this.conf.get("rayTraceStep", double.class).or(0.2);
-            Vector3d eyeOffs = new Vector3d(0, this.conf.get("playerEyeHeight", double.class).or(1.62), 0);
-            RayTrace ray = new RayTrace(location, yaw, pitch, this.rayTraceRange, minY, maxY, step, eyeOffs);
-            double range = this.rayTraceRange;
+            // TODO move min/max values form conf to world
+            int minY = BaseConfiguration.minimumWorldDepth;
+            int maxY = BaseConfiguration.maximumWorldHeight;
+            double step = BaseConfiguration.rayTraceStep;
+            Vector3d eyeOffs = new Vector3d(0, BaseConfiguration.playerEyeHeight, 0);
+            double range = VoxelSniperConfiguration.rayTraceRange;
             if (sniper.getBrushVars().has(BrushKeys.RANGE))
             {
                 range = sniper.getBrushVars().get(BrushKeys.RANGE, Double.class).get();
             }
-            ray.setRange(range);
+            RayTrace ray = new RayTrace(location, yaw, pitch, range, minY, maxY, step, eyeOffs);
             ray.trace();
 
             if (ray.getTargetBlock() == null)
@@ -184,9 +167,10 @@ public class CommonEventHandler
             vars.set(BrushContext.RUNTIME, BrushKeys.LAST_FACE, ray.getLastFace());
             vars.set(BrushContext.RUNTIME, BrushKeys.ACTION, event.getAction());
             vars.set(BrushContext.RUNTIME, BrushKeys.LENGTH, ray.getLength());
-            //TODO move player to the global context not runtime
+            // TODO move player to the global context not runtime
             vars.set(BrushContext.RUNTIME, BrushKeys.PLAYER, sniper);
-            //Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());
+            // Gunsmith.getLogger().info("Snipe at " +
+            // ray.getTargetBlock().getLocation().toString());
             sniper.getCurrentBrush().run(sniper, vars);
         } catch (Throwable e)
         {

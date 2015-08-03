@@ -25,19 +25,19 @@ package com.voxelplugineering.voxelsniper.registry;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
+import com.voxelplugineering.voxelsniper.service.registry.Registry;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.MapMaker;
 
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
-import com.voxelplugineering.voxelsniper.service.registry.Registry;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
- * A registry for values which are referenced both by a name and a custom key. The key is only weakly referenced and in the event that it is garbage
- * collected the associated value is dereferenced from this registry as well.
+ * A registry for values which are referenced both by a name and a custom key. The key is only
+ * weakly referenced and in the event that it is garbage collected the associated value is
+ * dereferenced from this registry as well.
  * 
  * @param <K> the key type
  * @param <V> the value type
@@ -60,8 +60,8 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     }
 
     /**
-     * Sets whether the keys of this registry are case sensitive. If the keys are case insensitive then all keys in all operations are cast to upper
-     * case.
+     * Sets whether the keys of this registry are case sensitive. If the keys are case insensitive
+     * then all keys in all operations are cast to upper case.
      * 
      * @param c is case sensitive
      */

@@ -90,8 +90,8 @@ public class PrimativeShapeFactory
         ellipsoidNames = new HashSet<String>(Arrays.asList(new String[] { "ellipsoid", "sphere", "ball", "3Dcircle", "3Dellipse" }));
         flatCuboidNames = new HashSet<String>(
                 Arrays.asList(new String[] { "square", "rectangle", "voxeldisc", "voxeldisk", "2Dcube", "2Dbrick", "2Dbox", "2Dcube", "2Dbrick" }));
-        flatCylinderNames =
-                new HashSet<String>(Arrays.asList(new String[] { "circle", "disk", "disc", "2Dpipe", "2Dcylinder", "2Dbarrel", "2Dtube" }));
+        flatCylinderNames = new HashSet<String>(
+                Arrays.asList(new String[] { "circle", "disk", "disc", "2Dpipe", "2Dcylinder", "2Dbarrel", "2Dtube" }));
         flatEllipsoidNames = new HashSet<String>(Arrays.asList(new String[] { "oval", "ellipse", "2Dellipsoid", "2Dsphere", "2Dball" }));
     }
 }

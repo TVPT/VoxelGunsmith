@@ -26,7 +26,6 @@ package com.voxelplugineering.voxelsniper.entity;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
-import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushChain;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
@@ -35,11 +34,11 @@ import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
 import com.voxelplugineering.voxelsniper.brush.CommonBrushManager;
 import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
+import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.service.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.service.alias.CommonAliasHandler;
 import com.voxelplugineering.voxelsniper.service.alias.GlobalAliasHandler;
-import com.voxelplugineering.voxelsniper.service.config.Configuration;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceReader;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.RayTrace;
 import com.voxelplugineering.voxelsniper.util.math.Vector3d;
@@ -51,6 +50,7 @@ import com.voxelplugineering.voxelsniper.world.queue.UndoQueue;
 
 import com.google.common.base.Optional;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -59,10 +59,8 @@ import java.util.Queue;
  * 
  * @param <T> The underlying player type
  */
-public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Player
+public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Player
 {
-
-    private final Configuration conf;
 
     private BrushManager personalBrushManager;
     private BrushChain currentBrush;
@@ -81,12 +79,10 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     protected AbstractPlayer(T player, BrushManager parentBrushManager, Context context)
     {
         super(player);
-        this.conf = context.getRequired(Configuration.class);
         this.personalBrushManager = new CommonBrushManager(parentBrushManager);
         this.brushVariables = new BrushVars();
         this.pending = new LinkedList<ChangeQueue>();
-        boolean caseSensitiveAliases = this.conf.get("caseSensitiveAliases", boolean.class).or(false);
-        this.personalAliasHandler = new CommonAliasHandler(this, context.getRequired(GlobalAliasHandler.class), caseSensitiveAliases);
+        this.personalAliasHandler = new CommonAliasHandler(this, context.getRequired(GlobalAliasHandler.class));
         this.history = new CommonUndoQueue(this);
     }
 
@@ -99,12 +95,10 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     protected AbstractPlayer(T player, Context context)
     {
         super(player);
-        this.conf = context.getRequired(Configuration.class);
         this.personalBrushManager = new CommonBrushManager(context.getRequired(GlobalBrushManager.class));
         this.brushVariables = new BrushVars();
         this.pending = new LinkedList<ChangeQueue>();
-        boolean caseSensitiveAliases = this.conf.get("caseSensitiveAliases", boolean.class).or(false);
-        this.personalAliasHandler = new CommonAliasHandler(this, context.getRequired(GlobalAliasHandler.class), caseSensitiveAliases);
+        this.personalAliasHandler = new CommonAliasHandler(this, context.getRequired(GlobalAliasHandler.class));
         this.history = new CommonUndoQueue(this);
     }
 
@@ -168,7 +162,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     public void resetSettings()
     {
         this.brushVariables.clear();
-        String fullBrush = this.conf.get("defaultBrush", String.class).or("voxel material");
+        String fullBrush = VoxelSniperConfiguration.defaultBrush;
         fullBrush = getAliasHandler().getRegistry("brush").get().expand(fullBrush);
         BrushChain brush = new BrushChain(fullBrush);
         for (String b : fullBrush.split(" "))
@@ -184,18 +178,15 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
         }
         setCurrentBrush(brush);
         sendMessage("Your brush has been set to %s", brush.getName());
-        double size = this.conf.get("defaultBrushSize", Double.class).or(5.0);
+        double size = VoxelSniperConfiguration.defaultBrushSize;
         this.brushVariables.set(BrushContext.GLOBAL, BrushKeys.BRUSH_SIZE, size);
         sendMessage("Your brush size was changed to " + size);
-        Optional<String> materialName = this.conf.get("defaultBrushMaterial", String.class);
+        String materialName = VoxelSniperConfiguration.defaultBrushMaterial;
         Material mat = getWorld().getMaterialRegistry().getAirMaterial();
-        if (materialName.isPresent())
+        Optional<Material> material = getWorld().getMaterialRegistry().getMaterial(materialName);
+        if (material.isPresent())
         {
-            Optional<Material> material = getWorld().getMaterialRegistry().getMaterial(materialName.get());
-            if (material.isPresent())
-            {
-                mat = material.get();
-            }
+            mat = material.get();
         }
         sendMessage("Set material to " + mat.getName());
         getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MATERIAL, mat.getDefaultState());
@@ -247,7 +238,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     }
 
     @Override
-    public DataSourceReader getAliasSource()
+    public File getAliasSource()
     {
         return null; // TODO persistence
     }
@@ -267,11 +258,11 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Pla
     @Override
     public Optional<Block> getTargetBlock()
     {
-        int minY = this.conf.get("minimumWorldDepth", int.class).or(0);
-        int maxY = this.conf.get("maximumWorldHeight", int.class).or(255);
-        double step = this.conf.get("rayTraceStep", double.class).or(0.2);
-        Vector3d eyeOffs = new Vector3d(0, this.conf.get("playerEyeHeight", double.class).or(1.62), 0);
-        double range = this.conf.get("rayTraceRange", double.class).or(250.0);
+        int minY = BaseConfiguration.minimumWorldDepth;
+        int maxY = BaseConfiguration.maximumWorldHeight;
+        double step = BaseConfiguration.rayTraceStep;
+        Vector3d eyeOffs = new Vector3d(0, BaseConfiguration.playerEyeHeight, 0);
+        double range = VoxelSniperConfiguration.rayTraceRange;
         RayTrace ray = new RayTrace(getLocation(), getYaw(), getPitch(), range, minY, maxY, step, eyeOffs);
         ray.trace();
         return Optional.fromNullable(ray.getTargetBlock());

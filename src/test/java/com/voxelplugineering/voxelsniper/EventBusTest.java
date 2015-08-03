@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
-import com.voxelplugineering.voxelsniper.service.ConfigurationService;
+import com.voxelplugineering.voxelsniper.service.config.ConfigurationService;
 import com.voxelplugineering.voxelsniper.service.event.DeadEvent;
 import com.voxelplugineering.voxelsniper.service.event.Event;
 import com.voxelplugineering.voxelsniper.service.eventbus.AsyncEventBus;

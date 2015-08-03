@@ -23,15 +23,14 @@
  */
 package com.voxelplugineering.voxelsniper.service.alias;
 
-import java.util.Set;
-
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSerializable;
+
+import java.util.Set;
 
 /**
  * A handler for targeted {@link AliasRegistry}s.
  */
-public interface AliasHandler extends DataSerializable
+public interface AliasHandler
 {
 
     /**

@@ -23,10 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.brush;
 
-import java.util.List;
-
 import com.google.common.base.Optional;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceReader;
 
 /**
  * Handles the registration of {@link Brush}es. Also contains an ordered list of loaders which is
@@ -70,7 +67,12 @@ public interface BrushManager
      * @return an instance of the brush
      */
     Optional<BrushWrapper> getBrush(String identifier);
-    
+
+    /**
+     * Gets all brushes registered within this {@link BrushManager}.
+     * 
+     * @return All registered brushes
+     */
     Iterable<BrushWrapper> getBrushes();
 
 }

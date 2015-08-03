@@ -26,8 +26,8 @@ package com.voxelplugineering.voxelsniper.service.eventbus;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
+import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
 import com.voxelplugineering.voxelsniper.service.AbstractService;
-import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.service.event.DeadEvent;
 import com.voxelplugineering.voxelsniper.service.event.Event;
 import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.ThreadingPolicy;
@@ -52,13 +52,12 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * An {@link EventBus} implementation supporting all {@link ThreadingPolicy} types. Optionally takes an {@link ExecutorService} to use for
- * asynchronous task delegation. <p> This class is safe for concurrent use. </p>
+ * An {@link EventBus} implementation supporting all {@link ThreadingPolicy} types. Optionally takes
+ * an {@link ExecutorService} to use for asynchronous task delegation. <p> This class is safe for
+ * concurrent use. </p>
  */
 public class AsyncEventBus extends AbstractService implements EventBus
 {
-
-    private final Configuration config;
 
     private ListeningExecutorService executor;
     private Map<Class<? extends Event>, SubscriberList> registry;
@@ -80,14 +79,14 @@ public class AsyncEventBus extends AbstractService implements EventBus
     }
 
     /**
-     * Creates a new {@link AsyncEventBus}. This defaults to using {@link Executors#newCachedThreadPool()} for event handler delegation.
+     * Creates a new {@link AsyncEventBus}. This defaults to using
+     * {@link Executors#newCachedThreadPool()} for event handler delegation.
      * 
      * @param context The context
      */
     public AsyncEventBus(Context context)
     {
         super(context);
-        this.config = context.getRequired(Configuration.class, this);
     }
 
     @Override
@@ -100,7 +99,7 @@ public class AsyncEventBus extends AbstractService implements EventBus
         this.registry = new MapMaker().concurrencyLevel(4).makeMap();
         if (!this.explicitExecutor)
         {
-            final String prefix = this.config.get("eventBusThreadPrefix", String.class).or("AsyncEventBus-executor-");
+            final String prefix = BaseConfiguration.eventBusThreadPrefix;
             this.executor = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(new ThreadFactory()
             {
 
@@ -152,7 +151,8 @@ public class AsyncEventBus extends AbstractService implements EventBus
                 if (parameters.length == 1 && Event.class.isAssignableFrom(parameters[0]))
                 {
                     EventPriority pri = m.getAnnotation(EventHandler.class).value();
-                    @SuppressWarnings("unchecked") Subscriber s = new Subscriber(eventHandler, m, (Class<? extends Event>) parameters[0], pri);
+                    @SuppressWarnings("unchecked")
+                    Subscriber s = new Subscriber(eventHandler, m, (Class<? extends Event>) parameters[0], pri);
                     found.add(s);
                 }
             }
@@ -183,7 +183,8 @@ public class AsyncEventBus extends AbstractService implements EventBus
             this.registry.put(event, list);
             return list;
         }
-        @SuppressWarnings("unchecked") SubscriberList list = new SubscriberList(getListForEventType((Class<? extends Event>) event.getSuperclass()));
+        @SuppressWarnings("unchecked")
+        SubscriberList list = new SubscriberList(getListForEventType((Class<? extends Event>) event.getSuperclass()));
         this.registry.put(event, list);
         return list;
     }
@@ -202,7 +203,8 @@ public class AsyncEventBus extends AbstractService implements EventBus
                 if (parameters.length == 1 && Event.class.isAssignableFrom(parameters[0]))
                 {
                     EventPriority pri = m.getAnnotation(EventHandler.class).value();
-                    @SuppressWarnings("unchecked") Subscriber s = new Subscriber(eventHandler, m, (Class<? extends Event>) parameters[0], pri);
+                    @SuppressWarnings("unchecked")
+                    Subscriber s = new Subscriber(eventHandler, m, (Class<? extends Event>) parameters[0], pri);
                     found.add(s);
                 }
             }

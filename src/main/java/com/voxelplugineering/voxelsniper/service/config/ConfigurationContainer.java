@@ -23,88 +23,39 @@
  */
 package com.voxelplugineering.voxelsniper.service.config;
 
-import java.lang.reflect.Field;
-import java.util.Map;
-
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
-import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSerializable;
-import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * An abstract configuration container which supports serializing configuration values stored in the
- * fields of the class.
+ * Annotates a class as containing configuration values. All static fields in the class will be
+ * considered configuration values and will be loaded into the {@link ConfigurationService}.
  */
-public abstract class ConfigurationContainer implements DataSerializable
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface ConfigurationContainer
 {
 
-    @Override
-    public void fromContainer(DataContainer container)
-    {
-        for (Map.Entry<String, Object> entry : container.entrySet())
-        {
-            try
-            {
-                Field f = this.getClass().getDeclaredField(entry.getKey());
-                f.setAccessible(true);
-                if (entry.getValue() instanceof Number)
-                {
-                    Number value = (Number) entry.getValue();
-                    Class<?> fieldType = f.getType();
-                    if (fieldType == Byte.class || fieldType == byte.class)
-                    {
-                        f.set(this, value.byteValue());
-                    } else if (fieldType == Short.class || fieldType == short.class)
-                    {
-                        f.set(this, value.shortValue());
-                    } else if (fieldType == Integer.class || fieldType == int.class)
-                    {
-                        f.set(this, value.intValue());
-                    } else if (fieldType == Float.class || fieldType == float.class)
-                    {
-                        f.set(this, value.floatValue());
-                    } else if (fieldType == Double.class || fieldType == double.class)
-                    {
-                        f.set(this, value.doubleValue());
-                    } else if (fieldType == Long.class || fieldType == long.class)
-                    {
-                        f.set(this, value.longValue());
-                    } else
-                    {
-                        GunsmithLogger.getLogger().error("Failed to load config value " + entry.getKey() + ": " + fieldType.getName()
-                                + " is not a recognized Number.");
-                        continue;
-                    }
-                } else
-                {
-                    f.set(this, entry.getValue());
-                }
-            } catch (Exception e)
-            {
-                GunsmithLogger.getLogger().error(e, "Failed to load config value " + entry.getKey());
-                continue;
-            }
+    /**
+     * Gets the container name. This will be used when persisting the configuration to file.
+     * 
+     * @return The container name
+     */
+    String name();
 
-        }
-    }
+    /**
+     * Gets whether this configuration container should be persisted to file by default.
+     * 
+     * @return Should persist
+     */
+    boolean createByDefault() default true;
 
-    @Override
-    public DataContainer toContainer()
-    {
-        DataContainer data = new MemoryContainer();
-        for (Field f : this.getClass().getDeclaredFields())
-        {
-            f.setAccessible(true);
-            try
-            {
-                data.set(f.getName(), f.get(this));
-            } catch (Exception e)
-            {
-                GunsmithLogger.getLogger().error(e, "Failed to serialize " + f.getName() + " from configuration.");
-                continue;
-            }
-        }
-        return data;
-    }
+    /**
+     * Gets the root configuration path.
+     * 
+     * @return The root path
+     */
+    String root() default "";
 
 }

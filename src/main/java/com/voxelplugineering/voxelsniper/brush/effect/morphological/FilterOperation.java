@@ -23,10 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.brush.effect.morphological;
 
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.world.World;
-import com.voxelplugineering.voxelsniper.world.material.Material;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
+
+import com.google.common.base.Optional;
 
 /**
  * 

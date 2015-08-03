@@ -182,8 +182,8 @@ public class Vector3d implements Serializable, Cloneable
     }
 
     /**
-     * Returns the squared length of this vector (for computations requiring the squared form of the length and wanting to save on the cost of
-     * Math.sqrt in the normal length function).
+     * Returns the squared length of this vector (for computations requiring the squared form of the
+     * length and wanting to save on the cost of Math.sqrt in the normal length function).
      * 
      * @return the squared length
      */

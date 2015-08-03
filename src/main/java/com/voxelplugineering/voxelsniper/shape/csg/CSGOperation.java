@@ -29,5 +29,7 @@ package com.voxelplugineering.voxelsniper.shape.csg;
 @SuppressWarnings("javadoc")
 public enum CSGOperation
 {
-    ADD, SUBTRACT, XOR
+    ADD,
+    SUBTRACT,
+    XOR
 }

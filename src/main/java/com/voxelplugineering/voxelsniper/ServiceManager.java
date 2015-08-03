@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper;
 
-import com.voxelplugineering.voxelsniper.service.AnnotationScanner;
 import com.voxelplugineering.voxelsniper.service.Builder;
 import com.voxelplugineering.voxelsniper.service.InitHook;
 import com.voxelplugineering.voxelsniper.service.InitPhase;
@@ -33,13 +32,11 @@ import com.voxelplugineering.voxelsniper.service.Service;
 import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.Contextable;
-import com.voxelplugineering.voxelsniper.util.DataTranslator;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.lang.reflect.Method;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -57,7 +54,10 @@ public class ServiceManager implements Contextable
      */
     private enum State
     {
-        STOPPED, STARTING, RUNNING, STOPPING
+        STOPPED,
+        STARTING,
+        RUNNING,
+        STOPPING
     }
 
     private static Comparator<TargettedMethod> targetComparator = new Comparator<TargettedMethod>()
@@ -215,8 +215,6 @@ public class ServiceManager implements Contextable
                 // System.exit(1);
             }
         }
-        DataTranslator.initialize(this.context);
-        this.context.getRequired(AnnotationScanner.class).scanClassPath((URLClassLoader) Gunsmith.getClassLoader());
     }
 
     /**

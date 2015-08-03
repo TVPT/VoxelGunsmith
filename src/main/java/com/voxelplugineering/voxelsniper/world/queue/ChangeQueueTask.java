@@ -23,11 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.world.queue;
 
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
-import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.service.registry.PlayerRegistry;
+
+import com.google.common.base.Optional;
 
 /**
  * A task for executing pending change queues.
@@ -36,15 +37,13 @@ public class ChangeQueueTask implements Runnable
 {
 
     private final PlayerRegistry<?> players;
-    private final Configuration conf;
 
     /**
      * Creates a new {@link ChangeQueueTask}.
      */
-    public ChangeQueueTask(PlayerRegistry<?> players, Configuration conf)
+    public ChangeQueueTask(PlayerRegistry<?> players)
     {
         this.players = players;
-        this.conf = conf;
     }
 
     /**
@@ -66,7 +65,7 @@ public class ChangeQueueTask implements Runnable
         {
             return;
         }
-        int remaining = this.conf.get("blockChangesPerSecond", int.class).get();
+        int remaining = VoxelSniperConfiguration.blockChangesPerSecond;
         remaining /= 10;
         for (Player p : this.players.getPlayers())
         {

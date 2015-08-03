@@ -55,7 +55,9 @@ public @interface EventThreadingPolicy
     @SuppressWarnings("javadoc")
     public static enum ThreadingPolicy
     {
-        SYNCHRONIZED, ASYNCHRONOUS_SEQUENTIAL, ASYNCHRONOUS
+        SYNCHRONIZED,
+        ASYNCHRONOUS_SEQUENTIAL,
+        ASYNCHRONOUS
     }
 
 }

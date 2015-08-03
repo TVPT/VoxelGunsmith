@@ -33,18 +33,31 @@ public enum Direction
 {
 
     /*
-     * These are the minecraft directions, I'm not sure at this time what the
-     * best approach is to make this more platform independent. The easiest
-     * course I can see is to remove the labels and refer to them by their axes.
-     * So 'NORTH' would become 'NEGATIVE_Z'. Makes it more difficult to label
-     * the diagonals though. For now however it doesn't matter as
-     * programmatically it is the getModX(), getModY(), and getModZ() methods
-     * which are actually used, not the names.
+     * These are the minecraft directions, I'm not sure at this time what the best approach is to
+     * make this more platform independent. The easiest course I can see is to remove the labels and
+     * refer to them by their axes. So 'NORTH' would become 'NEGATIVE_Z'. Makes it more difficult to
+     * label the diagonals though. For now however it doesn't matter as programmatically it is the
+     * getModX(), getModY(), and getModZ() methods which are actually used, not the names.
      */
-    NORTH(0, 0, -1), EAST(1, 0, 0), SOUTH(0, 0, 1), WEST(-1, 0, 0), UP(0, 1, 0), DOWN(0, -1, 0), NORTH_EAST(NORTH, EAST), NORTH_WEST(NORTH, WEST),
-    SOUTH_EAST(SOUTH, EAST), SOUTH_WEST(SOUTH, WEST), WEST_NORTH_WEST(WEST, NORTH_WEST), NORTH_NORTH_WEST(NORTH, NORTH_WEST), NORTH_NORTH_EAST(NORTH,
-            NORTH_EAST), EAST_NORTH_EAST(EAST, NORTH_EAST), EAST_SOUTH_EAST(EAST, SOUTH_EAST), SOUTH_SOUTH_EAST(SOUTH, SOUTH_EAST), SOUTH_SOUTH_WEST(
-            SOUTH, SOUTH_WEST), WEST_SOUTH_WEST(WEST, SOUTH_WEST), SELF(0, 0, 0);
+    NORTH(0, 0, -1),
+    EAST(1, 0, 0),
+    SOUTH(0, 0, 1),
+    WEST(-1, 0, 0),
+    UP(0, 1, 0),
+    DOWN(0, -1, 0),
+    NORTH_EAST(NORTH, EAST),
+    NORTH_WEST(NORTH, WEST),
+    SOUTH_EAST(SOUTH, EAST),
+    SOUTH_WEST(SOUTH, WEST),
+    WEST_NORTH_WEST(WEST, NORTH_WEST),
+    NORTH_NORTH_WEST(NORTH, NORTH_WEST),
+    NORTH_NORTH_EAST(NORTH, NORTH_EAST),
+    EAST_NORTH_EAST(EAST, NORTH_EAST),
+    EAST_SOUTH_EAST(EAST, SOUTH_EAST),
+    SOUTH_SOUTH_EAST(SOUTH, SOUTH_EAST),
+    SOUTH_SOUTH_WEST(SOUTH, SOUTH_WEST),
+    WEST_SOUTH_WEST(WEST, SOUTH_WEST),
+    SELF(0, 0, 0);
 
     /**
      * Attempts to get the {@link Direction} corresponding to the given xyz direction. If no
@@ -79,7 +92,7 @@ public enum Direction
      */
     public static Direction[] getCardinals()
     {
-        return new Direction[] {NORTH, SOUTH, EAST, WEST, UP, DOWN};
+        return new Direction[] { NORTH, SOUTH, EAST, WEST, UP, DOWN };
     }
 
     private Direction(final int modX, final int modY, final int modZ)

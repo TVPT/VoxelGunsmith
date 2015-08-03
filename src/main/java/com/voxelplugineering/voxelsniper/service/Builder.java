@@ -41,7 +41,7 @@ public @interface Builder
     /**
      * The target class.
      */
-    Class<? extends Contextable> target();
+    Class<? extends Contextable>target();
 
     /**
      * The builder priority.

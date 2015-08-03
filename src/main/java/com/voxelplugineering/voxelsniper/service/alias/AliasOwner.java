@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.service.alias;
 
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceReader;
+import java.io.File;
 
 /**
  * An owner of an alias handler.
@@ -36,6 +36,6 @@ public interface AliasOwner
      * 
      * @return The data folder
      */
-    DataSourceReader getAliasSource();
+    File getAliasSource();
 
 }

@@ -62,7 +62,7 @@ public interface Shape
      */
     boolean isMutable();
 
-    //TODO split mutable and immutable shapes into two types
+    // TODO split mutable and immutable shapes into two types
 
     /**
      * Gets if the shape covers the given position.

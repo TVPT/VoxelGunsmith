@@ -23,9 +23,17 @@
  */
 package com.voxelplugineering.voxelsniper.world.material;
 
+/**
+ * Represents a particular state of a material.
+ */
 public interface MaterialState
 {
 
+    /**
+     * Gets the material that this state belongs to.
+     * 
+     * @return The material
+     */
     Material getType();
-    
+
 }

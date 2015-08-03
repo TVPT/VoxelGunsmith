@@ -23,17 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.service.platform;
 
-import java.io.File;
-import java.net.URISyntaxException;
-
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.Gunsmith;
 import com.voxelplugineering.voxelsniper.service.AbstractService;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceFactory;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceProvider;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceReader;
-import com.voxelplugineering.voxelsniper.service.persistence.DirectoryDataSourceProvider;
 import com.voxelplugineering.voxelsniper.util.Context;
+
+import java.io.File;
+import java.net.URISyntaxException;
 
 /**
  * A trivial {@link PlatformProxy} which is used in the case of no platform being present, such as
@@ -41,8 +36,6 @@ import com.voxelplugineering.voxelsniper.util.Context;
  */
 public class TrivialPlatformProxy extends AbstractService implements PlatformProxy
 {
-
-    private final DataSourceFactory factory;
 
     /**
      * Creates a new {@link TrivialPlatformProxy}.
@@ -52,8 +45,6 @@ public class TrivialPlatformProxy extends AbstractService implements PlatformPro
     public TrivialPlatformProxy(Context context)
     {
         super(context);
-        this.factory = context.getRequired(DataSourceFactory.class, this);
-        this.factory.addDependent(this);
     }
 
     @Override
@@ -87,18 +78,13 @@ public class TrivialPlatformProxy extends AbstractService implements PlatformPro
     }
 
     @Override
-    public DataSourceProvider getBrushDataSource()
-    {
-        return null;
-    }
-
-    @Override
-    public DataSourceProvider getRootDataSourceProvider()
+    public File getRoot()
     {
         try
         {
             String path = Gunsmith.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-            if(path == null) {
+            if (path == null)
+            {
                 path = "";
             }
             File directory = new File(path);
@@ -106,7 +92,7 @@ public class TrivialPlatformProxy extends AbstractService implements PlatformPro
             {
                 directory = directory.getParentFile();
             }
-            return new DirectoryDataSourceProvider(directory, this.factory);
+            return directory;
         } catch (URISyntaxException ignored)
         {
             throw new RuntimeException("Could not create trivial root data source");
@@ -114,7 +100,7 @@ public class TrivialPlatformProxy extends AbstractService implements PlatformPro
     }
 
     @Override
-    public DataSourceReader getMetricsFile()
+    public File getMetricsFile()
     {
         return null;
     }
@@ -123,12 +109,6 @@ public class TrivialPlatformProxy extends AbstractService implements PlatformPro
     public int getNumberOfPlayersOnline()
     {
         return 0;
-    }
-
-    @Override
-    public Optional<DataSourceReader> getConfigDataSource()
-    {
-        return Optional.absent();
     }
 
 }

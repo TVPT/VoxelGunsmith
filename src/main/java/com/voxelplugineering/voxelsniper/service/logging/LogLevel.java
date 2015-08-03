@@ -30,7 +30,11 @@ package com.voxelplugineering.voxelsniper.service.logging;
 public enum LogLevel
 {
 
-    OFF(-1), DEBUG(0), INFO(1), WARN(2), ERROR(3);
+    OFF(-1),
+    DEBUG(0),
+    INFO(1),
+    WARN(2),
+    ERROR(3);
 
     private final int value;
 

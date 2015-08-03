@@ -26,8 +26,8 @@ package com.voxelplugineering.voxelsniper.commands;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
-import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.service.permission.PermissionProxy;
 import com.voxelplugineering.voxelsniper.util.Context;
 
@@ -38,7 +38,6 @@ public abstract class Command
 {
 
     private final PermissionProxy permsProxy;
-    private final Configuration config;
     private String[] aliases = new String[0];
     private final String name;
     private String helpMsg;
@@ -58,18 +57,7 @@ public abstract class Command
         this.name = name;
         this.helpMsg = help;
         this.permsProxy = context.getRequired(PermissionProxy.class);
-        this.config = context.getRequired(Configuration.class);
-        this.helpMsg = this.config.get("defaultHelpMessage", String.class).or("No help was provided for this command.");
-    }
-
-    /**
-     * Gets the configuration service.
-     * 
-     * @return The config service
-     */
-    protected Configuration getConfig()
-    {
-        return this.config;
+        this.helpMsg = VoxelSniperConfiguration.defaultBrushHelpMessage;
     }
 
     /**
@@ -163,7 +151,8 @@ public abstract class Command
     }
 
     /**
-     * Returns the permission nodes for this command. A sniper is required to have at least one of these in order to execute the command.
+     * Returns the permission nodes for this command. A sniper is required to have at least one of
+     * these in order to execute the command.
      * 
      * @return the permissions
      */

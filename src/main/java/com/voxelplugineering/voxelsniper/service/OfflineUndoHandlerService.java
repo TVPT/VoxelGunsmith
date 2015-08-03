@@ -33,7 +33,8 @@ import com.voxelplugineering.voxelsniper.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.world.queue.UndoQueue;
 
 /**
- * A standard offline undo handler which caches player {@link UndoQueue}s for a period of 60 minutes before discarding.
+ * A standard offline undo handler which caches player {@link UndoQueue}s for a period of 60 minutes
+ * before discarding.
  */
 public class OfflineUndoHandlerService extends AbstractService implements OfflineUndoHandler
 {

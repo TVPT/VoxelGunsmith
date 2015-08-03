@@ -48,7 +48,8 @@ public interface ArgumentParser<T>
     {
 
         /**
-         * Creates a new {@link com.voxelplugineering.voxelsniper.service.command.ArgumentParser.RawParser}.
+         * Creates a new
+         * {@link com.voxelplugineering.voxelsniper.service.command.ArgumentParser.RawParser}.
          */
         public RawParser()
         {

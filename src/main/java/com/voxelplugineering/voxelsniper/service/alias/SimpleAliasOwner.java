@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.service.alias;
 
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceReader;
+import java.io.File;
 
 /**
  * A basic {@link AliasOwner}.
@@ -31,20 +31,20 @@ import com.voxelplugineering.voxelsniper.service.persistence.DataSourceReader;
 public class SimpleAliasOwner implements AliasOwner
 {
 
-    private final DataSourceReader source;
+    private final File source;
 
     /**
      * Creates a new {@link SimpleAliasOwner}.
      * 
      * @param source The persistent alias data source
      */
-    public SimpleAliasOwner(DataSourceReader source)
+    public SimpleAliasOwner(File source)
     {
         this.source = source;
     }
 
     @Override
-    public DataSourceReader getAliasSource()
+    public File getAliasSource()
     {
         return this.source;
     }

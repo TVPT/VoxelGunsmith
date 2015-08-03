@@ -30,7 +30,7 @@ import com.voxelplugineering.voxelsniper.registry.WeakWrapper;
  * 
  * @param <T> The underlying entity type
  */
-public abstract class AbstractEntity<T> extends WeakWrapper<T> implements Entity
+public abstract class AbstractEntity<T> extends WeakWrapper<T>implements Entity
 {
 
     /**

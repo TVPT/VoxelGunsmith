@@ -42,8 +42,8 @@ public final class StringUtilities
     }
 
     /**
-     * This method uses a region to check case-insensitive equality. This means the internal array does not need to be copied like a toLowerCase()
-     * call would.
+     * This method uses a region to check case-insensitive equality. This means the internal array
+     * does not need to be copied like a toLowerCase() call would.
      * 
      * @param string String to check
      * @param prefix Prefix of string to compare
@@ -65,13 +65,14 @@ public final class StringUtilities
      * @param collection The collection to add matches to
      * @param <T> the collection to use
      * @return the collection provided that would have the elements copied into
-     * @throws UnsupportedOperationException if the collection is immutable and originals contains a string which starts with the specified search
-     *             string.
+     * @throws UnsupportedOperationException if the collection is immutable and originals contains a
+     *             string which starts with the specified search string.
      * @throws IllegalArgumentException if any parameter is is null
-     * @throws IllegalArgumentException if originals contains a null element. <b>Note: the collection may be modified before this is thrown</b>
+     * @throws IllegalArgumentException if originals contains a null element. <b>Note: the
+     *             collection may be modified before this is thrown</b>
      */
-    public static <T extends Collection<? super String>> T
-            copyPartialMatches(final String token, final Iterable<String> originals, final T collection)
+    public static <T extends Collection<? super String>> T copyPartialMatches(final String token, final Iterable<String> originals,
+            final T collection)
     {
         checkNotNull(token, "Search token cannot be null");
         checkNotNull(collection, "Collection cannot be null");
@@ -108,7 +109,8 @@ public final class StringUtilities
     }
 
     /**
-     * Returns the array positions between start and end (both inclusive) concatenated as a space separated string.
+     * Returns the array positions between start and end (both inclusive) concatenated as a space
+     * separated string.
      * 
      * @param array the array
      * @param start the start point (inclusive)
@@ -136,7 +138,8 @@ public final class StringUtilities
     }
 
     /**
-     * Returns an array which is equivalent to source[o:start-1] + insert[o:length] + source[end+1:length].
+     * Returns an array which is equivalent to source[o:start-1] + insert[o:length] +
+     * source[end+1:length].
      * 
      * @param source the source array
      * @param insert the array to insert
@@ -169,6 +172,27 @@ public final class StringUtilities
         }
 
         return ret;
+    }
+
+    /**
+     * Joins all elements of the string with the given deliminator.
+     * 
+     * @param array The array
+     * @param delim The deliminator
+     * @return The joined string
+     */
+    public static String join(String[] array, String delim)
+    {
+        String result = "";
+        for (int i = 0; i < array.length; i++)
+        {
+            result += array[i];
+            if (i < array.length - 1)
+            {
+                result += delim;
+            }
+        }
+        return result;
     }
 
 }

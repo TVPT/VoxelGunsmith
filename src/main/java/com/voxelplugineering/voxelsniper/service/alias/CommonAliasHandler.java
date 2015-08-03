@@ -26,14 +26,12 @@ package com.voxelplugineering.voxelsniper.service.alias;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.service.persistence.DataContainer;
-import com.voxelplugineering.voxelsniper.service.persistence.MemoryContainer;
 
 /**
  * A standard implementation for {@link AliasHandler}.
@@ -44,17 +42,15 @@ public class CommonAliasHandler implements AliasHandler
     private AliasHandler parent;
     private Map<String, AliasRegistry> aliasTargets;
     private AliasOwner owner;
-    private boolean caseSensitive;
 
     /**
      * Creates a new {@link AliasHandler}.
      * 
      * @param owner The owner
-     * @param caseSensitive If this alias keys should be case sensitive
      */
-    public CommonAliasHandler(AliasOwner owner, boolean caseSensitive)
+    public CommonAliasHandler(AliasOwner owner)
     {
-        this(owner, null, caseSensitive);
+        this(owner, null);
     }
 
     /**
@@ -62,14 +58,12 @@ public class CommonAliasHandler implements AliasHandler
      * 
      * @param owner The owner
      * @param parent The new parent
-     * @param caseSensitive If this alias keys should be case sensitive
      */
-    public CommonAliasHandler(AliasOwner owner, AliasHandler parent, boolean caseSensitive)
+    public CommonAliasHandler(AliasOwner owner, AliasHandler parent)
     {
         this.owner = checkNotNull(owner);
         this.parent = parent;
         this.aliasTargets = Maps.newHashMap();
-        this.caseSensitive = caseSensitive;
         if (this.parent != null)
         {
             for (String target : this.parent.getValidTargets())
@@ -87,7 +81,7 @@ public class CommonAliasHandler implements AliasHandler
         if (!this.aliasTargets.containsKey(target))
         {
             AliasRegistry parentRegistry = this.parent == null ? null : this.parent.getRegistry(target).orNull();
-            this.aliasTargets.put(target, new CommonAliasRegistry(target, parentRegistry, this.caseSensitive));
+            this.aliasTargets.put(target, new CommonAliasRegistry(target, parentRegistry));
         }
         return this.aliasTargets.get(target);
     }
@@ -122,31 +116,6 @@ public class CommonAliasHandler implements AliasHandler
     public AliasOwner getOwner()
     {
         return this.owner;
-    }
-
-    @Override
-    public void fromContainer(DataContainer container)
-    {
-        for (String key : container.keySet())
-        {
-            Optional<DataContainer> regContainer = container.getContainer(key);
-            if (regContainer.isPresent())
-            {
-                AliasRegistry registry = this.registerTarget(key);
-                registry.fromContainer(regContainer.get());
-            }
-        }
-    }
-
-    @Override
-    public DataContainer toContainer()
-    {
-        MemoryContainer container = new MemoryContainer("aliases");
-        for (String s : this.aliasTargets.keySet())
-        {
-            container.setContainer(s, this.aliasTargets.get(s).toContainer());
-        }
-        return container;
     }
 
     @Override

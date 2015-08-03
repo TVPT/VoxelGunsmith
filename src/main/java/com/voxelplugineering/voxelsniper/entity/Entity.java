@@ -84,14 +84,14 @@ public interface Entity
      * @return The rotation
      */
     Vector3d getRotation();
-    
+
     /**
      * Gets the yaw rotation (Y-axis rotation) of this entity.
      * 
      * @return The yaw
      */
     double getYaw();
-    
+
     /**
      * Gets the pitch rotation (X-axis rotation) of this entity.
      * 
@@ -119,6 +119,6 @@ public interface Entity
      * 
      * @return Was successful
      */
-boolean remove();
+    boolean remove();
 
 }

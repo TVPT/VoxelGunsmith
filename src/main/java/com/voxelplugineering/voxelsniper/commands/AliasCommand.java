@@ -91,8 +91,8 @@ public class AliasCommand extends Command
             String key = arg.substring(0, k).trim();
             String value = arg.substring(k + 1, arg.length()).trim();
             registry.register(key, value);
-            //TODO alias save handler
-            //Gunsmith.getAliasSaveHandler().addDirty(alias);
+            // TODO alias save handler
+            // Gunsmith.getAliasSaveHandler().addDirty(alias);
             sniper.sendMessage("Added alias mapping '%s' to '%s'", key, value);
         } else
         {

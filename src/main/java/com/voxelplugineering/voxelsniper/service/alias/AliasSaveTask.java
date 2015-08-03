@@ -25,12 +25,10 @@ package com.voxelplugineering.voxelsniper.service.alias;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.IOException;
+import com.google.common.collect.Lists;
+
 import java.util.Iterator;
 import java.util.List;
-
-import com.google.common.collect.Lists;
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
 
 /**
  * A task for saving aliases.
@@ -68,13 +66,10 @@ public class AliasSaveTask implements Runnable
         for (Iterator<AliasHandler> it = this.dirty.iterator(); it.hasNext();)
         {
             AliasHandler alias = it.next();
-            try
-            {
-                alias.getOwner().getAliasSource().write(alias);
-            } catch (IOException e)
-            {
-                GunsmithLogger.getLogger().error(e, "Error saving aliases");
-            }
+            /*
+             * TODO try { alias.getOwner().getAliasSource(); } catch (IOException e) {
+             * GunsmithLogger.getLogger().error(e, "Error saving aliases"); }
+             */
             it.remove();
         }
     }

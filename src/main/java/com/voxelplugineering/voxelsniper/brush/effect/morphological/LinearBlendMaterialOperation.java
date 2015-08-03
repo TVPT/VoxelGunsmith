@@ -74,8 +74,8 @@ public class LinearBlendMaterialOperation implements FilterOperation
                 this.mats.put(mat, Math.sqrt(dx * dx + dy * dy + dz * dz));
             }
             this.count++;
-            this.maxDistance =
-                    (Math.sqrt(dx * dx + dy * dy + dz * dz) > this.maxDistance) ? Math.sqrt(dx * dx + dy * dy + dz * dz) : this.maxDistance;
+            this.maxDistance = (Math.sqrt(dx * dx + dy * dy + dz * dz) > this.maxDistance) ? Math.sqrt(dx * dx + dy * dy + dz * dz)
+                    : this.maxDistance;
         }
         return false;
     }

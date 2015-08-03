@@ -23,11 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.service.platform;
 
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.service.Service;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSource;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceProvider;
-import com.voxelplugineering.voxelsniper.service.persistence.DataSourceReader;
+
+import java.io.File;
 
 /**
  * The specific implementation core class, provides direct platform utilities and versioning for
@@ -58,25 +56,18 @@ public interface PlatformProxy extends Service
     String getFullVersion();
 
     /**
-     * Gets the data source provider for obtaining data sources for serialized brushes.
-     * 
-     * @return The data source provider
-     */
-    DataSourceProvider getBrushDataSource();
-
-    /**
      * Gets the root data source provider.
      * 
      * @return The root data source provider
      */
-    DataSourceProvider getRootDataSourceProvider();
+    File getRoot();
 
     /**
      * Gets the Configuration file for Metrics to be used.
      * 
      * @return The file containing the configuration for Metrics
      */
-    DataSource getMetricsFile();
+    File getMetricsFile();
 
     /**
      * Gets the number of players online.
@@ -84,12 +75,5 @@ public interface PlatformProxy extends Service
      * @return The number of players online
      */
     int getNumberOfPlayersOnline();
-
-    /**
-     * Gets a {@link DataSourceReader} representing the basic configuration location.
-     * 
-     * @return The config data source
-     */
-    Optional<DataSourceReader> getConfigDataSource();
 
 }
