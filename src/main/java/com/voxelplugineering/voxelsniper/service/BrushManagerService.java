@@ -95,9 +95,16 @@ public class BrushManagerService extends AbstractService implements GlobalBrushM
     }
 
     @Override
+    public Iterable<BrushWrapper> getBrushes()
+    {
+        return this.wrapped.getBrushes();
+    }
+
+    @Override
     public void consume(Class<?> cls)
     {
-        if(!Brush.class.isAssignableFrom(cls)) {
+        if (!Brush.class.isAssignableFrom(cls))
+        {
             GunsmithLogger.getLogger().warn("Class " + cls.getName() + " was annotated with @BrushInfo but is not a Brush");
             return;
         }
@@ -107,10 +114,12 @@ public class BrushManagerService extends AbstractService implements GlobalBrushM
             BrushInfo info = cls.getAnnotation(BrushInfo.class);
             GunsmithLogger.getLogger().debug("Loaded brush " + info.name() + " from " + cls.getName());
             loadBrush(info.name(), brush);
-            //Inject instance fields
+            // Inject instance fields
             BrushWrapper bw = getBrush(info.name()).get();
-            for(Field f: cls.getDeclaredFields()) {
-                if(f.isAnnotationPresent(BrushInstance.class) && BrushWrapper.class.equals(f.getType())) {
+            for (Field f : cls.getDeclaredFields())
+            {
+                if (f.isAnnotationPresent(BrushInstance.class) && BrushWrapper.class.equals(f.getType()))
+                {
                     f.setAccessible(true);
                     f.set(brush, bw);
                 }
@@ -127,6 +136,5 @@ public class BrushManagerService extends AbstractService implements GlobalBrushM
             return;
         }
     }
-
 
 }

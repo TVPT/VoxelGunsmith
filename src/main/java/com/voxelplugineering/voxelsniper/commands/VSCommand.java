@@ -25,24 +25,31 @@ package com.voxelplugineering.voxelsniper.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushPartType;
+import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
+import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.service.platform.PlatformProxy;
 import com.voxelplugineering.voxelsniper.util.Context;
 
+import com.google.common.collect.Maps;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.
  */
 public class VSCommand extends Command
 {
-    
+
     private static final String EQUALS_SEPARATOR = "=";
 
     private final PlatformProxy platform;
@@ -60,7 +67,7 @@ public class VSCommand extends Command
         setPermissions("voxelsniper.command.vs");
         this.subcommands = Maps.newHashMap();
         this.platform = context.getRequired(PlatformProxy.class);
-        setupSubcommands();
+        setupSubcommands(context);
     }
 
     @Override
@@ -109,9 +116,9 @@ public class VSCommand extends Command
         return false;
     }
 
-    private void setupSubcommands()
+    private void setupSubcommands(Context context)
     {
-        this.subcommands.put("version", new SubCommand(getConfig(), this.platform)
+        this.subcommands.put("version", new SubCommand(context, getConfig(), this.platform)
         {
 
             @Override
@@ -128,7 +135,46 @@ public class VSCommand extends Command
             }
 
         });
-        this.subcommands.put("range", new SubCommand(getConfig(), this.platform)
+        this.subcommands.put("brushes", new SubCommand(context, getConfig(), this.platform)
+        {
+
+            @Override
+            boolean execute(CommandSender sender, String[] args)
+            {
+                EnumMap<BrushPartType, List<BrushWrapper>> brushes = new EnumMap<BrushPartType, List<BrushWrapper>>(BrushPartType.class);
+                for (BrushPartType type : BrushPartType.values())
+                {
+                    brushes.put(type, new ArrayList<BrushWrapper>());
+                }
+                for (BrushWrapper b : getContext().getRequired(GlobalBrushManager.class).getBrushes())
+                {
+                    brushes.get(b.getType()).add(b);
+                }
+                for (BrushPartType type : BrushPartType.values())
+                {
+                    String s = type.name() + " brushes: ";
+                    List<BrushWrapper> brushesForType = brushes.get(type);
+                    for (int i = 0; i < brushesForType.size(); i++)
+                    {
+                        s += brushesForType.get(i).getName();
+                        if (i < brushesForType.size() - 1)
+                        {
+                            s += ", ";
+                        }
+                    }
+                    sender.sendMessage(s);
+                }
+                return true;
+            }
+
+            @Override
+            String getHelp()
+            {
+                return "  /vs version -- displays version info";
+            }
+
+        });
+        this.subcommands.put("range", new SubCommand(context, getConfig(), this.platform)
         {
 
             @Override
@@ -169,29 +215,6 @@ public class VSCommand extends Command
             }
 
         });
-        /*this.subcommands.put("unittest", new SubCommand(this.config, this.platform)
-        {
-
-            @Override
-            boolean execute(CommandSender sender, String[] args)
-            {
-                if (sender instanceof Player)
-                {
-                    new Thread(new IngameBrushTest((Player) sender)).start();
-                } else
-                {
-                    sender.sendMessage("Sorry this is a player only sub command.");
-                }
-                return true;
-            }
-
-            @Override
-            String getHelp()
-            {
-                return "  /vs unittest -- Runs an ingame set of brush tests (warning: destructive)";
-            }
-
-        });*/
     }
 
     /**
@@ -200,11 +223,13 @@ public class VSCommand extends Command
     private abstract static class SubCommand
     {
 
+        private final Context context;
         private final Configuration conf;
         private final PlatformProxy platform;
 
-        public SubCommand(Configuration conf, PlatformProxy platform)
+        public SubCommand(Context context, Configuration conf, PlatformProxy platform)
         {
+            this.context = context;
             this.conf = conf;
             this.platform = platform;
         }
@@ -217,6 +242,11 @@ public class VSCommand extends Command
         public PlatformProxy getPlatform()
         {
             return this.platform;
+        }
+
+        public Context getContext()
+        {
+            return this.context;
         }
 
         abstract boolean execute(CommandSender sender, String[] args);

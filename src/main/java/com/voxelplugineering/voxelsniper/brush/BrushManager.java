@@ -70,5 +70,7 @@ public interface BrushManager
      * @return an instance of the brush
      */
     Optional<BrushWrapper> getBrush(String identifier);
+    
+    Iterable<BrushWrapper> getBrushes();
 
 }

@@ -97,4 +97,10 @@ public class CommonBrushManager implements BrushManager
         return this.parent;
     }
 
+    @Override
+    public Iterable<BrushWrapper> getBrushes()
+    {
+        return this.brushes.values();
+    }
+
 }
