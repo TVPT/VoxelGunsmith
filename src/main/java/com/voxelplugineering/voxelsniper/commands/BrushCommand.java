@@ -139,7 +139,9 @@ public class BrushCommand extends Command
             }
             if (hasShape && !hasEffect)
             {
-                sniper.sendMessage("You specified a shape without an effect.");
+                sniper.sendMessage("You specified a shape without an effect. Defaulting to a material effect.");
+                sniper.sendMessage("To avoid this message use \'/b " + fullBrush + " material\' in the future.");
+                brush.chain(sniper.getBrushManager().getBrush("material").get());
             }
 
             return true;
