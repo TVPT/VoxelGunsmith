@@ -56,11 +56,11 @@ public class DiscBrush implements Brush
             {
             case NORTH:
             case SOUTH:
-                s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size), Direction.SOUTH);
+                s = new CylinderShape(size, 1, size, new Vector3i(size, size, 0), Direction.SOUTH);
                 break;
             case EAST:
             case WEST:
-                s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size), Direction.EAST);
+                s = new CylinderShape(size, 1, size, new Vector3i(0, size, size), Direction.EAST);
                 break;
             default:
                 s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size));

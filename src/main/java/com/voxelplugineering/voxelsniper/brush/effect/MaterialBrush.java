@@ -66,7 +66,6 @@ public class MaterialBrush implements Brush
         Optional<Block> l = BrushVarsHelper.getTargetBlock(args);
         MaterialShape ms = new SingleMaterialShape(s.get(), m.get());
         new ShapeChangeQueue(player, l.get().getLocation(), ms).flush();
-        GunsmithLogger.getLogger().info("setting material");
         return ExecutionResult.continueExecution();
     }
 

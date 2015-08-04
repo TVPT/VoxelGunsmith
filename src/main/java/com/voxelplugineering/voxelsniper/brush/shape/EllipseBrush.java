@@ -57,11 +57,11 @@ public class EllipseBrush implements Brush
             {
             case NORTH:
             case SOUTH:
-                s = new CylinderShape(rx, 1, ry, new Vector3i(rx, 0, ry), Direction.SOUTH);
+                s = new CylinderShape(rx, 1, ry, new Vector3i(rx, ry, 0), Direction.SOUTH);
                 break;
             case EAST:
             case WEST:
-                s = new CylinderShape(rx, 1, ry, new Vector3i(rx, 0, ry), Direction.EAST);
+                s = new CylinderShape(ry, 1, rx, new Vector3i(0, ry, rx), Direction.EAST);
                 break;
             default:
                 s = new CylinderShape(rx, 1, ry, new Vector3i(rx, 0, ry));
