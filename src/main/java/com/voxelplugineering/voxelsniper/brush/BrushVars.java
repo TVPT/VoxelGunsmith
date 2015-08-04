@@ -40,6 +40,7 @@ public class BrushVars
 
     private final Map<String, Object> global;
     private final Map<String, Object> runtime;
+    private final Map<String, Object> flags;
     private final Map<String, Map<String, Object>> brushes;
     private BrushContext context;
 
@@ -50,6 +51,7 @@ public class BrushVars
     {
         this.global = Maps.newHashMap();
         this.runtime = Maps.newHashMap();
+        this.flags = Maps.newHashMap();
         this.brushes = Maps.newHashMap();
         this.context = BrushContext.GLOBAL;
     }
@@ -90,6 +92,7 @@ public class BrushVars
         this.brushes.clear();
         this.global.clear();
         this.runtime.clear();
+        this.flags.clear();
     }
 
     /**
@@ -125,6 +128,9 @@ public class BrushVars
             } else if (this.global.containsKey(path))
             {
                 data = this.global;
+            } else if (this.flags.containsKey(path))
+            {
+                data = this.flags;
             } else
             {
                 return Optional.absent();
@@ -169,6 +175,10 @@ public class BrushVars
         {
             return true;
         }
+        if (this.flags.containsKey(path))
+        {
+            return true;
+        }
         return false;
     }
 
@@ -204,6 +214,11 @@ public class BrushVars
             this.global.put(path, value);
             return;
         }
+        if (context == BrushContext.FLAGS)
+        {
+            this.flags.put(path, value);
+            return;
+        }
         throw new UnsupportedOperationException("Unknown context " + context.toString());
     }
 
@@ -232,6 +247,10 @@ public class BrushVars
         if (context == BrushContext.GLOBAL)
         {
             return this.global.remove(path) != null;
+        }
+        if (context == BrushContext.FLAGS)
+        {
+            return this.flags.remove(path) != null;
         }
         throw new UnsupportedOperationException("Unknown context " + context.toString());
     }

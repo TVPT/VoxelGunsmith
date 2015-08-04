@@ -45,6 +45,10 @@ public abstract class BrushContext
      * chain, as well as the information about the ray trace.
      */
     public static final BrushContext RUNTIME = new Fixed("runtime");
+    /**
+     * The flags context. A place for flags for inter-operation markers.
+     */
+    public static final BrushContext FLAGS = new Fixed("flags");
 
     private static final Map<BrushWrapper, BrushContext.Brush> BRUSHES;
 
