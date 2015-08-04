@@ -32,26 +32,26 @@ public final class BrushKeys
 
     // Globals
     public static final String BRUSH_SIZE = "brushSize";
-    public static final String MASK_MATERIAL = "maskmaterial";
+    public static final String MASK_MATERIAL = "$maskmaterial";
     public static final String MASK_MATERIAL_WILDCARD = "maskmaterialwildcard";
-    public static final String MATERIAL = "setMaterial";
+    public static final String MATERIAL = "$setMaterial";
     public static final String RANGE = "range";
 
     // Runtime
-    public static final String ACTION = "action";
-    public static final String LAST_BLOCK = "lastBlock";
-    public static final String LAST_FACE = "lastFace";
-    public static final String LENGTH = "length";
-    public static final String ORIGIN = "origin";
-    public static final String PITCH = "pitch";
-    public static final String PLAYER = "player";
-    public static final String POINT_A = "pointA";
-    public static final String POINT_B = "pointB";
-    public static final String SHAPE = "shape";
-    public static final String STRUCTURING_ELEMENT = "structuringElement";
-    public static final String TARGET_BLOCK = "targetBlock";
-    public static final String TARGET_FACE = "targetFace";
-    public static final String YAW = "yaw";
+    public static final String ACTION = "$action";
+    public static final String LAST_BLOCK = "$lastBlock";
+    public static final String LAST_FACE = "$lastFace";
+    public static final String LENGTH = "$length";
+    public static final String ORIGIN = "$origin";
+    public static final String PITCH = "$pitch";
+    public static final String PLAYER = "$player";
+    public static final String POINT_A = "$pointA";
+    public static final String POINT_B = "$pointB";
+    public static final String SHAPE = "$shape";
+    public static final String STRUCTURING_ELEMENT = "$structuringElement";
+    public static final String TARGET_BLOCK = "$targetBlock";
+    public static final String TARGET_FACE = "$targetFace";
+    public static final String YAW = "$yaw";
 
     // Parameters
     public static final String BIOME = "biome";

@@ -103,6 +103,10 @@ public class VSCommand extends Command
         {
             String[] split = full.split(EQUALS_SEPARATOR);
             String key = split[0].trim().toLowerCase();
+            if(key.startsWith("$")) {
+                sniper.sendMessage("Cannot set internal value manually.");
+                return true;
+            }
             String value = split[1].trim();
             sniper.getBrushVars().set(BrushContext.GLOBAL, key, value);
             sniper.sendMessage("Set " + key + " to " + value);

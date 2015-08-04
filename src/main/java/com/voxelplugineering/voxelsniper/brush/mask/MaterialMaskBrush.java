@@ -54,7 +54,7 @@ public class MaterialMaskBrush implements Brush
         Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
         if (!s.isPresent())
         {
-            player.sendMessage("You must have at least one shape brush before your material brush.");
+            player.sendMessage("You must have at least one shape brush before your material mask brush.");
             return ExecutionResult.abortExecution();
         }
         Optional<MaterialState> m = args.get(BrushKeys.MASK_MATERIAL, MaterialState.class);
