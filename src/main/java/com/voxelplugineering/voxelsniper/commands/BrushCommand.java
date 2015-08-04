@@ -73,6 +73,15 @@ public class BrushCommand extends Command
             sender.sendMessage("Sorry you lack the required permissions for this command");
             return true;
         }
+        if (args.length == 0) {
+            String full = "";
+            for (BrushWrapper b : sniper.getCurrentBrush().getBrushes())
+            {
+                full += b.getName() + " ";
+            }
+            sniper.sendMessage(VoxelSniperConfiguration.brushSetMessage, full.trim());
+            return true;
+        }
         if (args.length == 1)
         {
             try
@@ -100,7 +109,7 @@ public class BrushCommand extends Command
                     brush.chain(br.get());
                 } else
                 {
-                    sniper.sendMessage(String.format(VoxelSniperConfiguration.brushNotFoundMessage, b));
+                    sniper.sendMessage(VoxelSniperConfiguration.brushNotFoundMessage, b);
                     return true;
                 }
             }

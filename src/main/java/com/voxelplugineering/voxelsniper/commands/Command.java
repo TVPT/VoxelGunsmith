@@ -57,7 +57,7 @@ public abstract class Command
         this.name = name;
         this.helpMsg = help;
         this.permsProxy = context.getRequired(PermissionProxy.class);
-        this.helpMsg = VoxelSniperConfiguration.defaultBrushHelpMessage;
+        this.helpMsg = VoxelSniperConfiguration.defaultCommandHelpMessage;
     }
 
     /**

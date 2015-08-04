@@ -57,6 +57,7 @@ public class VoxelSniperConfiguration
     public static String defaultHelpMessage = TextFormat.RED + "No help is provided for this command.";
     @ConfigValue(section = "messages")
     public static String defaultBrushHelpMessage = TextFormat.RED + "No help is provided for this brush part.";
+    @ConfigValue(section = "messages")
     public static String brushSizeChangedMessage = TextFormat.GREEN + "Your brush size was changed to " + TextFormat.GOLD + "%.1f";
     @ConfigValue(section = "messages")
     public static String brushNotFoundMessage = TextFormat.RED + "Could not find a brush part named " + TextFormat.GOLD + "%s";
@@ -68,6 +69,8 @@ public class VoxelSniperConfiguration
     public static String materialSetMessage = TextFormat.GREEN + "Set material to " + TextFormat.GOLD + "%s";
     @ConfigValue(section = "messages")
     public static String materialMaskSetMessage = TextFormat.GREEN + "Set secondary material to " + TextFormat.GOLD + "%s";
+    @ConfigValue(section = "messages")
+    public static String defaultCommandHelpMessage = TextFormat.RED + "No help is provided for this command.";
 
     // Alias Settings
     public static boolean caseSensitiveAliases = true;
