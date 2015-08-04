@@ -159,8 +159,8 @@ public class CommonEventHandler
             BrushVars vars = sniper.getBrushVars();
             vars.clearRuntime();
             vars.set(BrushContext.RUNTIME, BrushKeys.ORIGIN, location);
-            vars.set(BrushContext.RUNTIME, BrushKeys.YAW, yaw);
-            vars.set(BrushContext.RUNTIME, BrushKeys.PITCH, pitch);
+            vars.set(BrushContext.RUNTIME, BrushKeys.PLAYER_YAW, yaw);
+            vars.set(BrushContext.RUNTIME, BrushKeys.PLAYER_PITCH, pitch);
             vars.set(BrushContext.RUNTIME, BrushKeys.TARGET_BLOCK, ray.getTargetBlock());
             vars.set(BrushContext.RUNTIME, BrushKeys.TARGET_FACE, ray.getTargetFace());
             vars.set(BrushContext.RUNTIME, BrushKeys.LAST_BLOCK, ray.getLastBlock());

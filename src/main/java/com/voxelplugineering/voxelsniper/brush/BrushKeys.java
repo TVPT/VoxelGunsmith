@@ -43,7 +43,7 @@ public final class BrushKeys
     public static final String LAST_FACE = "$lastFace";
     public static final String LENGTH = "$length";
     public static final String ORIGIN = "$origin";
-    public static final String PITCH = "$pitch";
+    public static final String PLAYER_PITCH = "$pitch";
     public static final String PLAYER = "$player";
     public static final String POINT_A = "$pointA";
     public static final String POINT_B = "$pointB";
@@ -51,7 +51,7 @@ public final class BrushKeys
     public static final String STRUCTURING_ELEMENT = "$structuringElement";
     public static final String TARGET_BLOCK = "$targetBlock";
     public static final String TARGET_FACE = "$targetFace";
-    public static final String YAW = "$yaw";
+    public static final String PLAYER_YAW = "$yaw";
 
     // Parameters
     public static final String BIOME = "biome";
@@ -60,13 +60,16 @@ public final class BrushKeys
     public static final String HEIGHT = "height";
     public static final String KERNEL = "kernel";
     public static final String KERNEL_SIZE = "kernelSize";
+    public static final String PITCH = "pitch";
     public static final String RADIUS_X = "rx";
     public static final String RADIUS_Y = "ry";
     public static final String RADIUS_Z = "rz";
     public static final String RANDOM_CHANCE = "rand";
     public static final String RECURSIONS = "recursions";
+    public static final String ROLL = "roll";
     public static final String SEED_PERCENT = "seed";
     public static final String USE_FACE = "face";
+    public static final String YAW = "yaw";
 
     private BrushKeys()
     {
