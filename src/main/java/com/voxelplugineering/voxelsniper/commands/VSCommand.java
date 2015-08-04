@@ -118,23 +118,6 @@ public class VSCommand extends Command
 
     private void setupSubcommands(Context context)
     {
-        this.subcommands.put("version", new SubCommand(context, this.platform)
-        {
-
-            @Override
-            boolean execute(CommandSender sender, String[] args)
-            {
-                sender.sendMessage("VoxelSniper version " + getPlatform().getFullVersion());
-                return true;
-            }
-
-            @Override
-            String getHelp()
-            {
-                return "  /vs version -- displays version info";
-            }
-
-        });
         this.subcommands.put("brushes", new SubCommand(context, this.platform)
         {
 
@@ -170,7 +153,7 @@ public class VSCommand extends Command
             @Override
             String getHelp()
             {
-                return "  /vs version -- displays version info";
+                return "  /vs brushes -- displays available brushes";
             }
 
         });
