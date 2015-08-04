@@ -145,4 +145,6 @@ public interface World extends BlockVolume
      */
     Vector3i getChunkSize();
 
+    void spawnLightning(Vector3i position);
+
 }
