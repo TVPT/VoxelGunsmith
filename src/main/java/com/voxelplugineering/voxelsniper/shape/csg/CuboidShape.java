@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.shape.csg;
 
+import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
@@ -103,6 +104,12 @@ public class CuboidShape extends OffsetShape
     public CuboidShape clone()
     {
         return new CuboidShape(this.w, this.h, this.l, getOrigin());
+    }
+
+    @Override
+    public void fillFrom(Shape shape)
+    {
+        throw new UnsupportedOperationException();
     }
 
 }

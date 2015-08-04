@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper.shape.csg;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
@@ -174,6 +175,12 @@ public class CSGCompoundShape extends OffsetShape
             return new CSGCompoundShape(this.a.clone(), this.getOrigin());
         }
         return new CSGCompoundShape(this.a.clone(), this.b.clone(), this.operation);
+    }
+
+    @Override
+    public void fillFrom(Shape shape)
+    {
+        throw new UnsupportedOperationException();
     }
 
 }

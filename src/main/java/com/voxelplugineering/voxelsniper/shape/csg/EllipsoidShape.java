@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.shape.csg;
 
+import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
@@ -103,6 +104,12 @@ public class EllipsoidShape extends OffsetShape
     public boolean isMutable()
     {
         return false;
+    }
+
+    @Override
+    public void fillFrom(Shape shape)
+    {
+        throw new UnsupportedOperationException();
     }
 
 }

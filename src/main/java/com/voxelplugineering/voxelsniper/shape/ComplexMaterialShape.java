@@ -456,4 +456,10 @@ public class ComplexMaterialShape implements MaterialShape
         }
     }
 
+    @Override
+    public void fillFrom(Shape shape)
+    {
+        throw new UnsupportedOperationException(); //TODO
+    }
+
 }

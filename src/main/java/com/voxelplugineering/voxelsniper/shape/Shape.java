@@ -109,4 +109,11 @@ public interface Shape
      */
     Shape clone();
 
+    /**
+     * If the two shapes are the same size, fill this shape with the contents of the other shape.
+     * 
+     * @param shape The other shape
+     */
+    void fillFrom(Shape shape);
+
 }

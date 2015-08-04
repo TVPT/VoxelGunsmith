@@ -46,4 +46,18 @@ public final class Maths
     {
         return value < min ? min : value > max ? max : value;
     }
+
+    /**
+     * Clamps the given value to be between the minimum and maximum values (both inclusive) and
+     * returns the result.
+     * 
+     * @param value The input value
+     * @param min The minimum value
+     * @param max The maximum value
+     * @return The clamped value
+     */
+    public static double clamp(double value, double min, double max)
+    {
+        return value < min ? min : value > max ? max : value;
+    }
 }

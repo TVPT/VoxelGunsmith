@@ -131,11 +131,12 @@ public class CommonEventHandler
         Player sniper = event.getSniper();
         if (!this.perms.hasPermission(sniper, "voxelsniper.sniper"))
         {
+            GunsmithLogger.getLogger().info("no perms");
             return;
         }
-        boolean attemptedNullAction = false;
         try
         {
+            GunsmithLogger.getLogger().info("starting snipe");
             Location location = sniper.getLocation();
             double yaw = event.getYaw();
             double pitch = event.getPitch();
@@ -152,10 +153,6 @@ public class CommonEventHandler
             RayTrace ray = new RayTrace(location, yaw, pitch, range, minY, maxY, step, eyeOffs);
             ray.trace();
 
-            if (ray.getTargetBlock() == null)
-            {
-                attemptedNullAction = true;
-            }
             BrushVars vars = sniper.getBrushVars();
             vars.clearRuntime();
             vars.set(BrushContext.RUNTIME, BrushKeys.ORIGIN, location);
@@ -171,14 +168,12 @@ public class CommonEventHandler
             vars.set(BrushContext.RUNTIME, BrushKeys.PLAYER, sniper);
             // Gunsmith.getLogger().info("Snipe at " +
             // ray.getTargetBlock().getLocation().toString());
+            GunsmithLogger.getLogger().info("running brush");
             sniper.getCurrentBrush().run(sniper, vars);
         } catch (Throwable e)
         {
-            if (!attemptedNullAction)
-            {
-                sniper.sendMessage("Error executing brush, see console for more details.");
-                GunsmithLogger.getLogger().error(e, "Error executing brush");
-            }
+            sniper.sendMessage("Error executing brush, see console for more details.");
+            GunsmithLogger.getLogger().error(e, "Error executing brush");
         }
     }
 

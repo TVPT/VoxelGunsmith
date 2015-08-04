@@ -199,4 +199,10 @@ public class SingleMaterialShape implements MaterialShape
         this.material = material;
     }
 
+    @Override
+    public void fillFrom(Shape shape)
+    {
+        throw new UnsupportedOperationException(); //TODO
+    }
+
 }

@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.brush.shape;
 
+import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
@@ -48,6 +49,7 @@ public class VoxelBrush implements Brush
         int size = (int) Math.floor(args.get(BrushKeys.BRUSH_SIZE, Double.class).get());
         Shape s = new CuboidShape(size * 2 + 1, size * 2 + 1, size * 2 + 1, new Vector3i(size, size, size));
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
+        GunsmithLogger.getLogger().info("Created voxel");
         return ExecutionResult.continueExecution();
     }
 

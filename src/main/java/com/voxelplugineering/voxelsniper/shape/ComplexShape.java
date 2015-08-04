@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.shape;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -547,5 +548,45 @@ public class ComplexShape implements Shape
             }
         }
         return string.toString();
+    }
+
+    @Override
+    public void fillFrom(Shape shape)
+    {
+        checkArgument(shape.getWidth() == getWidth());
+        checkArgument(shape.getHeight() == getHeight());
+        checkArgument(shape.getLength() == getLength());
+        if (shape instanceof ComplexShape)
+        {
+            byte[][][] other = ((ComplexShape) shape).shape;
+            for (int x = 0; x < getWidth(); x++)
+            {
+                for (int z = 0; z < getLength(); z++)
+                {
+                    for (int y = 0; y < shape.getHeight() / 8 + 1; y++)
+                    {
+                        this.shape[x][z][y] = other[x][z][y];
+                    }
+                }
+            }
+        } else
+        {
+            for (int x = 0; x < shape.getWidth(); x++)
+            {
+                for (int y = 0; y < shape.getHeight(); y++)
+                {
+                    for (int z = 0; z < shape.getLength(); z++)
+                    {
+                        if (shape.get(x, y, z, false))
+                        {
+                            set(x, y, z, false);
+                        } else
+                        {
+                            unset(x, y, z, false);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

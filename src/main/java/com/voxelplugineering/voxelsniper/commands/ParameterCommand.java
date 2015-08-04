@@ -84,7 +84,7 @@ public class ParameterCommand extends Command
             String key = arg.substring(0, k).trim();
             String value = arg.substring(k + 1, arg.length()).trim();
             sniper.getBrushVars().set(BrushContext.of(brush.get()), key, value);
-            sniper.sendMessage("Added brush parameter '%s' = '%s'", key, value);
+            sniper.sendMessage("Set brush parameter '%s' = '%s'", key, value);
         } else
         {
             sniper.sendMessage("Could not find the %s brush.", target);

@@ -21,31 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.brush.effect;
+package com.voxelplugineering.voxelsniper.brush.mask;
 
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.Brush;
+import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
-import com.voxelplugineering.voxelsniper.shape.MaterialShape;
+import com.voxelplugineering.voxelsniper.shape.ComplexShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
-import com.voxelplugineering.voxelsniper.shape.SingleMaterialShape;
-import com.voxelplugineering.voxelsniper.util.brush.BrushVarsHelper;
-import com.voxelplugineering.voxelsniper.world.Block;
-import com.voxelplugineering.voxelsniper.world.material.MaterialState;
-import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
 import com.google.common.base.Optional;
 
-/**
- * An effect brush which sets all set positions of the shape to a material.
- */
-@BrushInfo(name = "material", type = BrushPartType.EFFECT)
-public class MaterialBrush implements Brush
+import java.util.Random;
+
+@BrushInfo(name = "random", type = BrushPartType.MASK)
+public class RandomMaskBrush implements Brush
 {
 
     @Override
@@ -54,19 +48,40 @@ public class MaterialBrush implements Brush
         Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
         if (!s.isPresent())
         {
-            player.sendMessage("You must have at least one shape brush before your material brush.");
+            player.sendMessage("You must have at least one shape brush before your random brush.");
             return ExecutionResult.abortExecution();
         }
-        Optional<MaterialState> m = args.get(BrushKeys.MATERIAL, MaterialState.class);
-        if (!m.isPresent())
+        Optional<Double> ochance = args.get(BrushKeys.RANDOM_CHANCE, Double.class);
+        double chance = 0.5;
+        if(ochance.isPresent()) {
+            chance = ochance.get();
+        }
+        ComplexShape shape;
+        if (s.get() instanceof ComplexShape)
         {
-            player.sendMessage("You must select a material.");
-            return ExecutionResult.abortExecution();
+            shape = (ComplexShape) s.get();
+        } else
+        {
+            shape = new ComplexShape(s.get());
         }
-        Optional<Block> l = BrushVarsHelper.getTargetBlock(args);
-        MaterialShape ms = new SingleMaterialShape(s.get(), m.get());
-        new ShapeChangeQueue(player, l.get().getLocation(), ms).flush();
-        GunsmithLogger.getLogger().info("setting material");
+        Random rand = new Random();
+        for (int x = 0; x < shape.getWidth(); x++)
+        {
+            for (int y = 0; y < shape.getHeight(); y++)
+            {
+                for (int z = 0; z < shape.getLength(); z++)
+                {
+                    if (shape.get(x, y, z, false))
+                    {
+                        if(rand.nextDouble() > chance) {
+                            shape.unset(x, y, z, false);
+                        }
+                    }
+                }
+            }
+        }
+
+        args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, shape);
         return ExecutionResult.continueExecution();
     }
 

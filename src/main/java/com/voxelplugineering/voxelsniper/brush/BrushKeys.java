@@ -56,13 +56,17 @@ public final class BrushKeys
     // Parameters
     public static final String BIOME = "biome";
     public static final String EXCLUDE_FLUID = "excludeFluid";
+    public static final String GROW_PERCENT = "growth";
     public static final String HEIGHT = "height";
-    public static final String USE_FACE = "face";
     public static final String KERNEL = "kernel";
     public static final String KERNEL_SIZE = "kernelSize";
     public static final String RADIUS_X = "rx";
     public static final String RADIUS_Y = "ry";
     public static final String RADIUS_Z = "rz";
+    public static final String RANDOM_CHANCE = "rand";
+    public static final String RECURSIONS = "recursions";
+    public static final String SEED_PERCENT = "seed";
+    public static final String USE_FACE = "face";
 
     private BrushKeys()
     {

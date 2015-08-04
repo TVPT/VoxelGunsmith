@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.shape.csg;
 
+import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.Direction;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
@@ -178,6 +179,12 @@ public class CylinderShape extends OffsetShape
     public String toString()
     {
         return String.format("CylinderShape: ( rx=%.2f, height=%d, rz=%.2f, origin=%s )", this.rx, this.height, this.rz, this.getOrigin().toString());
+    }
+
+    @Override
+    public void fillFrom(Shape shape)
+    {
+        throw new UnsupportedOperationException();
     }
 
 }

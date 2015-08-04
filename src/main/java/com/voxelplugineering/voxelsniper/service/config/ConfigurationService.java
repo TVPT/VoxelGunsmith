@@ -220,7 +220,7 @@ public class ConfigurationService extends AbstractService implements Configurati
 
         public void save(File confFile, boolean includeHidden) throws IOException
         {
-            GunsmithLogger.getLogger().info("Saving " + this.container.name() + " to " + confFile.getAbsolutePath());
+            GunsmithLogger.getLogger().debug("Saving " + this.container.name() + " to " + confFile.getAbsolutePath());
             HoconConfigurationLoader loader = HoconConfigurationLoader.builder().setFile(confFile).build();
             ConfigurationNode node = loader.load();
 
@@ -241,7 +241,7 @@ public class ConfigurationService extends AbstractService implements Configurati
 
         public void load(File confFile) throws IOException
         {
-            GunsmithLogger.getLogger().info("Loading " + this.container.name() + " from " + confFile.getAbsolutePath());
+            GunsmithLogger.getLogger().debug("Loading " + this.container.name() + " from " + confFile.getAbsolutePath());
             HoconConfigurationLoader loader = HoconConfigurationLoader.builder().setFile(confFile).build();
             ConfigurationNode node = loader.load();
 
