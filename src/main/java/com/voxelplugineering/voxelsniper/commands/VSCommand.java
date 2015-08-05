@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
@@ -33,11 +34,13 @@ import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
+import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.service.platform.PlatformProxy;
 import com.voxelplugineering.voxelsniper.util.Context;
 
 import com.google.common.collect.Maps;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -199,6 +202,34 @@ public class VSCommand extends Command
             String getHelp()
             {
                 return "  /vs range # -- sets maximum range";
+            }
+
+        });
+        this.subcommands.put("reloadconf", new SubCommand(context, this.platform)
+        {
+
+            @Override
+            boolean execute(CommandSender sender, String[] args)
+            {
+
+                Configuration conf = getContext().getRequired(Configuration.class);
+                PlatformProxy platform = getPlatform();
+                try
+                {
+                    conf.load(platform.getRoot());
+                    sender.sendMessage("Successfully reloaded configuration from file.");
+                } catch (IOException e)
+                {
+                    GunsmithLogger.getLogger().error(e, "Error loading configuration files.");
+                    sender.sendMessage("Failed to reload configuration from file. Check console for errors.");
+                }
+                return true;
+            }
+
+            @Override
+            String getHelp()
+            {
+                return "  /vs reloadconf - reloads configuration from file";
             }
 
         });
