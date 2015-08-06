@@ -31,6 +31,7 @@ public final class BrushKeys
 {
 
     // Globals
+    public static final String AIR_MATERIAL = "$airMaterial";
     public static final String BRUSH_SIZE = "brushSize";
     public static final String MASK_MATERIAL = "$maskmaterial";
     public static final String MASK_MATERIAL_WILDCARD = "maskmaterialwildcard";

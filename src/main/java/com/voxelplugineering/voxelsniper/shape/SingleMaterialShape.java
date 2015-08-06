@@ -202,7 +202,7 @@ public class SingleMaterialShape implements MaterialShape
     @Override
     public void fillFrom(Shape shape)
     {
-        throw new UnsupportedOperationException(); //TODO
+        throw new UnsupportedOperationException();
     }
 
 }

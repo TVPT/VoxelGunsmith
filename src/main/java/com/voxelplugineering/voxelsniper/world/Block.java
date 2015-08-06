@@ -71,6 +71,4 @@ public interface Block
      */
     Optional<Block> withOffset(Vector3i offset);
 
-    // TODO block states?
-
 }

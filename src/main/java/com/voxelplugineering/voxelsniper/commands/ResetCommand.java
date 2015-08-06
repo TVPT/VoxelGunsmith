@@ -35,6 +35,8 @@ import com.voxelplugineering.voxelsniper.util.Context;
 public class ResetCommand extends Command
 {
 
+    private final Context context;
+    
     /**
      * Creates a new Command instance.
      * 
@@ -45,6 +47,7 @@ public class ResetCommand extends Command
         super("voxelreset", "Resets your brush settings to the defualt values.", context);
         setAliases("d");
         setPermissions("voxelsniper.command.reset");
+        this.context = context;
     }
 
     @Override
@@ -55,7 +58,7 @@ public class ResetCommand extends Command
             sender.sendMessage(VoxelSniperConfiguration.commandPlayerOnly);
             return true;
         }
-        ((Player) sender).resetSettings();
+        ((Player) sender).resetSettings(this.context);
         return true;
     }
 

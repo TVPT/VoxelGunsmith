@@ -105,11 +105,11 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
     /**
      * Initializes the player.
      */
-    public void init()
+    public void init(Context context)
     {
         try
         {
-            resetSettings();
+            resetSettings(context);
         } catch (Exception e)
         {
             GunsmithLogger.getLogger().error(e, "Error setting up default player settings.");
@@ -159,9 +159,10 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
     }
 
     @Override
-    public void resetSettings()
+    public void resetSettings(Context context)
     {
         this.brushVariables.clear();
+        this.brushVariables.set(BrushContext.GLOBAL, BrushKeys.PLAYER, this);
         String fullBrush = VoxelSniperConfiguration.defaultBrush;
         fullBrush = getAliasHandler().getRegistry("brush").get().expand(fullBrush);
         BrushChain brush = new BrushChain(fullBrush);

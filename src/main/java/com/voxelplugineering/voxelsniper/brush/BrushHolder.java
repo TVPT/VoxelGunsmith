@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.brush;
 
+import com.voxelplugineering.voxelsniper.util.Context;
+
 /**
  * An interface for anything which may have a brush selected.
  */
@@ -67,6 +69,6 @@ public interface BrushHolder
     /**
      * Resets the settings of this player to their default configuration.
      */
-    void resetSettings();
+    void resetSettings(Context context);
 
 }
