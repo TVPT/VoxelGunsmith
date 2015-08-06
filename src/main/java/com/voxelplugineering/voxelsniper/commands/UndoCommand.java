@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.commands;
 
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.service.text.TextFormat;
@@ -49,6 +50,11 @@ public class UndoCommand extends Command
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {
+        if (!sender.isPlayer())
+        {
+            sender.sendMessage(VoxelSniperConfiguration.commandPlayerOnly);
+            return true;
+        }
         int n = 1;
         if (args.length > 0)
         {
@@ -64,12 +70,7 @@ public class UndoCommand extends Command
                 n = 1;
             }
         }
-        if (sender.isPlayer())
-        {
-            ((Player) sender).undoHistory(n);
-            return true;
-        }
-        sender.sendMessage(TextFormat.RED + "Sorry, this is a player only command.");
+        ((Player) sender).undoHistory(n);
         return true;
     }
 }

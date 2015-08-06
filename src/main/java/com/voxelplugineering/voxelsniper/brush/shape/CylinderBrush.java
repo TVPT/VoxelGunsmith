@@ -30,6 +30,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.csg.CylinderShape;
@@ -52,11 +53,11 @@ public class CylinderBrush implements Brush
         Optional<Double> oheight = args.get(BrushKeys.HEIGHT, Double.class);
         if (!oheight.isPresent())
         {
-            player.sendMessage("Please specify a height for the cylinder: /param cylinder height=#");
+            player.sendMessage(VoxelSniperConfiguration.missingParam, BrushKeys.HEIGHT, "cylinder");
             return ExecutionResult.abortExecution();
         }
         int height = (int) Math.floor(oheight.get());
-        boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(false);
+        boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(VoxelSniperConfiguration.cylDefaultFace);
         Shape s = null;
         if (face)
         {

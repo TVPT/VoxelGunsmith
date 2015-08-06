@@ -30,6 +30,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.csg.EllipsoidShape;
@@ -45,6 +46,21 @@ public class EllipsoidBrush implements Brush
     @Override
     public ExecutionResult run(Player player, BrushVars args)
     {
+        if (!args.has(BrushKeys.RADIUS_X))
+        {
+            player.sendMessage(VoxelSniperConfiguration.missingParam, BrushKeys.RADIUS_X, "ellipse");
+            return ExecutionResult.abortExecution();
+        }
+        if (!args.has(BrushKeys.RADIUS_Y))
+        {
+            player.sendMessage(VoxelSniperConfiguration.missingParam, BrushKeys.RADIUS_Y, "ellipse");
+            return ExecutionResult.abortExecution();
+        }
+        if (!args.has(BrushKeys.RADIUS_Z))
+        {
+            player.sendMessage(VoxelSniperConfiguration.missingParam, BrushKeys.RADIUS_Z, "ellipse");
+            return ExecutionResult.abortExecution();
+        }
         double rx = args.get(BrushKeys.RADIUS_X, Double.class).get();
         double ry = args.get(BrushKeys.RADIUS_Y, Double.class).get();
         double rz = args.get(BrushKeys.RADIUS_Z, Double.class).get();

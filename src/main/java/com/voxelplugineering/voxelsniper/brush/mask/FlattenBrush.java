@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.brush.mask;
 
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
@@ -31,6 +30,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.ComplexShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
@@ -47,7 +47,7 @@ public class FlattenBrush implements Brush
         Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
         if (!s.isPresent())
         {
-            player.sendMessage("You must have at least one shape brush before your flatten brush.");
+            player.sendMessage(VoxelSniperConfiguration.missingShape, "flatten");
             return ExecutionResult.abortExecution();
         }
         Shape base = s.get();

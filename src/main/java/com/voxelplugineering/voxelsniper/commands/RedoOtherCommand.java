@@ -23,14 +23,15 @@
  */
 package com.voxelplugineering.voxelsniper.commands;
 
-import com.google.common.base.Optional;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.service.registry.PlayerRegistry;
-import com.voxelplugineering.voxelsniper.service.text.TextFormat;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.world.queue.UndoQueue;
+
+import com.google.common.base.Optional;
 
 /**
  * A command get fetching the help information for a brush.
@@ -78,7 +79,7 @@ public class RedoOtherCommand extends Command
         }
         if (queue == null)
         {
-            sender.sendMessage(TextFormat.RED + "Sorry, we could not find that player.");
+            sender.sendMessage(VoxelSniperConfiguration.playerNotFound);
             return true;
         }
         int n = 1;
@@ -96,7 +97,7 @@ public class RedoOtherCommand extends Command
                 n = 1;
             }
         }
-        sender.sendMessage(TextFormat.GOLD + "Undoing " + name + "'s last " + n + " changes!");
+        sender.sendMessage(VoxelSniperConfiguration.redootherMessage, name, n);
         queue.redo(n);
         return true;
     }

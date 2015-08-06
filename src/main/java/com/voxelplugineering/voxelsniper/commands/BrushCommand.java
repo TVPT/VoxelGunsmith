@@ -64,13 +64,13 @@ public class BrushCommand extends Command
 
         if (!sender.isPlayer())
         {
-            sender.sendMessage("Sorry this is a player-only command.");
+            sender.sendMessage(VoxelSniperConfiguration.commandPlayerOnly);
             return true;
         }
         Player sniper = (Player) sender;
         if (!getPerms().hasPermission(sniper, "voxelsniper.command.brush"))
         {
-            sender.sendMessage("Sorry you lack the required permissions for this command");
+            sender.sendMessage(VoxelSniperConfiguration.permissionsRequiredMessage);
             return true;
         }
         if (args.length == 0) {
@@ -129,15 +129,15 @@ public class BrushCommand extends Command
                     hasEffect = true;
                     if (!hasShape)
                     {
-                        sniper.sendMessage("You specified an effect without a shape preceeding it.");
+                        sniper.sendMessage(VoxelSniperConfiguration.effectBeforeShape);
                         return true;
                     }
                 }
             }
             if (hasShape && !hasEffect)
             {
-                sniper.sendMessage("You specified a shape without an effect. Defaulting to a material effect.");
-                sniper.sendMessage("To avoid this message use \'/b " + fullBrush + " material\' in the future.");
+                sniper.sendMessage(VoxelSniperConfiguration.shapeWithoutEffect1);
+                sniper.sendMessage(VoxelSniperConfiguration.shapeWithoutEffect2, fullBrush);
                 brush.chain(sniper.getBrushManager().getBrush("material").get());
             }
 

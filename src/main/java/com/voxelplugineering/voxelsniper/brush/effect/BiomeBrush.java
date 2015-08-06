@@ -29,6 +29,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.brush.BrushVarsHelper;
@@ -56,7 +57,7 @@ public class BiomeBrush implements Brush
         Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
         if (!s.isPresent())
         {
-            player.sendMessage("You must have at least one shape brush before your biome brush.");
+            player.sendMessage(VoxelSniperConfiguration.missingShape, "biome");
             return ExecutionResult.abortExecution();
         }
         Shape shape = s.get();
@@ -66,7 +67,7 @@ public class BiomeBrush implements Brush
         Optional<Biome> b = args.get(BrushKeys.BIOME, Biome.class);
         if (!b.isPresent())
         {
-            player.sendMessage("You must select a biome for the biome brush.");
+            player.sendMessage(VoxelSniperConfiguration.missingParam, BrushKeys.BIOME, "biome");
             return ExecutionResult.abortExecution();
         }
         List<Chunk> toUpdate = Lists.newArrayList();

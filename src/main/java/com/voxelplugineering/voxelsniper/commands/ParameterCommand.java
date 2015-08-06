@@ -28,6 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushManager;
 import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.util.Context;
@@ -60,7 +61,7 @@ public class ParameterCommand extends Command
 
         if (!sender.isPlayer())
         {
-            sender.sendMessage("Sorry this is a player-only command.");
+            sender.sendMessage(VoxelSniperConfiguration.commandPlayerOnly);
             return true;
         }
         Player sniper = (Player) sender;
@@ -75,19 +76,19 @@ public class ParameterCommand extends Command
         if (brush.isPresent())
         {
             String arg = StringUtilities.getSection(args, 1, args.length - 1);
-            if (!arg.contains("="))
+            if (!arg.contains(VoxelSniperConfiguration.keyValueDeliminator))
             {
                 sniper.sendMessage(this.getHelpMsg());
                 return true;
             }
-            int k = arg.indexOf("=");
+            int k = arg.indexOf(VoxelSniperConfiguration.keyValueDeliminator);
             String key = arg.substring(0, k).trim();
             String value = arg.substring(k + 1, arg.length()).trim();
             sniper.getBrushVars().set(BrushContext.of(brush.get()), key, value);
-            sniper.sendMessage("Set brush parameter '%s' = '%s'", key, value);
+            sniper.sendMessage(VoxelSniperConfiguration.paramSet, key, value);
         } else
         {
-            sniper.sendMessage("Could not find the %s brush.", target);
+            sniper.sendMessage(VoxelSniperConfiguration.brushNotFoundMessage, target);
         }
         return true;
     }

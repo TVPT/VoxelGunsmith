@@ -30,6 +30,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
@@ -47,7 +48,7 @@ public class VoxelDiscBrush implements Brush
     public ExecutionResult run(Player player, BrushVars args)
     {
         int size = (int) Math.floor(args.get(BrushKeys.BRUSH_SIZE, Double.class).get());
-        boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(false);
+        boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(VoxelSniperConfiguration.voxeldiscDefaultFace);
         Shape s = null;
         if (face)
         {

@@ -29,6 +29,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.ComplexMaterialShape;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
@@ -68,19 +69,20 @@ public class OldBlendBrush implements Brush
         Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
         if (!s.isPresent())
         {
+            player.sendMessage(VoxelSniperConfiguration.missingShape, "blend");
             return ExecutionResult.abortExecution();
         }
         Optional<MaterialState> m = args.get(BrushKeys.MATERIAL, MaterialState.class);
         if (!m.isPresent())
         {
-            player.sendMessage("You must select a material.");
+            player.sendMessage(VoxelSniperConfiguration.missingMaterial);
             return ExecutionResult.abortExecution();
         }
 
         Optional<String> kernalShape = args.get(BrushKeys.KERNEL, String.class);
         Optional<Double> kernalSize = args.get(BrushKeys.KERNEL_SIZE, Double.class);
-        double size = kernalSize.or(1.0);
-        String kernelString = kernalShape.or("voxel");
+        double size = kernalSize.or(VoxelSniperConfiguration.blendDefaultKernalSize);
+        String kernelString = kernalShape.or(VoxelSniperConfiguration.blendDefaultKernalShape);
         Optional<Shape> se = PrimativeShapeFactory.createShape(kernelString, size);
         if (!se.isPresent())
         {

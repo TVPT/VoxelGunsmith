@@ -59,14 +59,13 @@ public class MaskMaterialCommand extends Command
         checkNotNull(sender, "Cannot have a null sniper!");
         if (!sender.isPlayer())
         {
-            sender.sendMessage("Sorry this is a player-only command.");
+            sender.sendMessage(VoxelSniperConfiguration.commandPlayerOnly);
             return true;
         }
         Player sniper = (Player) sender;
-        String materialName = "air";
         if (args.length >= 1)
         {
-            materialName = args[0];
+            String materialName = args[0];
             if (sniper.getAliasHandler().hasTarget("material"))
             {
                 materialName = sniper.getAliasHandler().getRegistry("material").get().expand(materialName);
@@ -79,7 +78,7 @@ public class MaskMaterialCommand extends Command
             }
             sniper.sendMessage(VoxelSniperConfiguration.materialMaskSetMessage, material.get().getName());
             sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL, material.get().getDefaultState());
-            sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL_WILDCARD, true);
+            sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL_WILDCARD, VoxelSniperConfiguration.defaultMaterialMaskWildcard);
         } else
         {
             Optional<Block> target = sniper.getTargetBlock();
@@ -90,7 +89,7 @@ public class MaskMaterialCommand extends Command
                 sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL_WILDCARD, false);
             } else
             {
-                sniper.sendMessage("Could not fetch your target block.");
+                sniper.sendMessage(VoxelSniperConfiguration.noTargetBlock);
             }
         }
         return true;

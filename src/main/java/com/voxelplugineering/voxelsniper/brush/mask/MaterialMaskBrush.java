@@ -30,6 +30,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.ComplexShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
@@ -54,13 +55,13 @@ public class MaterialMaskBrush implements Brush
         Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
         if (!s.isPresent())
         {
-            player.sendMessage("You must have at least one shape brush before your material mask brush.");
+            player.sendMessage(VoxelSniperConfiguration.missingShape, "materialmask");
             return ExecutionResult.abortExecution();
         }
         Optional<MaterialState> m = args.get(BrushKeys.MASK_MATERIAL, MaterialState.class);
         if (!m.isPresent())
         {
-            player.sendMessage("You must select a secondary material.");
+            player.sendMessage(VoxelSniperConfiguration.missingAltMaterial);
             return ExecutionResult.abortExecution();
         }
         boolean wildcard = args.get(BrushKeys.MASK_MATERIAL_WILDCARD, boolean.class).or(false);

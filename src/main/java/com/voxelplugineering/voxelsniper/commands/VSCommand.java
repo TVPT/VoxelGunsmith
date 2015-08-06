@@ -53,8 +53,6 @@ import java.util.Map;
 public class VSCommand extends Command
 {
 
-    private static final String EQUALS_SEPARATOR = "=";
-
     private final PlatformProxy platform;
     private final Map<String, SubCommand> subcommands;
 
@@ -92,7 +90,7 @@ public class VSCommand extends Command
 
         if (!sender.isPlayer())
         {
-            sender.sendMessage("Sorry this is a player-only command.");
+            sender.sendMessage(VoxelSniperConfiguration.commandPlayerOnly);
             return true;
         }
         Player sniper = (Player) sender;
@@ -102,17 +100,17 @@ public class VSCommand extends Command
             full += part + " ";
         }
         full = full.trim();
-        if (full.contains(EQUALS_SEPARATOR))
+        if (full.contains(VoxelSniperConfiguration.keyValueDeliminator))
         {
-            String[] split = full.split(EQUALS_SEPARATOR);
+            String[] split = full.split(VoxelSniperConfiguration.keyValueDeliminator);
             String key = split[0].trim().toLowerCase();
             if(key.startsWith("$")) {
-                sniper.sendMessage("Cannot set internal value manually.");
+                sniper.sendMessage(VoxelSniperConfiguration.vsInternal);
                 return true;
             }
             String value = split[1].trim();
             sniper.getBrushVars().set(BrushContext.GLOBAL, key, value);
-            sniper.sendMessage("Set " + key + " to " + value);
+            sniper.sendMessage(VoxelSniperConfiguration.globalSet, key, value);
             return true;
         }
         sender.sendMessage("VoxelSniper meta commands, Usage: \'/vs key=value\' or one of:");
@@ -181,13 +179,13 @@ public class VSCommand extends Command
                     {
                         double range = VoxelSniperConfiguration.rayTraceRange;
                         player.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.RANGE, range);
-                        sender.sendMessage("Reset your maximum range to %d", range);
+                        sender.sendMessage(VoxelSniperConfiguration.vsRangeReset, range);
                     }
                     try
                     {
                         double range = Double.parseDouble(args[0]);
                         player.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.RANGE, range);
-                        sender.sendMessage("Set your maximum range to %d", Integer.parseInt(args[0]));
+                        sender.sendMessage(VoxelSniperConfiguration.vsRangeSet, Integer.parseInt(args[0]));
                     } catch (NumberFormatException e)
                     {
                         sender.sendMessage("Usage: /vs range #");
@@ -217,11 +215,11 @@ public class VSCommand extends Command
                 try
                 {
                     conf.load(platform.getRoot());
-                    sender.sendMessage("Successfully reloaded configuration from file.");
+                    sender.sendMessage(VoxelSniperConfiguration.vsConfigReloadSuccess);
                 } catch (IOException e)
                 {
                     GunsmithLogger.getLogger().error(e, "Error loading configuration files.");
-                    sender.sendMessage("Failed to reload configuration from file. Check console for errors.");
+                    sender.sendMessage(VoxelSniperConfiguration.vsConfigReloadFailed);
                 }
                 return true;
             }

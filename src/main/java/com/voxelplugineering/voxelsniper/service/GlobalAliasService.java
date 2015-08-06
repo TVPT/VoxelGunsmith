@@ -54,7 +54,7 @@ public class GlobalAliasService extends AbstractService implements GlobalAliasHa
     }
 
     @Override
-    public AliasOwner getOwner()
+    public Optional<AliasOwner> getOwner()
     {
         return this.wrapped.getOwner();
     }

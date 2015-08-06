@@ -50,7 +50,6 @@ import com.voxelplugineering.voxelsniper.service.PreStop;
 import com.voxelplugineering.voxelsniper.service.ServicePriorities;
 import com.voxelplugineering.voxelsniper.service.alias.CommonAliasHandler;
 import com.voxelplugineering.voxelsniper.service.alias.GlobalAliasHandler;
-import com.voxelplugineering.voxelsniper.service.alias.SimpleAliasOwner;
 import com.voxelplugineering.voxelsniper.service.command.CommandHandler;
 import com.voxelplugineering.voxelsniper.service.config.Configuration;
 import com.voxelplugineering.voxelsniper.service.config.ConfigurationContainer;
@@ -74,7 +73,6 @@ import com.voxelplugineering.voxelsniper.world.queue.OfflineUndoHandler;
 
 import com.google.common.base.Optional;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URLClassLoader;
 
@@ -119,8 +117,7 @@ public class CoreServiceProvider
     {
         PlatformProxy platform = context.getRequired(PlatformProxy.class);
 
-        SimpleAliasOwner owner = new SimpleAliasOwner(new File(platform.getRoot(), "aliases.json"));
-        return new GlobalAliasService(context, new CommonAliasHandler(owner));
+        return new GlobalAliasService(context, new CommonAliasHandler(null));
     }
 
     @InitHook(target = EventBus.class)

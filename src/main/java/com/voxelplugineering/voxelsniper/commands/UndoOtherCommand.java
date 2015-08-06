@@ -24,6 +24,8 @@
 package com.voxelplugineering.voxelsniper.commands;
 
 import com.google.common.base.Optional;
+
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.service.registry.PlayerRegistry;
@@ -79,7 +81,7 @@ public class UndoOtherCommand extends Command
         }
         if (queue == null)
         {
-            sender.sendMessage(TextFormat.RED + "Sorry, we could not find that player.");
+            sender.sendMessage(VoxelSniperConfiguration.playerNotFound);
             return true;
         }
         int n = 1;
@@ -97,7 +99,7 @@ public class UndoOtherCommand extends Command
                 n = 1;
             }
         }
-        sender.sendMessage(TextFormat.GOLD + "Undoing " + name + "'s last " + n + " changes!");
+        sender.sendMessage(VoxelSniperConfiguration.undootherMessage, name, n);
         queue.undo(n);
         return true;
     }

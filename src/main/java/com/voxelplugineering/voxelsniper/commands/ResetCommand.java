@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.commands;
 
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.service.text.TextFormat;
@@ -49,12 +50,12 @@ public class ResetCommand extends Command
     @Override
     public boolean execute(CommandSender sender, String[] args)
     {
-        if (sender.isPlayer())
+        if (!sender.isPlayer())
         {
-            ((Player) sender).resetSettings();
+            sender.sendMessage(VoxelSniperConfiguration.commandPlayerOnly);
             return true;
         }
-        sender.sendMessage(TextFormat.RED + "Sorry, this is a player only command.");
+        ((Player) sender).resetSettings();
         return true;
     }
 

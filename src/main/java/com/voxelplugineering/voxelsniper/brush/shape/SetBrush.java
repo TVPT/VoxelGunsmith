@@ -32,6 +32,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
@@ -60,13 +61,13 @@ public class SetBrush implements Brush
         if (!pointA.isPresent())
         {
             Location a = target.get().getLocation();
-            player.sendMessage("Set first point to (" + a.getFlooredX() + ", " + a.getFlooredY() + ", " + a.getFlooredZ());
+            player.sendMessage(VoxelSniperConfiguration.setFirstPoint, a.getFlooredX(), a.getFlooredY(), a.getFlooredZ());
             args.set(BrushContext.of(this.instance), BrushKeys.POINT_A, a);
             return ExecutionResult.abortExecution();
         }
         Location a = pointA.get();
         Location b = target.get().getLocation();
-        player.sendMessage("Set second point to (" + b.getFlooredX() + ", " + b.getFlooredY() + ", " + b.getFlooredZ());
+        player.sendMessage(VoxelSniperConfiguration.setSecondPoint, b.getFlooredX(), b.getFlooredY(), b.getFlooredZ());
         int w;
         int h;
         int l;

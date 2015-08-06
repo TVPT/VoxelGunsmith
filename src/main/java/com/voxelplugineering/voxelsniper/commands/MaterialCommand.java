@@ -61,7 +61,7 @@ public class MaterialCommand extends Command
 
         if (!sender.isPlayer())
         {
-            sender.sendMessage("Sorry this is a player-only command.");
+            sender.sendMessage(VoxelSniperConfiguration.commandPlayerOnly);
             return true;
         }
         Player sniper = (Player) sender;
@@ -90,7 +90,7 @@ public class MaterialCommand extends Command
                 sniper.getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MATERIAL, target.get().getMaterial());
             } else
             {
-                sniper.sendMessage("Could not fetch your target block.");
+                sniper.sendMessage(VoxelSniperConfiguration.noTargetBlock);
             }
         }
         return true;

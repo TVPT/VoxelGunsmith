@@ -38,7 +38,7 @@ public interface AliasHandler
      * 
      * @return The owner
      */
-    AliasOwner getOwner();
+    Optional<AliasOwner> getOwner();
 
     /**
      * Returns a Set of all valid targets in this handler.

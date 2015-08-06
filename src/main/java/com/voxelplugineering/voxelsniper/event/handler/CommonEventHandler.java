@@ -176,7 +176,7 @@ public class CommonEventHandler
         {
             if (!attemptedNullAction)
             {
-                sniper.sendMessage("Error executing brush, see console for more details.");
+                sniper.sendMessage(VoxelSniperConfiguration.brushExecError);
                 GunsmithLogger.getLogger().error(e, "Error executing brush");
             }
         }

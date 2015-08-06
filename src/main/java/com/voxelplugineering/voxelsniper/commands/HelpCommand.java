@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper.commands;
 
 import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
 import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.util.Context;
@@ -65,7 +66,7 @@ public class HelpCommand extends Command
             }
             if (brush == null)
             {
-                sender.sendMessage("Sorry the brush " + args[0] + " could not be found.");
+                sender.sendMessage(VoxelSniperConfiguration.brushNotFoundMessage, args[0]);
                 return true;
             }
             sender.sendMessage(brush.getHelp());

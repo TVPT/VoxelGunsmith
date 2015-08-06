@@ -61,7 +61,7 @@ public class CommonAliasHandler implements AliasHandler
      */
     public CommonAliasHandler(AliasOwner owner, AliasHandler parent)
     {
-        this.owner = checkNotNull(owner);
+        this.owner = owner;
         this.parent = parent;
         this.aliasTargets = Maps.newHashMap();
         if (this.parent != null)
@@ -113,9 +113,9 @@ public class CommonAliasHandler implements AliasHandler
     }
 
     @Override
-    public AliasOwner getOwner()
+    public Optional<AliasOwner> getOwner()
     {
-        return this.owner;
+        return Optional.fromNullable(this.owner);
     }
 
     @Override

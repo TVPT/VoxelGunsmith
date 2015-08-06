@@ -30,6 +30,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.ComplexShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
@@ -48,11 +49,11 @@ public class RandomMaskBrush implements Brush
         Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
         if (!s.isPresent())
         {
-            player.sendMessage("You must have at least one shape brush before your random brush.");
+            player.sendMessage(VoxelSniperConfiguration.missingShape, "random");
             return ExecutionResult.abortExecution();
         }
         Optional<Double> ochance = args.get(BrushKeys.RANDOM_CHANCE, Double.class);
-        double chance = 0.5;
+        double chance = VoxelSniperConfiguration.randomDefaultChance;
         if(ochance.isPresent()) {
             chance = ochance.get();
         }

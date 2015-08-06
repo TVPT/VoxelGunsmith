@@ -25,6 +25,7 @@ package com.voxelplugineering.voxelsniper.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.service.alias.AliasRegistry;
@@ -61,7 +62,7 @@ public class AliasCommand extends Command
 
         if (!sender.isPlayer())
         {
-            sender.sendMessage("Sorry this is a player-only command.");
+            sender.sendMessage(VoxelSniperConfiguration.commandPlayerOnly);
             return true;
         }
         Player sniper = (Player) sender;
@@ -78,7 +79,7 @@ public class AliasCommand extends Command
         {
             AliasRegistry registry = alias.getRegistry(target).get();
             String arg = StringUtilities.getSection(args, n, args.length - 1);
-            if (!arg.contains("="))
+            if (!arg.contains(VoxelSniperConfiguration.keyValueDeliminator))
             {
                 if (StringUtilities.startsWithIgnoreCase(arg, "clear") && !global)
                 {
@@ -87,16 +88,16 @@ public class AliasCommand extends Command
                 sniper.sendMessage(this.getHelpMsg());
                 return true;
             }
-            int k = arg.indexOf("=");
+            int k = arg.indexOf(VoxelSniperConfiguration.keyValueDeliminator);
             String key = arg.substring(0, k).trim();
             String value = arg.substring(k + 1, arg.length()).trim();
             registry.register(key, value);
             // TODO alias save handler
             // Gunsmith.getAliasSaveHandler().addDirty(alias);
-            sniper.sendMessage("Added alias mapping '%s' to '%s'", key, value);
+            sniper.sendMessage(VoxelSniperConfiguration.aliasSet, key, value);
         } else
         {
-            sniper.sendMessage("Alias target %s was not found in %s registry.", target, global ? "the global" : "your personal");
+            sniper.sendMessage(VoxelSniperConfiguration.aliasNotFound, target, global ? "the global" : "your personal");
         }
         return true;
     }

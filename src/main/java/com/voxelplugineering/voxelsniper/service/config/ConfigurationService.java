@@ -123,7 +123,7 @@ public class ConfigurationService extends AbstractService implements Configurati
                     GunsmithLogger.getLogger().warn("Attempted to register duplicate config field " + name);
                     continue;
                 }
-                ConfigEntry entry = new ConfigEntry(conf, f);
+                ConfigEntry entry = new ConfigEntry(conf, name, f);
                 conf.getEntries().put(name, entry);
             }
         }
@@ -282,41 +282,20 @@ public class ConfigurationService extends AbstractService implements Configurati
         private final String name;
         private final Field field;
         private final String[] path;
-        private final ConfigValue annotation;
+        private ConfigValue annotation;
 
-        public ConfigEntry(ConfigContainer container, Field f)
+        public ConfigEntry(ConfigContainer container, String name, Field f)
         {
             this.container = container;
-            this.annotation = f.getAnnotation(ConfigValue.class);
-            if (this.annotation != null && !this.annotation.name().isEmpty())
-            {
-                this.name = this.annotation.name();
-            } else
-            {
-                this.name = f.getName();
-            }
             this.field = f;
-            String p = container.getContainer().root();
-            if (this.annotation != null && !this.annotation.section().isEmpty())
-            {
-                if (!p.isEmpty() && !p.endsWith("."))
-                {
-                    p += ".";
-                }
-                p += this.annotation.section();
-            }
-            if (p.isEmpty())
-            {
+            this.annotation = f.getAnnotation(ConfigValue.class);
+            if(name.indexOf(".") != -1) {
+                String[] split = name.split("\\.");
+                this.name = split[split.length-1];
+                this.path = Arrays.copyOf(split, split.length-1);
+            } else {
+                this.name = name;
                 this.path = new String[0];
-            } else
-            {
-                if (p.indexOf('.') != -1)
-                {
-                    this.path = p.split(".");
-                } else
-                {
-                    this.path = new String[] { p };
-                }
             }
             GunsmithLogger.getLogger().debug("Created config entry: " + getFullName());
         }

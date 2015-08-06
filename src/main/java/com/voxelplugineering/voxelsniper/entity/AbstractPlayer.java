@@ -177,35 +177,35 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
             }
         }
         setCurrentBrush(brush);
-        sendMessage("Your brush has been set to %s", brush.getName());
+        sendMessage(VoxelSniperConfiguration.brushSetMessage, brush.getName());
         double size = VoxelSniperConfiguration.defaultBrushSize;
         this.brushVariables.set(BrushContext.GLOBAL, BrushKeys.BRUSH_SIZE, size);
-        sendMessage("Your brush size was changed to " + size);
+        sendMessage(VoxelSniperConfiguration.brushSizeChangedMessage, size);
         String materialName = VoxelSniperConfiguration.defaultBrushMaterial;
         Material mat = getWorld().getMaterialRegistry().getAirMaterial();
         Optional<Material> material = getWorld().getMaterialRegistry().getMaterial(materialName);
         if (material.isPresent())
         {
             mat = material.get();
+            sendMessage(VoxelSniperConfiguration.materialSetMessage, mat.getName());
+            getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MATERIAL, mat.getDefaultState());
+            getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL, mat.getDefaultState());
+            getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL_WILDCARD, VoxelSniperConfiguration.defaultMaterialMaskWildcard);
         }
-        sendMessage("Set material to " + mat.getName());
-        getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MATERIAL, mat.getDefaultState());
-        getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL, mat.getDefaultState());
-        getBrushVars().set(BrushContext.GLOBAL, BrushKeys.MASK_MATERIAL_WILDCARD, true);
     }
 
     @Override
     public void undoHistory(int n)
     {
         int c = this.history.undo(n);
-        this.sendMessage("%d changes undone.", c);
+        this.sendMessage(VoxelSniperConfiguration.undoMessage, c);
     }
 
     @Override
     public void redoHistory(int n)
     {
         int c = this.history.redo(n);
-        this.sendMessage("%d changes re-applied.", c);
+        this.sendMessage(VoxelSniperConfiguration.redoMessage, c);
     }
 
     @Override
@@ -235,12 +235,6 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
         {
             this.pending.remove();
         }
-    }
-
-    @Override
-    public File getAliasSource()
-    {
-        return null; // TODO persistence
     }
 
     @Override

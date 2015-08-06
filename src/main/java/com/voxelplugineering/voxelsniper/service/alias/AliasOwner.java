@@ -23,19 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.service.alias;
 
-import java.io.File;
-
 /**
  * An owner of an alias handler.
  */
 public interface AliasOwner
 {
-
-    /**
-     * Gets the data source for alias storage.
-     * 
-     * @return The data folder
-     */
-    File getAliasSource();
 
 }

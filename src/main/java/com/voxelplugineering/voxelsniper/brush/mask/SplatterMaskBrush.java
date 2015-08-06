@@ -30,6 +30,7 @@ import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.ComplexShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
@@ -52,12 +53,12 @@ public class SplatterMaskBrush implements Brush
             player.sendMessage("You must have at least one shape brush before your splatter brush.");
             return ExecutionResult.abortExecution();
         }
-        double seed = args.get(BrushKeys.SEED_PERCENT, Double.class).or(0.1);
+        double seed = args.get(BrushKeys.SEED_PERCENT, Double.class).or(VoxelSniperConfiguration.splatterDefaultSeed);
         seed = Maths.clamp(seed, 0, 1);
-        double growth = args.get(BrushKeys.GROW_PERCENT, Double.class).or(0.1);
+        double growth = args.get(BrushKeys.GROW_PERCENT, Double.class).or(VoxelSniperConfiguration.splatterDefaultGrowth);
         growth = Maths.clamp(growth, 0, 1);
-        int recursions = args.get(BrushKeys.RECURSIONS, Integer.class).or(3);
-        recursions = Maths.clamp(recursions, 1, 10);
+        int recursions = args.get(BrushKeys.RECURSIONS, Integer.class).or(VoxelSniperConfiguration.splatterDefaultRecursions);
+        recursions = Maths.clamp(recursions, 1, VoxelSniperConfiguration.splatterMaxRecursions);
         Shape base = s.get();
         ComplexShape shape = new ComplexShape(base);
 

@@ -23,13 +23,13 @@
  */
 package com.voxelplugineering.voxelsniper.brush.effect;
 
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
@@ -54,13 +54,13 @@ public class MaterialBrush implements Brush
         Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
         if (!s.isPresent())
         {
-            player.sendMessage("You must have at least one shape brush before your material brush.");
+            player.sendMessage(VoxelSniperConfiguration.missingShape, "material");
             return ExecutionResult.abortExecution();
         }
         Optional<MaterialState> m = args.get(BrushKeys.MATERIAL, MaterialState.class);
         if (!m.isPresent())
         {
-            player.sendMessage("You must select a material.");
+            player.sendMessage(VoxelSniperConfiguration.missingMaterial);
             return ExecutionResult.abortExecution();
         }
         Optional<Block> l = BrushVarsHelper.getTargetBlock(args);
