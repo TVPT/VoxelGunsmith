@@ -46,8 +46,6 @@ public final class BrushKeys
     public static final String ORIGIN = "$origin";
     public static final String PLAYER_PITCH = "$pitch";
     public static final String PLAYER = "$player";
-    public static final String POINT_A = "$pointA";
-    public static final String POINT_B = "$pointB";
     public static final String SHAPE = "$shape";
     public static final String STRUCTURING_ELEMENT = "$structuringElement";
     public static final String TARGET_BLOCK = "$targetBlock";
@@ -71,6 +69,11 @@ public final class BrushKeys
     public static final String SEED_PERCENT = "seed";
     public static final String USE_FACE = "face";
     public static final String YAW = "yaw";
+    
+    //Flags
+    public static final String POINT_A = "$pointA";
+    public static final String POINT_B = "$pointB";
+    
 
     private BrushKeys()
     {

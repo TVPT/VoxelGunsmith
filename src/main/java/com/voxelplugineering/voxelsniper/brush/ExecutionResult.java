@@ -53,6 +53,11 @@ public class ExecutionResult
         return CONTINUE;
     }
 
+    public static ExecutionResult delayExecution(BrushWrapper c)
+    {
+        return new Delay(c);
+    }
+
     private final boolean shouldContinue;
 
     /**
@@ -73,6 +78,21 @@ public class ExecutionResult
     public boolean shouldContinue()
     {
         return this.shouldContinue;
+    }
+    
+    public static class Delay extends ExecutionResult {
+        
+        private BrushWrapper continuePoint;
+        
+        private Delay(BrushWrapper continuePoint) {
+            super(false);
+            this.continuePoint = continuePoint;
+        }
+        
+        public BrushWrapper getContinuePoint() {
+            return this.continuePoint;
+        }
+        
     }
 
 }

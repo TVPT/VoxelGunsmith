@@ -29,6 +29,8 @@ import java.util.Iterator;
 import java.util.Queue;
 
 import com.google.common.collect.Queues;
+
+import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.entity.Player;
 
 /**
@@ -40,6 +42,7 @@ public class BrushChain
 
     private final String cmd;
     private final Queue<BrushWrapper> brushes;
+    private BrushWrapper continuePoint = null;
 
     /**
      * Creates a new {@link BrushChain}.
@@ -89,13 +92,48 @@ public class BrushChain
     public void run(Player player, BrushVars brushVariables)
     {
         checkNotNull(brushVariables);
-        for (Iterator<BrushWrapper> it = this.brushes.iterator(); it.hasNext();)
+        if (this.brushes.isEmpty())
         {
-            BrushWrapper next = it.next();
+            return;
+        }
+        if (this.continuePoint == null)
+        {
+            brushVariables.clearFlags();
+        }
+        Iterator<BrushWrapper> it = this.brushes.iterator();
+        BrushWrapper next = it.next();
+        if (this.continuePoint != null)
+        {
+            while (it.hasNext() && next != this.continuePoint)
+            {
+                GunsmithLogger.getLogger().info("Skipping " + next.getName());
+                next = it.next();
+            }
+            this.continuePoint = null;
+        }
+        brushVariables.setContext(BrushContext.of(next));
+        GunsmithLogger.getLogger().info("Executing " + next.getName());
+        ExecutionResult ex = next.getBrush().run(player, brushVariables);
+        if (!ex.shouldContinue())
+        {
+            if (ex instanceof ExecutionResult.Delay)
+            {
+                this.continuePoint = ((ExecutionResult.Delay) ex).getContinuePoint();
+            }
+            return;
+        }
+        while (it.hasNext())
+        {
+            next = it.next();
             brushVariables.setContext(BrushContext.of(next));
-            ExecutionResult ex = next.getBrush().run(player, brushVariables);
+            GunsmithLogger.getLogger().info("Executing " + next.getName());
+            ex = next.getBrush().run(player, brushVariables);
             if (!ex.shouldContinue())
             {
+                if (ex instanceof ExecutionResult.Delay)
+                {
+                    this.continuePoint = ((ExecutionResult.Delay) ex).getContinuePoint();
+                }
                 break;
             }
         }

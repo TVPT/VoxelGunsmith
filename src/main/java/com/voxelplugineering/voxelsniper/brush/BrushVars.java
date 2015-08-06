@@ -84,6 +84,11 @@ public class BrushVars
         this.runtime.clear();
     }
 
+    public void clearFlags()
+    {
+        this.flags.clear();
+    }
+
     /**
      * Clears all variables.
      */

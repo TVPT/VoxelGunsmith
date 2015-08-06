@@ -62,8 +62,8 @@ public class SetBrush implements Brush
         {
             Location a = target.get().getLocation();
             player.sendMessage(VoxelSniperConfiguration.setFirstPoint, a.getFlooredX(), a.getFlooredY(), a.getFlooredZ());
-            args.set(BrushContext.of(this.instance), BrushKeys.POINT_A, a);
-            return ExecutionResult.abortExecution();
+            args.set(BrushContext.FLAGS, BrushKeys.POINT_A, a);
+            return ExecutionResult.delayExecution(this.instance);
         }
         Location a = pointA.get();
         Location b = target.get().getLocation();
