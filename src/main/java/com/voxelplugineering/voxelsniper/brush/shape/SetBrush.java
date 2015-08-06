@@ -103,7 +103,6 @@ public class SetBrush implements Brush
         }
         Shape s = new CuboidShape(w, h, l, new Vector3i(ox, oy, oz));
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
-        args.remove(BrushContext.of(this.instance), BrushKeys.POINT_A);
         return ExecutionResult.continueExecution();
     }
 

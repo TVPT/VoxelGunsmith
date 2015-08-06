@@ -114,6 +114,7 @@ public class BrushCommand extends Command
                 }
             }
             sniper.setCurrentBrush(brush);
+            sniper.getBrushVars().clearFlags();
             sniper.sendMessage(VoxelSniperConfiguration.brushSetMessage, brush.getName());
 
             boolean hasShape = false;

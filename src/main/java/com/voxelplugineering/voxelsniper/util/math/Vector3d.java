@@ -113,6 +113,31 @@ public class Vector3d implements Serializable, Cloneable
     }
 
     /**
+     * Returns a new vector representing the given vector subtracted from this vector.
+     * 
+     * @param v the vector to subtract from this vector
+     * @return the new vector
+     */
+    public Vector3d sub(Vector3d v)
+    {
+        checkNotNull(v, "Vector cannot be null");
+        return new Vector3d(getX() - v.getX(), getY() - v.getY(), getZ() - v.getZ());
+    }
+
+    /**
+     * Returns a new vector representing the given values subtracted from this vector.
+     * 
+     * @param x The x value
+     * @param y The y value
+     * @param z The z value
+     * @return the new vector
+     */
+    public Vector3d sub(double x, double y, double z)
+    {
+        return new Vector3d(getX() - x, getY() - y, getZ() - z);
+    }
+
+    /**
      * Returns a new vector representing this vector scaled by the given scalar quantity.
      * 
      * @param scalar the amount to scale this vector

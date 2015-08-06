@@ -106,13 +106,13 @@ public class BrushChain
         {
             while (it.hasNext() && next != this.continuePoint)
             {
-                GunsmithLogger.getLogger().info("Skipping " + next.getName());
+                GunsmithLogger.getLogger().debug("Skipping " + next.getName());
                 next = it.next();
             }
             this.continuePoint = null;
         }
         brushVariables.setContext(BrushContext.of(next));
-        GunsmithLogger.getLogger().info("Executing " + next.getName());
+        GunsmithLogger.getLogger().debug("Executing " + next.getName());
         ExecutionResult ex = next.getBrush().run(player, brushVariables);
         if (!ex.shouldContinue())
         {
@@ -126,7 +126,7 @@ public class BrushChain
         {
             next = it.next();
             brushVariables.setContext(BrushContext.of(next));
-            GunsmithLogger.getLogger().info("Executing " + next.getName());
+            GunsmithLogger.getLogger().debug("Executing " + next.getName());
             ex = next.getBrush().run(player, brushVariables);
             if (!ex.shouldContinue())
             {

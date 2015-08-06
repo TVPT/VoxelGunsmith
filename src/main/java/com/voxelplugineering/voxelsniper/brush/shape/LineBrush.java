@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.brush.shape;
 
+import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushAction;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
@@ -33,10 +34,17 @@ import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
+import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
+import com.voxelplugineering.voxelsniper.shape.ComplexShape;
+import com.voxelplugineering.voxelsniper.util.RayTrace;
+import com.voxelplugineering.voxelsniper.util.math.Vector3d;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 
 /**
@@ -55,22 +63,82 @@ public class LineBrush implements Brush
     {
         BrushAction action = args.get(BrushKeys.ACTION, BrushAction.class).get();
         Optional<Block> target = args.get(BrushKeys.TARGET_BLOCK, Block.class);
-        Location loc = target.get().getLocation();
         if (action == BrushAction.PRIMARY)
         {
-            args.set(BrushContext.of(this.instance), BrushKeys.POINT_A, loc);
-            player.sendMessage("Point A set to (" + loc.getFlooredX() + ", " + loc.getFlooredY() + ", " + loc.getFlooredZ() + ")");
-            player.sendMessage("Use the alternate action to draw lines from this point now.");
-            return ExecutionResult.abortExecution();
+            Location a = target.get().getLocation();
+            player.sendMessage(VoxelSniperConfiguration.setFirstPoint, a.getFlooredX(), a.getFlooredY(), a.getFlooredZ());
+            args.set(BrushContext.of(this.instance), BrushKeys.POINT_A, a);
+            return ExecutionResult.delayExecution(this.instance);
         }
-        // if its not the alt action we need to create the line
-        if (!args.has(BrushKeys.POINT_A))
+        // if its not the primary action we need to create the line
+        Optional<Location> pointA = args.get(BrushKeys.POINT_A, Location.class);
+        if (!pointA.isPresent())
         {
             player.sendMessage("You must select a starting point first with the primary action.");
             return ExecutionResult.abortExecution();
         }
-        // Location pointB = args.get(BrushKeys.POINT_B, Location.class).get();
-        // TODO
+        Location a = pointA.get();
+        Location b = target.get().getLocation();
+        player.sendMessage(VoxelSniperConfiguration.setSecondPoint, b.getFlooredX(), b.getFlooredY(), b.getFlooredZ());
+        int w;
+        int h;
+        int l;
+        int ox;
+        int oy;
+        int oz;
+        if (a.getFlooredX() < b.getFlooredX())
+        {
+            w = b.getFlooredX() - a.getFlooredX() + 1;
+            ox = w - 1;
+        } else
+        {
+            w = a.getFlooredX() - b.getFlooredX() + 1;
+            ox = 0;
+        }
+        if (a.getFlooredY() < b.getFlooredY())
+        {
+            h = b.getFlooredY() - a.getFlooredY() + 1;
+            oy = h - 1;
+        } else
+        {
+            h = a.getFlooredY() - b.getFlooredY() + 1;
+            oy = 0;
+        }
+        if (a.getFlooredZ() < b.getFlooredZ())
+        {
+            l = b.getFlooredZ() - a.getFlooredZ() + 1;
+            oz = l - 1;
+        } else
+        {
+            l = a.getFlooredZ() - b.getFlooredZ() + 1;
+            oz = 0;
+        }
+        final Vector3i min = new Vector3i(Math.min(a.getFlooredX(), b.getFlooredX()), Math.min(a.getFlooredY(), b.getFlooredY()),
+                Math.min(a.getFlooredZ(), b.getFlooredZ()));
+        final ComplexShape s = new ComplexShape(w, h, l, new Vector3i(ox, oy, oz));
+        Vector3d dir = b.toVector().sub(a.toVector());
+        RayTrace ray = new RayTrace(a, dir, dir.length(), BaseConfiguration.minimumWorldDepth,
+                BaseConfiguration.maximumWorldHeight, BaseConfiguration.rayTraceStep, new Vector3d(0, 0, 0));
+        ray.getTraversalBlocks().clear();
+        ray.trace(new Function<Block, Boolean>()
+        {
+
+            @Override
+            public Boolean apply(Block arg0)
+            {
+                Vector3i vec = arg0.getPosition();
+                int x = vec.getX() - min.getX();
+                int y = vec.getY() - min.getY();
+                int z = vec.getZ() - min.getZ();
+                if(x < 0 || x >= s.getWidth() || y < 0 || y >= s.getHeight() || z < 0 || z >= s.getLength()) {
+                    return false;
+                }
+                s.set(x, y, z, false);
+                return true;
+            }
+
+        });
+        args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
         return ExecutionResult.continueExecution();
     }
 

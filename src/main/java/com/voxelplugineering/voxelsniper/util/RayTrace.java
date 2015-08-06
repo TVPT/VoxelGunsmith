@@ -28,11 +28,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.util.math.Vector3d;
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.World;
@@ -89,12 +91,14 @@ public class RayTrace
      * ray trace
      */
 
+    private final double stepX;
+    private final double stepY;
+    private final double stepZ;
+    private final Vector3d playerEyeOffset;
+    private final int minWorldY;
+    private final int maxWorldY;
     private double length;
     private double range;
-    private int minWorldY;
-    private int maxWorldY;
-    private double yaw;
-    private double pitch;
     private double currentX;
     private double currentY;
     private double currentZ;
@@ -104,14 +108,7 @@ public class RayTrace
     private int lastX;
     private int lastY;
     private int lastZ;
-    private double rotX;
-    private double rotY;
-    private double rotXSin;
-    private double rotXCos;
-    private double rotYSin;
-    private double rotYCos;
     private double step;
-    private Vector3d playerEyeOffset;
 
     /**
      * Creates a new raytrace to reference with the given location yaw and pitch.
@@ -123,8 +120,6 @@ public class RayTrace
     public RayTrace(Location origin, double yaw, double pitch, double range, int minY, int maxY, double step, Vector3d playerEyeOffset)
     {
         this.origin = checkNotNull(origin, "Origin cannot be null");
-        this.yaw = yaw;
-        this.pitch = pitch;
         this.range = range;
         this.minWorldY = minY;
         this.maxWorldY = maxY;
@@ -132,6 +127,41 @@ public class RayTrace
         this.world = this.origin.getWorld();
         this.traversalBlocks.add(this.world.getMaterialRegistry().getAirMaterial());
         this.playerEyeOffset = playerEyeOffset;
+        // This is to do with the axis orientation of minecraft,
+        // not sure how to handle this in a context separated from the
+        // implementation.
+        // Possibly something attached to the world to detail the different
+        // orientations
+        // of the axis and which directions they represent.
+        //
+        // Currently:
+        // 0 degrees of yaw is the direction of the positive x axis going
+        // clockwise towards the positive z axis first.
+        double rotX = (yaw + 90) % 360;
+        double rotY = pitch * -1;
+        double rotYCos = Math.cos(Math.toRadians(rotY));
+        double rotYSin = Math.sin(Math.toRadians(rotY));
+        double rotXCos = Math.cos(Math.toRadians(rotX));
+        double rotXSin = Math.sin(Math.toRadians(rotX));
+        this.stepX = rotYCos * rotXCos;
+        this.stepY = rotYSin;
+        this.stepZ = rotYCos * rotXSin;
+    }
+
+    public RayTrace(Location origin, Vector3d direction, double range, int minY, int maxY, double step, Vector3d playerEyeOffset)
+    {
+        this.origin = checkNotNull(origin, "Origin cannot be null");
+        this.range = range;
+        this.minWorldY = minY;
+        this.maxWorldY = maxY;
+        this.step = step;
+        this.world = this.origin.getWorld();
+        this.traversalBlocks.add(this.world.getMaterialRegistry().getAirMaterial());
+        this.playerEyeOffset = playerEyeOffset;
+        Vector3d dir = direction.normalize();
+        this.stepX = dir.getX();
+        this.stepY = dir.getY();
+        this.stepZ = dir.getZ();
     }
 
     /**
@@ -145,23 +175,13 @@ public class RayTrace
     }
 
     /**
-     * The yaw of the direction of the ray in degrees.
+     * The direction of the ray.
      * 
-     * @return the yaw
+     * @return the direction
      */
-    public double getYaw()
+    public Vector3d getDirection()
     {
-        return this.yaw;
-    }
-
-    /**
-     * The pitch of the direction of the ray, in degrees.
-     * 
-     * @return the pitch
-     */
-    public double getPitch()
-    {
-        return this.pitch;
+        return new Vector3d(this.stepX, this.stepY, this.stepZ);
     }
 
     /**
@@ -185,25 +205,13 @@ public class RayTrace
     }
 
     /**
-     * Sets the blocks that may be traversed by the ray.
-     * 
-     * @param blocks the traversal blocks
-     */
-    public void setTraversalBlocks(Material... blocks)
-    {
-        checkNotNull(blocks, "Traversal blocks cannot be null");
-        this.traversalBlocks.clear();
-        Collections.addAll(this.traversalBlocks, blocks);
-    }
-
-    /**
      * Returns the blocks that will be traversed by this ray as if non-solid.
      * 
      * @return the blocks that may be traversed
      */
     public List<Material> getTraversalBlocks()
     {
-        return Collections.unmodifiableList(this.traversalBlocks);
+        return this.traversalBlocks;
     }
 
     /**
@@ -281,29 +289,17 @@ public class RayTrace
         this.lastX = (int) Math.floor(this.currentX);
         this.lastY = (int) Math.floor(this.currentY);
         this.lastZ = (int) Math.floor(this.currentZ);
+    }
 
-        // I think this is to do with the axis orientation of minecraft,
-        // not sure how to handle this in a context separated from the
-        // implementation.
-        // Possibly something attached to the world to detail the different
-        // orientations
-        // of the axis and which directions they represent.
-        //
-        // Currently:
-        // 0 degrees of yaw is the direction of the positive x axis going
-        // clockwise towards the positive z axis first.
-        this.rotX = (this.yaw + 90) % 360;
-        this.rotY = this.pitch * -1;
-        this.rotYCos = Math.cos(Math.toRadians(this.rotY));
-        this.rotYSin = Math.sin(Math.toRadians(this.rotY));
-        this.rotXCos = Math.cos(Math.toRadians(this.rotX));
-        this.rotXSin = Math.sin(Math.toRadians(this.rotX));
+    public void trace()
+    {
+        trace(null);
     }
 
     /**
      * Perform a new ray trace.
      */
-    public void trace()
+    public void trace(Function<Block, Boolean> callback)
     {
         GunsmithLogger.getLogger().debug("Traversing: ");
         for (Material m : this.traversalBlocks)
@@ -314,7 +310,7 @@ public class RayTrace
         checkOutOfWorld();
         if (this.length <= this.range)
         {
-            step();
+            step(callback);
         }
         this.lastBlock = this.world.getBlock(this.lastX, this.lastY, this.lastZ).orNull();
         this.targetBlock = this.world.getBlock(this.targetX, this.targetY, this.targetZ).or(this.lastBlock);
@@ -323,7 +319,7 @@ public class RayTrace
     /**
      * Perform a single step of the trace.
      */
-    private void step()
+    private void step(Function<Block, Boolean> callback)
     {
 
         this.lastX = this.targetX;
@@ -335,9 +331,9 @@ public class RayTrace
         {
             this.length += this.step;
 
-            this.currentX = (this.length * this.rotYCos) * this.rotXCos;
-            this.currentY = this.length * this.rotYSin;
-            this.currentZ = (this.length * this.rotYCos) * this.rotXSin;
+            this.currentX = this.length * this.stepX;
+            this.currentY = this.length * this.stepY;
+            this.currentZ = this.length * this.stepZ;
 
             this.targetX = (int) Math.floor(this.currentX + this.origin.getX());
             this.targetY = (int) Math.floor(this.currentY + this.origin.getY());
@@ -354,9 +350,15 @@ public class RayTrace
             this.targetY = this.lastY;
             this.targetZ = this.lastZ;
             this.targetDirection = this.lastDirection;
+            GunsmithLogger.getLogger().debug("Next block not available, breaking");
             return;
         }
-        if (!this.traversalBlocks.contains(next.get().getMaterial().getType()))
+        if (callback != null && !callback.apply(next.get()))
+        {
+            GunsmithLogger.getLogger().debug("Callback failed, breaking");
+            return;
+        }
+        if (!this.traversalBlocks.isEmpty() && !this.traversalBlocks.contains(next.get().getMaterial().getType()))
         {
             // Abort - found non-traversal block
             GunsmithLogger.getLogger().debug("Found non-traversal block: " + next.get().getMaterial().getType().getName() + " breaking. "
@@ -372,10 +374,11 @@ public class RayTrace
             this.targetZ = this.lastZ;
             this.targetDirection = this.lastDirection;
             this.length = this.range;
+            GunsmithLogger.getLogger().debug("reached end or oob, breaking");
         } else
         {
             // continue
-            step();
+            step(callback);
         }
     }
 
@@ -396,9 +399,9 @@ public class RayTrace
                 {
                     this.length += this.step;
 
-                    this.currentX = (this.length * this.rotYCos) * this.rotXCos;
-                    this.currentY = this.length * this.rotYSin;
-                    this.currentZ = (this.length * this.rotYCos) * this.rotXSin;
+                    this.currentX = this.length * this.stepX;
+                    this.currentY = this.length * this.stepY;
+                    this.currentZ = this.length * this.stepZ;
 
                     this.targetX = (int) Math.floor(this.currentX + this.origin.getX());
                     this.targetY = (int) Math.floor(this.currentY + this.origin.getY());
@@ -419,9 +422,9 @@ public class RayTrace
                 {
                     this.length += this.step;
 
-                    this.currentX = (this.length * this.rotYCos) * this.rotXCos;
-                    this.currentY = this.length * this.rotYSin;
-                    this.currentZ = (this.length * this.rotYCos) * this.rotXSin;
+                    this.currentX = this.length * this.stepX;
+                    this.currentY = this.length * this.stepY;
+                    this.currentZ = this.length * this.stepZ;
 
                     this.targetX = (int) Math.floor(this.currentX + this.origin.getX());
                     this.targetY = (int) Math.floor(this.currentY + this.origin.getY());
