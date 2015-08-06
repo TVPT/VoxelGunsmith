@@ -49,7 +49,6 @@ public final class GunsmithMain
         } else
         {
             System.out.println("Usage: java -jar Gunsmith.jar <command> [args]\n"
-                    + "\t--generate <directory>\t: Generates all default brushes into the given directory.\n"
                     + "\t--testinit\t\t: Performs a full initialization to shutdown cycle.\n");
         }
     }
