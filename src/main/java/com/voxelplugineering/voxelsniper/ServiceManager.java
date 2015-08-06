@@ -119,6 +119,12 @@ public class ServiceManager implements Contextable
      */
     public void start()
     {
+        //Send in dev warning
+        GunsmithLogger.getLogger().warn("============================================================");
+        GunsmithLogger.getLogger().warn("YOU ARE USING AN IN DEVELOPMENT VERSION OF VOXELSNIPER");
+        GunsmithLogger.getLogger().warn("        THERE MAY BE BUGS (please report them)");
+        GunsmithLogger.getLogger().warn("============================================================");
+        
         // TODO: reduce NPath complexity
         if (this.state != State.STOPPED)
         {
