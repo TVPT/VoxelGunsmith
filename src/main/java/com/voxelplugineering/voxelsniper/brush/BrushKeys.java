@@ -43,7 +43,7 @@ public final class BrushKeys
     public static final String ACTION = "$action";
     public static final String LAST_BLOCK = "$lastBlock";
     public static final String LAST_FACE = "$lastFace";
-    public static final String LENGTH = "$length";
+    public static final String RAY_LENGTH = "$length";
     public static final String ORIGIN = "$origin";
     public static final String PLAYER_PITCH = "$pitch";
     public static final String PLAYER = "$player";
@@ -61,6 +61,11 @@ public final class BrushKeys
     public static final String INNER_RADIUS = "ir";
     public static final String KERNEL = "kernel";
     public static final String KERNEL_SIZE = "kernelSize";
+    public static final String LENGTH = "length";
+    public static final String OFFSET = "offset";
+    public static final String OFFSET_X = "xoffset";
+    public static final String OFFSET_Y = "yoffset";
+    public static final String OFFSET_Z = "zoffset";
     public static final String PITCH = "pitch";
     public static final String RADIUS_X = "rx";
     public static final String RADIUS_Y = "ry";
@@ -70,6 +75,7 @@ public final class BrushKeys
     public static final String ROLL = "roll";
     public static final String SEED_PERCENT = "seed";
     public static final String USE_FACE = "face";
+    public static final String WIDTH = "width";
     public static final String YAW = "yaw";
     
     //Flags
