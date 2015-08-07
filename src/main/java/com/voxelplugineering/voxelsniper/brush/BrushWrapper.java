@@ -34,6 +34,7 @@ public class BrushWrapper
     private final String name;
     private final String help;
     private final BrushPartType type;
+    private final BrushParam[] params;
 
     /**
      * Creates a new {@link BrushWrapper} wrapping the given brush instance.
@@ -51,6 +52,7 @@ public class BrushWrapper
         this.name = info.name();
         this.help = info.help();
         this.type = info.type();
+        this.params = info.params();
     }
 
     /**
@@ -91,6 +93,11 @@ public class BrushWrapper
     public String getHelp()
     {
         return this.help;
+    }
+
+    public BrushParam[] getParameters()
+    {
+        return this.params;
     }
 
 }

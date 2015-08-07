@@ -80,6 +80,7 @@ public class BrushCommand extends Command
                 full += b.getName() + " ";
             }
             sniper.sendMessage(VoxelSniperConfiguration.brushSetMessage, full.trim());
+            sniper.getCurrentBrush().printParams(sniper);
             return true;
         }
         if (args.length == 1)
@@ -116,6 +117,7 @@ public class BrushCommand extends Command
             sniper.setCurrentBrush(brush);
             sniper.getBrushVars().clearFlags();
             sniper.sendMessage(VoxelSniperConfiguration.brushSetMessage, brush.getName());
+            sniper.getCurrentBrush().printParams(sniper);
 
             boolean hasShape = false;
             boolean hasEffect = false;

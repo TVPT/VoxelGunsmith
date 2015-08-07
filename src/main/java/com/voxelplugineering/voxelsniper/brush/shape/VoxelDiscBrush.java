@@ -27,6 +27,7 @@ import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushParam;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
@@ -40,7 +41,8 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * Defines a square 2d region.
  */
-@BrushInfo(name = "voxeldisc", type = BrushPartType.SHAPE)
+@BrushInfo(name = "voxeldisc", type = BrushPartType.SHAPE, params = {
+        @BrushParam(name = BrushKeys.USE_FACE, desc = "Whether to align shape to selected block face (true/false)") })
 public class VoxelDiscBrush implements Brush
 {
 

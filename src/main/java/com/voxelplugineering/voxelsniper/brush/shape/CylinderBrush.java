@@ -27,6 +27,7 @@ import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushParam;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
@@ -42,7 +43,9 @@ import com.google.common.base.Optional;
 /**
  * A shape brush which defines a cylindrical region.
  */
-@BrushInfo(name = "cylinder", type = BrushPartType.SHAPE)
+@BrushInfo(name = "cylinder", type = BrushPartType.SHAPE, params = {
+        @BrushParam(name = BrushKeys.USE_FACE, desc = "Whether to align shape to selected block face, (true/false)"),
+        @BrushParam(name = BrushKeys.HEIGHT, desc = "The cylinder height (number)") })
 public class CylinderBrush implements Brush
 {
 

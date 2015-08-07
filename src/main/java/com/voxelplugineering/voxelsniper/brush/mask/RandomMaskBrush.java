@@ -27,6 +27,7 @@ import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushParam;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
@@ -39,7 +40,8 @@ import com.google.common.base.Optional;
 
 import java.util.Random;
 
-@BrushInfo(name = "random", type = BrushPartType.MASK)
+@BrushInfo(name = "random", type = BrushPartType.MASK, params = {
+        @BrushParam(name = BrushKeys.RANDOM_CHANCE, desc = "The change for points to stay (floating-point number)") })
 public class RandomMaskBrush implements Brush
 {
 
@@ -54,7 +56,8 @@ public class RandomMaskBrush implements Brush
         }
         Optional<Double> ochance = args.get(BrushKeys.RANDOM_CHANCE, Double.class);
         double chance = VoxelSniperConfiguration.randomDefaultChance;
-        if(ochance.isPresent()) {
+        if (ochance.isPresent())
+        {
             chance = ochance.get();
         }
         ComplexShape shape;
@@ -74,7 +77,8 @@ public class RandomMaskBrush implements Brush
                 {
                     if (shape.get(x, y, z, false))
                     {
-                        if(rand.nextDouble() > chance) {
+                        if (rand.nextDouble() > chance)
+                        {
                             shape.unset(x, y, z, false);
                         }
                     }

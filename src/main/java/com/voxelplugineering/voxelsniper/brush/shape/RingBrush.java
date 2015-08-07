@@ -27,6 +27,7 @@ import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushParam;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
@@ -43,7 +44,10 @@ import com.google.common.base.Optional;
 /**
  * A shape brush which defines a cylindrical region.
  */
-@BrushInfo(name = "ring", type = BrushPartType.SHAPE)
+@BrushInfo(name = "ring", type = BrushPartType.SHAPE, params = {
+        @BrushParam(name = BrushKeys.USE_FACE, desc = "Whether to align shape to selected block face (true/false)"),
+        @BrushParam(name = BrushKeys.INNER_RADIUS, desc = "The inner radius of the ring (floating-point number)"),
+        @BrushParam(name = BrushKeys.HEIGHT, desc = "The height of the ring (number)") })
 public class RingBrush implements Brush
 {
 
@@ -77,10 +81,14 @@ public class RingBrush implements Brush
                 CylinderShape outer = new CylinderShape(size, height, size, new Vector3i(size, size, 0), Direction.SOUTH);
                 CylinderShape inner = new CylinderShape(ir, height, ir, new Vector3i(ir, ir, 0), Direction.SOUTH);
                 s = new ComplexShape(outer);
-                for(int x = -Maths.ceil(ir); x < Maths.ceil(ir); x++) {
-                    for(int y = -Maths.ceil(ir); y < Maths.ceil(ir); y++) {
-                        for(int z = 0; z < inner.getHeight(); z++) {
-                            if(inner.get(x, y, z, true)) {
+                for (int x = -Maths.ceil(ir); x < Maths.ceil(ir); x++)
+                {
+                    for (int y = -Maths.ceil(ir); y < Maths.ceil(ir); y++)
+                    {
+                        for (int z = 0; z < inner.getHeight(); z++)
+                        {
+                            if (inner.get(x, y, z, true))
+                            {
                                 s.unset(x, y, z, true);
                             }
                         }
@@ -94,10 +102,14 @@ public class RingBrush implements Brush
                 CylinderShape outer = new CylinderShape(size, height, size, new Vector3i(0, size, size), Direction.EAST);
                 CylinderShape inner = new CylinderShape(ir, height, ir, new Vector3i(0, ir, ir), Direction.EAST);
                 s = new ComplexShape(outer);
-                for(int y = -Maths.ceil(ir); y < Maths.ceil(ir); y++) {
-                    for(int z = -Maths.ceil(ir); z < Maths.ceil(ir); z++) {
-                        for(int x = 0; x < inner.getHeight(); x++) {
-                            if(inner.get(x, y, z, true)) {
+                for (int y = -Maths.ceil(ir); y < Maths.ceil(ir); y++)
+                {
+                    for (int z = -Maths.ceil(ir); z < Maths.ceil(ir); z++)
+                    {
+                        for (int x = 0; x < inner.getHeight(); x++)
+                        {
+                            if (inner.get(x, y, z, true))
+                            {
                                 s.unset(x, y, z, true);
                             }
                         }
@@ -110,10 +122,14 @@ public class RingBrush implements Brush
                 CylinderShape outer = new CylinderShape(size, height, size, new Vector3i(size, 0, size));
                 CylinderShape inner = new CylinderShape(ir, height, ir, new Vector3i(ir, 0, ir));
                 s = new ComplexShape(outer);
-                for(int x = -Maths.ceil(ir); x < Maths.ceil(ir); x++) {
-                    for(int z = -Maths.ceil(ir); z < Maths.ceil(ir); z++) {
-                        for(int y = 0; y < inner.getHeight(); y++) {
-                            if(inner.get(x, y, z, true)) {
+                for (int x = -Maths.ceil(ir); x < Maths.ceil(ir); x++)
+                {
+                    for (int z = -Maths.ceil(ir); z < Maths.ceil(ir); z++)
+                    {
+                        for (int y = 0; y < inner.getHeight(); y++)
+                        {
+                            if (inner.get(x, y, z, true))
+                            {
                                 s.unset(x, y, z, true);
                             }
                         }
@@ -127,10 +143,14 @@ public class RingBrush implements Brush
             CylinderShape outer = new CylinderShape(size, height, size, new Vector3i(size, 0, size));
             CylinderShape inner = new CylinderShape(ir, height, ir, new Vector3i(ir, 0, ir));
             s = new ComplexShape(outer);
-            for(int x = -Maths.ceil(ir); x < Maths.ceil(ir); x++) {
-                for(int z = -Maths.ceil(ir); z < Maths.ceil(ir); z++) {
-                    for(int y = 0; y < inner.getHeight(); y++) {
-                        if(inner.get(x, y, z, true)) {
+            for (int x = -Maths.ceil(ir); x < Maths.ceil(ir); x++)
+            {
+                for (int z = -Maths.ceil(ir); z < Maths.ceil(ir); z++)
+                {
+                    for (int y = 0; y < inner.getHeight(); y++)
+                    {
+                        if (inner.get(x, y, z, true))
+                        {
                             s.unset(x, y, z, true);
                         }
                     }

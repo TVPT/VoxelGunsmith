@@ -27,6 +27,7 @@ import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushParam;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
@@ -39,7 +40,10 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * A shape brush which defines an ellipsoid.
  */
-@BrushInfo(name = "ellipsoid", type = BrushPartType.SHAPE)
+@BrushInfo(name = "ellipsoid", type = BrushPartType.SHAPE, params = {
+        @BrushParam(name = BrushKeys.RADIUS_X, desc = "The x radius (floating-point number)"),
+        @BrushParam(name = BrushKeys.RADIUS_Y, desc = "The y radius (floating-point number)"),
+        @BrushParam(name = BrushKeys.RADIUS_Z, desc = "The z radius (floating-point number)") })
 public class EllipsoidBrush implements Brush
 {
 

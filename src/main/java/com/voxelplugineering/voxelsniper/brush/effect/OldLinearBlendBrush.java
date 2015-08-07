@@ -26,6 +26,7 @@ package com.voxelplugineering.voxelsniper.brush.effect;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushParam;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
@@ -53,7 +54,8 @@ import java.util.Map;
  * A blend brush which modifies the impact of materials within its structuring element depending on
  * their distance from the target point.
  */
-@BrushInfo(name = "linearblend", type = BrushPartType.EFFECT)
+@BrushInfo(name = "linearblend", type = BrushPartType.EFFECT, params = {
+        @BrushParam(name = BrushKeys.EXCLUDE_FLUID, desc = "Whether to exclude fluids (true/false)") })
 public class OldLinearBlendBrush implements Brush
 {
 

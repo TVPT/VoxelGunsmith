@@ -67,7 +67,7 @@ public class ParameterCommand extends Command
         Player sniper = (Player) sender;
         if (args.length < 2)
         {
-            sniper.sendMessage(this.getHelpMsg());
+            sniper.getCurrentBrush().printParams(sender);
             return true;
         }
         String target = args[0];

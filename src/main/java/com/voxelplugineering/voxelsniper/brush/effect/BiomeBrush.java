@@ -26,6 +26,7 @@ package com.voxelplugineering.voxelsniper.brush.effect;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushParam;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
@@ -47,7 +48,7 @@ import java.util.List;
 /**
  * An effect brush which sets your shape area to your specified biome.
  */
-@BrushInfo(name = "biome", type = BrushPartType.EFFECT)
+@BrushInfo(name = "biome", type = BrushPartType.EFFECT, params = { @BrushParam(name = BrushKeys.BIOME, desc = "The biome") })
 public class BiomeBrush implements Brush
 {
 

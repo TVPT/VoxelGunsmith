@@ -26,6 +26,7 @@ package com.voxelplugineering.voxelsniper.brush.effect;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushParam;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
@@ -53,7 +54,8 @@ import java.util.Map;
  * The blend brush. An effect brush which performs a 'blend' operation by setting blocks in the
  * defined region to the mode material of the surrounding materials.
  */
-@BrushInfo(name = "blend", type = BrushPartType.EFFECT)
+@BrushInfo(name = "blend", type = BrushPartType.EFFECT, params = {
+        @BrushParam(name = BrushKeys.EXCLUDE_FLUID, desc = "Whether to exclude fluids (true/false)") })
 public class OldBlendBrush implements Brush
 {
 

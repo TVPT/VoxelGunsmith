@@ -27,6 +27,7 @@ import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushParam;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
@@ -40,7 +41,10 @@ import com.google.common.base.Optional;
 
 import java.util.Random;
 
-@BrushInfo(name = "splatter", type = BrushPartType.MASK)
+@BrushInfo(name = "splatter", type = BrushPartType.MASK, params = {
+        @BrushParam(name = BrushKeys.SEED_PERCENT, desc = "The seed percent (floating-point number)"),
+        @BrushParam(name = BrushKeys.GROW_PERCENT, desc = "The growth percent (floating-point number)"),
+        @BrushParam(name = BrushKeys.RECURSIONS, desc = "The number of growth passes (number)") })
 public class SplatterMaskBrush implements Brush
 {
 

@@ -31,7 +31,9 @@ import java.util.Queue;
 import com.google.common.collect.Queues;
 
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
+import com.voxelplugineering.voxelsniper.service.command.MessageReceiver;
 
 /**
  * Represents a chain of brushes. Unlike {@link Brush} this should be a unique instance per player
@@ -158,6 +160,18 @@ public class BrushChain
     public String getName()
     {
         return this.cmd;
+    }
+
+    public void printParams(MessageReceiver target)
+    {
+        for(BrushWrapper brush: this.brushes) {
+            if(brush.getParameters().length != 0) {
+                target.sendMessage(VoxelSniperConfiguration.paramHeader, brush.getName());
+                for(BrushParam param: brush.getParameters()) {
+                    target.sendMessage(VoxelSniperConfiguration.paramInfo, param.name(), param.desc());
+                }
+            }
+        }
     }
 
 }

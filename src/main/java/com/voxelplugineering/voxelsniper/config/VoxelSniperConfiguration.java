@@ -126,6 +126,10 @@ public class VoxelSniperConfiguration
     public static String missingAltMaterial = TextFormat.RED + "You must select a secondary material.";
     @ConfigValue(section = "messages.brush")
     public static String brushExecError = TextFormat.DARK_RED + "Error executing brush, see console for more details.";
+    @ConfigValue(section = "messages.brush")
+    public static String paramHeader = TextFormat.GOLD + "Parameters for " + TextFormat.GREEN + "%s" + TextFormat.GOLD + ":";
+    @ConfigValue(section = "messages.brush")
+    public static String paramInfo = TextFormat.GREEN + "    %s" + TextFormat.GOLD + " - " + TextFormat.RED + "%s";
 
     @ConfigValue(section = "messages.brush.set")
     public static String setFirstPoint = TextFormat.GREEN + "Set first point to (%d, %d, %d).";

@@ -27,6 +27,7 @@ import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.brush.BrushParam;
 import com.voxelplugineering.voxelsniper.brush.BrushPartType;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
@@ -40,7 +41,10 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * A shape brush which defines a 2D ellipse.
  */
-@BrushInfo(name = "ellipse", type = BrushPartType.SHAPE)
+@BrushInfo(name = "ellipse", type = BrushPartType.SHAPE, params = {
+        @BrushParam(name = BrushKeys.USE_FACE, desc = "Whether to align shape to selected block face (true/false)"),
+        @BrushParam(name = BrushKeys.RADIUS_X, desc = "The x radius (floating-point number)"),
+        @BrushParam(name = BrushKeys.RADIUS_Z, desc = "The z radius (floating-point number)") })
 public class EllipseBrush implements Brush
 {
 
