@@ -42,6 +42,7 @@ public class VoxelSniperConfiguration
     public static int statusMessageThreshold = 80000;
     public static String playerDataDirectory = "players/";
     public static boolean useUUIDsForDataDirectories = true;
+    public static boolean generateDefaultAliases = true;
 
     // Default brush settings
     @ConfigValue(section = "defaults")

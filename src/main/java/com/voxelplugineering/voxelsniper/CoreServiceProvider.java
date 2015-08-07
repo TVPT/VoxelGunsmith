@@ -37,6 +37,7 @@ import com.voxelplugineering.voxelsniper.commands.ResetCommand;
 import com.voxelplugineering.voxelsniper.commands.UndoCommand;
 import com.voxelplugineering.voxelsniper.commands.VSCommand;
 import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
+import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.event.handler.CommonEventHandler;
 import com.voxelplugineering.voxelsniper.service.AnnotationScanner;
 import com.voxelplugineering.voxelsniper.service.BrushManagerService;
@@ -139,8 +140,13 @@ public class CoreServiceProvider
     {
         service.registerTarget("brush");
         service.registerTarget("material");
-
-        DefaultAliasBuilder.loadDefaultAliases(service);
+        try
+        {
+            service.load();
+        } catch (IOException e)
+        {
+            GunsmithLogger.getLogger().error(e, "Error loading global aliases");
+        }
     }
 
     @Builder(target = GlobalBrushManager.class, priority = ServicePriorities.GLOBAL_BRUSH_MANAGER_PRIORITY)
@@ -220,6 +226,12 @@ public class CoreServiceProvider
         if (sched.isPresent())
         {
             sched.get().startSynchronousTask(new ChangeQueueTask(players), BaseConfiguration.changeInterval);
+        }
+
+        Optional<GlobalAliasHandler> aliases = context.get(GlobalAliasHandler.class);
+        if (aliases.isPresent() && VoxelSniperConfiguration.generateDefaultAliases)
+        {
+            DefaultAliasBuilder.loadDefaultAliases(aliases.get());
         }
     }
 

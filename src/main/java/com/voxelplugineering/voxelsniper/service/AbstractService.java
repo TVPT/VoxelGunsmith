@@ -57,7 +57,7 @@ public abstract class AbstractService implements Service
         }
         this.initialized = true;
         _init();
-        GunsmithLogger.getLogger().info("Started " + getClass().getName() + " service.");
+        GunsmithLogger.getLogger().debug("Started " + getClass().getName() + " service.");
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class AbstractService implements Service
             s.shutdown();
         }
         _shutdown();
-        GunsmithLogger.getLogger().info("Stopped " + getClass().getName() + " service.");
+        GunsmithLogger.getLogger().debug("Stopped " + getClass().getName() + " service.");
         this.initialized = false;
     }
 

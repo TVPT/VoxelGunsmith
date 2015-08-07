@@ -45,6 +45,8 @@ import com.voxelplugineering.voxelsniper.world.queue.OfflineUndoHandler;
 
 import com.google.common.eventbus.DeadEvent;
 
+import java.io.IOException;
+
 /**
  * An event handler for the default behavior for events.
  */
@@ -81,17 +83,13 @@ public class CommonEventHandler
     @EventHandler
     public void onPlayerJoin(SniperEvent.SniperCreateEvent event)
     {
-
-        // TODO persistence
-        /*
-         * Player player = event.getSniper(); File playerFolder = new
-         * File(Gunsmith.getPlatformProxy().getDataFolder(), this.playerFolderName +
-         * player.getUniqueId().toString()); playerFolder.mkdirs(); File aliases = new
-         * File(playerFolder, this.aliasFile); JsonDataSource data = new JsonDataSource(aliases); if
-         * (aliases.exists()) { try { data.read(player.getPersonalAliasHandler()); } catch
-         * (IOException e) { Gunsmith.getLogger().error(e, "Error loading player aliases!"); } }
-         */
-        // Gunsmith.getOfflineUndoHandler().invalidate(player.getName());
+        try
+        {
+            event.getSniper().getAliasHandler().load();
+        } catch (IOException e)
+        {
+            GunsmithLogger.getLogger().error(e, "Error loading player aliases");
+        }
     }
 
     /**
@@ -103,17 +101,14 @@ public class CommonEventHandler
     public void onPlayerLeave(SniperEvent.SniperDestroyEvent event)
     {
         Player player = event.getSniper();
-        // TODO persistence
-        /*
-         * File playerFolder = new File(Gunsmith.getPlatformProxy().getDataFolder(),
-         * this.playerFolderName + player.getUniqueId().toString()); playerFolder.mkdirs(); File
-         * aliases = new File(playerFolder, this.aliasFile); JsonDataSource data = new
-         * JsonDataSource(aliases);
-         * 
-         * try { if (aliases.exists()) { aliases.createNewFile(); }
-         * data.write(player.getPersonalAliasHandler()); } catch (IOException e) {
-         * Gunsmith.getLogger().error(e, "Error saving player aliases!"); }
-         */
+
+        try
+        {
+            player.getAliasHandler().save();
+        } catch (IOException e)
+        {
+            GunsmithLogger.getLogger().error(e, "Error saving player aliases");
+        }
 
         this.undo.register(player.getName(), player.getUndoHistory());
         this.players.invalidate(player.getName());
