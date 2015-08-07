@@ -38,7 +38,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * Defines a single-block region.
  */
-@BrushInfo(name = "snipe", type = BrushPartType.SHAPE)
+@BrushInfo(name = "snipe", type = BrushPartType.SHAPE, help = "Creates a shape around only your target block")
 public class SnipeBrush implements Brush
 {
 

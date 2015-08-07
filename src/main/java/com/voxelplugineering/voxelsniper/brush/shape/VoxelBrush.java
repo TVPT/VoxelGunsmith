@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.brush.shape;
 
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
@@ -39,7 +38,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * A shape brush which defines a cubic area with a side length of {@code brushSize * 2 + 1}.
  */
-@BrushInfo(name = "voxel", type = BrushPartType.SHAPE)
+@BrushInfo(name = "voxel", type = BrushPartType.SHAPE, help = "Creates a cube shape")
 public class VoxelBrush implements Brush
 {
 

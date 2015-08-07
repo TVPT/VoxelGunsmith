@@ -40,7 +40,7 @@ import com.google.common.base.Optional;
 
 import java.util.Random;
 
-@BrushInfo(name = "random", type = BrushPartType.MASK, params = {
+@BrushInfo(name = "random", type = BrushPartType.MASK, help = "Randomly removes points from your shape based on a parameterized chance", params = {
         @BrushParam(name = BrushKeys.RANDOM_CHANCE, desc = "The change for points to stay (floating-point number)") })
 public class RandomMaskBrush implements Brush
 {

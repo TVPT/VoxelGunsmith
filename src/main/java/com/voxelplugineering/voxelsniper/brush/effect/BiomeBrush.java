@@ -48,7 +48,8 @@ import java.util.List;
 /**
  * An effect brush which sets your shape area to your specified biome.
  */
-@BrushInfo(name = "biome", type = BrushPartType.EFFECT, params = { @BrushParam(name = BrushKeys.BIOME, desc = "The biome") })
+@BrushInfo(name = "biome", type = BrushPartType.EFFECT, help = "An effect brush which sets your shape area to the specified biome", params = {
+        @BrushParam(name = BrushKeys.BIOME, desc = "The biome") })
 public class BiomeBrush implements Brush
 {
 

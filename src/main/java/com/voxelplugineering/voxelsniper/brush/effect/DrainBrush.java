@@ -43,7 +43,7 @@ import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
 import com.google.common.base.Optional;
 
-@BrushInfo(name = "drain", type = BrushPartType.EFFECT)
+@BrushInfo(name = "drain", type = BrushPartType.EFFECT, help = "An effect brush which removes all liquids from within your shape")
 public class DrainBrush implements Brush
 {
 
@@ -90,7 +90,8 @@ public class DrainBrush implements Brush
                     {
                         continue;
                     }
-                    if(!player.getWorld().getBlock(x0, y0, z0).get().getMaterial().getType().isLiquid()) {
+                    if (!player.getWorld().getBlock(x0, y0, z0).get().getMaterial().getType().isLiquid())
+                    {
                         shape.unset(x, y, z, false);
                     }
                 }

@@ -43,7 +43,7 @@ import com.voxelplugineering.voxelsniper.world.Location;
 
 import com.google.common.base.Optional;
 
-@BrushInfo(name = "checker", type = BrushPartType.MASK, params = {
+@BrushInfo(name = "checker", type = BrushPartType.MASK, help = "Modifies your shape to produce a checker pattern", params = {
         @BrushParam(name = BrushKeys.WIDTH, desc = "The X-axis size of the tiles (number)"),
         @BrushParam(name = BrushKeys.HEIGHT, desc = "The Y-axis size of the tiles (number)"),
         @BrushParam(name = BrushKeys.LENGTH, desc = "The Z-axis size of the tiles (number)"),
@@ -59,7 +59,7 @@ public class CheckerMaskBrush implements Brush
         Optional<Shape> s = args.get(BrushKeys.SHAPE, Shape.class);
         if (!s.isPresent())
         {
-            player.sendMessage(VoxelSniperConfiguration.missingShape, "materialmask");
+            player.sendMessage(VoxelSniperConfiguration.missingShape, "checker");
             return ExecutionResult.abortExecution();
         }
         int xoffset = args.get(BrushKeys.OFFSET_X, Integer.class).or(0);

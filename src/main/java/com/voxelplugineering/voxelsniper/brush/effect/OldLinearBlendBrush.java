@@ -54,10 +54,12 @@ import java.util.Map;
  * A blend brush which modifies the impact of materials within its structuring element depending on
  * their distance from the target point.
  */
-@BrushInfo(name = "linearblend", type = BrushPartType.EFFECT, params = {
+@BrushInfo(name = "linearblend", type = BrushPartType.EFFECT, help = OldLinearBlendBrush.HELP, params = {
         @BrushParam(name = BrushKeys.EXCLUDE_FLUID, desc = "Whether to exclude fluids (true/false)") })
 public class OldLinearBlendBrush implements Brush
 {
+
+    protected static final String HELP = "Similar to the blend brush, but decreases the weight of the surrounding materials based on their distance";
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)

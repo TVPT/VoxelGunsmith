@@ -32,9 +32,7 @@ import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.util.brush.BrushVarsHelper;
 import com.voxelplugineering.voxelsniper.world.Block;
 
-import com.google.common.base.Optional;
-
-@BrushInfo(name = "lightning", type = BrushPartType.MISC)
+@BrushInfo(name = "lightning", type = BrushPartType.MISC, help = "Strikes lightning at your targeted position")
 public class LightningBrush implements Brush
 {
 

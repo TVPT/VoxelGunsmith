@@ -41,7 +41,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * A shape brush which defines a 2D ellipse.
  */
-@BrushInfo(name = "ellipse", type = BrushPartType.SHAPE, params = {
+@BrushInfo(name = "ellipse", type = BrushPartType.SHAPE, help = "Creates a flat ellipse shape", params = {
         @BrushParam(name = BrushKeys.USE_FACE, desc = "Whether to align shape to selected block face (true/false)"),
         @BrushParam(name = BrushKeys.RADIUS_X, desc = "The x radius (floating-point number)"),
         @BrushParam(name = BrushKeys.RADIUS_Z, desc = "The z radius (floating-point number)") })

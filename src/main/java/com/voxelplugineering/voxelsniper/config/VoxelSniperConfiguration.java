@@ -115,6 +115,8 @@ public class VoxelSniperConfiguration
     public static String vsConfigReloadSuccess = TextFormat.GREEN + "Successfully reloaded configuration from file.";
     @ConfigValue(section = "messages.command.vs")
     public static String vsConfigReloadFailed = TextFormat.RED + "Failed to reload configuration from file. Check console for errors.";
+    @ConfigValue(section = "messages.command.help")
+    public static String brushHelpFormat = TextFormat.GREEN + "%s" + TextFormat.GOLD + ": " + TextFormat.AQUA + "%s";
 
     @ConfigValue(section = "messages.brush")
     public static String missingShape = TextFormat.RED + "You must have at least one shape before your %s brush.";

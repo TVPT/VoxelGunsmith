@@ -41,12 +41,14 @@ import com.google.common.base.Optional;
 
 import java.util.Random;
 
-@BrushInfo(name = "splatter", type = BrushPartType.MASK, params = {
+@BrushInfo(name = "splatter", type = BrushPartType.MASK, help = SplatterMaskBrush.HELP, params = {
         @BrushParam(name = BrushKeys.SEED_PERCENT, desc = "The seed percent (floating-point number)"),
         @BrushParam(name = BrushKeys.GROW_PERCENT, desc = "The growth percent (floating-point number)"),
         @BrushParam(name = BrushKeys.RECURSIONS, desc = "The number of growth passes (number)") })
 public class SplatterMaskBrush implements Brush
 {
+
+    protected static final String HELP = "Randomly seeds your shape and then grows outwards from the seeds based on the number of recursions";
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)

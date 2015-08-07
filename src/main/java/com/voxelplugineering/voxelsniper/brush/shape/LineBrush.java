@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.brush.shape;
 
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushAction;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
@@ -51,9 +50,12 @@ import com.google.common.base.Optional;
  * Defines a region which is a line between the point specified by the alternate action to the
  * target block.
  */
-@BrushInfo(name = "line", type = BrushPartType.SHAPE)
+@BrushInfo(name = "line", type = BrushPartType.SHAPE, help = LineBrush.HELP)
 public class LineBrush implements Brush
 {
+
+    protected static final String HELP = "Creates a straight line from the point selected with your primary action to the point(s) selected "
+            + "with your secondary action";
 
     @BrushInstance
     private BrushWrapper instance;
@@ -117,8 +119,8 @@ public class LineBrush implements Brush
                 Math.min(a.getFlooredZ(), b.getFlooredZ()));
         final ComplexShape s = new ComplexShape(w, h, l, new Vector3i(ox, oy, oz));
         Vector3d dir = b.toVector().sub(a.toVector());
-        RayTrace ray = new RayTrace(a, dir, dir.length(), BaseConfiguration.minimumWorldDepth,
-                BaseConfiguration.maximumWorldHeight, BaseConfiguration.rayTraceStep, new Vector3d(0, 0, 0));
+        RayTrace ray = new RayTrace(a, dir, dir.length(), BaseConfiguration.minimumWorldDepth, BaseConfiguration.maximumWorldHeight,
+                BaseConfiguration.rayTraceStep, new Vector3d(0, 0, 0));
         ray.getTraversalBlocks().clear();
         ray.trace(new Function<Block, Boolean>()
         {
@@ -130,7 +132,8 @@ public class LineBrush implements Brush
                 int x = vec.getX() - min.getX();
                 int y = vec.getY() - min.getY();
                 int z = vec.getZ() - min.getZ();
-                if(x < 0 || x >= s.getWidth() || y < 0 || y >= s.getHeight() || z < 0 || z >= s.getLength()) {
+                if (x < 0 || x >= s.getWidth() || y < 0 || y >= s.getHeight() || z < 0 || z >= s.getLength())
+                {
                     return false;
                 }
                 s.set(x, y, z, false);

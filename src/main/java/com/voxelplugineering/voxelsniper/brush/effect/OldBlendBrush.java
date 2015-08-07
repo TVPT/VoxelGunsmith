@@ -54,10 +54,13 @@ import java.util.Map;
  * The blend brush. An effect brush which performs a 'blend' operation by setting blocks in the
  * defined region to the mode material of the surrounding materials.
  */
-@BrushInfo(name = "blend", type = BrushPartType.EFFECT, params = {
+@BrushInfo(name = "blend", type = BrushPartType.EFFECT, help = OldBlendBrush.HELP, params = {
         @BrushParam(name = BrushKeys.EXCLUDE_FLUID, desc = "Whether to exclude fluids (true/false)") })
 public class OldBlendBrush implements Brush
 {
+
+    protected static final String HELP = "An effect brush which performs a 'blend' operation by setting blocks in the defined region to the "
+            + "most common material of the surrounding materials";
 
     @Override
     public ExecutionResult run(Player player, BrushVars args)

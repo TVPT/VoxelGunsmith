@@ -44,7 +44,7 @@ import com.google.common.base.Optional;
 /**
  * A shape brush which defines a cylindrical region.
  */
-@BrushInfo(name = "ring", type = BrushPartType.SHAPE, params = {
+@BrushInfo(name = "ring", type = BrushPartType.SHAPE, help = "Creates a ring shape", params = {
         @BrushParam(name = BrushKeys.USE_FACE, desc = "Whether to align shape to selected block face (true/false)"),
         @BrushParam(name = BrushKeys.INNER_RADIUS, desc = "The inner radius of the ring (floating-point number)"),
         @BrushParam(name = BrushKeys.HEIGHT, desc = "The height of the ring (number)") })

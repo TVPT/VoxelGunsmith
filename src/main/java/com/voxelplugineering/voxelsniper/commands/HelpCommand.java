@@ -69,7 +69,7 @@ public class HelpCommand extends Command
                 sender.sendMessage(VoxelSniperConfiguration.brushNotFoundMessage, args[0]);
                 return true;
             }
-            sender.sendMessage(brush.getHelp());
+            sender.sendMessage(VoxelSniperConfiguration.brushHelpFormat, brush.getName(), brush.getHelp());
             return true;
         }
         return false;

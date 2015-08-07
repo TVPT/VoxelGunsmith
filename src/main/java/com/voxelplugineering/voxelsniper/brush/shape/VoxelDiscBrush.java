@@ -41,7 +41,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 /**
  * Defines a square 2d region.
  */
-@BrushInfo(name = "voxeldisc", type = BrushPartType.SHAPE, params = {
+@BrushInfo(name = "voxeldisc", type = BrushPartType.SHAPE, help = "Creates a flat square shape", params = {
         @BrushParam(name = BrushKeys.USE_FACE, desc = "Whether to align shape to selected block face (true/false)") })
 public class VoxelDiscBrush implements Brush
 {

@@ -43,7 +43,7 @@ import com.google.common.base.Optional;
 /**
  * A shape brush which defines a cylindrical region.
  */
-@BrushInfo(name = "cylinder", type = BrushPartType.SHAPE, params = {
+@BrushInfo(name = "cylinder", type = BrushPartType.SHAPE, help = "Creates a cylindrical shape", params = {
         @BrushParam(name = BrushKeys.USE_FACE, desc = "Whether to align shape to selected block face, (true/false)"),
         @BrushParam(name = BrushKeys.HEIGHT, desc = "The cylinder height (number)") })
 public class CylinderBrush implements Brush
