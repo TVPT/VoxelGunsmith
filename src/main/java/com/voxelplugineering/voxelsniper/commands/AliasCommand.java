@@ -40,7 +40,7 @@ import com.voxelplugineering.voxelsniper.util.StringUtilities;
 public class AliasCommand extends Command
 {
 
-    private final AliasHandler aliases;
+    private final GlobalAliasHandler aliases;
 
     /**
      * Constructs a new {@link AliasCommand}.
@@ -92,8 +92,7 @@ public class AliasCommand extends Command
             String key = arg.substring(0, k).trim();
             String value = arg.substring(k + 1, arg.length()).trim();
             registry.register(key, value);
-            // TODO alias save handler
-            // Gunsmith.getAliasSaveHandler().addDirty(alias);
+            this.aliases.getAliasSaveTask().addDirty(alias);
             sniper.sendMessage(VoxelSniperConfiguration.aliasSet, key, value);
         } else
         {

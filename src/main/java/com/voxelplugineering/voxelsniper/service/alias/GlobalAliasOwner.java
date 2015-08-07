@@ -23,14 +23,24 @@
  */
 package com.voxelplugineering.voxelsniper.service.alias;
 
-import com.voxelplugineering.voxelsniper.service.Service;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * A marker interface for the global {@link AliasHandler}.
- */
-public interface GlobalAliasHandler extends AliasHandler, Service
+import java.io.File;
+
+public class GlobalAliasOwner implements AliasOwner
 {
 
-    AliasSaveTask getAliasSaveTask();
-    
+    private final File source;
+
+    public GlobalAliasOwner(File source)
+    {
+        this.source = checkNotNull(source);
+    }
+
+    @Override
+    public File getAliasSource()
+    {
+        return this.source;
+    }
+
 }

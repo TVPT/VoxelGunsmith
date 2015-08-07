@@ -221,6 +221,7 @@ public class ServiceManager implements Contextable
                 // System.exit(1);
             }
         }
+        this.state = State.RUNNING;
     }
 
     /**
@@ -228,6 +229,7 @@ public class ServiceManager implements Contextable
      */
     public void shutdown()
     {
+        this.state = State.STOPPING;
         for (TargettedMethod m : this.preStop)
         {
             try
@@ -247,6 +249,7 @@ public class ServiceManager implements Contextable
                 serv.shutdown();
             }
         }
+        this.state = State.STOPPED;
     }
 
     /**

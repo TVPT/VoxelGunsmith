@@ -21,16 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.service;
+package com.voxelplugineering.voxelsniper.service.alias;
 
-import com.voxelplugineering.voxelsniper.service.alias.AliasHandler;
-import com.voxelplugineering.voxelsniper.service.alias.AliasOwner;
-import com.voxelplugineering.voxelsniper.service.alias.AliasRegistry;
-import com.voxelplugineering.voxelsniper.service.alias.GlobalAliasHandler;
+import com.voxelplugineering.voxelsniper.service.AbstractService;
+import com.voxelplugineering.voxelsniper.service.scheduler.Scheduler;
 import com.voxelplugineering.voxelsniper.util.Context;
 
 import com.google.common.base.Optional;
 
+import java.io.IOException;
 import java.util.Set;
 
 /**
@@ -40,6 +39,7 @@ public class GlobalAliasService extends AbstractService implements GlobalAliasHa
 {
 
     private final AliasHandler wrapped;
+    private final AliasSaveTask saveTask;
 
     /**
      * Creates a new {@link GlobalAliasService}.
@@ -51,6 +51,8 @@ public class GlobalAliasService extends AbstractService implements GlobalAliasHa
     {
         super(context);
         this.wrapped = wrapped;
+        this.saveTask = new AliasSaveTask();
+        context.getRequired(Scheduler.class).startAsynchronousTask(this.saveTask, 300000);
     }
 
     @Override
@@ -103,6 +105,25 @@ public class GlobalAliasService extends AbstractService implements GlobalAliasHa
     @Override
     protected void _shutdown()
     {
+        this.saveTask.flush();
+    }
+
+    @Override
+    public void save() throws IOException
+    {
+        this.wrapped.save();
+    }
+
+    @Override
+    public void load() throws IOException
+    {
+        this.wrapped.load();
+    }
+
+    @Override
+    public AliasSaveTask getAliasSaveTask()
+    {
+        return this.saveTask;
     }
 
 }

@@ -55,9 +55,12 @@ public abstract class Command
         checkNotNull(name, "Cannot have a null name!");
         checkArgument(!name.isEmpty(), "Cannot have an empty name!");
         this.name = name;
-        this.helpMsg = help;
+        if(help == null || help.isEmpty()) {
+            this.helpMsg = VoxelSniperConfiguration.defaultHelpMessage;
+        } else {
+            this.helpMsg = help;
+        }
         this.permsProxy = context.getRequired(PermissionProxy.class);
-        this.helpMsg = VoxelSniperConfiguration.defaultHelpMessage;
     }
 
     /**

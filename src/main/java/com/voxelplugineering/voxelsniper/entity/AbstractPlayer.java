@@ -39,6 +39,7 @@ import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.service.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.service.alias.CommonAliasHandler;
 import com.voxelplugineering.voxelsniper.service.alias.GlobalAliasHandler;
+import com.voxelplugineering.voxelsniper.service.platform.PlatformProxy;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.RayTrace;
 import com.voxelplugineering.voxelsniper.util.math.Vector3d;
@@ -62,6 +63,7 @@ import java.util.Queue;
 public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Player
 {
 
+    private File dataDir;
     private BrushManager personalBrushManager;
     private BrushChain currentBrush;
     private BrushVars brushVariables;
@@ -110,10 +112,31 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
         try
         {
             resetSettings(context);
+            
+            PlatformProxy platform = context.getRequired(PlatformProxy.class);
+            String path = VoxelSniperConfiguration.playerDataDirectory;
+            if(!path.isEmpty() && !path.endsWith(File.separator)) {
+                path += File.separator;
+            }
+            if(VoxelSniperConfiguration.useUUIDsForDataDirectories) {
+                path += getUniqueId().toString();
+            } else {
+                path += getName();
+            }
+            this.dataDir = new File(platform.getRoot(), path);
+            if(!this.dataDir.exists()) {
+                this.dataDir.mkdirs();
+            }
         } catch (Exception e)
         {
             GunsmithLogger.getLogger().error(e, "Error setting up default player settings.");
         }
+    }
+
+    @Override
+    public File getAliasSource()
+    {
+        return new File(this.dataDir, "aliases.json");
     }
 
     @Override

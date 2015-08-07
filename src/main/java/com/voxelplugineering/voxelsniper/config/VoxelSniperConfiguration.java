@@ -41,6 +41,7 @@ public class VoxelSniperConfiguration
     public static int undoHistorySize = 20;
     public static int statusMessageThreshold = 80000;
     public static String playerDataDirectory = "players/";
+    public static boolean useUUIDsForDataDirectories = true;
 
     // Default brush settings
     @ConfigValue(section = "defaults")

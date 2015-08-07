@@ -38,16 +38,26 @@ public final class ServicePriorities
     public static final int CONFIGURATION_PRIORITY = 1000;
     /** EventBus service builder priority. */
     public static final int EVENT_BUS_PRIORITY = 2000;
+    /** Scheduler service builder priority. */
+    public static final int SCHEDULER_PRIORITY = 3000;
     /** PlatformProxy service builder priority. */
     public static final int PLATFORM_PROXY_PRIORITY = 4000;
     /** GlobalAliasHandler service builder priority. */
     public static final int GLOBAL_ALIAS_HANDLER_PRIORITY = 5000;
+    /** Material registry service builder priority. */
+    public static final int MATERIAL_REGISTRY_PRIORITY = 5500;
+    /** World registry service builder priority. */
+    public static final int WORLD_REGISTRY_PRIORITY = 6000;
     /** PermissionProxy service builder priority. */
     public static final int PERMISSION_PROXY_PRIORITY = 7000;
     /** GlobalBrushManager service builder priority. */
-    public static final int GLOBAL_BRUSH_MANAGER_PRIORITY = 7500;
+    public static final int GLOBAL_BRUSH_MANAGER_PRIORITY = 8000;
+    /** Player registry service builder priority. */
+    public static final int PLAYER_REGISTRY_PRIORITY = 9000;
     /** CommandHandler service builder priority. */
     public static final int COMMAND_HANDLER_PRIORITY = 10000;
+    /** Biome registry service builder priority. */
+    public static final int BIOME_REGISTRY_PRIORITY = 12000;
     /** OfflineUndoHandler service builder priority. */
     public static final int UNDO_HANDLER_PRIORITY = 13000;
 

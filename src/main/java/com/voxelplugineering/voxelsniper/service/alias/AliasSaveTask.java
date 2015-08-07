@@ -25,8 +25,11 @@ package com.voxelplugineering.voxelsniper.service.alias;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.voxelplugineering.voxelsniper.GunsmithLogger;
+
 import com.google.common.collect.Lists;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -59,6 +62,10 @@ public class AliasSaveTask implements Runnable
             this.dirty.add(alias);
         }
     }
+    
+    public synchronized void flush() {
+        run();
+    }
 
     @Override
     public synchronized void run()
@@ -66,10 +73,13 @@ public class AliasSaveTask implements Runnable
         for (Iterator<AliasHandler> it = this.dirty.iterator(); it.hasNext();)
         {
             AliasHandler alias = it.next();
-            /*
-             * TODO try { alias.getOwner().getAliasSource(); } catch (IOException e) {
-             * GunsmithLogger.getLogger().error(e, "Error saving aliases"); }
-             */
+            try
+            {
+                alias.save();
+            } catch (IOException e)
+            {
+                GunsmithLogger.getLogger().error(e, "Error saving aliases");
+            }
             it.remove();
         }
     }
