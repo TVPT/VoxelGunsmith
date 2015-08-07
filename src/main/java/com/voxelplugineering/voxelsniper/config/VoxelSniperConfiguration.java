@@ -129,7 +129,7 @@ public class VoxelSniperConfiguration
     @ConfigValue(section = "messages.brush")
     public static String paramHeader = TextFormat.GOLD + "Parameters for " + TextFormat.GREEN + "%s" + TextFormat.GOLD + ":";
     @ConfigValue(section = "messages.brush")
-    public static String paramInfo = TextFormat.GREEN + "    %s" + TextFormat.GOLD + " - " + TextFormat.RED + "%s";
+    public static String paramInfo = TextFormat.GREEN + "    %s" + TextFormat.GOLD + " - " + TextFormat.YELLOW + "%s";
 
     @ConfigValue(section = "messages.brush.set")
     public static String setFirstPoint = TextFormat.GREEN + "Set first point to (%d, %d, %d).";
