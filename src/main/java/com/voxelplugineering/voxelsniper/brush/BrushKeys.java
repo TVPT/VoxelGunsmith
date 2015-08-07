@@ -57,6 +57,7 @@ public final class BrushKeys
     public static final String EXCLUDE_FLUID = "excludeFluid";
     public static final String GROW_PERCENT = "growth";
     public static final String HEIGHT = "height";
+    public static final String INNER_RADIUS = "ir";
     public static final String KERNEL = "kernel";
     public static final String KERNEL_SIZE = "kernelSize";
     public static final String PITCH = "pitch";

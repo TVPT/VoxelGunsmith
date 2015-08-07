@@ -60,4 +60,14 @@ public final class Maths
     {
         return value < min ? min : value > max ? max : value;
     }
+
+    public static int ceil(double d)
+    {
+        return (int) Math.ceil(d);
+    }
+
+    public static int floor(double d)
+    {
+        return (int) Math.floor(d);
+    }
 }

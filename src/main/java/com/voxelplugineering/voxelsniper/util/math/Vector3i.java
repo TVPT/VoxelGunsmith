@@ -122,6 +122,18 @@ public class Vector3i implements Serializable, Cloneable
     }
 
     /**
+     * Returns a new vector representing the given vector subtracted from this vector.
+     * 
+     * @param v the vector to subtract from this vector
+     * @return the new vector
+     */
+    public Vector3i sub(Vector3i v)
+    {
+        checkNotNull(v, "Vector cannot be null");
+        return new Vector3i(getX() - v.getX(), getY() - v.getY(), getZ() - v.getZ());
+    }
+
+    /**
      * Returns a new vector representing this vector scaled by the given scalar quantity.
      * 
      * @param scalar the amount to scale this vector

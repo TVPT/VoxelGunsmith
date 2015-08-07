@@ -117,10 +117,6 @@ public class CylinderShape extends OffsetShape
     @Override
     public int getHeight()
     {
-        if (this.axis.getModY() == 1)
-        {
-            return this.height;
-        }
         if (this.axis.getModX() == 1)
         {
             return (int) (this.rx * 2 + 1);
