@@ -69,11 +69,7 @@ public interface BlockVolume
      * @param y The Y position
      * @param z The Z position
      */
-    void setBlock(MaterialState material, int x, int y, int z);
-
-    /*
-     * TODO no-phys Support changing blocks without notifying surrounding blocks of the change.
-     */
+    void setBlock(MaterialState material, int x, int y, int z, boolean update);
 
     /**
      * Sets the block at the given location to the given material.
@@ -81,7 +77,7 @@ public interface BlockVolume
      * @param material The material
      * @param location The location
      */
-    void setBlock(MaterialState material, Location location);
+    void setBlock(MaterialState material, Location location, boolean update);
 
     /**
      * Sets the block at the given vector position to the given material.
@@ -89,6 +85,6 @@ public interface BlockVolume
      * @param material The material
      * @param vector The position
      */
-    void setBlock(MaterialState material, Vector3i vector);
+    void setBlock(MaterialState material, Vector3i vector, boolean update);
 
 }

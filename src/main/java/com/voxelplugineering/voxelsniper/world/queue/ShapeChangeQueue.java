@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.world.queue;
 
+import com.voxelplugineering.voxelsniper.brush.BrushKeys;
+import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
@@ -39,6 +41,7 @@ public class ShapeChangeQueue extends ChangeQueue
     private final MaterialShape shape;
     private final Location originOffset;
     private final Location origin;
+    private final boolean physics;
     private ExecutionState state;
     private long position = 0;
     private int ticks = 0;
@@ -58,6 +61,11 @@ public class ShapeChangeQueue extends ChangeQueue
         this.origin = origin;
         this.state = ExecutionState.UNSTARTED;
         this.shape = shape;
+        if(sniper instanceof Player) {
+            this.physics = ((Player) sniper).getBrushVars().get(BrushKeys.PHYSICS, Boolean.class).or(true);
+        } else {
+            this.physics = true;
+        }
     }
 
     @Override
@@ -118,7 +126,7 @@ public class ShapeChangeQueue extends ChangeQueue
                         if (newMaterial.isPresent() && (existingMaterial.getType().isLiquid() || existingMaterial.getType().isReliantOnEnvironment()))
                         {
                             this.world.setBlock(newMaterial.get(), x + this.originOffset.getFlooredX(),
-                                    (int) this.position + this.originOffset.getFlooredY(), z + this.originOffset.getFlooredZ());
+                                    (int) this.position + this.originOffset.getFlooredY(), z + this.originOffset.getFlooredZ(), this.physics);
                             subcount++;
                         }
                     }
@@ -158,7 +166,7 @@ public class ShapeChangeQueue extends ChangeQueue
                 {
                     count++;
                     this.world.setBlock(newMaterial.get(), x + this.originOffset.getFlooredX(), y + this.originOffset.getFlooredY(),
-                            z + this.originOffset.getFlooredZ());
+                            z + this.originOffset.getFlooredZ(), this.physics);
                 }
             }
             if (this.position == this.shape.getWidth() * this.shape.getHeight() * this.shape.getLength())

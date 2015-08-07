@@ -37,6 +37,7 @@ public final class BrushKeys
     public static final String MASK_MATERIAL_WILDCARD = "maskmaterialwildcard";
     public static final String MATERIAL = "$setMaterial";
     public static final String RANGE = "range";
+    public static final String PHYSICS = "physics";
 
     // Runtime
     public static final String ACTION = "$action";

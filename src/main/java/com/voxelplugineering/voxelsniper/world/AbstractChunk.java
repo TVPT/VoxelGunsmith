@@ -72,7 +72,7 @@ public abstract class AbstractChunk<T> extends WeakWrapper<T>implements Chunk
     }
 
     @Override
-    public void setBlock(MaterialState material, Location location)
+    public void setBlock(MaterialState material, Location location, boolean update)
     {
         checkNotNull(material);
         checkNotNull(location);
@@ -80,15 +80,15 @@ public abstract class AbstractChunk<T> extends WeakWrapper<T>implements Chunk
         {
             return;
         }
-        setBlock(material, location.getFlooredX(), location.getFlooredY(), location.getFlooredZ());
+        setBlock(material, location.getFlooredX(), location.getFlooredY(), location.getFlooredZ(), update);
     }
 
     @Override
-    public void setBlock(MaterialState material, Vector3i vector)
+    public void setBlock(MaterialState material, Vector3i vector, boolean update)
     {
         checkNotNull(material);
         checkNotNull(vector);
-        setBlock(material, vector.getX(), vector.getY(), vector.getZ());
+        setBlock(material, vector.getX(), vector.getY(), vector.getZ(), update);
     }
 
     @Override
