@@ -73,6 +73,8 @@ public interface Material
      */
     boolean isReliantOnEnvironment();
 
+    boolean isFlamable();
+
     /**
      * Gets the default {@link MaterialState} for this material.
      * 

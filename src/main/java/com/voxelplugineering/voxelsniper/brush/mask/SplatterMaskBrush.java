@@ -45,7 +45,7 @@ import java.util.Random;
         @BrushParam(name = BrushKeys.SEED_PERCENT, desc = "The seed percent (floating-point number)"),
         @BrushParam(name = BrushKeys.GROW_PERCENT, desc = "The growth percent (floating-point number)"),
         @BrushParam(name = BrushKeys.RECURSIONS, desc = "The number of growth passes (number)") })
-public class SplatterMaskBrush implements Brush
+public class SplatterMaskBrush extends Brush
 {
 
     protected static final String HELP = "Randomly seeds your shape and then grows outwards from the seeds based on the number of recursions";

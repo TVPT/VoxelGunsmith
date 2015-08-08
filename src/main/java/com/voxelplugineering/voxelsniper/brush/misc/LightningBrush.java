@@ -33,7 +33,7 @@ import com.voxelplugineering.voxelsniper.util.brush.BrushVarsHelper;
 import com.voxelplugineering.voxelsniper.world.Block;
 
 @BrushInfo(name = "lightning", type = BrushPartType.MISC, help = "Strikes lightning at your targeted position")
-public class LightningBrush implements Brush
+public class LightningBrush extends Brush
 {
 
     @Override

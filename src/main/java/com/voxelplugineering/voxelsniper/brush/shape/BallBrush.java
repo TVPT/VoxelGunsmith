@@ -39,7 +39,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
  * The ball brush, defines a spherical region for later brushes to use.
  */
 @BrushInfo(name = "ball", type = BrushPartType.SHAPE, help = "Creates a spherical shape")
-public class BallBrush implements Brush
+public class BallBrush extends Brush
 {
 
     @Override

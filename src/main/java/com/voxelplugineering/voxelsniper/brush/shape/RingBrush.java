@@ -48,7 +48,7 @@ import com.google.common.base.Optional;
         @BrushParam(name = BrushKeys.USE_FACE, desc = "Whether to align shape to selected block face (true/false)"),
         @BrushParam(name = BrushKeys.INNER_RADIUS, desc = "The inner radius of the ring (floating-point number)"),
         @BrushParam(name = BrushKeys.HEIGHT, desc = "The height of the ring (number)") })
-public class RingBrush implements Brush
+public class RingBrush extends Brush
 {
 
     @Override

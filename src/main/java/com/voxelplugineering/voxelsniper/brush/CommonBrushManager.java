@@ -26,6 +26,8 @@ package com.voxelplugineering.voxelsniper.brush;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.voxelplugineering.voxelsniper.util.Context;
+
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 
@@ -37,15 +39,16 @@ import java.util.Map;
 public class CommonBrushManager implements BrushManager
 {
 
+    private final Context context;
     private BrushManager parent = null;
     private final Map<String, BrushWrapper> brushes;
 
     /**
      * Creates a new CommonBrushManager.
      */
-    public CommonBrushManager()
+    public CommonBrushManager(Context context)
     {
-        this(null);
+        this(context, null);
     }
 
     /**
@@ -53,8 +56,9 @@ public class CommonBrushManager implements BrushManager
      * 
      * @param parent the parent
      */
-    public CommonBrushManager(BrushManager parent)
+    public CommonBrushManager(Context context, BrushManager parent)
     {
+        this.context = context;
         this.parent = parent;
         this.brushes = Maps.newHashMap();
     }
@@ -65,7 +69,7 @@ public class CommonBrushManager implements BrushManager
         checkNotNull(identifier, "Name cannot be null!");
         checkArgument(!identifier.isEmpty(), "Name cannot be empty");
         checkNotNull(graph, "Brush class cannot be null!");
-        this.brushes.put(identifier, new BrushWrapper(graph));
+        this.brushes.put(identifier, new BrushWrapper(graph, this.context));
     }
 
     @Override

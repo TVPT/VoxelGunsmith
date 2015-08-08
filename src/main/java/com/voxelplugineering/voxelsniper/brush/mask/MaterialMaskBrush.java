@@ -46,7 +46,7 @@ import com.google.common.base.Optional;
  * material.
  */
 @BrushInfo(name = "materialmask", type = BrushPartType.MASK, help = "Removes all points in your shape that do not match your mask material")
-public class MaterialMaskBrush implements Brush
+public class MaterialMaskBrush extends Brush
 {
 
     @Override

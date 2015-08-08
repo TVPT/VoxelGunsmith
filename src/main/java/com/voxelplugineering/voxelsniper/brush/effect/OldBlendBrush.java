@@ -56,7 +56,7 @@ import java.util.Map;
  */
 @BrushInfo(name = "blend", type = BrushPartType.EFFECT, help = OldBlendBrush.HELP, params = {
         @BrushParam(name = BrushKeys.EXCLUDE_FLUID, desc = "Whether to exclude fluids (true/false)") })
-public class OldBlendBrush implements Brush
+public class OldBlendBrush extends Brush
 {
 
     protected static final String HELP = "An effect brush which performs a 'blend' operation by setting blocks in the defined region to the "

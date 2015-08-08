@@ -50,7 +50,7 @@ import com.google.common.base.Optional;
         @BrushParam(name = BrushKeys.OFFSET_X, desc = "The X offset of the time edge from zero (number)"),
         @BrushParam(name = BrushKeys.OFFSET_Y, desc = "The Y offset of the time edge from zero (number)"),
         @BrushParam(name = BrushKeys.OFFSET_Z, desc = "The Z offset of the time edge from zero (number)") })
-public class CheckerMaskBrush implements Brush
+public class CheckerMaskBrush extends Brush
 {
 
     @Override

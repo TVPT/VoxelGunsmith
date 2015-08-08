@@ -152,7 +152,7 @@ public class CoreServiceProvider
     @Builder(target = GlobalBrushManager.class, priority = ServicePriorities.GLOBAL_BRUSH_MANAGER_PRIORITY)
     public final GlobalBrushManager getGlobalBrushManager(Context context)
     {
-        return new BrushManagerService(context, new CommonBrushManager());
+        return new BrushManagerService(context, new CommonBrushManager(context));
     }
 
     @InitHook(target = GlobalBrushManager.class)

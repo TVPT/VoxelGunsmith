@@ -39,7 +39,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
  * A shape brush which defines a cubic area with a side length of {@code brushSize * 2 + 1}.
  */
 @BrushInfo(name = "voxel", type = BrushPartType.SHAPE, help = "Creates a cube shape")
-public class VoxelBrush implements Brush
+public class VoxelBrush extends Brush
 {
 
     @Override

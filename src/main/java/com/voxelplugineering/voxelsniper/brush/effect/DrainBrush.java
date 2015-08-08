@@ -44,7 +44,7 @@ import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 import com.google.common.base.Optional;
 
 @BrushInfo(name = "drain", type = BrushPartType.EFFECT, help = "An effect brush which removes all liquids from within your shape")
-public class DrainBrush implements Brush
+public class DrainBrush extends Brush
 {
 
     @Override

@@ -50,7 +50,7 @@ import java.util.List;
  */
 @BrushInfo(name = "biome", type = BrushPartType.EFFECT, help = "An effect brush which sets your shape area to the specified biome", params = {
         @BrushParam(name = BrushKeys.BIOME, desc = "The biome") })
-public class BiomeBrush implements Brush
+public class BiomeBrush extends Brush
 {
 
     @Override

@@ -81,7 +81,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
     protected AbstractPlayer(T player, BrushManager parentBrushManager, Context context)
     {
         super(player);
-        this.personalBrushManager = new CommonBrushManager(parentBrushManager);
+        this.personalBrushManager = new CommonBrushManager(context, parentBrushManager);
         this.brushVariables = new BrushVars();
         this.pending = new LinkedList<ChangeQueue>();
         this.personalAliasHandler = new CommonAliasHandler(this, context.getRequired(GlobalAliasHandler.class));
@@ -97,7 +97,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
     protected AbstractPlayer(T player, Context context)
     {
         super(player);
-        this.personalBrushManager = new CommonBrushManager(context.getRequired(GlobalBrushManager.class));
+        this.personalBrushManager = new CommonBrushManager(context, context.getRequired(GlobalBrushManager.class));
         this.brushVariables = new BrushVars();
         this.pending = new LinkedList<ChangeQueue>();
         this.personalAliasHandler = new CommonAliasHandler(this, context.getRequired(GlobalAliasHandler.class));

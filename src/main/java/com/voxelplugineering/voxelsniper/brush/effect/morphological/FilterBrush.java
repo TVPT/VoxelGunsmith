@@ -52,7 +52,7 @@ import com.google.common.base.Optional;
  * New operations should therefore be implementations of MorphologicalMaterialOperation, and
  * associated with their own brush that instantiates this class.
  */
-public abstract class FilterBrush implements Brush
+public abstract class FilterBrush extends Brush
 {
 
     private final FilterOperation operation;

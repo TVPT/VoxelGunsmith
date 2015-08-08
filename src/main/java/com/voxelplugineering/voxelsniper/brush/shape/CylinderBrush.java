@@ -46,7 +46,7 @@ import com.google.common.base.Optional;
 @BrushInfo(name = "cylinder", type = BrushPartType.SHAPE, help = "Creates a cylindrical shape", params = {
         @BrushParam(name = BrushKeys.USE_FACE, desc = "Whether to align shape to selected block face, (true/false)"),
         @BrushParam(name = BrushKeys.HEIGHT, desc = "The cylinder height (number)") })
-public class CylinderBrush implements Brush
+public class CylinderBrush extends Brush
 {
 
     @Override

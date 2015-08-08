@@ -38,7 +38,7 @@ import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.google.common.base.Optional;
 
 @BrushInfo(name = "flatten", type = BrushPartType.MASK, help = "Flattens your shape into a 2d shape")
-public class FlattenBrush implements Brush
+public class FlattenBrush extends Brush
 {
 
     @Override

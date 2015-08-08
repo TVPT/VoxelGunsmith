@@ -169,6 +169,15 @@ public class VoxelSniperConfiguration
     public static boolean voxeldiscDefaultFace = false;
     @ConfigValue(section = "brush.ellipse")
     public static boolean ellipseDefaultFace = false;
+    
+    @ConfigValue(section = "brush.heatray")
+    public static double obsidianDensity = 0.8;
+    @ConfigValue(section = "brush.heatray")
+    public static double cobbleDensity = 0.7;
+    @ConfigValue(section = "brush.heatray")
+    public static double fireDensity = -0.4;
+    @ConfigValue(section = "brush.heatray")
+    public static double airDensity = 0.2;
 
     // Alias Settings
     public static boolean caseSensitiveAliases = true;

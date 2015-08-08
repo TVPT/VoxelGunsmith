@@ -45,7 +45,7 @@ import com.google.common.base.Optional;
  * An effect brush which sets all set positions of the shape to a material.
  */
 @BrushInfo(name = "material", type = BrushPartType.EFFECT, help = "An effect brush which sets all positions in your shape to your material")
-public class MaterialBrush implements Brush
+public class MaterialBrush extends Brush
 {
 
     @Override

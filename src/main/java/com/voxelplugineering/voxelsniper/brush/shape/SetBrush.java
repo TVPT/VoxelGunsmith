@@ -48,7 +48,7 @@ import com.google.common.base.Optional;
  * covering the region between the two points.
  */
 @BrushInfo(name = "set", type = BrushPartType.SHAPE, help = "Creates a cuboidal shape between two selected points")
-public class SetBrush implements Brush
+public class SetBrush extends Brush
 {
     @BrushInstance
     private BrushWrapper instance;

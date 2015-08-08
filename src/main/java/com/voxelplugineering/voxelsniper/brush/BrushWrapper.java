@@ -23,6 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.brush;
 
+import com.voxelplugineering.voxelsniper.util.Context;
+
 /**
  * A wrapper class for {@link Brush} instances to provide better access to the information in the
  * {@link BrushInfo} annotation.
@@ -41,7 +43,7 @@ public class BrushWrapper
      * 
      * @param brush The brush
      */
-    public BrushWrapper(Brush brush)
+    public BrushWrapper(Brush brush, Context context)
     {
         this.brush = brush;
         if (!brush.getClass().isAnnotationPresent(BrushInfo.class))
@@ -53,6 +55,7 @@ public class BrushWrapper
         this.help = info.help();
         this.type = info.type();
         this.params = info.params();
+        this.brush.init(context);
     }
 
     /**

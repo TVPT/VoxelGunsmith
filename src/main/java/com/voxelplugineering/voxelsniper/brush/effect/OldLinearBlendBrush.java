@@ -56,7 +56,7 @@ import java.util.Map;
  */
 @BrushInfo(name = "linearblend", type = BrushPartType.EFFECT, help = OldLinearBlendBrush.HELP, params = {
         @BrushParam(name = BrushKeys.EXCLUDE_FLUID, desc = "Whether to exclude fluids (true/false)") })
-public class OldLinearBlendBrush implements Brush
+public class OldLinearBlendBrush extends Brush
 {
 
     protected static final String HELP = "Similar to the blend brush, but decreases the weight of the surrounding materials based on their distance";

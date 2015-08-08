@@ -51,7 +51,7 @@ import com.google.common.base.Optional;
  * target block.
  */
 @BrushInfo(name = "line", type = BrushPartType.SHAPE, help = LineBrush.HELP)
-public class LineBrush implements Brush
+public class LineBrush extends Brush
 {
 
     protected static final String HELP = "Creates a straight line from the point selected with your primary action to the point(s) selected "
