@@ -178,6 +178,8 @@ public class VoxelSniperConfiguration
     public static double fireDensity = -0.4;
     @ConfigValue(section = "brush.heatray")
     public static double airDensity = 0.2;
+    @ConfigValue(section = "brush.clearsnow")
+    public static boolean fillDefault = true;
 
     // Alias Settings
     public static boolean caseSensitiveAliases = true;
