@@ -46,7 +46,7 @@ import com.google.common.base.Optional;
 
 import java.util.Random;
 
-@BrushInfo(name = "heatray", type = BrushPartType.EFFECT, help = "Bringing destruction since 2010")
+@BrushInfo(name = "heatray", type = BrushPartType.EFFECT, help = "Bringing destruction since 2010", permission = "voxelsniper.brush.heatray")
 public class HeatrayBrush extends Brush
 {
 

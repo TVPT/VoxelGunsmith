@@ -42,7 +42,7 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
  * A shape brush which defines a 2D disc.
  */
 @BrushInfo(name = "disc", type = BrushPartType.SHAPE, help = "Creates a flat disc shape", params = {
-        @BrushParam(name = BrushKeys.USE_FACE, desc = "Whether to align shape to selected block face, (true/false)") })
+        @BrushParam(name = BrushKeys.USE_FACE, desc = "Whether to align shape to selected block face, (true/false)") }, permission = "voxelsniper.brush.disc")
 public class DiscBrush extends Brush
 {
 

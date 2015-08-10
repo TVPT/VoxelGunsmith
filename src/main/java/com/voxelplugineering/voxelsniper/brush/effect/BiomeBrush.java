@@ -49,7 +49,7 @@ import java.util.List;
  * An effect brush which sets your shape area to your specified biome.
  */
 @BrushInfo(name = "biome", type = BrushPartType.EFFECT, help = "An effect brush which sets your shape area to the specified biome", params = {
-        @BrushParam(name = BrushKeys.BIOME, desc = "The biome") })
+        @BrushParam(name = BrushKeys.BIOME, desc = "The biome") }, permission = "voxelsniper.brush.biome")
 public class BiomeBrush extends Brush
 {
 

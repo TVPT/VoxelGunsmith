@@ -50,7 +50,7 @@ import com.google.common.base.Optional;
  * Defines a region which is a line between the point specified by the alternate action to the
  * target block.
  */
-@BrushInfo(name = "line", type = BrushPartType.SHAPE, help = LineBrush.HELP)
+@BrushInfo(name = "line", type = BrushPartType.SHAPE, help = LineBrush.HELP, permission = "voxelsniper.brush.line")
 public class LineBrush extends Brush
 {
 

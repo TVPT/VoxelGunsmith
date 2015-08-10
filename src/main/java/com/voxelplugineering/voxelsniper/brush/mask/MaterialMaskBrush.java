@@ -45,7 +45,7 @@ import com.google.common.base.Optional;
  * A brush mask which unsets all positions in the shape which are not currently set to the mask
  * material.
  */
-@BrushInfo(name = "materialmask", type = BrushPartType.MASK, help = "Removes all points in your shape that do not match your mask material")
+@BrushInfo(name = "materialmask", type = BrushPartType.MASK, help = "Removes all points in your shape that do not match your mask material", permission = "voxelsniper.brush.materialmask")
 public class MaterialMaskBrush extends Brush
 {
 

@@ -39,6 +39,7 @@ import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.service.alias.AliasHandler;
 import com.voxelplugineering.voxelsniper.service.alias.CommonAliasHandler;
 import com.voxelplugineering.voxelsniper.service.alias.GlobalAliasHandler;
+import com.voxelplugineering.voxelsniper.service.permission.PermissionProxy;
 import com.voxelplugineering.voxelsniper.service.platform.PlatformProxy;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.RayTrace;
@@ -189,11 +190,16 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
         String fullBrush = VoxelSniperConfiguration.defaultBrush;
         fullBrush = getAliasHandler().getRegistry("brush").get().expand(fullBrush);
         BrushChain brush = new BrushChain(fullBrush);
+        PermissionProxy perms = context.get(PermissionProxy.class).orNull();
         for (String b : fullBrush.split(" "))
         {
             Optional<BrushWrapper> br = getBrushManager().getBrush(b);
             if (br.isPresent())
             {
+                if(perms != null && !perms.hasPermission(this, br.get().getPermission())) {
+                    sendMessage(VoxelSniperConfiguration.brushPermissionMessage, b);
+                    continue;
+                }
                 brush.chain(br.get());
             } else
             {

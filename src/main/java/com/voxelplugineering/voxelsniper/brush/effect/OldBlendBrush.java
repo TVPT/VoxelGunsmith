@@ -55,7 +55,7 @@ import java.util.Map;
  * defined region to the mode material of the surrounding materials.
  */
 @BrushInfo(name = "blend", type = BrushPartType.EFFECT, help = OldBlendBrush.HELP, params = {
-        @BrushParam(name = BrushKeys.EXCLUDE_FLUID, desc = "Whether to exclude fluids (true/false)") })
+        @BrushParam(name = BrushKeys.EXCLUDE_FLUID, desc = "Whether to exclude fluids (true/false)") }, permission = "voxelsniper.brush.blend")
 public class OldBlendBrush extends Brush
 {
 

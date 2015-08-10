@@ -55,7 +55,7 @@ import java.util.Map;
  * their distance from the target point.
  */
 @BrushInfo(name = "linearblend", type = BrushPartType.EFFECT, help = OldLinearBlendBrush.HELP, params = {
-        @BrushParam(name = BrushKeys.EXCLUDE_FLUID, desc = "Whether to exclude fluids (true/false)") })
+        @BrushParam(name = BrushKeys.EXCLUDE_FLUID, desc = "Whether to exclude fluids (true/false)") }, permission = "voxelsniper.brush.linearblend")
 public class OldLinearBlendBrush extends Brush
 {
 

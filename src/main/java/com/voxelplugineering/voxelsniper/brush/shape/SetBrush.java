@@ -47,7 +47,7 @@ import com.google.common.base.Optional;
  * A shape brush that allows the user to select two points and then creates a cuboidal shape
  * covering the region between the two points.
  */
-@BrushInfo(name = "set", type = BrushPartType.SHAPE, help = "Creates a cuboidal shape between two selected points")
+@BrushInfo(name = "set", type = BrushPartType.SHAPE, help = "Creates a cuboidal shape between two selected points", permission = "voxelsniper.brush.set")
 public class SetBrush extends Brush
 {
     @BrushInstance

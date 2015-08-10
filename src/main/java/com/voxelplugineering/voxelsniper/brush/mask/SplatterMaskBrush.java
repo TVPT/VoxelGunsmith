@@ -44,7 +44,7 @@ import java.util.Random;
 @BrushInfo(name = "splatter", type = BrushPartType.MASK, help = SplatterMaskBrush.HELP, params = {
         @BrushParam(name = BrushKeys.SEED_PERCENT, desc = "The seed percent (floating-point number)"),
         @BrushParam(name = BrushKeys.GROW_PERCENT, desc = "The growth percent (floating-point number)"),
-        @BrushParam(name = BrushKeys.RECURSIONS, desc = "The number of growth passes (number)") })
+        @BrushParam(name = BrushKeys.RECURSIONS, desc = "The number of growth passes (number)") }, permission = "voxelsniper.brush.splatter")
 public class SplatterMaskBrush extends Brush
 {
 

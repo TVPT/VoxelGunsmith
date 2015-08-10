@@ -58,5 +58,7 @@ public @interface BrushInfo
     String help() default "No help is provided for this brush.";
     
     BrushParam[] params() default { };
+    
+    String permission() default "";
 
 }

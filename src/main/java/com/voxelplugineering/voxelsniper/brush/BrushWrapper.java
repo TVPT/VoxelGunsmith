@@ -37,6 +37,7 @@ public class BrushWrapper
     private final String help;
     private final BrushPartType type;
     private final BrushParam[] params;
+    private final String permission;
 
     /**
      * Creates a new {@link BrushWrapper} wrapping the given brush instance.
@@ -55,6 +56,7 @@ public class BrushWrapper
         this.help = info.help();
         this.type = info.type();
         this.params = info.params();
+        this.permission = info.permission();
         this.brush.init(context);
     }
 
@@ -101,6 +103,11 @@ public class BrushWrapper
     public BrushParam[] getParameters()
     {
         return this.params;
+    }
+
+    public String getPermission()
+    {
+        return this.permission;
     }
 
 }

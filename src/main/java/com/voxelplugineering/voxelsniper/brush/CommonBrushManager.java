@@ -77,16 +77,16 @@ public class CommonBrushManager implements BrushManager
     {
         checkNotNull(identifier, "Name cannot be null!");
         checkArgument(!identifier.isEmpty(), "Name cannot be empty");
-        BrushWrapper br = this.brushes.get(identifier);
-        if (br == null)
+        if (this.brushes.containsKey(identifier))
         {
-            if (this.parent != null)
-            {
-                return this.parent.getBrush(identifier);
-            }
-            return Optional.absent();
+            BrushWrapper br = this.brushes.get(identifier);
+            return Optional.of(br);
         }
-        return Optional.of(br);
+        if (this.parent != null)
+        {
+            return this.parent.getBrush(identifier);
+        }
+        return Optional.absent();
     }
 
     @Override
