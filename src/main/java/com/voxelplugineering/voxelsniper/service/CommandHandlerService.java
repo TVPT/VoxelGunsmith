@@ -26,6 +26,7 @@ package com.voxelplugineering.voxelsniper.service;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.commands.Command;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;

@@ -101,7 +101,6 @@ public class HeatrayBrush extends Brush
                     Optional<Block> oblock = player.getWorld().getBlock(x0, y0, z0);
                     if (!oblock.isPresent())
                     {
-                        GunsmithLogger.getLogger().info("Failed to get block, unsetting");
                         ms.unset(x, y, z, false);
                         continue;
                     }

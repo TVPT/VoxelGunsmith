@@ -97,9 +97,10 @@ public final class GunsmithLogger implements Logger
         {
             return;
         }
-        if (this.loggers.isEmpty())
+        if (this.loggers.isEmpty() && level.isGEqual(this.root))
         {
             System.out.println("[" + level.name() + "] " + msg);
+            return;
         }
         for (String n : this.loggers.keySet())
         {
@@ -132,6 +133,7 @@ public final class GunsmithLogger implements Logger
         if (this.loggers.isEmpty())
         {
             System.out.println("[INFO] " + msg);
+            return;
         }
         for (String n : this.loggers.keySet())
         {
@@ -150,6 +152,7 @@ public final class GunsmithLogger implements Logger
         if (this.loggers.isEmpty())
         {
             System.out.println("[WARNING] " + msg);
+            return;
         }
         for (String n : this.loggers.keySet())
         {
@@ -168,6 +171,7 @@ public final class GunsmithLogger implements Logger
         if (this.loggers.isEmpty())
         {
             System.out.println("[ERROR] " + msg);
+            return;
         }
         for (String n : this.loggers.keySet())
         {
@@ -186,6 +190,7 @@ public final class GunsmithLogger implements Logger
         if (this.loggers.isEmpty())
         {
             e.printStackTrace();
+            return;
         }
         for (String n : this.loggers.keySet())
         {
@@ -205,6 +210,7 @@ public final class GunsmithLogger implements Logger
         {
             System.out.println("[ERROR] " + msg);
             e.printStackTrace();
+            return;
         }
         for (String n : this.loggers.keySet())
         {

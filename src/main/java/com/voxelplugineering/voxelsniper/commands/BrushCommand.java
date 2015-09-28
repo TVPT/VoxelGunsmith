@@ -33,7 +33,6 @@ import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
-import com.voxelplugineering.voxelsniper.service.permission.PermissionProxy;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
@@ -44,8 +43,6 @@ import com.google.common.base.Optional;
  */
 public class BrushCommand extends Command
 {
-
-    private final PermissionProxy perms;
     
     /**
      * Constructs a new BrushCommand.
@@ -57,7 +54,6 @@ public class BrushCommand extends Command
         super("brush", "Sets your current brush", context);
         setAliases("b");
         setPermissions("voxelsniper.command.brush");
-        this.perms = context.get(PermissionProxy.class).orNull();
     }
 
     @Override
@@ -72,11 +68,6 @@ public class BrushCommand extends Command
             return true;
         }
         Player sniper = (Player) sender;
-        if (!getPerms().hasPermission(sniper, "voxelsniper.command.brush"))
-        {
-            sender.sendMessage(VoxelSniperConfiguration.permissionsRequiredMessage);
-            return true;
-        }
         if (args.length == 0) {
             String full = "";
             for (BrushWrapper b : sniper.getCurrentBrush().getBrushes())
@@ -111,7 +102,7 @@ public class BrushCommand extends Command
                 Optional<BrushWrapper> br = sniper.getBrushManager().getBrush(b);
                 if (br.isPresent())
                 {
-                    if(this.perms != null && !this.perms.hasPermission(sniper, br.get().getPermission())) {
+                    if(!getPerms().hasPermission(sniper, br.get().getPermission())) {
                         sniper.sendMessage(VoxelSniperConfiguration.brushPermissionMessage, b);
                         continue;
                     }

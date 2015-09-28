@@ -187,10 +187,13 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
     {
         this.brushVariables.clear();
         this.brushVariables.set(BrushContext.GLOBAL, BrushKeys.PLAYER, this);
+        PermissionProxy perms = context.get(PermissionProxy.class).orNull();
+        if(perms != null && !perms.hasPermission(this, "voxelsniper.sniper")) {
+            return;
+        }
         String fullBrush = VoxelSniperConfiguration.defaultBrush;
         fullBrush = getAliasHandler().getRegistry("brush").get().expand(fullBrush);
         BrushChain brush = new BrushChain(fullBrush);
-        PermissionProxy perms = context.get(PermissionProxy.class).orNull();
         for (String b : fullBrush.split(" "))
         {
             Optional<BrushWrapper> br = getBrushManager().getBrush(b);

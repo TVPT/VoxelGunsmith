@@ -75,7 +75,7 @@ public class CleanSnowBrush extends Brush
     @Override
     public ExecutionResult run(Player player, BrushVars args)
     {
-        if (this.snowLayer == null || this.snowLayer == null)
+        if (this.snowLayer == null)
         {
             player.sendMessage(TextFormat.DARK_RED + "Failed to find snow materials, brush will not funtion.");
             return ExecutionResult.abortExecution();

@@ -26,6 +26,7 @@ package com.voxelplugineering.voxelsniper.commands;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.service.permission.PermissionProxy;
@@ -61,6 +62,7 @@ public abstract class Command
             this.helpMsg = help;
         }
         this.permsProxy = context.getRequired(PermissionProxy.class);
+        this.permissions = new String[0];
     }
 
     /**

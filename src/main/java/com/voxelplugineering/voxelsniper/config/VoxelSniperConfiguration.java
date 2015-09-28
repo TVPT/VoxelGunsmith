@@ -56,7 +56,7 @@ public class VoxelSniperConfiguration
 
     // Default messages
     @ConfigValue(section = "messages.command")
-    public static String permissionsRequiredMessage = TextFormat.DARK_RED + "You require more permissions in order to perform this action.";
+    public static String permissionsRequiredMessage = TextFormat.DARK_RED + "You require permission in order to perform this command.";
     @ConfigValue(section = "messages.command")
     public static String defaultHelpMessage = TextFormat.RED + "No help is provided for this command.";
     @ConfigValue(section = "messages.command")
