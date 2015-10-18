@@ -40,7 +40,9 @@ import com.voxelplugineering.voxelsniper.world.World;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+
 
 /**
  * An abstract notion of a Morphological hit-or-miss transform with a moving window termed a
@@ -94,8 +96,8 @@ public abstract class FilterBrush extends Brush
 
         Optional<String> kernalShape = args.get(BrushKeys.KERNEL, String.class);
         Optional<Double> kernalSize = args.get(BrushKeys.KERNEL_SIZE, Double.class);
-        double size = kernalSize.or(1.0);
-        String kernelString = kernalShape.or("voxel");
+        double size = kernalSize.orElse(1.0);
+        String kernelString = kernalShape.orElse("voxel");
         Optional<Shape> se = PrimativeShapeFactory.createShape(kernelString, size);
         if (!se.isPresent())
         {

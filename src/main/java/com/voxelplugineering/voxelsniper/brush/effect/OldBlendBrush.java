@@ -45,10 +45,10 @@ import com.voxelplugineering.voxelsniper.world.World;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * The blend brush. An effect brush which performs a 'blend' operation by setting blocks in the
@@ -86,8 +86,8 @@ public class OldBlendBrush extends Brush
 
         Optional<String> kernalShape = args.get(BrushKeys.KERNEL, String.class);
         Optional<Double> kernalSize = args.get(BrushKeys.KERNEL_SIZE, Double.class);
-        double size = kernalSize.or(VoxelSniperConfiguration.blendDefaultKernalSize);
-        String kernelString = kernalShape.or(VoxelSniperConfiguration.blendDefaultKernalShape);
+        double size = kernalSize.orElse(VoxelSniperConfiguration.blendDefaultKernalSize);
+        String kernelString = kernalShape.orElse(VoxelSniperConfiguration.blendDefaultKernalShape);
         Optional<Shape> se = PrimativeShapeFactory.createShape(kernelString, size);
         if (!se.isPresent())
         {

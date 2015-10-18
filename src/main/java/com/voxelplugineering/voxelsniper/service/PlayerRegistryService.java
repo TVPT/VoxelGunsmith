@@ -23,17 +23,18 @@
  */
 package com.voxelplugineering.voxelsniper.service;
 
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.registry.ProvidedWeakRegistry;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.service.registry.PlayerRegistry;
 import com.voxelplugineering.voxelsniper.service.registry.RegistryProvider;
 import com.voxelplugineering.voxelsniper.util.Context;
+
+import com.google.common.collect.Lists;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * A standard player registry for players.

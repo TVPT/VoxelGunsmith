@@ -25,7 +25,6 @@ package com.voxelplugineering.voxelsniper.commands;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
@@ -34,6 +33,8 @@ import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.material.Material;
+
+import java.util.Optional;
 
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.

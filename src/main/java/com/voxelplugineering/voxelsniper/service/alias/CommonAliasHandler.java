@@ -26,7 +26,6 @@ package com.voxelplugineering.voxelsniper.service.alias;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,13 +34,13 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonReader;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -91,7 +90,7 @@ public class CommonAliasHandler implements AliasHandler
         checkArgument(!target.isEmpty());
         if (!this.aliasTargets.containsKey(target))
         {
-            AliasRegistry parentRegistry = this.parent == null ? null : this.parent.getRegistry(target).orNull();
+            AliasRegistry parentRegistry = this.parent == null ? null : this.parent.getRegistry(target).orElse(null);
             this.aliasTargets.put(target, new CommonAliasRegistry(target, parentRegistry));
         }
         return this.aliasTargets.get(target);
@@ -106,7 +105,7 @@ public class CommonAliasHandler implements AliasHandler
         {
             return Optional.of(this.aliasTargets.get(target));
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
@@ -126,7 +125,7 @@ public class CommonAliasHandler implements AliasHandler
     @Override
     public Optional<AliasOwner> getOwner()
     {
-        return Optional.fromNullable(this.owner);
+        return Optional.ofNullable(this.owner);
     }
 
     @Override

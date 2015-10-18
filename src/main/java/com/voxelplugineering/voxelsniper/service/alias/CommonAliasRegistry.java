@@ -29,7 +29,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 
 import java.util.ArrayList;
@@ -40,6 +39,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -92,6 +92,12 @@ public class CommonAliasRegistry implements AliasRegistry
     }
 
     @Override
+    public String getRegistryName()
+    {
+        return this.registryName;
+    }
+
+    @Override
     public AliasRegistry getParent()
     {
         return this.parent;
@@ -133,7 +139,7 @@ public class CommonAliasRegistry implements AliasRegistry
             {
                 return this.parent.getAlias(alias);
             }
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(this.aliases.get(alias));
     }

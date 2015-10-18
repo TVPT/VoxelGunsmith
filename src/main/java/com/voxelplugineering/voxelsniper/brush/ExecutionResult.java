@@ -53,9 +53,17 @@ public class ExecutionResult
         return CONTINUE;
     }
 
-    public static ExecutionResult delayExecution(BrushWrapper c)
+    /**
+     * Delays the remaining execution of this brush until the next execution. Upon the next input
+     * the execution will continue from this brush part. This allows brushes to execute across
+     * multiple inputs.
+     * 
+     * @param continueBrush The brush to continue execution from
+     * @return The execution brush
+     */
+    public static ExecutionResult delayExecution(BrushWrapper continueBrush)
     {
-        return new Delay(c);
+        return new Delay(continueBrush);
     }
 
     private final boolean shouldContinue;
@@ -79,20 +87,33 @@ public class ExecutionResult
     {
         return this.shouldContinue;
     }
-    
-    public static class Delay extends ExecutionResult {
-        
+
+    /**
+     * An execution result which holds the brush to continue execution from.
+     * 
+     * @see #delayExecution(BrushWrapper)
+     */
+    public static class Delay extends ExecutionResult
+    {
+
         private BrushWrapper continuePoint;
-        
-        private Delay(BrushWrapper continuePoint) {
+
+        private Delay(BrushWrapper continuePoint)
+        {
             super(false);
             this.continuePoint = continuePoint;
         }
-        
-        public BrushWrapper getContinuePoint() {
+
+        /**
+         * Gets the brush to continue execution from.
+         * 
+         * @return The brush to contine from
+         */
+        public BrushWrapper getContinuePoint()
+        {
             return this.continuePoint;
         }
-        
+
     }
 
 }

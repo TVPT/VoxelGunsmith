@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.brush;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Handles the registration of {@link Brush}es. Also contains an ordered list of loaders which is

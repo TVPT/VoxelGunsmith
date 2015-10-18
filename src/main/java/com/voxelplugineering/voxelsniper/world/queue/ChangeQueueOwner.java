@@ -23,8 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.world.queue;
 
-import com.google.common.base.Optional;
+
 import com.voxelplugineering.voxelsniper.service.command.MessageReceiver;
+
+import java.util.Optional;
 
 /**
  * An interface for anything which may be the owner of a change queue.

@@ -28,12 +28,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A {@link MaterialShape} which a material for each point in the shape.
@@ -98,7 +98,7 @@ public class ComplexMaterialShape implements MaterialShape
      * @param y the y position to get
      * @param z the z position to get
      * @param relative whether to offset the given position to the origin
-     * @return the material, or {@link Optional#absent()} if the point in the shape is not set
+     * @return the material, or {@link Optional#empty()} if the point in the shape is not set
      */
     @Override
     public Optional<MaterialState> getMaterial(int x, int y, int z, boolean relative)
@@ -111,7 +111,7 @@ public class ComplexMaterialShape implements MaterialShape
             }
             return Optional.of(this.materialDictionary.get(get(x, y, z)));
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     private short get(int x, int y, int z)

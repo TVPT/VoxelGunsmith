@@ -23,10 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.service.registry;
 
-import com.google.common.base.Optional;
+
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.Service;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
+
+import java.util.Optional;
 
 /**
  * A factory for creating instances of {@link Player} from the specific implementation's user class.

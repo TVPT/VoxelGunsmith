@@ -23,9 +23,8 @@
  */
 package com.voxelplugineering.voxelsniper.service.alias;
 
-import com.google.common.base.Optional;
-
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -84,9 +83,19 @@ public interface AliasHandler
      * Clears all targets from this handler.
      */
     void clearTargets();
-    
+
+    /**
+     * Saves the current aliases.
+     * 
+     * @throws IOException If an error occurs while saving
+     */
     void save() throws IOException;
-    
+
+    /**
+     * Loads the current aliases.
+     * 
+     * @throws IOException If an error occurs while loading
+     */
     void load() throws IOException;
 
 }

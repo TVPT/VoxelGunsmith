@@ -28,7 +28,9 @@ import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.registry.PlayerRegistry;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+
 
 /**
  * A task for executing pending change queues.

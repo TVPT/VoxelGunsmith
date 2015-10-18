@@ -25,9 +25,10 @@ package com.voxelplugineering.voxelsniper.registry;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Optional;
 import com.voxelplugineering.voxelsniper.service.registry.RegistryProvider;
 import com.voxelplugineering.voxelsniper.util.Pair;
+
+import java.util.Optional;
 
 /**
  * A {@link WeakRegistry} which takes a custom provider which is referenced to get the value when a
@@ -68,7 +69,7 @@ public class ProvidedWeakRegistry<K, V> extends WeakRegistry<K, V>
                 register(name, v.get().getKey(), v.get().getValue());
                 return Optional.of(v.get().getValue());
             }
-            return Optional.absent();
+            return Optional.empty();
         }
         return value;
     }

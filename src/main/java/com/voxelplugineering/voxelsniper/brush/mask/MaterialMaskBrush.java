@@ -39,7 +39,9 @@ import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+
 
 /**
  * A brush mask which unsets all positions in the shape which are not currently set to the mask
@@ -64,7 +66,7 @@ public class MaterialMaskBrush extends Brush
             player.sendMessage(VoxelSniperConfiguration.missingAltMaterial);
             return ExecutionResult.abortExecution();
         }
-        boolean wildcard = args.get(BrushKeys.MASK_MATERIAL_WILDCARD, boolean.class).or(false);
+        boolean wildcard = args.get(BrushKeys.MASK_MATERIAL_WILDCARD, boolean.class).orElse(false);
         Optional<Block> l = BrushVarsHelper.getTargetBlock(args);
         Location loc = l.get().getLocation();
         ComplexShape shape;

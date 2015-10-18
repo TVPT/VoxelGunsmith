@@ -43,7 +43,7 @@ public abstract class Event
     public Event()
     {
         this.isCancelable = AnnotationHelper.doesSuperHaveAnotation(this.getClass(), Cancelable.class);
-        EventThreadingPolicy policy = AnnotationHelper.getSuperAnnotation(this.getClass(), EventThreadingPolicy.class).orNull();
+        EventThreadingPolicy policy = AnnotationHelper.getSuperAnnotation(this.getClass(), EventThreadingPolicy.class).orElse(null);
         if (policy != null)
         {
             this.allowsAsync = policy.value();

@@ -28,10 +28,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Represents a single material applied to an entire shape.
@@ -121,7 +121,7 @@ public class SingleMaterialShape implements MaterialShape
     {
         if (!get(x, y, z, relative))
         {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(this.material);
     }

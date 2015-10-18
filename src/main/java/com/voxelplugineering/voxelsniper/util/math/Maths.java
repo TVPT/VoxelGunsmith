@@ -61,11 +61,29 @@ public final class Maths
         return value < min ? min : value > max ? max : value;
     }
 
+    /**
+     * A helper for getting the ceil of a double as an integer, note that a double value may
+     * represent values far outside the range of values representable by an integer, in these cases
+     * the result is undefined.
+     * 
+     * @param d The double to ceil
+     * @return The integer value
+     * @see Math#ceil(double)
+     */
     public static int ceil(double d)
     {
         return (int) Math.ceil(d);
     }
 
+    /**
+     * A helper for getting the floor of a double as an integer, note that a double value may
+     * represent values far outside the range of values representable by an integer, in these cases
+     * the result is undefined.
+     * 
+     * @param d The double to floor
+     * @return The integer value
+     * @see Math#floor(double)
+     */
     public static int floor(double d)
     {
         return (int) Math.floor(d);

@@ -100,11 +100,21 @@ public class BrushWrapper
         return this.help;
     }
 
+    /**
+     * Gets this brush's parameters.
+     * 
+     * @return The parameters
+     */
     public BrushParam[] getParameters()
     {
         return this.params;
     }
 
+    /**
+     * Gets the permission key required to use this brush part.
+     * 
+     * @return The permission key
+     */
     public String getPermission()
     {
         return this.permission;

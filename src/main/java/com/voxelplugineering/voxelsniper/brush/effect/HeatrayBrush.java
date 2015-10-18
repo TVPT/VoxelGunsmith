@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.brush.effect;
 
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
 import com.voxelplugineering.voxelsniper.brush.BrushKeys;
@@ -42,10 +41,13 @@ import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
-import com.google.common.base.Optional;
-
+import java.util.Optional;
 import java.util.Random;
 
+/**
+ * An effect brush which produces a 'heatray' effect by burning/melting/generally destroying the
+ * targeted area.
+ */
 @BrushInfo(name = "heatray", type = BrushPartType.EFFECT, help = "Bringing destruction since 2010", permission = "voxelsniper.brush.heatray")
 public class HeatrayBrush extends Brush
 {
@@ -110,7 +112,7 @@ public class HeatrayBrush extends Brush
                         ms.setMaterial(x, y, z, false, this.air);
                         continue;
                     }
-                    if (mat.getType().isFlamable())
+                    if (mat.getType().isFlammable())
                     {
                         ms.setMaterial(x, y, z, false, this.fire);
                         continue;

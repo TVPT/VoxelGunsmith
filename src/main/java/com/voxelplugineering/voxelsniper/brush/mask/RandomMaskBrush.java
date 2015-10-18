@@ -36,10 +36,12 @@ import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.ComplexShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 
-import com.google.common.base.Optional;
-
+import java.util.Optional;
 import java.util.Random;
 
+/**
+ * A brush which randomly removes locations from the current shape based on a parameterized chance.
+ */
 @BrushInfo(name = "random", type = BrushPartType.MASK, help = "Randomly removes points from your shape based on a parameterized chance", params = {
         @BrushParam(name = BrushKeys.RANDOM_CHANCE, desc = "The change for points to stay (floating-point number)") }, permission = "voxelsniper.brush.random")
 public class RandomMaskBrush extends Brush

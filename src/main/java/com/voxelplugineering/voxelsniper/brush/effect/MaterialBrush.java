@@ -39,7 +39,9 @@ import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+
 
 /**
  * An effect brush which sets all set positions of the shape to a material.

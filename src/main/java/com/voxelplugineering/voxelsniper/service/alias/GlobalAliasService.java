@@ -27,9 +27,8 @@ import com.voxelplugineering.voxelsniper.service.AbstractService;
 import com.voxelplugineering.voxelsniper.service.scheduler.Scheduler;
 import com.voxelplugineering.voxelsniper.util.Context;
 
-import com.google.common.base.Optional;
-
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Set;
 
 /**

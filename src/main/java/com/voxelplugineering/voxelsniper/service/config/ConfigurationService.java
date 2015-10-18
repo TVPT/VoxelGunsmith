@@ -33,7 +33,6 @@ import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.DataTranslator;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
@@ -44,6 +43,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * The configuration storage.
@@ -275,6 +275,7 @@ public class ConfigurationService extends AbstractService implements Configurati
 
     }
 
+    @SuppressWarnings("unused")
     private static class ConfigEntry
     {
 

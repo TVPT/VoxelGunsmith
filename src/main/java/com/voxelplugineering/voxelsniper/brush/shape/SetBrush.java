@@ -41,7 +41,9 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+
 
 /**
  * A shape brush that allows the user to select two points and then creates a cuboidal shape

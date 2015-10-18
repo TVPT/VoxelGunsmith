@@ -25,11 +25,12 @@ package com.voxelplugineering.voxelsniper.util;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-import java.util.Map;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.service.Service;
+
+import com.google.common.collect.Maps;
+
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Represents a group of {@link Contextable} objects which may be passed to a service on
@@ -73,10 +74,10 @@ public class Context
             if (obj == null)
             {
                 // Failed to match any class
-                return Optional.absent();
+                return Optional.empty();
             }
         }
-        return Optional.fromNullable((T) obj);
+        return Optional.ofNullable((T) obj);
     }
 
     /**

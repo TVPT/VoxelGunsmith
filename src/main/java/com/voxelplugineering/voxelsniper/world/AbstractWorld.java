@@ -35,7 +35,9 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.biome.Biome;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+
 
 /**
  * An abstract world.
@@ -64,7 +66,7 @@ public abstract class AbstractWorld<T> extends WeakWrapper<T>implements World
         checkNotNull(location);
         if (location.getWorld() != this)
         {
-            return Optional.absent();
+            return Optional.empty();
         }
         return getBlock(location.getFlooredX(), location.getFlooredY(), location.getFlooredZ());
     }
@@ -109,7 +111,7 @@ public abstract class AbstractWorld<T> extends WeakWrapper<T>implements World
         checkNotNull(location);
         if (location.getWorld() != this)
         {
-            return Optional.absent();
+            return Optional.empty();
         }
         return getBiome(location.getFlooredX(), location.getFlooredY(), location.getFlooredZ());
     }

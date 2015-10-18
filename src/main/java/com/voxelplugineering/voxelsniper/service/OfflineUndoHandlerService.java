@@ -23,14 +23,15 @@
  */
 package com.voxelplugineering.voxelsniper.service;
 
-import java.util.concurrent.TimeUnit;
-
-import com.google.common.base.Optional;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.world.queue.UndoQueue;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A standard offline undo handler which caches player {@link UndoQueue}s for a period of 60 minutes
@@ -76,7 +77,7 @@ public class OfflineUndoHandlerService extends AbstractService implements Offlin
     public Optional<UndoQueue> get(String name)
     {
         check("get");
-        return Optional.fromNullable(this.cache.getIfPresent(name));
+        return Optional.ofNullable(this.cache.getIfPresent(name));
     }
 
     @Override

@@ -31,7 +31,9 @@ import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.world.queue.UndoQueue;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+
 
 /**
  * A command get fetching the help information for a brush.

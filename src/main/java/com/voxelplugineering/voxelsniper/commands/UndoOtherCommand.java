@@ -23,16 +23,17 @@
  */
 package com.voxelplugineering.voxelsniper.commands;
 
-import com.google.common.base.Optional;
+
 
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.service.registry.PlayerRegistry;
-import com.voxelplugineering.voxelsniper.service.text.TextFormat;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.world.queue.OfflineUndoHandler;
 import com.voxelplugineering.voxelsniper.world.queue.UndoQueue;
+
+import java.util.Optional;
 
 /**
  * A command get fetching the help information for a brush.

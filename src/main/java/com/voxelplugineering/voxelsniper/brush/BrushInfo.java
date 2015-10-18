@@ -57,8 +57,18 @@ public @interface BrushInfo
      */
     String help() default "No help is provided for this brush.";
     
+    /**
+     * Gets the parameters for this brush.
+     * 
+     * @return The parameters
+     */
     BrushParam[] params() default { };
     
+    /**
+     * Gets the permission key for this brush.
+     * 
+     * @return The permission key
+     */
     String permission() default "";
 
 }

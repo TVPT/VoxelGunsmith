@@ -63,6 +63,9 @@ public class AliasSaveTask implements Runnable
         }
     }
     
+    /**
+     * Saves all pending aliases.
+     */
     public synchronized void flush() {
         run();
     }

@@ -24,9 +24,10 @@
 package com.voxelplugineering.voxelsniper.service.registry;
 
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 
-import com.google.common.base.Optional;
+
 
 /**
  * A registry for a name and an object key related to a value.

@@ -27,11 +27,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
 
+/**
+ * A special {@link AliasOwner} which holds the aliases common to all players.
+ */
 public class GlobalAliasOwner implements AliasOwner
 {
 
     private final File source;
 
+    /**
+     * Creates a new {@link GlobalAliasOwner}.
+     * 
+     * @param source The alias source file
+     */
     public GlobalAliasOwner(File source)
     {
         this.source = checkNotNull(source);

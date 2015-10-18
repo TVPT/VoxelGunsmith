@@ -23,8 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.service.scheduler;
 
-import com.google.common.base.Optional;
+
 import com.voxelplugineering.voxelsniper.service.Service;
+
+import java.util.Optional;
 
 /**
  * A proxy for a specific implementations scheduler.

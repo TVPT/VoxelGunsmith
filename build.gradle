@@ -32,8 +32,8 @@ archivesBaseName = 'VoxelGunsmith'
 version '7.1.0-SNAPSHOT'
 
 // Minimum version of Java required
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 // Project dependencies
 repositories {
@@ -90,8 +90,8 @@ artifacts {
 
 idea {
     project {
-        jdkName = '1.6'
-        languageLevel = '1.6'
+        jdkName = '1.8'
+        languageLevel = '1.8'
     }
 }
 def sonatypeUser = hasProperty('sonatypeUser') ? sonatypeUser : System.getenv('sonatypeUser')

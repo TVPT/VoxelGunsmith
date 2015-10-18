@@ -23,8 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.service.registry;
 
-import com.google.common.base.Optional;
+
 import com.voxelplugineering.voxelsniper.util.Pair;
+
+import java.util.Optional;
 
 /**
  * A provider for values in a registry which is referenced when a key is not found within the

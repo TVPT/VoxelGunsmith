@@ -73,11 +73,10 @@ import com.voxelplugineering.voxelsniper.util.defaults.DefaultAliasBuilder;
 import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueTask;
 import com.voxelplugineering.voxelsniper.world.queue.OfflineUndoHandler;
 
-import com.google.common.base.Optional;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URLClassLoader;
+import java.util.Optional;
 
 /**
  * The core service provider.

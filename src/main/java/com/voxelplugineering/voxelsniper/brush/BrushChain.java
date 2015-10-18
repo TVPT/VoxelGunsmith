@@ -162,6 +162,11 @@ public class BrushChain
         return this.cmd;
     }
 
+    /**
+     * Prints out all parameters of this brush chain to the given message receiver.
+     * 
+     * @param target The message receiver
+     */
     public void printParams(MessageReceiver target)
     {
         for(BrushWrapper brush: this.brushes) {

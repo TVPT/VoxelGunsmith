@@ -25,9 +25,8 @@ package com.voxelplugineering.voxelsniper.shape;
 
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
-import com.google.common.base.Optional;
-
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Represents a material mask and shape combined.

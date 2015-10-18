@@ -41,7 +41,7 @@ public class ConfigurationTest
     // @Test
     public void testCreate()
     {
-        ConfigurationService conf = getConfig();
+        getConfig();
     }
 
     // @Test

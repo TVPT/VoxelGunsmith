@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.brush.mask;
 
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.brush.Brush;
 import com.voxelplugineering.voxelsniper.brush.BrushContext;
 import com.voxelplugineering.voxelsniper.brush.BrushInfo;
@@ -41,8 +40,11 @@ import com.voxelplugineering.voxelsniper.util.math.Maths;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
+/**
+ * A mask brush which creates an checker board pattern across the current shape.
+ */
 @BrushInfo(name = "checker", type = BrushPartType.MASK, help = "Modifies your shape to produce a checker pattern", params = {
         @BrushParam(name = BrushKeys.WIDTH, desc = "The X-axis size of the tiles (number)"),
         @BrushParam(name = BrushKeys.HEIGHT, desc = "The Y-axis size of the tiles (number)"),
@@ -62,12 +64,12 @@ public class CheckerMaskBrush extends Brush
             player.sendMessage(VoxelSniperConfiguration.missingShape, "checker");
             return ExecutionResult.abortExecution();
         }
-        int xoffset = args.get(BrushKeys.OFFSET_X, Integer.class).or(0);
-        int yoffset = args.get(BrushKeys.OFFSET_Y, Integer.class).or(0);
-        int zoffset = args.get(BrushKeys.OFFSET_Z, Integer.class).or(0);
-        int width = args.get(BrushKeys.WIDTH, Integer.class).or(1);
-        int height = args.get(BrushKeys.HEIGHT, Integer.class).or(1);
-        int length = args.get(BrushKeys.LENGTH, Integer.class).or(1);
+        int xoffset = args.get(BrushKeys.OFFSET_X, Integer.class).orElse(0);
+        int yoffset = args.get(BrushKeys.OFFSET_Y, Integer.class).orElse(0);
+        int zoffset = args.get(BrushKeys.OFFSET_Z, Integer.class).orElse(0);
+        int width = args.get(BrushKeys.WIDTH, Integer.class).orElse(1);
+        int height = args.get(BrushKeys.HEIGHT, Integer.class).orElse(1);
+        int length = args.get(BrushKeys.LENGTH, Integer.class).orElse(1);
         width = Maths.clamp(width, 1, Integer.MAX_VALUE);
         height = Maths.clamp(height, 1, Integer.MAX_VALUE);
         length = Maths.clamp(length, 1, Integer.MAX_VALUE);

@@ -23,14 +23,14 @@
  */
 package com.voxelplugineering.voxelsniper.util;
 
-import java.util.Map;
-
 import com.voxelplugineering.voxelsniper.service.registry.BiomeRegistry;
 import com.voxelplugineering.voxelsniper.world.biome.Biome;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
+
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * A utility which handles translating data from one class to another if the transition requires
@@ -50,7 +50,7 @@ public class DataTranslator
      */
     public static void initialize(Context context)
     {
-        BIOME_REGISTRY = context.get(BiomeRegistry.class).orNull();
+        BIOME_REGISTRY = context.get(BiomeRegistry.class).orElse(null);
 
         TRANSLATORS = Maps.newHashMap();
         Map<Class<?>, Function<Object, Object>> string = Maps.newHashMap();
@@ -125,7 +125,7 @@ public class DataTranslator
                 @Override
                 public Object apply(Object s)
                 {
-                    return BIOME_REGISTRY.getBiome((String) s).orNull();
+                    return BIOME_REGISTRY.getBiome((String) s).orElse(null);
                 }
             });
         }
@@ -151,12 +151,12 @@ public class DataTranslator
         }
         if (!TRANSLATORS.containsKey(from))
         {
-            return Optional.absent();
+            return Optional.empty();
         }
         Map<Class<?>, Function<Object, Object>> inner = TRANSLATORS.get(from);
         if (!inner.containsKey(to))
         {
-            return Optional.absent();
+            return Optional.empty();
         }
         Function<Object, Object> translator = inner.get(to);
         try
@@ -164,7 +164,7 @@ public class DataTranslator
             return Optional.of(to.cast(translator.apply(obj)));
         } catch (NumberFormatException e)
         {
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 }

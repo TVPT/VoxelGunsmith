@@ -23,9 +23,11 @@
  */
 package com.voxelplugineering.voxelsniper.service.registry;
 
-import com.google.common.base.Optional;
+
 import com.voxelplugineering.voxelsniper.service.Service;
 import com.voxelplugineering.voxelsniper.world.material.Material;
+
+import java.util.Optional;
 
 /**
  * A factory for {@link Material}s wrapping a Material from the underlying implementation.

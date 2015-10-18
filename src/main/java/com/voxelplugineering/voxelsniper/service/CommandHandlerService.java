@@ -26,7 +26,6 @@ package com.voxelplugineering.voxelsniper.service;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.commands.Command;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
@@ -36,13 +35,13 @@ import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.service.permission.PermissionProxy;
 import com.voxelplugineering.voxelsniper.util.Context;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A handler for commands which handles registration of command handlers and commands. Also
@@ -171,7 +170,7 @@ public class CommandHandlerService extends AbstractService implements CommandHan
     @Override
     public Optional<CommandRegistrar> getRegistrar()
     {
-        return Optional.fromNullable(this.registrar);
+        return Optional.ofNullable(this.registrar);
     }
 
 }

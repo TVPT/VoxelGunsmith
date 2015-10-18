@@ -31,6 +31,11 @@ import com.voxelplugineering.voxelsniper.service.Service;
 public interface GlobalAliasHandler extends AliasHandler, Service
 {
 
+    /**
+     * Gets the task which handles saving aliases to file.
+     * 
+     * @return The alias save task
+     */
     AliasSaveTask getAliasSaveTask();
     
 }

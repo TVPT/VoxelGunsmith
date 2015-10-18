@@ -23,9 +23,11 @@
  */
 package com.voxelplugineering.voxelsniper.service.registry;
 
-import com.google.common.base.Optional;
+
 import com.voxelplugineering.voxelsniper.service.Service;
 import com.voxelplugineering.voxelsniper.world.World;
+
+import java.util.Optional;
 
 /**
  * A registry for world data.

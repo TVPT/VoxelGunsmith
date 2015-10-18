@@ -58,8 +58,9 @@ package com.voxelplugineering.voxelsniper.util.nbt;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
-import com.google.common.base.Optional;
+
 
 /**
  * The <code>TAG_Compound</code> tag.
@@ -115,7 +116,7 @@ public final class CompoundTag extends Tag
     {
         if (!this.value.containsKey(key))
         {
-            return Optional.absent();
+            return Optional.empty();
         }
         Tag tag = this.value.get(key);
         if (!expected.isInstance(tag))

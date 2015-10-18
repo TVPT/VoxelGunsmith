@@ -29,12 +29,12 @@ import com.voxelplugineering.voxelsniper.service.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**

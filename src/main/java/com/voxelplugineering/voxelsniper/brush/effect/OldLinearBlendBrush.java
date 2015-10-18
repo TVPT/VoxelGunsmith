@@ -45,10 +45,10 @@ import com.voxelplugineering.voxelsniper.world.World;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A blend brush which modifies the impact of materials within its structuring element depending on
@@ -86,8 +86,8 @@ public class OldLinearBlendBrush extends Brush
 
         Optional<String> kernalShape = args.get(BrushKeys.KERNEL, String.class);
         Optional<Double> kernalSize = args.get(BrushKeys.KERNEL_SIZE, Double.class);
-        double size = kernalSize.or(VoxelSniperConfiguration.linearblendDefaultKernalSize);
-        String kernelString = kernalShape.or(VoxelSniperConfiguration.linearblendDefaultKernalShape);
+        double size = kernalSize.orElse(VoxelSniperConfiguration.linearblendDefaultKernalSize);
+        String kernelString = kernalShape.orElse(VoxelSniperConfiguration.linearblendDefaultKernalShape);
         Optional<Shape> se = PrimativeShapeFactory.createShape(kernelString, size);
         if (!se.isPresent())
         {

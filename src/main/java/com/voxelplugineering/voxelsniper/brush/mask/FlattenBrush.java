@@ -35,8 +35,11 @@ import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.shape.ComplexShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
+/**
+ * A brush which flattens the current shape into a 2d area.
+ */
 @BrushInfo(name = "flatten", type = BrushPartType.MASK, help = "Flattens your shape into a 2d shape", permission = "voxelsniper.brush.flatten")
 public class FlattenBrush extends Brush
 {

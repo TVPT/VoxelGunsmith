@@ -25,20 +25,18 @@ package com.voxelplugineering.voxelsniper.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Collections;
-import java.util.List;
-
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
-
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.util.math.Vector3d;
-import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.World;
 import com.voxelplugineering.voxelsniper.world.material.Material;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * A utility for performing a ray trace within a world.
@@ -110,6 +108,8 @@ public class RayTrace
     private int lastZ;
     private double step;
 
+    //TODO change these ctors to a builder
+    
     /**
      * Creates a new raytrace to reference with the given location yaw and pitch.
      * 
@@ -148,6 +148,17 @@ public class RayTrace
         this.stepZ = rotYCos * rotXSin;
     }
 
+    /**
+     * Creates a new ray tracer.
+     * 
+     * @param origin The origin of the trace
+     * @param direction The direction of the trace
+     * @param range The maximum range of the trace
+     * @param minY The minimum y value
+     * @param maxY The maximum y value
+     * @param step The step increment
+     * @param playerEyeOffset The player eye offset
+     */
     public RayTrace(Location origin, Vector3d direction, double range, int minY, int maxY, double step, Vector3d playerEyeOffset)
     {
         this.origin = checkNotNull(origin, "Origin cannot be null");
@@ -291,13 +302,16 @@ public class RayTrace
         this.lastZ = (int) Math.floor(this.currentZ);
     }
 
+    /**
+     * Performs a new ray trace.
+     */
     public void trace()
     {
         trace(null);
     }
 
     /**
-     * Perform a new ray trace.
+     * Performs a new ray trace.
      */
     public void trace(Function<Block, Boolean> callback)
     {
@@ -312,8 +326,8 @@ public class RayTrace
         {
             step(callback);
         }
-        this.lastBlock = this.world.getBlock(this.lastX, this.lastY, this.lastZ).orNull();
-        this.targetBlock = this.world.getBlock(this.targetX, this.targetY, this.targetZ).or(this.lastBlock);
+        this.lastBlock = this.world.getBlock(this.lastX, this.lastY, this.lastZ).orElse(null);
+        this.targetBlock = this.world.getBlock(this.targetX, this.targetY, this.targetZ).orElse(this.lastBlock);
     }
 
     /**

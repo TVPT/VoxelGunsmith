@@ -29,7 +29,9 @@ import com.voxelplugineering.voxelsniper.registry.WeakWrapper;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+
 
 /**
  * An abstract chunk.
@@ -59,7 +61,7 @@ public abstract class AbstractChunk<T> extends WeakWrapper<T>implements Chunk
         checkNotNull(location);
         if (location.getWorld() != this.world)
         {
-            return Optional.absent();
+            return Optional.empty();
         }
         return getBlock(location.getFlooredX(), location.getFlooredY(), location.getFlooredZ());
     }

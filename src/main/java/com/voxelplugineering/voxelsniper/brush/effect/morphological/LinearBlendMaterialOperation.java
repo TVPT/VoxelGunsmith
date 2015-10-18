@@ -27,10 +27,10 @@ import com.voxelplugineering.voxelsniper.util.math.Maths;
 import com.voxelplugineering.voxelsniper.world.World;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A {@link FilterOperation} for a linear blend effect.

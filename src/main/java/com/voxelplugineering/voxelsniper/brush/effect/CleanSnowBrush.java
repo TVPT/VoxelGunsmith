@@ -43,7 +43,9 @@ import com.voxelplugineering.voxelsniper.world.material.Material;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+
 
 /**
  * An effect brush that removes snow layers that are on top of snow layers.

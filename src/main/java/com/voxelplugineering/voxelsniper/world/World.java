@@ -23,13 +23,15 @@
  */
 package com.voxelplugineering.voxelsniper.world;
 
-import com.google.common.base.Optional;
+
 import com.voxelplugineering.voxelsniper.entity.Entity;
 import com.voxelplugineering.voxelsniper.service.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.biome.Biome;
+
+import java.util.Optional;
 
 /**
  * Represents a world.
@@ -145,6 +147,11 @@ public interface World extends BlockVolume
      */
     Vector3i getChunkSize();
 
+    /**
+     * Creates a lightning bolt at the given position.
+     * 
+     * @param position The position
+     */
     void spawnLightning(Vector3i position);
 
 }

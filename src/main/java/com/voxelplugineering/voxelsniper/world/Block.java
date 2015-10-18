@@ -26,7 +26,9 @@ package com.voxelplugineering.voxelsniper.world;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+
 
 /**
  * Represents a material at a location in a world.

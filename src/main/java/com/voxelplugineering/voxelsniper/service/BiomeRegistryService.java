@@ -29,11 +29,11 @@ import com.voxelplugineering.voxelsniper.service.registry.BiomeRegistry;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.world.biome.Biome;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A common biome registry for biomes.

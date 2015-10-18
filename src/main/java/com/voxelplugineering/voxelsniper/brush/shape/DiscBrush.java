@@ -50,11 +50,11 @@ public class DiscBrush extends Brush
     public ExecutionResult run(Player player, BrushVars args)
     {
         double size = args.get(BrushKeys.BRUSH_SIZE, Double.class).get();
-        boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(VoxelSniperConfiguration.discDefaultFace);
+        boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).orElse(VoxelSniperConfiguration.discDefaultFace);
         Shape s = null;
         if (face)
         {
-            Direction d = args.get(BrushKeys.TARGET_FACE, Direction.class).or(Direction.UP);
+            Direction d = args.get(BrushKeys.TARGET_FACE, Direction.class).orElse(Direction.UP);
             switch (d)
             {
             case NORTH:

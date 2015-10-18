@@ -32,9 +32,8 @@ import com.voxelplugineering.voxelsniper.brush.BrushWrapper;
 import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.util.Context;
 
-import com.google.common.base.Optional;
-
 import java.lang.reflect.Field;
+import java.util.Optional;
 
 /**
  * A service containing a {@link BrushManager}.

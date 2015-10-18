@@ -34,7 +34,9 @@ import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+
 
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.

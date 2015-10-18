@@ -37,10 +37,12 @@ import com.voxelplugineering.voxelsniper.shape.ComplexShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.math.Maths;
 
-import com.google.common.base.Optional;
-
+import java.util.Optional;
 import java.util.Random;
 
+/**
+ * A mask brush which performs a seeded growth algorithm within the current shape.
+ */
 @BrushInfo(name = "splatter", type = BrushPartType.MASK, help = SplatterMaskBrush.HELP, params = {
         @BrushParam(name = BrushKeys.SEED_PERCENT, desc = "The seed percent (floating-point number)"),
         @BrushParam(name = BrushKeys.GROW_PERCENT, desc = "The growth percent (floating-point number)"),
@@ -59,11 +61,11 @@ public class SplatterMaskBrush extends Brush
             player.sendMessage("You must have at least one shape brush before your splatter brush.");
             return ExecutionResult.abortExecution();
         }
-        double seed = args.get(BrushKeys.SEED_PERCENT, Double.class).or(VoxelSniperConfiguration.splatterDefaultSeed);
+        double seed = args.get(BrushKeys.SEED_PERCENT, Double.class).orElse(VoxelSniperConfiguration.splatterDefaultSeed);
         seed = Maths.clamp(seed, 0, 1);
-        double growth = args.get(BrushKeys.GROW_PERCENT, Double.class).or(VoxelSniperConfiguration.splatterDefaultGrowth);
+        double growth = args.get(BrushKeys.GROW_PERCENT, Double.class).orElse(VoxelSniperConfiguration.splatterDefaultGrowth);
         growth = Maths.clamp(growth, 0, 1);
-        int recursions = args.get(BrushKeys.RECURSIONS, Integer.class).or(VoxelSniperConfiguration.splatterDefaultRecursions);
+        int recursions = args.get(BrushKeys.RECURSIONS, Integer.class).orElse(VoxelSniperConfiguration.splatterDefaultRecursions);
         recursions = Maths.clamp(recursions, 1, VoxelSniperConfiguration.splatterMaxRecursions);
         Shape base = s.get();
         ComplexShape shape = new ComplexShape(base);

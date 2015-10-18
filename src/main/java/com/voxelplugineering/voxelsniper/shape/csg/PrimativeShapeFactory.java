@@ -26,10 +26,9 @@ package com.voxelplugineering.voxelsniper.shape.csg;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
-import com.google.common.base.Optional;
-
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**

@@ -41,9 +41,15 @@ public abstract class Brush
      * @return The execution result
      */
     public abstract ExecutionResult run(Player player, BrushVars args);
-    
-    public void init(Context context) {
-        
+
+    /**
+     * Initializes this brush from the given context.
+     * 
+     * @param context The context
+     */
+    public void init(Context context)
+    {
+
     }
 
 }

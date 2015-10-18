@@ -28,7 +28,9 @@ import com.voxelplugineering.voxelsniper.brush.BrushKeys;
 import com.voxelplugineering.voxelsniper.brush.BrushVars;
 import com.voxelplugineering.voxelsniper.world.Block;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+
 
 /**
  * A utility for getting common values from the {@link BrushVars}.

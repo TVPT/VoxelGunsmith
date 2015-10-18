@@ -38,7 +38,9 @@ import com.voxelplugineering.voxelsniper.shape.csg.CylinderShape;
 import com.voxelplugineering.voxelsniper.util.Direction;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+
 
 /**
  * A shape brush which defines a cylindrical region.
@@ -60,11 +62,11 @@ public class CylinderBrush extends Brush
             return ExecutionResult.abortExecution();
         }
         int height = (int) Math.floor(oheight.get());
-        boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(VoxelSniperConfiguration.cylDefaultFace);
+        boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).orElse(VoxelSniperConfiguration.cylDefaultFace);
         Shape s = null;
         if (face)
         {
-            Direction d = args.get(BrushKeys.TARGET_FACE, Direction.class).or(Direction.UP);
+            Direction d = args.get(BrushKeys.TARGET_FACE, Direction.class).orElse(Direction.UP);
             switch (d)
             {
             case NORTH:

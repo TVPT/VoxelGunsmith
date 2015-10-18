@@ -31,6 +31,11 @@ import java.io.File;
 public interface AliasOwner
 {
 
+    /**
+     * Gets the file to which this owner's aliases are stored.
+     * 
+     * @return The alias source
+     */
     File getAliasSource();
 
 }

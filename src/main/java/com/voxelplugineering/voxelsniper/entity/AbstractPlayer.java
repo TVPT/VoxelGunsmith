@@ -50,10 +50,9 @@ import com.voxelplugineering.voxelsniper.world.queue.ChangeQueue;
 import com.voxelplugineering.voxelsniper.world.queue.CommonUndoQueue;
 import com.voxelplugineering.voxelsniper.world.queue.UndoQueue;
 
-import com.google.common.base.Optional;
-
 import java.io.File;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.Queue;
 
 /**
@@ -187,7 +186,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
     {
         this.brushVariables.clear();
         this.brushVariables.set(BrushContext.GLOBAL, BrushKeys.PLAYER, this);
-        PermissionProxy perms = context.get(PermissionProxy.class).orNull();
+        PermissionProxy perms = context.get(PermissionProxy.class).orElse(null);
         if(perms != null && !perms.hasPermission(this, "voxelsniper.sniper")) {
             return;
         }
@@ -250,7 +249,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
     @Override
     public Optional<ChangeQueue> getNextPendingChange()
     {
-        return Optional.fromNullable(this.pending.peek());
+        return Optional.ofNullable(this.pending.peek());
     }
 
     @Override
@@ -292,7 +291,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
         double range = VoxelSniperConfiguration.rayTraceRange;
         RayTrace ray = new RayTrace(getLocation(), getYaw(), getPitch(), range, minY, maxY, step, eyeOffs);
         ray.trace();
-        return Optional.fromNullable(ray.getTargetBlock());
+        return Optional.ofNullable(ray.getTargetBlock());
     }
 
 }

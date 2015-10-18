@@ -40,10 +40,10 @@ import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.World;
 import com.voxelplugineering.voxelsniper.world.biome.Biome;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * An effect brush which sets your shape area to your specified biome.
@@ -85,7 +85,7 @@ public class BiomeBrush extends Brush
                     if (shape.get(x, y, z, false))
                     {
                         world.setBiome(b.get(), x0, y0, z0);
-                        Chunk chunk = world.getChunk(x0 / 16, y0 / 16, z0 / 16).orNull();
+                        Chunk chunk = world.getChunk(x0 / 16, y0 / 16, z0 / 16).orElse(null);
                         if (chunk != null && !toUpdate.contains(chunk))
                         {
                             toUpdate.add(chunk);

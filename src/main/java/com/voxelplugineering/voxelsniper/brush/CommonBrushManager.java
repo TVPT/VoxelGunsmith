@@ -28,10 +28,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.voxelplugineering.voxelsniper.util.Context;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A standard brush manager.
@@ -86,7 +86,7 @@ public class CommonBrushManager implements BrushManager
         {
             return this.parent.getBrush(identifier);
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override

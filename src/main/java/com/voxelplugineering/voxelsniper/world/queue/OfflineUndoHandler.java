@@ -23,8 +23,10 @@
  */
 package com.voxelplugineering.voxelsniper.world.queue;
 
-import com.google.common.base.Optional;
+
 import com.voxelplugineering.voxelsniper.service.Service;
+
+import java.util.Optional;
 
 /**
  * A handler for {@link UndoQueue}s for users who have disconnected from the system. These

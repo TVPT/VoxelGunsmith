@@ -23,9 +23,11 @@
  */
 package com.voxelplugineering.voxelsniper.service.command;
 
-import com.google.common.base.Optional;
+
 import com.voxelplugineering.voxelsniper.commands.Command;
 import com.voxelplugineering.voxelsniper.service.Service;
+
+import java.util.Optional;
 
 /**
  * Represents a handler for command execution and registration.

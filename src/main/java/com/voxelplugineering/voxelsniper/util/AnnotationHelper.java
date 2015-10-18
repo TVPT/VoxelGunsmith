@@ -25,14 +25,14 @@ package com.voxelplugineering.voxelsniper.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.lang.annotation.Annotation;
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
+
+import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * A helper utility for checking annotations.
@@ -116,11 +116,11 @@ public final class AnnotationHelper
                 {
                     map.put(annotation, a);
                 }
-                return Optional.fromNullable(a);
+                return Optional.ofNullable(a);
             }
-            return Optional.<T>fromNullable((T) map.get(annotation));
+            return Optional.<T>ofNullable((T) map.get(annotation));
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     private static <T extends Annotation> T getSuperAnnotation_(Class<?> cls, Class<T> annotation)

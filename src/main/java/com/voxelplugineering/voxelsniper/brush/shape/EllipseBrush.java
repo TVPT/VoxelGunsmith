@@ -63,11 +63,11 @@ public class EllipseBrush extends Brush
         }
         double rx = args.get(BrushKeys.RADIUS_X, Double.class).get();
         double ry = args.get(BrushKeys.RADIUS_Y, Double.class).get();
-        boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(VoxelSniperConfiguration.ellipseDefaultFace);
+        boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).orElse(VoxelSniperConfiguration.ellipseDefaultFace);
         Shape s = null;
         if (face)
         {
-            Direction d = args.get(BrushKeys.TARGET_FACE, Direction.class).or(Direction.UP);
+            Direction d = args.get(BrushKeys.TARGET_FACE, Direction.class).orElse(Direction.UP);
             switch (d)
             {
             case NORTH:

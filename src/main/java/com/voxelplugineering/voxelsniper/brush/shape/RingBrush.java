@@ -39,7 +39,9 @@ import com.voxelplugineering.voxelsniper.util.Direction;
 import com.voxelplugineering.voxelsniper.util.math.Maths;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+
 
 /**
  * A shape brush which defines a cylindrical region.
@@ -68,11 +70,11 @@ public class RingBrush extends Brush
             return ExecutionResult.abortExecution();
         }
         double ir = oir.get();
-        boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).or(VoxelSniperConfiguration.cylDefaultFace);
+        boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).orElse(VoxelSniperConfiguration.cylDefaultFace);
         ComplexShape s = null;
         if (face)
         {
-            Direction d = args.get(BrushKeys.TARGET_FACE, Direction.class).or(Direction.UP);
+            Direction d = args.get(BrushKeys.TARGET_FACE, Direction.class).orElse(Direction.UP);
             switch (d)
             {
             case NORTH:

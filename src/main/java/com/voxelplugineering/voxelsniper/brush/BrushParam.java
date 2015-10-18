@@ -28,11 +28,24 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Represents a parameter for a brush.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface BrushParam
 {
+    /**
+     * Gets the parameter name.
+     * 
+     * @return The name
+     */
     String name();
 
+    /**
+     * Gets the description of this brush.
+     * 
+     * @return The description
+     */
     String desc();
 }

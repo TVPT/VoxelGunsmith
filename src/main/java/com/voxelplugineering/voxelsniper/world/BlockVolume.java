@@ -26,7 +26,7 @@ package com.voxelplugineering.voxelsniper.world;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Represents a volume of space with discrete block data within it.
@@ -45,7 +45,7 @@ public interface BlockVolume
     Optional<Block> getBlock(int x, int y, int z);
 
     /**
-     * Gets the block at the given location. or {@link Optional#absent()} if the location is not in
+     * Gets the block at the given location. or {@link Optional#empty()} if the location is not in
      * this volume.
      * 
      * @param location The location

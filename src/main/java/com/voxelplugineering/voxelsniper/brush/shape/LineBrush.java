@@ -44,7 +44,9 @@ import com.voxelplugineering.voxelsniper.world.Block;
 import com.voxelplugineering.voxelsniper.world.Location;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
+
+import java.util.Optional;
+
 
 /**
  * Defines a region which is a line between the point specified by the alternate action to the

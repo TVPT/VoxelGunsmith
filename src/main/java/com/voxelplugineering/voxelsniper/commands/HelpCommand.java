@@ -59,10 +59,10 @@ public class HelpCommand extends Command
             BrushWrapper brush;
             if (sender instanceof Player)
             {
-                brush = ((Player) sender).getBrushManager().getBrush(args[0]).orNull();
+                brush = ((Player) sender).getBrushManager().getBrush(args[0]).orElse(null);
             } else
             {
-                brush = this.brushes.getBrush(args[0]).orNull();
+                brush = this.brushes.getBrush(args[0]).orElse(null);
             }
             if (brush == null)
             {

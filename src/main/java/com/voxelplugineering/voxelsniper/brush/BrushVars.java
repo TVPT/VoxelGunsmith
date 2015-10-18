@@ -23,11 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.brush;
 
-import java.util.Map;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.util.DataTranslator;
+
+import com.google.common.collect.Maps;
+
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * A holder for variables pertaining to a single player. Variables are divided into several
@@ -84,6 +85,9 @@ public class BrushVars
         this.runtime.clear();
     }
 
+    /**
+     * Clears the runtime flags to start a new execution run.
+     */
     public void clearFlags()
     {
         this.flags.clear();
@@ -102,7 +106,7 @@ public class BrushVars
 
     /**
      * Gets a variable from the {@link BrushVars} with the given type. If the variable doesn't
-     * exist, or it is of a different type then {@link Optional#absent()} is returned.
+     * exist, or it is of a different type then {@link Optional#empty()} is returned.
      * 
      * <p>If the variable type does not match the given type an attempt is made to call
      * {@link DataTranslator#attempt} to convert the variable to the requested type.</p>
@@ -138,7 +142,7 @@ public class BrushVars
                 data = this.flags;
             } else
             {
-                return Optional.absent();
+                return Optional.empty();
             }
         }
         Object o = data.get(path);
@@ -152,7 +156,7 @@ public class BrushVars
                 return DataTranslator.attempt(o, type);
             }
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     /**

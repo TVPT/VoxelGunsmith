@@ -27,11 +27,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.voxelplugineering.voxelsniper.service.registry.Registry;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.MapMaker;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -86,7 +86,7 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     public Optional<V> get(K key)
     {
         checkNotNull(key);
-        return Optional.fromNullable(this.registry.get(key));
+        return Optional.ofNullable(this.registry.get(key));
     }
 
     @Override
@@ -99,13 +99,13 @@ public class WeakRegistry<K, V> implements Registry<K, V>
         }
         if (!this.nameRegistry.containsKey(name))
         {
-            return Optional.absent();
+            return Optional.empty();
         }
         K key = this.nameRegistry.get(name);
         if (!this.registry.containsKey(key))
         {
             this.nameRegistry.remove(name);
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(this.registry.get(key));
     }
@@ -133,7 +133,7 @@ public class WeakRegistry<K, V> implements Registry<K, V>
                 }
             }
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override

@@ -30,50 +30,55 @@ public interface Material
 {
 
     /**
-     * Return the name of this material.
+     * Gets the name of this material.
      * 
-     * @return the name
+     * @return The name
      */
     String getName();
 
     /**
-     * Returns whether the material is representing a voxel which mat be placed within the world.
+     * Gets whether the material is representing a voxel which mat be placed within the world.
      * 
-     * @return is a placeable block
+     * @return Is a placeable block
      */
     boolean isBlock();
 
     /**
-     * Returns whether the material is affected by gravity within the world.
+     * Gets whether the material is affected by gravity within the world.
      * 
-     * @return is affected by gravity
+     * @return Is affected by gravity
      */
     boolean isAffectedByGravity();
 
     /**
-     * Returns if the material is solid (eg. whether a user could pass through the material
+     * Gets if the material is solid (eg. whether a user could pass through the material
      * unhindered).
      * 
-     * @return is a solid block
+     * @return Is a solid block
      */
     boolean isSolid();
 
     /**
-     * Returns if the material is a liquid.
+     * Gets if the material is a liquid.
      * 
-     * @return is a liquid
+     * @return Is a liquid
      */
     boolean isLiquid();
 
     /**
-     * Returns if the material is reliant on its environment. (ex. a torch hanging from a wall is
+     * Gets if the material is reliant on its environment. (ex. a torch hanging from a wall is
      * reliant on the wall).
      * 
-     * @return is reliant on the environment
+     * @return Is reliant on the environment
      */
     boolean isReliantOnEnvironment();
 
-    boolean isFlamable();
+    /**
+     * Gets if the material is flammable.
+     * 
+     * @return Is flammable
+     */
+    boolean isFlammable();
 
     /**
      * Gets the default {@link MaterialState} for this material.

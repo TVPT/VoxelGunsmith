@@ -23,10 +23,11 @@
  */
 package com.voxelplugineering.voxelsniper.service.alias;
 
-import com.google.common.base.Optional;
+
 
 import java.util.Collection;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -34,6 +35,13 @@ import java.util.Set;
  */
 public interface AliasRegistry
 {
+    
+    /**
+     * Gets the name of this registry.
+     * 
+     * @return The registry name
+     */
+    String getRegistryName();
 
     /**
      * Recursively expands all aliases found within the given string.
