@@ -24,7 +24,7 @@
 package com.voxelplugineering.voxelsniper.event;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.ThreadingPolicy.ASYNCHRONOUS;
+import static com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.Policy.ASYNCHRONOUS;
 
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.event.Event;

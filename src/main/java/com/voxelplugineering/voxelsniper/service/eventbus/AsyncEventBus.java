@@ -30,7 +30,7 @@ import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
 import com.voxelplugineering.voxelsniper.service.AbstractService;
 import com.voxelplugineering.voxelsniper.service.event.DeadEvent;
 import com.voxelplugineering.voxelsniper.service.event.Event;
-import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.ThreadingPolicy;
+import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.Policy;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.FutureFutureCallable;
 
@@ -52,9 +52,10 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * An {@link EventBus} implementation supporting all {@link ThreadingPolicy} types. Optionally takes
- * an {@link ExecutorService} to use for asynchronous task delegation. <p> This class is safe for
- * concurrent use. </p>
+ * An {@link EventBus} implementation supporting all {@link Policy} types. Optionally takes
+ * an {@link ExecutorService} to use for asynchronous task delegation.
+ * 
+ * <p> This class is safe for concurrent use. </p>
  */
 public class AsyncEventBus extends AbstractService implements EventBus
 {
@@ -230,10 +231,10 @@ public class AsyncEventBus extends AbstractService implements EventBus
     public ListenableFuture<Event> post(Event event)
     {
         checkNotNull(event);
-        if (event.getThreadingPolicy() == ThreadingPolicy.ASYNCHRONOUS)
+        if (event.getThreadingPolicy() == Policy.ASYNCHRONOUS)
         {
             return postAsync(event);
-        } else if (event.getThreadingPolicy() == ThreadingPolicy.SYNCHRONIZED)
+        } else if (event.getThreadingPolicy() == Policy.SYNCHRONIZED)
         {
             return postSync(event);
         } else

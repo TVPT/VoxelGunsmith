@@ -140,8 +140,10 @@ public class PrimativeComplexShapeFactory
     }
 
     /**
-     * Creates an elliptical cylinder in the direction of the given axis. <p> The axes are ordered
-     * according to the right had rule, where the directional axis takes the place of the z-axis.
+     * Creates an elliptical cylinder in the direction of the given axis.
+     * 
+     * <p> The axes are ordered according to the right had rule, where the directional axis takes
+     * the place of the z-axis.
      * 
      * @param rx the first radius perpendicular to the axis
      * @param ry the second radius perpendicular to the axis
@@ -267,8 +269,10 @@ public class PrimativeComplexShapeFactory
 
     /**
      * Creates a ellipse with the given pair of radii, the flat plane of the ellipse is aligned to
-     * be orthogonal to the given direction. <p> The axes are ordered according to the right had
-     * rule, where the direction takes the place of the z-axis.
+     * be orthogonal to the given direction.
+     * 
+     * <p> The axes are ordered according to the right had rule, where the direction takes the place
+     * of the z-axis.
      * 
      * @param rx the radius in the x-direction
      * @param ry the radius in the y direction

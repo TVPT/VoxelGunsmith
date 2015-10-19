@@ -36,7 +36,7 @@ import com.voxelplugineering.voxelsniper.service.eventbus.EventBus;
 import com.voxelplugineering.voxelsniper.service.eventbus.EventHandler;
 import com.voxelplugineering.voxelsniper.service.eventbus.EventPriority;
 import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy;
-import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.ThreadingPolicy;
+import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.Policy;
 import com.voxelplugineering.voxelsniper.util.ContextTestUtil;
 
 /**
@@ -350,7 +350,7 @@ public class EventBusTest
     /**
      * 
      */
-    @EventThreadingPolicy(ThreadingPolicy.ASYNCHRONOUS)
+    @EventThreadingPolicy(Policy.ASYNCHRONOUS)
     public static class AsyncEvent extends Event
     {
 
@@ -359,7 +359,7 @@ public class EventBusTest
     /**
      * 
      */
-    @EventThreadingPolicy(ThreadingPolicy.SYNCHRONIZED)
+    @EventThreadingPolicy(Policy.SYNCHRONIZED)
     public static class SyncEvent extends Event
     {
 

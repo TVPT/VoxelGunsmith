@@ -42,7 +42,7 @@ public @interface EventThreadingPolicy
     /**
      * Gets the threading policy for the event.
      */
-    ThreadingPolicy value() default ThreadingPolicy.ASYNCHRONOUS_SEQUENTIAL;
+    Policy value() default Policy.ASYNCHRONOUS_SEQUENTIAL;
 
     /**
      * Possible threading policies for an event post. <ul> <li>SYNCHRONIZED: handlers will be called
@@ -53,7 +53,7 @@ public @interface EventThreadingPolicy
      * may or may not be executed sequentially.</li> </ul>
      */
     @SuppressWarnings("javadoc")
-    public static enum ThreadingPolicy
+    public static enum Policy
     {
         SYNCHRONIZED,
         ASYNCHRONOUS_SEQUENTIAL,

@@ -24,7 +24,7 @@
 package com.voxelplugineering.voxelsniper.service.event;
 
 import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy;
-import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.ThreadingPolicy;
+import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.Policy;
 import com.voxelplugineering.voxelsniper.util.AnnotationHelper;
 
 /**
@@ -34,7 +34,7 @@ public abstract class Event
 {
 
     private final boolean isCancelable;
-    private final ThreadingPolicy allowsAsync;
+    private final Policy allowsAsync;
     private boolean isCanceled;
 
     /**
@@ -49,7 +49,7 @@ public abstract class Event
             this.allowsAsync = policy.value();
         } else
         {
-            this.allowsAsync = ThreadingPolicy.ASYNCHRONOUS_SEQUENTIAL;
+            this.allowsAsync = Policy.ASYNCHRONOUS_SEQUENTIAL;
         }
     }
 
@@ -64,11 +64,11 @@ public abstract class Event
     }
 
     /**
-     * Gets the {@link ThreadingPolicy} for the delegation of this event to its handlers.
+     * Gets the {@link Policy} for the delegation of this event to its handlers.
      * 
      * @return The threading policy
      */
-    public ThreadingPolicy getThreadingPolicy()
+    public Policy getThreadingPolicy()
     {
         return this.allowsAsync;
     }

@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.event;
 
-import static com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.ThreadingPolicy.ASYNCHRONOUS;
+import static com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.Policy.ASYNCHRONOUS;
 
 import com.voxelplugineering.voxelsniper.brush.BrushAction;
 import com.voxelplugineering.voxelsniper.entity.Player;

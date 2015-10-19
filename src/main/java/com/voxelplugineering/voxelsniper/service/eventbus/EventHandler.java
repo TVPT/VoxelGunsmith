@@ -30,9 +30,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Annotates a method as being an event handler. <p> The annotated method must be public and take a
- * single parameter, which is the event type being registered. </p> <p> It is good practice for
- * methods annotated by this annotation to not throw exceptions. </p>
+ * Annotates a method as being an event handler.
+ * 
+ * <p> The annotated method must be public and take a single parameter, which is the event type
+ * being registered. </p>
+ * 
+ * <p> It is good practice for methods annotated by this annotation to not throw exceptions. </p>
  */
 @Retention(RUNTIME)
 @Target(METHOD)

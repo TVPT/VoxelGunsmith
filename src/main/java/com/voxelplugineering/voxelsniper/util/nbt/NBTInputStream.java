@@ -67,8 +67,9 @@ import java.util.Map;
 
 /**
  * <p> This class reads <strong>NBT</strong>, or <strong>Named Binary Tag</strong> streams, and
- * produces an object graph of subclasses of the <code>Tag</code> object. </p> <p> The NBT format
- * was created by Markus Persson, and the specification may be found at <a
+ * produces an object graph of subclasses of the <code>Tag</code> object. </p>
+ * 
+ * <p> The NBT format was created by Markus Persson, and the specification may be found at <a
  * href="http://www.minecraft.net/docs/NBT.txt"> http://www.minecraft.net/docs/NBT.txt</a>. </p>
  * 
  * @author Graham Edgecombe

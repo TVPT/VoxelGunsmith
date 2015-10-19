@@ -45,7 +45,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * A registry for aliases. <p> TODO: clean up {@link #expand(String)} </p>
+ * A registry for aliases.
+ * 
+ * <p> TODO: clean up {@link #expand(String)} </p>
  */
 public class CommonAliasRegistry implements AliasRegistry
 {
