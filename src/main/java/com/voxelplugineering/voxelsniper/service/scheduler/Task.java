@@ -35,8 +35,8 @@ public abstract class Task
     /**
      * Creates a new {@link Task}.
      * 
-     * @param runnable the task's runnable
-     * @param interval the interval of the task's execution, in milliseconds
+     * @param runnable The task's runnable
+     * @param interval The interval of the task's execution, in milliseconds
      */
     public Task(Runnable runnable, int interval)
     {
@@ -47,7 +47,7 @@ public abstract class Task
     /**
      * Returns the task's runnable.
      * 
-     * @return the runnable
+     * @return The runnable
      */
     public Runnable getRunnable()
     {
@@ -57,7 +57,7 @@ public abstract class Task
     /**
      * The task's interval in milliseconds.
      * 
-     * @return the interval
+     * @return The interval
      */
     public int getInterval()
     {

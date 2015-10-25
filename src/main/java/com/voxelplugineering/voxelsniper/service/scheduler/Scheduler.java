@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.service.scheduler;
 
-
 import com.voxelplugineering.voxelsniper.service.Service;
 
 import java.util.Optional;

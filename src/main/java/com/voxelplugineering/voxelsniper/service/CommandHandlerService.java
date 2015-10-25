@@ -90,10 +90,7 @@ public class CommandHandlerService extends AbstractService implements CommandHan
         check("setRegistrar");
         this.registrar = checkNotNull(registrar, "Registrar cannot be null");
         // Register all existing commands to the registrar
-        for (Command cmd : this.unique)
-        {
-            this.registrar.registerCommand(cmd);
-        }
+        this.unique.forEach(this.registrar::registerCommand);
     }
 
     @Override

@@ -62,11 +62,12 @@ public class AliasSaveTask implements Runnable
             this.dirty.add(alias);
         }
     }
-    
+
     /**
      * Saves all pending aliases.
      */
-    public synchronized void flush() {
+    public synchronized void flush()
+    {
         run();
     }
 

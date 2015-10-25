@@ -23,24 +23,18 @@
  */
 package com.voxelplugineering.voxelsniper.entity;
 
-import java.util.UUID;
-
+import com.voxelplugineering.voxelsniper.util.Nameable;
 import com.voxelplugineering.voxelsniper.util.math.Vector3d;
 import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.World;
 
+import java.util.UUID;
+
 /**
  * Represents an entity within a world.
  */
-public interface Entity
+public interface Entity extends Nameable
 {
-
-    /**
-     * Gets the name of the entity, may be a generic name if the entity has no special name.
-     * 
-     * @return The name
-     */
-    String getName();
 
     /**
      * Gets the {@link UUID} for this entity.
@@ -52,7 +46,7 @@ public interface Entity
     /**
      * Gets the world that this player is currently within.
      * 
-     * @return this player's world
+     * @return This player's world
      */
     World getWorld();
 
@@ -73,12 +67,37 @@ public interface Entity
     /**
      * Sets the location of this entity.
      * 
-     * @param newLocation The new location
+     * @param world The world
+     * @param x The X position
+     * @param y The Y position
+     * @param z The Z position
      */
-    void setLocation(Location newLocation);
+    void setLocation(World world, double x, double y, double z);
 
     /**
-     * Gets the rotation of this entity. The vector components represent yaw, pitch, and roll in
+     * Sets the location of this entity.
+     * 
+     * @param newLocation The new location
+     */
+    default void setLocation(Location newLocation)
+    {
+        setLocation(newLocation.getWorld(), newLocation.getX(), newLocation.getY(), newLocation.getZ());
+    }
+
+    /**
+     * Sets the location of this entity.
+     * 
+     * @param x The X position
+     * @param y The Y position
+     * @param z The Z position
+     */
+    default void setPosition(double x, double y, double z)
+    {
+        setLocation(getWorld(), x, y, z);
+    }
+
+    /**
+     * Gets the rotation of this entity. The vector components represent pitch, yaw, and roll in
      * order.
      * 
      * @return The rotation
@@ -107,12 +126,24 @@ public interface Entity
     double getRoll();
 
     /**
-     * Sets the rotation of this entity. The vector components represent yaw, pitch, and roll in
+     * Sets the rotation of this entity.
+     * 
+     * @param pitch The pitch
+     * @param yaw The yaw
+     * @param roll The roll
+     */
+    void setRotation(double pitch, double yaw, double roll);
+
+    /**
+     * Sets the rotation of this entity. The vector components represent pitch, yaw, and roll in
      * order.
      * 
      * @param rotation The new rotation
      */
-    void setRotation(Vector3d rotation);
+    default void setRotation(Vector3d rotation)
+    {
+        setRotation(rotation.getX(), rotation.getY(), rotation.getZ());
+    }
 
     /**
      * Attempts to remove this entity from the world.

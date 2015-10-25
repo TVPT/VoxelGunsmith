@@ -26,12 +26,13 @@ package com.voxelplugineering.voxelsniper;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Collection;
-import java.util.Map;
-
-import com.google.common.collect.Maps;
 import com.voxelplugineering.voxelsniper.service.logging.LogLevel;
 import com.voxelplugineering.voxelsniper.service.logging.Logger;
+
+import com.google.common.collect.Maps;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * A logging distributor which handles the registration of child loggers and the distribution of all
@@ -102,9 +103,8 @@ public final class GunsmithLogger implements Logger
             System.out.println("[" + level.name() + "] " + msg);
             return;
         }
-        for (String n : this.loggers.keySet())
+        for (Logger l : this.loggers.values())
         {
-            Logger l = this.loggers.get(n);
             l.log(level, msg);
         }
     }
@@ -116,9 +116,8 @@ public final class GunsmithLogger implements Logger
         {
             return;
         }
-        for (String n : this.loggers.keySet())
+        for (Logger l : this.loggers.values())
         {
-            Logger l = this.loggers.get(n);
             l.debug(msg);
         }
     }
@@ -135,9 +134,8 @@ public final class GunsmithLogger implements Logger
             System.out.println("[INFO] " + msg);
             return;
         }
-        for (String n : this.loggers.keySet())
+        for (Logger l : this.loggers.values())
         {
-            Logger l = this.loggers.get(n);
             l.info(msg);
         }
     }
@@ -154,9 +152,8 @@ public final class GunsmithLogger implements Logger
             System.out.println("[WARNING] " + msg);
             return;
         }
-        for (String n : this.loggers.keySet())
+        for (Logger l : this.loggers.values())
         {
-            Logger l = this.loggers.get(n);
             l.warn(msg);
         }
     }
@@ -173,9 +170,8 @@ public final class GunsmithLogger implements Logger
             System.out.println("[ERROR] " + msg);
             return;
         }
-        for (String n : this.loggers.keySet())
+        for (Logger l : this.loggers.values())
         {
-            Logger l = this.loggers.get(n);
             l.error(msg);
         }
     }
@@ -192,9 +188,8 @@ public final class GunsmithLogger implements Logger
             e.printStackTrace();
             return;
         }
-        for (String n : this.loggers.keySet())
+        for (Logger l : this.loggers.values())
         {
-            Logger l = this.loggers.get(n);
             l.error(e);
         }
     }
@@ -212,9 +207,8 @@ public final class GunsmithLogger implements Logger
             e.printStackTrace();
             return;
         }
-        for (String n : this.loggers.keySet())
+        for (Logger l : this.loggers.values())
         {
-            Logger l = this.loggers.get(n);
             l.error(e, msg);
         }
     }

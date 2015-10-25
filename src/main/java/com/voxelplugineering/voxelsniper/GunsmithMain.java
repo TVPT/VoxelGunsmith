@@ -48,8 +48,8 @@ public final class GunsmithMain
             Gunsmith.getServiceManager().shutdown();
         } else
         {
-            System.out.println("Usage: java -jar Gunsmith.jar <command> [args]\n"
-                    + "\t--testinit\t\t: Performs a full initialization to shutdown cycle.\n");
+            System.out.println(
+                    "Usage: java -jar Gunsmith.jar <command> [args]\n" + "\t--testinit\t\t: Performs a full initialization to shutdown cycle.\n");
         }
     }
 }

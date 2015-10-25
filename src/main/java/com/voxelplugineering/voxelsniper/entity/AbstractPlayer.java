@@ -74,7 +74,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
     /**
      * Creates a new {@link AbstractPlayer} with a weak reference to the player.
      * 
-     * @param player the player object
+     * @param player The player object
      * @param parentBrushManager The parent brush manager
      * @param context The context
      */
@@ -91,7 +91,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
     /**
      * Creates a new {@link AbstractPlayer} with a weak reference to the player.
      * 
-     * @param player the player object
+     * @param player The player object
      * @param context The context
      */
     protected AbstractPlayer(T player, Context context)
@@ -112,19 +112,23 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
         try
         {
             resetSettings(context);
-            
+
             PlatformProxy platform = context.getRequired(PlatformProxy.class);
             String path = VoxelSniperConfiguration.playerDataDirectory;
-            if(!path.isEmpty() && !path.endsWith(File.separator)) {
+            if (!path.isEmpty() && !path.endsWith(File.separator))
+            {
                 path += File.separator;
             }
-            if(VoxelSniperConfiguration.useUUIDsForDataDirectories) {
+            if (VoxelSniperConfiguration.useUUIDsForDataDirectories)
+            {
                 path += getUniqueId().toString();
-            } else {
+            } else
+            {
                 path += getName();
             }
             this.dataDir = new File(platform.getRoot(), path);
-            if(!this.dataDir.exists()) {
+            if (!this.dataDir.exists())
+            {
                 this.dataDir.mkdirs();
             }
         } catch (Exception e)
@@ -187,7 +191,8 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
         this.brushVariables.clear();
         this.brushVariables.set(BrushContext.GLOBAL, BrushKeys.PLAYER, this);
         PermissionProxy perms = context.get(PermissionProxy.class).orElse(null);
-        if(perms != null && !perms.hasPermission(this, "voxelsniper.sniper")) {
+        if (perms != null && !perms.hasPermission(this, "voxelsniper.sniper"))
+        {
             return;
         }
         String fullBrush = VoxelSniperConfiguration.defaultBrush;
@@ -198,7 +203,8 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
             Optional<BrushWrapper> br = getBrushManager().getBrush(b);
             if (br.isPresent())
             {
-                if(perms != null && !perms.hasPermission(this, br.get().getPermission())) {
+                if (perms != null && !perms.hasPermission(this, br.get().getPermission()))
+                {
                     sendMessage(VoxelSniperConfiguration.brushPermissionMessage, b);
                     continue;
                 }

@@ -45,8 +45,8 @@ public abstract class ChangeQueue
     /**
      * Creates a new {@link ChangeQueue}.
      * 
-     * @param sniper the player
-     * @param world the world
+     * @param sniper The player
+     * @param world The world
      */
     public ChangeQueue(ChangeQueueOwner sniper, World world)
     {
@@ -57,7 +57,7 @@ public abstract class ChangeQueue
     /**
      * Returns the player that this queue is attached to.
      * 
-     * @return the owner
+     * @return The owner
      */
     public ChangeQueueOwner getOwner()
     {
@@ -67,7 +67,7 @@ public abstract class ChangeQueue
     /**
      * The world that this queue is change
      * 
-     * @return the world
+     * @return The world
      */
     public World getWorld()
     {
@@ -77,7 +77,7 @@ public abstract class ChangeQueue
     /**
      * Whether this queue has finished executing.
      * 
-     * @return is finished
+     * @return Is finished
      */
     public abstract boolean isFinished();
 
@@ -89,8 +89,8 @@ public abstract class ChangeQueue
     /**
      * Applies the next n changes to the world.
      * 
-     * @param next the number of changes to apply
-     * @return the actual number of changes applied
+     * @param next The number of changes to apply
+     * @return The actual number of changes applied
      */
     public abstract int perform(int next);
 

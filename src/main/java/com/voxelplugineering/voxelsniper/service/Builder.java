@@ -23,12 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.service;
 
+import com.voxelplugineering.voxelsniper.util.Contextable;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import com.voxelplugineering.voxelsniper.util.Contextable;
 
 /**
  * An annotation to mark methods as providers for a {@link Contextable} object.

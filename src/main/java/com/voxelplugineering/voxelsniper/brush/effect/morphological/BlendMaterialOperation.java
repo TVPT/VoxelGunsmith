@@ -97,6 +97,7 @@ public class BlendMaterialOperation implements FilterOperation
             if (e.getValue() == n && !e.getKey().equals(winner))
             {
                 tie = true;
+                break;
             }
         }
 

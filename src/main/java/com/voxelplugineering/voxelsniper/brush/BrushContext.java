@@ -25,9 +25,9 @@ package com.voxelplugineering.voxelsniper.brush;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Map;
-
 import com.google.common.collect.MapMaker;
+
+import java.util.Map;
 
 /**
  * Represents the context of variables for use within a players {@link BrushVars}.

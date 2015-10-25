@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.service.registry;
 
-
 import com.voxelplugineering.voxelsniper.service.Service;
 import com.voxelplugineering.voxelsniper.world.material.Material;
 
@@ -41,7 +40,7 @@ public interface MaterialRegistry<T> extends Service
      * Returns the {@link Material} representation of air/empty space in the underlying
      * implementation.
      * 
-     * @return the material of air
+     * @return The material of air
      */
     Material getAirMaterial();
 
@@ -69,6 +68,17 @@ public interface MaterialRegistry<T> extends Service
      * @param material The material for gunsmith
      */
     void registerMaterial(String name, T object, Material material);
+
+    /**
+     * Registers a material with this registry.
+     * 
+     * @param object The material from the underlying impl
+     * @param material The material for gunsmith
+     */
+    default void registerMaterial(T object, Material material)
+    {
+        registerMaterial(material.getName(), object, material);
+    }
 
     /**
      * Gets all materials registered within this registry.

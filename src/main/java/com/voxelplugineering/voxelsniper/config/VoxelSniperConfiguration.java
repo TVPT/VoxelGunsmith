@@ -51,7 +51,8 @@ public class VoxelSniperConfiguration
     public static double defaultBrushSize = 3;
     @ConfigValue(section = "defaults")
     public static String defaultBrushMaterial = "AIR";
-    @ConfigValue(section = "defaults", hidden = true)
+    @ConfigValue(section = "defaults",
+            hidden = true)
     public static boolean defaultMaterialMaskWildcard = true;
 
     // Default messages
@@ -61,7 +62,8 @@ public class VoxelSniperConfiguration
     public static String defaultHelpMessage = TextFormat.RED + "No help is provided for this command.";
     @ConfigValue(section = "messages.command")
     public static String commandPlayerOnly = "Sorry this is a player-only command.";
-    @ConfigValue(section = "messages.command", hidden = true)
+    @ConfigValue(section = "messages.command",
+            hidden = true)
     public static String keyValueDeliminator = "=";
     @ConfigValue(section = "messages.command.alias")
     public static String aliasSet = TextFormat.GREEN + "Added alias mapping " + TextFormat.BLUE + "'%s'" + TextFormat.GREEN + " to " + TextFormat.BLUE
@@ -171,7 +173,7 @@ public class VoxelSniperConfiguration
     public static boolean voxeldiscDefaultFace = false;
     @ConfigValue(section = "brush.ellipse")
     public static boolean ellipseDefaultFace = false;
-    
+
     @ConfigValue(section = "brush.heatray")
     public static double obsidianDensity = 0.8;
     @ConfigValue(section = "brush.heatray")

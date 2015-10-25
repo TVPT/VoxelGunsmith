@@ -88,12 +88,7 @@ public class WorldRegistryService<T> extends AbstractService implements WorldReg
     public Iterable<World> getLoadedWorlds()
     {
         check("getLoadedWorlds");
-        List<World> worlds = Lists.newArrayList();
-        for (Map.Entry<T, World> e : this.registry.getRegisteredValues())
-        {
-            worlds.add(e.getValue());
-        }
-        return worlds;
+        return Lists.newArrayList(this.registry.values());
     }
 
     @Override

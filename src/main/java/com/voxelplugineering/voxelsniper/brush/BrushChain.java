@@ -25,21 +25,22 @@ package com.voxelplugineering.voxelsniper.brush;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Iterator;
-import java.util.Queue;
-
-import com.google.common.collect.Queues;
-
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.MessageReceiver;
+import com.voxelplugineering.voxelsniper.util.Nameable;
+
+import com.google.common.collect.Queues;
+
+import java.util.Iterator;
+import java.util.Queue;
 
 /**
  * Represents a chain of brushes. Unlike {@link Brush} this should be a unique instance per player
  * and should not be shared between users.
  */
-public class BrushChain
+public class BrushChain implements Nameable
 {
 
     private final String cmd;
@@ -152,11 +153,7 @@ public class BrushChain
         this.brushes.add(brush);
     }
 
-    /**
-     * Gets the brush chain command.
-     * 
-     * @return The command
-     */
+    @Override
     public String getName()
     {
         return this.cmd;
@@ -167,16 +164,17 @@ public class BrushChain
      * 
      * @param target The message receiver
      */
-    public void printParams(MessageReceiver target)
+    public void printParams(final MessageReceiver target)
     {
-        for(BrushWrapper brush: this.brushes) {
-            if(brush.getParameters().length != 0) {
-                target.sendMessage(VoxelSniperConfiguration.paramHeader, brush.getName());
-                for(BrushParam param: brush.getParameters()) {
-                    target.sendMessage(VoxelSniperConfiguration.paramInfo, param.name(), param.desc());
-                }
+        this.brushes.stream().filter((brush) -> {
+            return brush.getParameters().length != 0;
+        }).forEach((brush) -> {
+            target.sendMessage(VoxelSniperConfiguration.paramHeader, brush.getName());
+            for (BrushParam param : brush.getParameters())
+            {
+                target.sendMessage(VoxelSniperConfiguration.paramInfo, param.name(), param.desc());
             }
-        }
+        });
     }
 
 }

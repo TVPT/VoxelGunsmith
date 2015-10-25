@@ -41,17 +41,10 @@ public interface AliasHandler
     Optional<AliasOwner> getOwner();
 
     /**
-     * Returns a Set of all valid targets in this handler.
-     * 
-     * @return all valid targets
-     */
-    Set<String> getValidTargets();
-
-    /**
      * Returns a the {@link AliasRegistry} by the given name.
      * 
-     * @param target the name
-     * @return the registry for that name
+     * @param target The name
+     * @return The registry for that name
      */
     Optional<AliasRegistry> getRegistry(String target);
 
@@ -78,6 +71,13 @@ public interface AliasHandler
      * @return If the handler contained the target
      */
     boolean removeTarget(String target);
+
+    /**
+     * Returns a Set of all valid targets in this handler.
+     * 
+     * @return All valid targets
+     */
+    Set<String> getValidTargets();
 
     /**
      * Clears all targets from this handler.

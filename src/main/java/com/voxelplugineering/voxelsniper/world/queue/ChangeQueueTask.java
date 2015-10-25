@@ -30,8 +30,6 @@ import com.voxelplugineering.voxelsniper.service.registry.PlayerRegistry;
 
 import java.util.Optional;
 
-
-
 /**
  * A task for executing pending change queues.
  */

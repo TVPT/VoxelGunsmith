@@ -119,7 +119,7 @@ public final class NBTUtils
      * 
      * @param clazz The tag class.
      * @return The type code.
-     * @throws IllegalArgumentException if the tag class is invalid.
+     * @throws IllegalArgumentException If the tag class is invalid.
      */
     public static int getTypeCode(Class<? extends Tag> clazz)
     {
@@ -170,7 +170,7 @@ public final class NBTUtils
      * 
      * @param type The type.
      * @return The class.
-     * @throws IllegalArgumentException if the tag type is invalid.
+     * @throws IllegalArgumentException If the tag type is invalid.
      */
     public static Class<? extends Tag> getTypeClass(int type)
     {

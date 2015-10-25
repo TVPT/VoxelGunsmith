@@ -24,12 +24,13 @@
 package com.voxelplugineering.voxelsniper.brush;
 
 import com.voxelplugineering.voxelsniper.util.Context;
+import com.voxelplugineering.voxelsniper.util.Nameable;
 
 /**
  * A wrapper class for {@link Brush} instances to provide better access to the information in the
  * {@link BrushInfo} annotation.
  */
-public class BrushWrapper
+public class BrushWrapper implements Nameable
 {
 
     private final Brush brush;
@@ -75,6 +76,7 @@ public class BrushWrapper
      * 
      * @return The brush name
      */
+    @Override
     public String getName()
     {
         return this.name;

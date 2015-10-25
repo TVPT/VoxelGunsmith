@@ -56,43 +56,43 @@ public interface Logger
      * Logs a debug message to the output. Will not be displayed unless the output's logging level
      * is set to debug.
      * 
-     * @param msg the debug message, cannot be null or empty
+     * @param msg The debug message, cannot be null or empty
      */
     void debug(String msg);
 
     /**
      * Logs an info message to the output.
      * 
-     * @param msg the info message, cannot be null or empty
+     * @param msg The info message, cannot be null or empty
      */
     void info(String msg);
 
     /**
      * Logs a warning to the output.
      * 
-     * @param msg the warning, cannot be null or empty
+     * @param msg The warning, cannot be null or empty
      */
     void warn(String msg);
 
     /**
      * Logs an error to the output.
      * 
-     * @param msg the error message, cannot be null or empty
+     * @param msg The error message, cannot be null or empty
      */
     void error(String msg);
 
     /**
      * Logs an error to the output.
      * 
-     * @param e the exception, cannot be null
+     * @param e The exception, cannot be null
      */
     void error(Throwable e);
 
     /**
      * Logs an error to the output.
      * 
-     * @param e the exception, cannot be null
-     * @param msg an included message, cannot be null or empty
+     * @param e The exception, cannot be null
+     * @param msg An included message, cannot be null or empty
      */
     void error(Throwable e, String msg);
 

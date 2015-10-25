@@ -99,9 +99,9 @@ public final class NBTConstants
     /**
      * Convert a type ID to its corresponding {@link Tag} class.
      * 
-     * @param id type ID
-     * @return tag class
-     * @throws IllegalArgumentException thrown if the tag ID is not valid
+     * @param id The type ID
+     * @return Tag class
+     * @throws IllegalArgumentException Thrown if the tag ID is not valid
      */
     public static Class<? extends Tag> getClassFromType(int id)
     {

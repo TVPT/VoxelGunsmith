@@ -40,14 +40,17 @@ import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 import java.util.Optional;
 
-
-
 /**
  * A shape brush which defines a cylindrical region.
  */
-@BrushInfo(name = "cylinder", type = BrushPartType.SHAPE, help = "Creates a cylindrical shape", params = {
-        @BrushParam(name = BrushKeys.USE_FACE, desc = "Whether to align shape to selected block face, (true/false)"),
-        @BrushParam(name = BrushKeys.HEIGHT, desc = "The cylinder height (number)") }, permission = "voxelsniper.brush.cylinder")
+@BrushInfo(name = "cylinder",
+        type = BrushPartType.SHAPE,
+        help = "Creates a cylindrical shape",
+        params = { @BrushParam(name = BrushKeys.USE_FACE,
+                desc = "Whether to align shape to selected block face, (true/false)"),
+                @BrushParam(name = BrushKeys.HEIGHT,
+                        desc = "The cylinder height (number)") },
+        permission = "voxelsniper.brush.cylinder")
 public class CylinderBrush extends Brush
 {
 

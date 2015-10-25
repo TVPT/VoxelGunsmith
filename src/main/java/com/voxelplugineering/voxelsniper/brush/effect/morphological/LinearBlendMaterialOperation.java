@@ -103,6 +103,7 @@ public class LinearBlendMaterialOperation implements FilterOperation
             if (e.getValue() == n && !e.getKey().equals(winner))
             {
                 tie = true;
+                break;
             }
         }
 

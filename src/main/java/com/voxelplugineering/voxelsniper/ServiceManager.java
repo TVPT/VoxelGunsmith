@@ -39,7 +39,6 @@ import com.google.common.collect.Maps;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -59,17 +58,6 @@ public class ServiceManager implements Contextable
         RUNNING,
         STOPPING
     }
-
-    private static Comparator<TargettedMethod> targetComparator = new Comparator<TargettedMethod>()
-    {
-
-        @Override
-        public int compare(TargettedMethod a, TargettedMethod b)
-        {
-            return Integer.signum(a.priority - b.priority);
-        }
-
-    };
 
     private State state;
     private List<Service> services;
@@ -131,26 +119,20 @@ public class ServiceManager implements Contextable
         GunsmithLogger.getLogger().warn("YOU ARE USING AN IN DEVELOPMENT VERSION OF VOXELSNIPER");
         GunsmithLogger.getLogger().warn("        THERE MAY BE BUGS (please report them)");
         GunsmithLogger.getLogger().warn("============================================================");
-        
+
         this.context = new Context();
         this.context.put(this);
 
         List<TargettedMethod> builds = new ArrayList<TargettedMethod>(this.builders.values());
-        Collections.sort(builds, new Comparator<TargettedMethod>()
-        {
-
-            @Override
-            public int compare(TargettedMethod a, TargettedMethod b)
-            {
-                return Integer.signum(a.priority - b.priority);
-            }
-
+        Collections.sort(builds, (a, b) -> {
+            return Integer.signum(a.priority - b.priority);
         });
 
         for (TargettedMethod m : builds)
         {
             try
             {
+                // Build service
                 Contextable obj = (Contextable) m.method.invoke(m.object, this.context);
                 GunsmithLogger.getLogger().debug("Built " + m.target.getSimpleName());
                 this.context.put(obj);
@@ -163,10 +145,14 @@ public class ServiceManager implements Contextable
                 {
                     this.conf = (Configuration) obj;
                 }
+                // If the service must be initialized early then call its init hooks at this point,
+                // this allows services to be initialized before other services are built
                 if (m.phase == InitPhase.EARLY)
                 {
                     List<TargettedMethod> inits = this.inithooks.get(m.target);
-                    Collections.sort(inits, targetComparator);
+                    Collections.sort(inits, (a, b) -> {
+                        return Integer.signum(a.priority - b.priority);
+                    });
                     for (TargettedMethod tm : inits)
                     {
                         tm.method.invoke(tm.object, this.context, this.context.get(tm.target).get());
@@ -175,12 +161,12 @@ public class ServiceManager implements Contextable
                 }
             } catch (Exception e)
             {
-                GunsmithLogger.getLogger().error("Error loading " + m.target.getName() + " from " + m.method.toGenericString());
-                e.printStackTrace();
+                GunsmithLogger.getLogger().error(e, "Error loading " + m.target.getName() + " from " + m.method.toGenericString());
                 this.inithooks.remove(m.target);
             }
         }
 
+        // Initialize remaining services
         List<TargettedMethod> inits = new ArrayList<TargettedMethod>();
         for (Map.Entry<Class<? extends Contextable>, List<TargettedMethod>> entry : this.inithooks.entrySet())
         {
@@ -195,7 +181,9 @@ public class ServiceManager implements Contextable
             inits.addAll(entry.getValue());
 
         }
-        Collections.sort(inits, targetComparator);
+        Collections.sort(inits, (a, b) -> {
+            return Integer.signum(a.priority - b.priority);
+        });
 
         for (TargettedMethod m : inits)
         {
@@ -205,11 +193,11 @@ public class ServiceManager implements Contextable
                 GunsmithLogger.getLogger().debug("Called init hook " + m.method.toGenericString());
             } catch (Exception e)
             {
-                e.printStackTrace();
-                // System.exit(1);
+                GunsmithLogger.getLogger().error(e, "Error calling init hook");
             }
         }
 
+        // Call post init hooks
         for (TargettedMethod m : this.postInit)
         {
             try
@@ -218,8 +206,7 @@ public class ServiceManager implements Contextable
                 GunsmithLogger.getLogger().debug("Called post init hook " + m.method.toGenericString());
             } catch (Exception e)
             {
-                e.printStackTrace();
-                // System.exit(1);
+                GunsmithLogger.getLogger().error(e, "Error calling post init hook");
             }
         }
         this.state = State.RUNNING;
@@ -231,6 +218,7 @@ public class ServiceManager implements Contextable
     public void shutdown()
     {
         this.state = State.STOPPING;
+        // Call the pre stop hooks
         for (TargettedMethod m : this.preStop)
         {
             try
@@ -239,10 +227,10 @@ public class ServiceManager implements Contextable
                 GunsmithLogger.getLogger().debug("Called pre stop hook " + m.method.toGenericString());
             } catch (Exception e)
             {
-                e.printStackTrace();
-                // System.exit(1);
+                GunsmithLogger.getLogger().error(e, "Error calling pre stop hook");
             }
         }
+        // Shutdown services
         for (Service serv : this.services)
         {
             if (serv.isInitialized())

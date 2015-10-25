@@ -43,23 +43,23 @@ public class SnipeEvent extends SniperEvent
     /**
      * Constructs a new SnipeEvent for processing.
      * 
-     * @param sniper the sniper involved
-     * @param y the yaw
-     * @param p the pitch
+     * @param sniper The sniper involved
+     * @param yaw The yaw
+     * @param pitch The pitch
      * @param action The brush action
      */
-    public SnipeEvent(Player sniper, double y, double p, BrushAction action)
+    public SnipeEvent(Player sniper, double yaw, double pitch, BrushAction action)
     {
         super(sniper);
-        this.yaw = y;
-        this.pitch = p;
+        this.yaw = yaw;
+        this.pitch = pitch;
         this.action = action;
     }
 
     /**
      * The yaw of the direction in which the player was looking.
      * 
-     * @return the yaw
+     * @return The yaw
      */
     public double getYaw()
     {
@@ -69,7 +69,7 @@ public class SnipeEvent extends SniperEvent
     /**
      * The pitch of the direction in which the player was looking.
      * 
-     * @return the pitch
+     * @return The pitch
      */
     public double getPitch()
     {

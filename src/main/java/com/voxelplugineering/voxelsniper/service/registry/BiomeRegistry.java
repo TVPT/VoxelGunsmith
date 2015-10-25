@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.service.registry;
 
-
 import com.voxelplugineering.voxelsniper.service.Service;
 import com.voxelplugineering.voxelsniper.world.biome.Biome;
 
@@ -61,6 +60,17 @@ public interface BiomeRegistry<T> extends Service
      * @param biome The gunsmith biome object
      */
     void registerBiome(String name, T object, Biome biome);
+
+    /**
+     * Registers a biome type.
+     * 
+     * @param object The underlying biome object
+     * @param biome The gunsmith biome object
+     */
+    default void registerBiome(T object, Biome biome)
+    {
+        registerBiome(biome.getName(), object, biome);
+    }
 
     /**
      * Gets a collection of all registered biomes.

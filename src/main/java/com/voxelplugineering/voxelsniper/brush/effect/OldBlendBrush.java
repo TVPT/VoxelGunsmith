@@ -54,8 +54,12 @@ import java.util.Optional;
  * The blend brush. An effect brush which performs a 'blend' operation by setting blocks in the
  * defined region to the mode material of the surrounding materials.
  */
-@BrushInfo(name = "blend", type = BrushPartType.EFFECT, help = OldBlendBrush.HELP, params = {
-        @BrushParam(name = BrushKeys.EXCLUDE_FLUID, desc = "Whether to exclude fluids (true/false)") }, permission = "voxelsniper.brush.blend")
+@BrushInfo(name = "blend",
+        type = BrushPartType.EFFECT,
+        help = OldBlendBrush.HELP,
+        params = { @BrushParam(name = BrushKeys.EXCLUDE_FLUID,
+                desc = "Whether to exclude fluids (true/false)") },
+        permission = "voxelsniper.brush.blend")
 public class OldBlendBrush extends Brush
 {
 
@@ -174,6 +178,7 @@ public class OldBlendBrush extends Brush
                         if (e.getValue() == n && !(excludeFluid && e.getKey().getType().isLiquid()) && !e.getKey().equals(winner))
                         {
                             tie = true;
+                            break;
                         }
                     }
 

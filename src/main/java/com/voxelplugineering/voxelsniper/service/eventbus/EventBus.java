@@ -23,11 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.service.eventbus;
 
-import com.google.common.util.concurrent.ListenableFuture;
 import com.voxelplugineering.voxelsniper.service.Service;
 import com.voxelplugineering.voxelsniper.service.event.DeadEvent;
 import com.voxelplugineering.voxelsniper.service.event.Event;
 import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.Policy;
+
+import com.google.common.util.concurrent.ListenableFuture;
 
 /**
  * An event bus handles the posting of events and the registration of handlers for events.

@@ -52,8 +52,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * An {@link EventBus} implementation supporting all {@link Policy} types. Optionally takes
- * an {@link ExecutorService} to use for asynchronous task delegation.
+ * An {@link EventBus} implementation supporting all {@link Policy} types. Optionally takes an
+ * {@link ExecutorService} to use for asynchronous task delegation.
  * 
  * <p> This class is safe for concurrent use. </p>
  */
@@ -158,11 +158,7 @@ public class AsyncEventBus extends AbstractService implements EventBus
                 }
             }
         }
-
-        for (Subscriber s : found)
-        {
-            registerSubscriber(s);
-        }
+        found.forEach(this::registerSubscriber);
     }
 
     private void registerSubscriber(Subscriber s)
@@ -211,10 +207,7 @@ public class AsyncEventBus extends AbstractService implements EventBus
             }
         }
 
-        for (Subscriber s : found)
-        {
-            unregisterSubscriber(s);
-        }
+        found.forEach(this::unregisterSubscriber);
     }
 
     private void unregisterSubscriber(Subscriber s)

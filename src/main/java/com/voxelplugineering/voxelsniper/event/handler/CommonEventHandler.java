@@ -57,10 +57,8 @@ public class CommonEventHandler
     private final OfflineUndoHandler undo;
     private final PermissionProxy perms;
 
-    // private final String playerFolderName = this.conf.get("playerDataDirectory",
-    // String.class).or("players/");
-    // private final String aliasFile = this.conf.get("aliasesFileName",
-    // String.class).or("aliases.json");
+//    private final String playerFolderName = this.conf.get("playerDataDirectory", String.class).or("players/");
+//    private final String aliasFile = this.conf.get("aliasesFileName", String.class).or("aliases.json");
 
     /**
      * Constructs a new {@link CommonEventHandler}.
@@ -78,7 +76,7 @@ public class CommonEventHandler
      * An event handler for the {@link SniperCreateEvent}s. This should initialize the players into
      * the player registry, creating their {@link Player} objects and setting their defaults.
      * 
-     * @param event the event
+     * @param event The event
      */
     @EventHandler
     public void onPlayerJoin(SniperEvent.SniperCreateEvent event)
@@ -95,7 +93,7 @@ public class CommonEventHandler
     /**
      * An event handler for {@link SniperDestroyEvent} in order to save player-specific settings.
      * 
-     * @param event the event
+     * @param event The event
      */
     @EventHandler
     public void onPlayerLeave(SniperEvent.SniperDestroyEvent event)
@@ -118,7 +116,7 @@ public class CommonEventHandler
      * Processes the given {@link com.voxelplugineering.voxelsniper.event.SnipeEvent} and performs
      * all necessary checks of the event. This event handler is supports asynchronous callback.
      * 
-     * @param event the snipe event to perform
+     * @param event The snipe event to perform
      */
     @EventHandler
     public void onSnipe(SnipeEvent event)
@@ -162,8 +160,7 @@ public class CommonEventHandler
             vars.set(BrushContext.RUNTIME, BrushKeys.LAST_FACE, ray.getLastFace());
             vars.set(BrushContext.RUNTIME, BrushKeys.ACTION, event.getAction());
             vars.set(BrushContext.RUNTIME, BrushKeys.LENGTH, ray.getLength());
-            // Gunsmith.getLogger().info("Snipe at " +
-            // ray.getTargetBlock().getLocation().toString());
+//            Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());
             sniper.getCurrentBrush().run(sniper, vars);
         } catch (Throwable e)
         {
@@ -178,7 +175,7 @@ public class CommonEventHandler
     /**
      * Reports on unhandled (aka. dead) events on the event bus.
      * 
-     * @param deadEvent the dead event
+     * @param deadEvent The dead event
      */
     @EventHandler
     public void handleDeadEvent(DeadEvent deadEvent)

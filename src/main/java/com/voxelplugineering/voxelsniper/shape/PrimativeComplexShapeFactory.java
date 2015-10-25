@@ -35,8 +35,8 @@ public class PrimativeComplexShapeFactory
      * Creates a cube with the given radius, the distance along a side of the cube will be
      * radius*2+1
      * 
-     * @param radius the radius
-     * @return the new shape
+     * @param radius The radius
+     * @return The new shape
      */
     public static ComplexShape createVoxel(double radius)
     {
@@ -46,9 +46,9 @@ public class PrimativeComplexShapeFactory
     /**
      * Creates a square disc with a height of 1, aligned orthogonally to the given direction.
      * 
-     * @param radius the radius of the disc
-     * @param direction the direction
-     * @return the new shape
+     * @param radius The radius of the disc
+     * @param direction The direction
+     * @return The new shape
      */
     public static ComplexShape createVoxelDisc(double radius, Direction direction)
     {
@@ -69,10 +69,10 @@ public class PrimativeComplexShapeFactory
      * Creates a rectangular volume. the 3 radii are for each of the axes with each side equal to
      * the radius*2+1 where radius is the radius for that specific axis.
      * 
-     * @param rx the x-axis radius
-     * @param ry the y-axis radius
-     * @param rz the z-axis radius
-     * @return the new shape
+     * @param rx The x-axis radius
+     * @param ry The y-axis radius
+     * @param rz The z-axis radius
+     * @return The new shape
      */
     public static ComplexShape createCuboid(double rx, double ry, double rz)
     {
@@ -85,10 +85,10 @@ public class PrimativeComplexShapeFactory
     /**
      * Creates an ellipsoidal shape.
      * 
-     * @param rx the x-axis radius
-     * @param ry the y-axis radius
-     * @param rz the z-axis radius
-     * @return the new shape
+     * @param rx The x-axis radius
+     * @param ry The y-axis radius
+     * @param rz The z-axis radius
+     * @return The new shape
      */
     public static ComplexShape createEllipsoid(double rx, double ry, double rz)
     {
@@ -131,8 +131,8 @@ public class PrimativeComplexShapeFactory
     /**
      * Creates a sphere.
      * 
-     * @param r the radius
-     * @return the new shape
+     * @param r The radius
+     * @return The new shape
      */
     public static ComplexShape createSphere(double r)
     {
@@ -145,11 +145,11 @@ public class PrimativeComplexShapeFactory
      * <p> The axes are ordered according to the right had rule, where the directional axis takes
      * the place of the z-axis.
      * 
-     * @param rx the first radius perpendicular to the axis
-     * @param ry the second radius perpendicular to the axis
-     * @param height the height of the cylinder
-     * @param direction the direction axis
-     * @return the new shape
+     * @param rx The first radius perpendicular to the axis
+     * @param ry The second radius perpendicular to the axis
+     * @param height The height of the cylinder
+     * @param direction The direction axis
+     * @return The new shape
      */
     public static ComplexShape createEllipticalCylinder(double rx, double ry, int height, Direction direction)
     {
@@ -244,10 +244,10 @@ public class PrimativeComplexShapeFactory
      * Creates a cylinder with the given radius and height, the flat plane of the cylinder is
      * aligned to be orthogonal to the given direction.
      * 
-     * @param radius the radius
-     * @param height the height
-     * @param direction the direction
-     * @return the new shape
+     * @param radius The radius
+     * @param height The height
+     * @param direction The direction
+     * @return The new shape
      */
     public static ComplexShape createCylinder(double radius, int height, Direction direction)
     {
@@ -258,9 +258,9 @@ public class PrimativeComplexShapeFactory
      * Creates a disc with the given radius and a height of 1, the flat plane of the disc is aligned
      * to be orthogonal to the given direction.
      * 
-     * @param radius the radius
-     * @param direction the direction
-     * @return the new shape
+     * @param radius The radius
+     * @param direction The direction
+     * @return The new shape
      */
     public static ComplexShape createDisc(double radius, Direction direction)
     {
@@ -274,10 +274,10 @@ public class PrimativeComplexShapeFactory
      * <p> The axes are ordered according to the right had rule, where the direction takes the place
      * of the z-axis.
      * 
-     * @param rx the radius in the x-direction
-     * @param ry the radius in the y direction
-     * @param direction the direction
-     * @return the new shape
+     * @param rx The radius in the x-direction
+     * @param ry The radius in the y direction
+     * @param direction The direction
+     * @return The new shape
      */
     public static ComplexShape createEllipse(double rx, double ry, Direction direction)
     {

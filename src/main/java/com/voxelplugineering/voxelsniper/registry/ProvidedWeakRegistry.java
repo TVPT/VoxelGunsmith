@@ -48,7 +48,7 @@ public class ProvidedWeakRegistry<K, V> extends WeakRegistry<K, V>
     /**
      * Creates a new {@link ProvidedWeakRegistry}.
      * 
-     * @param provider the provider
+     * @param provider The provider
      */
     public ProvidedWeakRegistry(RegistryProvider<K, V> provider)
     {
@@ -77,7 +77,7 @@ public class ProvidedWeakRegistry<K, V> extends WeakRegistry<K, V>
     /**
      * Sets the provider for this registry.
      * 
-     * @param provider the new provider
+     * @param provider The new provider
      */
     public void setProvider(RegistryProvider<K, V> provider)
     {

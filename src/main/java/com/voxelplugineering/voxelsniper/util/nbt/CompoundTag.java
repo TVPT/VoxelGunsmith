@@ -60,8 +60,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
-
-
 /**
  * The <code>TAG_Compound</code> tag.
  * 

@@ -23,6 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.brush;
 
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -45,7 +46,7 @@ public interface BrushManager
      * Sets the parent {@link BrushManager}. When a request for a brush instance is made and it is
      * not found within this manager the request is passed up to the parent manager.
      * 
-     * @param parent the parent brush loader
+     * @param parent The parent brush loader
      */
     void setParent(BrushManager parent);
 
@@ -53,18 +54,36 @@ public interface BrushManager
      * Loads the given brush into this manager. If the brush had been previously loaded then a check
      * is done of the brush version and the copy with the higher version is kept loaded.
      * 
-     * @param identifier the brush name, cannot be null or empty
+     * @param identifier The brush name, cannot be null or empty
      * @param brush The node graph
      */
     void loadBrush(String identifier, Brush brush);
 
     /**
-     * Returns a new instance of the brush with the given name if it has been previously loaded into
+     * Loads the given brush into this manager. If the brush had been previously loaded then a check
+     * is done of the brush version and the copy with the higher version is kept loaded.
+     * 
+     * @param brush The node graph
+     */
+    default void loadBrush(Brush brush)
+    {
+        BrushInfo bi = brush.getClass().getAnnotation(BrushInfo.class);
+        if (bi != null)
+        {
+            loadBrush(bi.name(), brush);
+        } else
+        {
+            throw new IllegalArgumentException("Brush class was missing BrushInfo annotation");
+        }
+    }
+
+    /**
+     * Gets a new instance of the brush with the given name if it has been previously loaded into
      * this manager. If the brush is not found in this manager the request is passed up to the
      * parent brush manager.
      * 
-     * @param identifier the brush name to be loaded, cannot be null or empty
-     * @return an instance of the brush
+     * @param identifier The brush name to be loaded, cannot be null or empty
+     * @return An instance of the brush
      */
     Optional<BrushWrapper> getBrush(String identifier);
 
@@ -73,6 +92,6 @@ public interface BrushManager
      * 
      * @return All registered brushes
      */
-    Iterable<BrushWrapper> getBrushes();
+    Collection<BrushWrapper> getBrushes();
 
 }

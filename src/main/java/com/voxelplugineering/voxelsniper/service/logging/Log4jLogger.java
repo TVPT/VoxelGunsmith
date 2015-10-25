@@ -79,7 +79,7 @@ public class Log4jLogger implements com.voxelplugineering.voxelsniper.service.lo
     /**
      * Creates a new {@link Log4jLogger}.
      * 
-     * @param logger the logger to wrap
+     * @param logger The logger to wrap
      */
     public Log4jLogger(Logger logger)
     {

@@ -104,7 +104,8 @@ public class VSCommand extends Command
         {
             String[] split = full.split(VoxelSniperConfiguration.keyValueDeliminator);
             String key = split[0].trim().toLowerCase();
-            if(key.startsWith("$")) {
+            if (key.startsWith("$"))
+            {
                 sniper.sendMessage(VoxelSniperConfiguration.vsInternal);
                 return true;
             }
@@ -114,9 +115,9 @@ public class VSCommand extends Command
             return true;
         }
         sender.sendMessage("VoxelSniper meta commands, Usage: \'/vs key=value\' or one of:");
-        for (String spec : this.subcommands.keySet())
+        for (SubCommand cmd : this.subcommands.values())
         {
-            sender.sendMessage(this.subcommands.get(spec).getHelp());
+            sender.sendMessage(cmd.getHelp());
         }
         return false;
     }

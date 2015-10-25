@@ -74,6 +74,7 @@ public class ConfigurationService extends AbstractService implements Configurati
     @Override
     protected void _shutdown()
     {
+        this.containers.clear();
     }
 
     @Override
@@ -290,11 +291,13 @@ public class ConfigurationService extends AbstractService implements Configurati
             this.container = container;
             this.field = f;
             this.annotation = f.getAnnotation(ConfigValue.class);
-            if(name.indexOf(".") != -1) {
+            if (name.indexOf(".") != -1)
+            {
                 String[] split = name.split("\\.");
-                this.name = split[split.length-1];
-                this.path = Arrays.copyOf(split, split.length-1);
-            } else {
+                this.name = split[split.length - 1];
+                this.path = Arrays.copyOf(split, split.length - 1);
+            } else
+            {
                 this.name = name;
                 this.path = new String[0];
             }

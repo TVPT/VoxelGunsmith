@@ -23,12 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.service;
 
+import com.voxelplugineering.voxelsniper.ServiceManager;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import com.voxelplugineering.voxelsniper.ServiceManager;
 
 /**
  * Annotates a method which will be called by the {@link ServiceManager} immediately after the

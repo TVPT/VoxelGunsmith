@@ -109,13 +109,7 @@ public class MaterialRegistryService<T> extends AbstractService implements Mater
     public Collection<Material> getMaterials()
     {
         check("getMaterials");
-        Set<Map.Entry<T, Material>> entries = this.registry.getRegisteredValues();
-        List<Material> mats = Lists.newArrayList();
-        for (Map.Entry<T, Material> entry : entries)
-        {
-            mats.add(entry.getValue());
-        }
-        return mats;
+        return Lists.newArrayList(this.registry.values());
     }
 
 }

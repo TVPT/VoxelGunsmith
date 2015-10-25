@@ -44,8 +44,8 @@ public class Pair<K, V>
     /**
      * Creates a new part.
      * 
-     * @param k the first value
-     * @param v the second value
+     * @param k The first value
+     * @param v The second value
      */
     public Pair(K k, V v)
     {
@@ -56,7 +56,7 @@ public class Pair<K, V>
     /**
      * Gets the first value.
      * 
-     * @return the first
+     * @return The first value
      */
     public K getKey()
     {
@@ -66,7 +66,7 @@ public class Pair<K, V>
     /**
      * Gets the second value.
      * 
-     * @return the second
+     * @return The second value
      */
     public V getValue()
     {

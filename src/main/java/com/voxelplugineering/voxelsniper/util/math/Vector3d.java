@@ -48,9 +48,9 @@ public class Vector3d implements Serializable, Cloneable
     /**
      * Constructs a new vector with the direction.
      * 
-     * @param x the x coordinate
-     * @param y the y coordinate
-     * @param z the z coordinate
+     * @param x The x coordinate
+     * @param y The y coordinate
+     * @param z The z coordinate
      */
     public Vector3d(double x, double y, double z)
     {
@@ -60,7 +60,7 @@ public class Vector3d implements Serializable, Cloneable
     /**
      * Returns the x-axis value.
      * 
-     * @return x value
+     * @return The x value
      */
     public double getX()
     {
@@ -70,7 +70,7 @@ public class Vector3d implements Serializable, Cloneable
     /**
      * Returns the y-axis value.
      * 
-     * @return y value
+     * @return The y value
      */
     public double getY()
     {
@@ -80,7 +80,7 @@ public class Vector3d implements Serializable, Cloneable
     /**
      * Returns the z-axis value.
      * 
-     * @return z value
+     * @return The z value
      */
     public double getZ()
     {
@@ -90,8 +90,8 @@ public class Vector3d implements Serializable, Cloneable
     /**
      * Returns a new vector representing this vector added to the given vector.
      * 
-     * @param v the vector to add onto this vector
-     * @return the new vector
+     * @param v The vector to add onto this vector
+     * @return The new vector
      */
     public Vector3d add(Vector3d v)
     {
@@ -105,7 +105,7 @@ public class Vector3d implements Serializable, Cloneable
      * @param x The x value
      * @param y The y value
      * @param z The z value
-     * @return the new vector
+     * @return The new vector
      */
     public Vector3d add(double x, double y, double z)
     {
@@ -115,8 +115,8 @@ public class Vector3d implements Serializable, Cloneable
     /**
      * Returns a new vector representing the given vector subtracted from this vector.
      * 
-     * @param v the vector to subtract from this vector
-     * @return the new vector
+     * @param v The vector to subtract from this vector
+     * @return The new vector
      */
     public Vector3d sub(Vector3d v)
     {
@@ -130,7 +130,7 @@ public class Vector3d implements Serializable, Cloneable
      * @param x The x value
      * @param y The y value
      * @param z The z value
-     * @return the new vector
+     * @return The new vector
      */
     public Vector3d sub(double x, double y, double z)
     {
@@ -140,8 +140,8 @@ public class Vector3d implements Serializable, Cloneable
     /**
      * Returns a new vector representing this vector scaled by the given scalar quantity.
      * 
-     * @param scalar the amount to scale this vector
-     * @return the new vector
+     * @param scalar The amount to scale this vector
+     * @return The new vector
      */
     public Vector3d multipy(double scalar)
     {
@@ -151,8 +151,8 @@ public class Vector3d implements Serializable, Cloneable
     /**
      * Returns a new vector representing this vector projected onto the given vector.
      * 
-     * @param b the vector to project this vector onto
-     * @return the new vector
+     * @param b The vector to project this vector onto
+     * @return The new vector
      */
     public Vector3d project(Vector3d b)
     {
@@ -165,8 +165,8 @@ public class Vector3d implements Serializable, Cloneable
     /**
      * Returns the dot product of this vector with the given vector.
      * 
-     * @param v the other vector
-     * @return the dot product
+     * @param v The other vector
+     * @return The dot product
      */
     public double dot(Vector3d v)
     {
@@ -177,8 +177,8 @@ public class Vector3d implements Serializable, Cloneable
     /**
      * Returns a new vector representing the cross product of this vector with the given vector.
      * 
-     * @param v the other vector
-     * @return the cross product result
+     * @param v The other vector
+     * @return The cross product result
      */
     public Vector3d cross(Vector3d v)
     {
@@ -189,7 +189,7 @@ public class Vector3d implements Serializable, Cloneable
     /**
      * Returns a new vector representing the normalized version of this vector.
      * 
-     * @return the normalized vector
+     * @return The normalized vector
      */
     public Vector3d normalize()
     {
@@ -199,7 +199,7 @@ public class Vector3d implements Serializable, Cloneable
     /**
      * Returns the length of this vector.
      * 
-     * @return the length
+     * @return The length
      */
     public double length()
     {
@@ -210,7 +210,7 @@ public class Vector3d implements Serializable, Cloneable
      * Returns the squared length of this vector (for computations requiring the squared form of the
      * length and wanting to save on the cost of Math.sqrt in the normal length function).
      * 
-     * @return the squared length
+     * @return The squared length
      */
     public double lengthSquared()
     {
@@ -220,7 +220,7 @@ public class Vector3d implements Serializable, Cloneable
     /**
      * Returns an exact copy of this vector.
      * 
-     * @return the clone
+     * @return The clone
      */
     @Override
     public Vector3d clone()

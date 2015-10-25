@@ -29,6 +29,7 @@ import com.voxelplugineering.voxelsniper.service.registry.Registry;
 
 import com.google.common.collect.MapMaker;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -63,7 +64,7 @@ public class WeakRegistry<K, V> implements Registry<K, V>
      * Sets whether the keys of this registry are case sensitive. If the keys are case insensitive
      * then all keys in all operations are cast to upper case.
      * 
-     * @param c is case sensitive
+     * @param c Is case sensitive
      */
     public void setCaseSensitiveKeys(boolean c)
     {
@@ -140,6 +141,12 @@ public class WeakRegistry<K, V> implements Registry<K, V>
     public Iterable<String> getRegisteredNames()
     {
         return this.nameRegistry.keySet();
+    }
+
+    @Override
+    public Collection<V> values()
+    {
+        return this.registry.values();
     }
 
     @Override

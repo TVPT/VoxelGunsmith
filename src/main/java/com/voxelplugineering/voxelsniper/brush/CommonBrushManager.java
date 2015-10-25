@@ -30,6 +30,7 @@ import com.voxelplugineering.voxelsniper.util.Context;
 
 import com.google.common.collect.Maps;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
@@ -54,7 +55,7 @@ public class CommonBrushManager implements BrushManager
     /**
      * Creates a new CommonBrushManager with the subscribed parent
      * 
-     * @param parent the parent
+     * @param parent The parent
      */
     public CommonBrushManager(Context context, BrushManager parent)
     {
@@ -102,7 +103,7 @@ public class CommonBrushManager implements BrushManager
     }
 
     @Override
-    public Iterable<BrushWrapper> getBrushes()
+    public Collection<BrushWrapper> getBrushes()
     {
         return this.brushes.values();
     }

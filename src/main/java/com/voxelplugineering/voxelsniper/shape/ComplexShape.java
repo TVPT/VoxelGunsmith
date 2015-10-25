@@ -23,13 +23,13 @@
  */
 package com.voxelplugineering.voxelsniper.shape;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
 /**
  * Represent a 3-d voxel shape.
@@ -50,9 +50,9 @@ public class ComplexShape implements Shape
     /**
      * Creates a new shape. The shape is initially all unset. The origin is set to (0, 0, 0).
      * 
-     * @param width the width
-     * @param height the height
-     * @param length the length
+     * @param width The width
+     * @param height The height
+     * @param length The length
      */
     public ComplexShape(int width, int height, int length)
     {
@@ -62,12 +62,12 @@ public class ComplexShape implements Shape
     /**
      * Creates a new shape. The shape is initially all unset.
      * 
-     * @param width the width
-     * @param height the height
-     * @param length the length
-     * @param ox the origin x position
-     * @param oy the origin y position
-     * @param oz the origin z position
+     * @param width The width
+     * @param height The height
+     * @param length The length
+     * @param ox The origin x position
+     * @param oy The origin y position
+     * @param oz The origin z position
      */
     public ComplexShape(int width, int height, int length, int ox, int oy, int oz)
     {
@@ -81,10 +81,10 @@ public class ComplexShape implements Shape
     /**
      * Creates a new shape. The shape is initially all unset.
      * 
-     * @param width the width
-     * @param height the height
-     * @param length the length
-     * @param origin the origin
+     * @param width The width
+     * @param height The height
+     * @param length The length
+     * @param origin The origin
      */
     public ComplexShape(int width, int height, int length, Vector3i origin)
     {
@@ -149,7 +149,7 @@ public class ComplexShape implements Shape
     /**
      * Sets the origin of this shape.
      * 
-     * @param origin the new origin
+     * @param origin The new origin
      */
     public void setOrigin(Vector3i origin)
     {
@@ -213,9 +213,9 @@ public class ComplexShape implements Shape
     /**
      * Resizes the shape relative to the current size.
      * 
-     * @param dx the x difference to apply
-     * @param dy the y difference to apply
-     * @param dz the z difference to apply
+     * @param dx The x difference to apply
+     * @param dy The y difference to apply
+     * @param dz The z difference to apply
      */
     public void grow(int dx, int dy, int dz)
     {
@@ -226,9 +226,9 @@ public class ComplexShape implements Shape
     /**
      * Resizes the shape relative to the current size.
      * 
-     * @param dx the x difference to apply
-     * @param dy the y difference to apply
-     * @param dz the z difference to apply
+     * @param dx The x difference to apply
+     * @param dy The y difference to apply
+     * @param dz The z difference to apply
      */
     public void shrink(int dx, int dy, int dz)
     {
@@ -239,9 +239,9 @@ public class ComplexShape implements Shape
     /**
      * Resizes the lower edge of the shape.
      * 
-     * @param fndx the x difference to apply
-     * @param fndy the y difference to apply
-     * @param fndz the z difference to apply
+     * @param fndx The x difference to apply
+     * @param fndy The y difference to apply
+     * @param fndz The z difference to apply
      */
     public void resizeNegative(int fndx, int fndy, int fndz)
     {
@@ -252,9 +252,9 @@ public class ComplexShape implements Shape
     /**
      * Resizes the upper edge of the shape.
      * 
-     * @param fdx the x difference to apply
-     * @param fdy the y difference to apply
-     * @param fdz the z difference to apply
+     * @param fdx The x difference to apply
+     * @param fdy The y difference to apply
+     * @param fdz The z difference to apply
      */
     public void resizePositive(int fdx, int fdy, int fdz)
     {
@@ -265,9 +265,9 @@ public class ComplexShape implements Shape
     /**
      * Changes the size to the given values. Attempts to retain as much of the shape as possible.
      * 
-     * @param w the new width
-     * @param h the new height
-     * @param l the new length
+     * @param w The new width
+     * @param h The new height
+     * @param l The new length
      */
     private void resize(int w, int h, int l, int ox, int oy, int oz)
     {
@@ -303,7 +303,7 @@ public class ComplexShape implements Shape
     /**
      * Matches the sizes between this shape and the given shape.
      * 
-     * @param other the shape to match with
+     * @param other The shape to match with
      */
     public void matchSize(Shape other)
     {
@@ -339,7 +339,7 @@ public class ComplexShape implements Shape
      * Performs a CSG add operation between this shape and the given shape. First ensures that sizes
      * and origins are matched between the two shapes.
      * 
-     * @param s the shape to add
+     * @param s The shape to add
      */
     public void add(ComplexShape s)
     {
@@ -361,7 +361,7 @@ public class ComplexShape implements Shape
      * Performs a CSG subtract operation between this shape and the given shape. First ensures that
      * sizes and origins are matched between the two shapes.
      * 
-     * @param s the shape to subtract from this shape
+     * @param s The shape to subtract from this shape
      */
     public void subtract(ComplexShape s)
     {
@@ -383,7 +383,7 @@ public class ComplexShape implements Shape
      * Performs a CSG intersection operation between this shape and the given shape. First ensures
      * that sizes and origins are matched between the two shapes.
      * 
-     * @param s the shape to intersect with
+     * @param s The shape to intersect with
      */
     public void intersect(ComplexShape s)
     {
@@ -405,7 +405,7 @@ public class ComplexShape implements Shape
      * Performs a CSG xor operation between this shape and the given shape. First ensures that sizes
      * and origins are matched between the two shapes.
      * 
-     * @param s the shape to xor against
+     * @param s The shape to xor against
      */
     public void xor(ComplexShape s)
     {
@@ -443,7 +443,7 @@ public class ComplexShape implements Shape
     /**
      * Returns an array of {@link Vector3i} these vectors represent all set positions of this shape.
      * 
-     * @return the set positions
+     * @return The set positions
      */
     public Vector3i[] getShape()
     {
@@ -496,7 +496,7 @@ public class ComplexShape implements Shape
     /**
      * Creates a new Shape identical to this one.
      * 
-     * @return the duplicate shape
+     * @return The duplicate shape
      */
     @Override
     public ComplexShape clone()

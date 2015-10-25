@@ -30,8 +30,6 @@ import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 import java.util.Optional;
 
-
-
 /**
  * A combination location and material representation of a single voxel. The location is immutable.
  */
@@ -44,8 +42,8 @@ public class CommonBlock implements Block
     /**
      * Creates a new CommonBlock with the given location and material.
      * 
-     * @param location the location, cannot be null
-     * @param material the material, cannot be null
+     * @param location The location, cannot be null
+     * @param material The material, cannot be null
      */
     public CommonBlock(Location location, MaterialState material)
     {

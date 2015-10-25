@@ -40,16 +40,20 @@ import com.voxelplugineering.voxelsniper.world.Location;
 import com.voxelplugineering.voxelsniper.world.World;
 import com.voxelplugineering.voxelsniper.world.biome.Biome;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * An effect brush which sets your shape area to your specified biome.
  */
-@BrushInfo(name = "biome", type = BrushPartType.EFFECT, help = "An effect brush which sets your shape area to the specified biome", params = {
-        @BrushParam(name = BrushKeys.BIOME, desc = "The biome") }, permission = "voxelsniper.brush.biome")
+@BrushInfo(name = "biome",
+        type = BrushPartType.EFFECT,
+        help = "An effect brush which sets your shape area to the specified biome",
+        params = { @BrushParam(name = BrushKeys.BIOME,
+                desc = "The biome") },
+        permission = "voxelsniper.brush.biome")
 public class BiomeBrush extends Brush
 {
 
@@ -72,7 +76,7 @@ public class BiomeBrush extends Brush
             player.sendMessage(VoxelSniperConfiguration.missingParam, BrushKeys.BIOME, "biome");
             return ExecutionResult.abortExecution();
         }
-        List<Chunk> toUpdate = Lists.newArrayList();
+        Set<Chunk> toUpdate = Sets.newHashSet();
         for (int x = 0; x < shape.getWidth(); x++)
         {
             int x0 = loc.getFlooredX() + x - shape.getOrigin().getX();
@@ -85,19 +89,19 @@ public class BiomeBrush extends Brush
                     if (shape.get(x, y, z, false))
                     {
                         world.setBiome(b.get(), x0, y0, z0);
-                        Chunk chunk = world.getChunk(x0 / 16, y0 / 16, z0 / 16).orElse(null);
-                        if (chunk != null && !toUpdate.contains(chunk))
+                        Optional<Chunk> chunk = world.getChunk(x0 / 16, y0 / 16, z0 / 16);
+                        if (chunk.isPresent())
                         {
-                            toUpdate.add(chunk);
+                            toUpdate.add(chunk.get());
                         }
                         break;
                     }
                 }
             }
         }
-        for (Chunk c : toUpdate)
+        for (Chunk chunk : toUpdate)
         {
-            c.refreshChunk();
+            chunk.refreshChunk();
         }
         return ExecutionResult.continueExecution();
     }

@@ -23,10 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.entity;
 
+import com.voxelplugineering.voxelsniper.util.Nameable;
+
 /**
  * Represents a type of entity.
  */
-public interface EntityType
+public interface EntityType extends Nameable
 {
 
     /**
@@ -34,6 +36,7 @@ public interface EntityType
      * 
      * @return The name
      */
+    @Override
     String getName();
 
     /**

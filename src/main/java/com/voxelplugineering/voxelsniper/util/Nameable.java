@@ -21,56 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.service.registry;
-
-import com.voxelplugineering.voxelsniper.service.Service;
-import com.voxelplugineering.voxelsniper.world.World;
-
-import java.util.Optional;
+package com.voxelplugineering.voxelsniper.util;
 
 /**
- * A registry for world data.
- * 
- * @param <T> The underlying world type.
+ * Represents an object which has a name.
  */
-public interface WorldRegistry<T> extends Service
+public interface Nameable
 {
 
     /**
-     * Gets the world with the given name.
+     * Gets this objects name.
      * 
-     * @param name The name
-     * @return The world, if found
+     * @return The name
      */
-    Optional<World> getWorld(String name);
-
-    /**
-     * Gets the world representing the given underlying world object.
-     * 
-     * @param world The underlying world type
-     * @return The world, if found
-     */
-    Optional<World> getWorld(T world);
-
-    /**
-     * Gets a collection of all currently registered worlds.
-     * 
-     * @return The worlds
-     */
-    Iterable<World> getLoadedWorlds();
-
-    /**
-     * Removes the world from the registry by name.
-     * 
-     * @param name The name
-     */
-    void invalidate(String name);
-
-    /**
-     * Removes the given world from the registry.
-     * 
-     * @param world The key
-     */
-    void invalidate(T world);
-
+    String getName();
+    
 }

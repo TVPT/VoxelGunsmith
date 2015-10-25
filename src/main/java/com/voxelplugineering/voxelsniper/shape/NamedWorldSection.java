@@ -24,6 +24,7 @@
 package com.voxelplugineering.voxelsniper.shape;
 
 import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
+import com.voxelplugineering.voxelsniper.util.Nameable;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.util.nbt.CompoundTag;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
@@ -33,7 +34,7 @@ import java.util.Map;
 /**
  * A named {@link ComplexMaterialShape}.
  */
-public class NamedWorldSection extends ComplexMaterialShape
+public class NamedWorldSection extends ComplexMaterialShape implements Nameable
 {
 
     private String name;
@@ -70,9 +71,9 @@ public class NamedWorldSection extends ComplexMaterialShape
     public NamedWorldSection(CuboidShape shape, Map<Short, MaterialState> materialDict)
     {
         super(shape, materialDict.get(0));
-        for (short key : materialDict.keySet())
+        for (Map.Entry<Short, MaterialState> entry : materialDict.entrySet())
         {
-            this.registerMaterial(key, materialDict.get(key));
+            this.registerMaterial(entry.getKey(), entry.getValue());
         }
     }
 
@@ -81,6 +82,7 @@ public class NamedWorldSection extends ComplexMaterialShape
      * 
      * @return The name
      */
+    @Override
     public String getName()
     {
         return this.name;

@@ -23,10 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.world.material;
 
+import com.voxelplugineering.voxelsniper.util.Nameable;
+
 /**
  * Represents a material that may be applied to a block.
  */
-public interface Material
+public interface Material extends Nameable
 {
 
     /**
@@ -34,6 +36,7 @@ public interface Material
      * 
      * @return The name
      */
+    @Override
     String getName();
 
     /**

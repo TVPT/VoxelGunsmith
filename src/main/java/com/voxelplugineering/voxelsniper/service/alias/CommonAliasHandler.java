@@ -76,10 +76,7 @@ public class CommonAliasHandler implements AliasHandler
         this.aliasTargets = Maps.newHashMap();
         if (this.parent != null)
         {
-            for (String target : this.parent.getValidTargets())
-            {
-                registerTarget(target);
-            }
+            this.parent.getValidTargets().forEach(this::registerTarget);
         }
     }
 
@@ -158,14 +155,14 @@ public class CommonAliasHandler implements AliasHandler
 
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             JsonObject json = new JsonObject();
-            for (String target : this.aliasTargets.keySet())
+            for (Map.Entry<String, AliasRegistry> target : this.aliasTargets.entrySet())
             {
                 JsonObject array = new JsonObject();
-                for (Map.Entry<String, String> e : this.aliasTargets.get(target).getEntries())
+                for (Map.Entry<String, String> e : target.getValue().getEntries())
                 {
                     array.add(e.getKey(), new JsonPrimitive(e.getValue()));
                 }
-                json.add(target, array);
+                json.add(target.getKey(), array);
             }
             gson.toJson(json, writer);
         } finally

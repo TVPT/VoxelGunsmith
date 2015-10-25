@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.service.registry;
 
-
 import com.voxelplugineering.voxelsniper.util.Pair;
 
 import java.util.Optional;
@@ -41,8 +40,8 @@ public interface RegistryProvider<K, V>
     /**
      * Returns a new key value part from this provider.
      * 
-     * @param name the name of the object to fetch.
-     * @return a key-value {@link Pair}
+     * @param name The name of the object to fetch.
+     * @return A key-value {@link Pair}
      */
     Optional<Pair<K, V>> get(String name);
 

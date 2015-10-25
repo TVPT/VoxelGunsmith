@@ -31,8 +31,6 @@ import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 import java.util.Optional;
 
-
-
 /**
  * An abstract chunk.
  * 

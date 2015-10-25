@@ -35,7 +35,7 @@ public interface Service extends Contextable
     /**
      * Gets whether this service has been started.
      * 
-     * @return is started
+     * @return Is started
      */
     boolean isInitialized();
 

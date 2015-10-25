@@ -23,16 +23,16 @@
  */
 package com.voxelplugineering.voxelsniper.util.init;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.MapMaker;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.MapMaker;
 
 /**
  * A cache for method annotations.

@@ -62,7 +62,6 @@ public class FutureFutureCallable implements Callable<Event>
                 next.get();
             } catch (Exception ignored)
             {
-                assert true;
             } finally
             {
                 it.remove();

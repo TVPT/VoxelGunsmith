@@ -35,7 +35,7 @@ public class ResetCommand extends Command
 {
 
     private final Context context;
-    
+
     /**
      * Creates a new Command instance.
      * 

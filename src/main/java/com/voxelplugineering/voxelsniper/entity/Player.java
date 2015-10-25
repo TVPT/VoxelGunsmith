@@ -32,8 +32,6 @@ import com.voxelplugineering.voxelsniper.world.queue.ChangeQueueOwner;
 
 import java.util.Optional;
 
-
-
 /**
  * Representation of a user within Gunsmith. Holds all state information relevant to the user.
  */
@@ -43,7 +41,7 @@ public interface Player extends CommandSender, Living, BrushHolder, ChangeQueueO
     /**
      * Returns this sniper's personal alias handler.
      * 
-     * @return the alias handler
+     * @return The alias handler
      */
     AliasHandler getAliasHandler();
 

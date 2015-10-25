@@ -42,8 +42,6 @@ import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
 import java.util.Optional;
 
-
-
 /**
  * An abstract notion of a Morphological hit-or-miss transform with a moving window termed a
  * 'Structuring Element'.

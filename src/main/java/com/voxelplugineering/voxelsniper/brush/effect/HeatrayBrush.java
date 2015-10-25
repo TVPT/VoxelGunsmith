@@ -48,7 +48,10 @@ import java.util.Random;
  * An effect brush which produces a 'heatray' effect by burning/melting/generally destroying the
  * targeted area.
  */
-@BrushInfo(name = "heatray", type = BrushPartType.EFFECT, help = "Bringing destruction since 2010", permission = "voxelsniper.brush.heatray")
+@BrushInfo(name = "heatray",
+        type = BrushPartType.EFFECT,
+        help = "Bringing destruction since 2010",
+        permission = "voxelsniper.brush.heatray")
 public class HeatrayBrush extends Brush
 {
 

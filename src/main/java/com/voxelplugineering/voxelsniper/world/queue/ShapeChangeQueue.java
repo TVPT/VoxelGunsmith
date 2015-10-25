@@ -32,8 +32,6 @@ import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 import java.util.Optional;
 
-
-
 /**
  * A special change queue for setting all of a shape to a single material.
  */
@@ -52,9 +50,9 @@ public class ShapeChangeQueue extends ChangeQueue
     /**
      * Creates a new {@link ShapeChangeQueue}.
      * 
-     * @param sniper the owner
-     * @param origin the origin of the shape in the world
-     * @param shape the shape
+     * @param sniper The owner
+     * @param origin The origin of the shape in the world
+     * @param shape The shape
      */
     public ShapeChangeQueue(ChangeQueueOwner sniper, Location origin, MaterialShape shape)
     {
@@ -63,9 +61,11 @@ public class ShapeChangeQueue extends ChangeQueue
         this.origin = origin;
         this.state = ExecutionState.UNSTARTED;
         this.shape = shape;
-        if(sniper instanceof Player) {
+        if (sniper instanceof Player)
+        {
             this.physics = ((Player) sniper).getBrushVars().get(BrushKeys.PHYSICS, Boolean.class).orElse(true);
-        } else {
+        } else
+        {
             this.physics = true;
         }
     }

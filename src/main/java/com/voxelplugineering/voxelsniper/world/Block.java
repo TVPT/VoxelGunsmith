@@ -28,8 +28,6 @@ import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 import java.util.Optional;
 
-
-
 /**
  * Represents a material at a location in a world.
  */

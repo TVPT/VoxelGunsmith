@@ -35,7 +35,7 @@ public interface CommandRegistrar
     /**
      * Registers the command with the underlying API.
      * 
-     * @param command the command to be registered, cannot be null
+     * @param command The command to be registered, cannot be null
      */
     void registerCommand(Command command);
 

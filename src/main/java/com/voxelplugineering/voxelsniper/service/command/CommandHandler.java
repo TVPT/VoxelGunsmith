@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.service.command;
 
-
 import com.voxelplugineering.voxelsniper.commands.Command;
 import com.voxelplugineering.voxelsniper.service.Service;
 
@@ -72,6 +71,6 @@ public interface CommandHandler extends Service
      * @param command The command name
      * @param args The command arguments
      */
-    void onCommand(CommandSender sender, String command, String[] args);
+    void onCommand(CommandSender sender, String command, String... args);
 
 }

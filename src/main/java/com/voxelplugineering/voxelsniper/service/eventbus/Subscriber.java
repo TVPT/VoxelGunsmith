@@ -23,9 +23,11 @@
  */
 package com.voxelplugineering.voxelsniper.service.eventbus;
 
-import java.lang.reflect.Method;
-
 import com.voxelplugineering.voxelsniper.service.event.Event;
+
+import com.google.common.base.Objects;
+
+import java.lang.reflect.Method;
 
 /**
  * An event subscriber with a method callback.
@@ -101,6 +103,7 @@ public class Subscriber
     @Override
     public String toString()
     {
-        return "Subscriber " + this.exec.getName() + " (" + this.eventType.getName() + " - " + this.priority.name() + ")";
+        return Objects.toStringHelper(this).add("name", this.exec.getName()).add("type", this.eventType.getName())
+                .add("priority", this.priority.name()).toString();
     }
 }

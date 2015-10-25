@@ -35,7 +35,7 @@ public interface Shape
      * Returns the width of this shape (x-axis size). Note that this is not the width of the region
      * set, but rather the width of the total possible volume.
      * 
-     * @return the width
+     * @return The width
      */
     int getWidth();
 
@@ -43,7 +43,7 @@ public interface Shape
      * Returns the height of this shape (y-axis size). Note that this is not the height of the
      * region set, but rather the height of the total possible volume.
      * 
-     * @return the height
+     * @return The height
      */
     int getHeight();
 
@@ -51,7 +51,7 @@ public interface Shape
      * Returns the length of this shape (z-axis size). Note that this is not the length of the
      * region set, but rather the length of the total possible volume.
      * 
-     * @return the length
+     * @return The length
      */
     int getLength();
 

@@ -23,22 +23,22 @@
  */
 package com.voxelplugineering.voxelsniper.brush.effect.morphological;
 
+import com.voxelplugineering.voxelsniper.util.Nameable;
 import com.voxelplugineering.voxelsniper.world.World;
 import com.voxelplugineering.voxelsniper.world.material.MaterialState;
 
 import java.util.Optional;
 
-
-
 /**
  * 
  */
-public interface FilterOperation
+public interface FilterOperation extends Nameable
 {
 
     /**
      * Returns the name of this operation as it would be labeled as a brush.
      */
+    @Override
     String getName();
 
     /**

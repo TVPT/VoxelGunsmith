@@ -54,8 +54,12 @@ import java.util.Optional;
  * A blend brush which modifies the impact of materials within its structuring element depending on
  * their distance from the target point.
  */
-@BrushInfo(name = "linearblend", type = BrushPartType.EFFECT, help = OldLinearBlendBrush.HELP, params = {
-        @BrushParam(name = BrushKeys.EXCLUDE_FLUID, desc = "Whether to exclude fluids (true/false)") }, permission = "voxelsniper.brush.linearblend")
+@BrushInfo(name = "linearblend",
+        type = BrushPartType.EFFECT,
+        help = OldLinearBlendBrush.HELP,
+        params = { @BrushParam(name = BrushKeys.EXCLUDE_FLUID,
+                desc = "Whether to exclude fluids (true/false)") },
+        permission = "voxelsniper.brush.linearblend")
 public class OldLinearBlendBrush extends Brush
 {
 
@@ -173,6 +177,7 @@ public class OldLinearBlendBrush extends Brush
                         if (e.getValue() == n && !(excludeFluid && e.getKey().getType().isLiquid()) && !e.getKey().equals(winner))
                         {
                             tie = true;
+                            break;
                         }
                     }
 

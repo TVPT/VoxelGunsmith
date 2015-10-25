@@ -41,12 +41,13 @@ import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
 import java.util.Optional;
 
-
-
 /**
  * An effect brush which sets all set positions of the shape to a material.
  */
-@BrushInfo(name = "material", type = BrushPartType.EFFECT, help = "An effect brush which sets all positions in your shape to your material", permission = "voxelsniper.brush.material")
+@BrushInfo(name = "material",
+        type = BrushPartType.EFFECT,
+        help = "An effect brush which sets all positions in your shape to your material",
+        permission = "voxelsniper.brush.material")
 public class MaterialBrush extends Brush
 {
 

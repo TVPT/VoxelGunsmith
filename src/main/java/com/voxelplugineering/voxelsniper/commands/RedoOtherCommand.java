@@ -33,8 +33,6 @@ import com.voxelplugineering.voxelsniper.world.queue.UndoQueue;
 
 import java.util.Optional;
 
-
-
 /**
  * A command get fetching the help information for a brush.
  */

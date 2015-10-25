@@ -37,9 +37,9 @@ public interface PermissionProxy extends Service
      * Checks if the user has the given permission node. Supports wildcards as permission nodes are
      * made of a dot-separated sequence of nodes.
      * 
-     * @param sniper the user to check, cannot be null
-     * @param permission the permission node, cannot be null or empty
-     * @return the result of the check
+     * @param sniper The user to check, cannot be null
+     * @param permission The permission node, cannot be null or empty
+     * @return The result of the check
      */
     boolean hasPermission(final Player sniper, final String permission);
 

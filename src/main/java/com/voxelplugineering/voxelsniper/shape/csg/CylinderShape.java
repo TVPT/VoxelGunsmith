@@ -65,7 +65,7 @@ public class CylinderShape extends OffsetShape
      * @param height The height
      * @param rz The Z radius
      * @param origin The origin
-     * @param axis the axis to orient the cylinder around
+     * @param axis The axis to orient the cylinder around
      */
     public CylinderShape(double rx, int height, double rz, Vector3i origin, Direction axis)
     {

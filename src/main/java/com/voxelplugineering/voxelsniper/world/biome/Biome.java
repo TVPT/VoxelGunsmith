@@ -23,10 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.world.biome;
 
+import com.voxelplugineering.voxelsniper.util.Nameable;
+
 /**
  * Represents a biome type.
  */
-public interface Biome
+public interface Biome extends Nameable
 {
 
     /**
@@ -34,6 +36,7 @@ public interface Biome
      * 
      * @return The name
      */
+    @Override
     String getName();
 
 }

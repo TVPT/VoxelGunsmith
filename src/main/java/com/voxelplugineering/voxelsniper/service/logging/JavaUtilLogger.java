@@ -79,7 +79,7 @@ public class JavaUtilLogger implements com.voxelplugineering.voxelsniper.service
     /**
      * Creates a new {@link JavaUtilLogger}.
      * 
-     * @param logger the logger to wrap
+     * @param logger The logger to wrap
      */
     public JavaUtilLogger(Logger logger)
     {

@@ -25,11 +25,11 @@ package com.voxelplugineering.voxelsniper.service.eventbus;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * A priority grouped list of subscribers.
@@ -92,10 +92,7 @@ public class SubscriberList
     public void register(Iterable<Subscriber> list)
     {
         checkNotNull(list);
-        for (Subscriber s : list)
-        {
-            register(s);
-        }
+        list.forEach(this::register);
     }
 
     private synchronized List<Subscriber> getOrCreateList(EventPriority p)

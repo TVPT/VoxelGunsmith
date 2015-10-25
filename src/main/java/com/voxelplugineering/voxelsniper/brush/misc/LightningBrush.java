@@ -35,7 +35,10 @@ import com.voxelplugineering.voxelsniper.world.Block;
 /**
  * A brush which spawns a bolt of lightning at the targeted location.
  */
-@BrushInfo(name = "lightning", type = BrushPartType.MISC, help = "Strikes lightning at your targeted position", permission = "voxelsniper.brush.lightning")
+@BrushInfo(name = "lightning",
+        type = BrushPartType.MISC,
+        help = "Strikes lightning at your targeted position",
+        permission = "voxelsniper.brush.lightning")
 public class LightningBrush extends Brush
 {
 

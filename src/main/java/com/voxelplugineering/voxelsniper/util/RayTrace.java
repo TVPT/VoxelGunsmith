@@ -108,14 +108,14 @@ public class RayTrace
     private int lastZ;
     private double step;
 
-    //TODO change these ctors to a builder
-    
+    // TODO change these ctors to a builder
+
     /**
      * Creates a new raytrace to reference with the given location yaw and pitch.
      * 
-     * @param origin the origin location
-     * @param yaw the yaw
-     * @param pitch the pitch
+     * @param origin The origin location
+     * @param yaw The yaw
+     * @param pitch The pitch
      */
     public RayTrace(Location origin, double yaw, double pitch, double range, int minY, int maxY, double step, Vector3d playerEyeOffset)
     {
@@ -178,7 +178,7 @@ public class RayTrace
     /**
      * Returns the origin of the ray trace.
      * 
-     * @return the origin
+     * @return The origin
      */
     public Location getOrigin()
     {
@@ -188,7 +188,7 @@ public class RayTrace
     /**
      * The direction of the ray.
      * 
-     * @return the direction
+     * @return The direction
      */
     public Vector3d getDirection()
     {
@@ -198,7 +198,7 @@ public class RayTrace
     /**
      * the maximum range of the ray.
      * 
-     * @return the range
+     * @return The range
      */
     public double getRange()
     {
@@ -208,7 +208,7 @@ public class RayTrace
     /**
      * Sets the maximum range of the ray.
      * 
-     * @param range the new range
+     * @param range The new range
      */
     public void setRange(double range)
     {
@@ -218,7 +218,7 @@ public class RayTrace
     /**
      * Returns the blocks that will be traversed by this ray as if non-solid.
      * 
-     * @return the blocks that may be traversed
+     * @return The blocks that may be traversed
      */
     public List<Material> getTraversalBlocks()
     {
@@ -228,7 +228,7 @@ public class RayTrace
     /**
      * Returns the target block of this ray.
      * 
-     * @return the target block
+     * @return The target block
      */
     public Block getTargetBlock()
     {
@@ -253,7 +253,7 @@ public class RayTrace
     /**
      * Returns the last block targeted before the current target block.
      * 
-     * @return the last block
+     * @return The last block
      */
     public Block getLastBlock()
     {
@@ -277,7 +277,7 @@ public class RayTrace
     /**
      * Returns the length of the last ray (the distance from the origin to the target block).
      * 
-     * @return the length
+     * @return The length
      */
     public double getLength()
     {

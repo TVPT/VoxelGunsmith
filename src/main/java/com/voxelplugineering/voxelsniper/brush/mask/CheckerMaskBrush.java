@@ -45,13 +45,22 @@ import java.util.Optional;
 /**
  * A mask brush which creates an checker board pattern across the current shape.
  */
-@BrushInfo(name = "checker", type = BrushPartType.MASK, help = "Modifies your shape to produce a checker pattern", params = {
-        @BrushParam(name = BrushKeys.WIDTH, desc = "The X-axis size of the tiles (number)"),
-        @BrushParam(name = BrushKeys.HEIGHT, desc = "The Y-axis size of the tiles (number)"),
-        @BrushParam(name = BrushKeys.LENGTH, desc = "The Z-axis size of the tiles (number)"),
-        @BrushParam(name = BrushKeys.OFFSET_X, desc = "The X offset of the time edge from zero (number)"),
-        @BrushParam(name = BrushKeys.OFFSET_Y, desc = "The Y offset of the time edge from zero (number)"),
-        @BrushParam(name = BrushKeys.OFFSET_Z, desc = "The Z offset of the time edge from zero (number)") }, permission = "voxelsniper.brush.checker")
+@BrushInfo(name = "checker",
+        type = BrushPartType.MASK,
+        help = "Modifies your shape to produce a checker pattern",
+        params = { @BrushParam(name = BrushKeys.WIDTH,
+                desc = "The X-axis size of the tiles (number)"),
+                @BrushParam(name = BrushKeys.HEIGHT,
+                        desc = "The Y-axis size of the tiles (number)"),
+                @BrushParam(name = BrushKeys.LENGTH,
+                        desc = "The Z-axis size of the tiles (number)"),
+                @BrushParam(name = BrushKeys.OFFSET_X,
+                        desc = "The X offset of the time edge from zero (number)"),
+                @BrushParam(name = BrushKeys.OFFSET_Y,
+                        desc = "The Y offset of the time edge from zero (number)"),
+                @BrushParam(name = BrushKeys.OFFSET_Z,
+                        desc = "The Z offset of the time edge from zero (number)") },
+        permission = "voxelsniper.brush.checker")
 public class CheckerMaskBrush extends Brush
 {
 

@@ -23,8 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.commands;
 
-
-
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;

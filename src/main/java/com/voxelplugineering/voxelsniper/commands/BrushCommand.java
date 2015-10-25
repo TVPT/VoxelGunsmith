@@ -38,14 +38,12 @@ import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
 import java.util.Optional;
 
-
-
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.
  */
 public class BrushCommand extends Command
 {
-    
+
     /**
      * Constructs a new BrushCommand.
      * 
@@ -70,7 +68,8 @@ public class BrushCommand extends Command
             return true;
         }
         Player sniper = (Player) sender;
-        if (args.length == 0) {
+        if (args.length == 0)
+        {
             String full = "";
             for (BrushWrapper b : sniper.getCurrentBrush().getBrushes())
             {
@@ -104,7 +103,8 @@ public class BrushCommand extends Command
                 Optional<BrushWrapper> br = sniper.getBrushManager().getBrush(b);
                 if (br.isPresent())
                 {
-                    if(!getPerms().hasPermission(sniper, br.get().getPermission())) {
+                    if (!getPerms().hasPermission(sniper, br.get().getPermission()))
+                    {
                         sniper.sendMessage(VoxelSniperConfiguration.brushPermissionMessage, b);
                         continue;
                     }

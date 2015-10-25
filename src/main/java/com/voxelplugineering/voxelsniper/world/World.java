@@ -23,11 +23,11 @@
  */
 package com.voxelplugineering.voxelsniper.world;
 
-
 import com.voxelplugineering.voxelsniper.entity.Entity;
 import com.voxelplugineering.voxelsniper.service.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
+import com.voxelplugineering.voxelsniper.util.Nameable;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.biome.Biome;
 
@@ -36,7 +36,7 @@ import java.util.Optional;
 /**
  * Represents a world.
  */
-public interface World extends BlockVolume
+public interface World extends BlockVolume, Nameable
 {
 
     /**
@@ -44,6 +44,7 @@ public interface World extends BlockVolume
      * 
      * @return The name
      */
+    @Override
     String getName();
 
     /**

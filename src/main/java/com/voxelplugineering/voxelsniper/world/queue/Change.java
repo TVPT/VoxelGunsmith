@@ -36,9 +36,9 @@ public abstract class Change
     /**
      * Creates a new change at the given location.
      * 
-     * @param x the x position of the change
-     * @param y the y position of the change
-     * @param z the z position of the change
+     * @param x The x position of the change
+     * @param y The y position of the change
+     * @param z The z position of the change
      */
     public Change(int x, int y, int z)
     {
@@ -50,7 +50,7 @@ public abstract class Change
     /**
      * Returns the x position of this change.
      * 
-     * @return the x position
+     * @return The x position
      */
     public int getX()
     {
@@ -60,7 +60,7 @@ public abstract class Change
     /**
      * Returns the y position of this change.
      * 
-     * @return the y position
+     * @return The y position
      */
     public int getY()
     {
@@ -70,7 +70,7 @@ public abstract class Change
     /**
      * Returns the z position of this change.
      * 
-     * @return the z position
+     * @return The z position
      */
     public int getZ()
     {
@@ -80,14 +80,14 @@ public abstract class Change
     /**
      * Returns a new Change representing the inverse operation of this change.
      * 
-     * @return the inverse change
+     * @return The inverse change
      */
     public abstract Change getInverse();
 
     /**
      * Returns a copy of this change.
      * 
-     * @return the clone
+     * @return The clone
      */
     @Override
     public abstract Change clone();

@@ -45,12 +45,13 @@ import com.voxelplugineering.voxelsniper.world.queue.ShapeChangeQueue;
 
 import java.util.Optional;
 
-
-
 /**
  * An effect brush that removes snow layers that are on top of snow layers.
  */
-@BrushInfo(name = "cleansnow", type = BrushPartType.EFFECT, help = "Removes floating snow blocks", permission = "voxelsniper.brush.cleansnow")
+@BrushInfo(name = "cleansnow",
+        type = BrushPartType.EFFECT,
+        help = "Removes floating snow blocks",
+        permission = "voxelsniper.brush.cleansnow")
 public class CleanSnowBrush extends Brush
 {
 
@@ -70,6 +71,7 @@ public class CleanSnowBrush extends Brush
             if (attempt.isPresent())
             {
                 this.snowLayer = attempt.get();
+                break;
             }
         }
     }

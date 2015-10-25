@@ -87,7 +87,7 @@ public final class NBTInputStream implements Closeable
      * input stream.
      * 
      * @param is The input stream.
-     * @throws IOException if an I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      */
     public NBTInputStream(InputStream is) throws IOException
     {
@@ -98,7 +98,7 @@ public final class NBTInputStream implements Closeable
      * Reads an NBT tag from the stream.
      * 
      * @return The tag that was read.
-     * @throws IOException if an I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      */
     public Tag readTag() throws IOException
     {
@@ -110,7 +110,7 @@ public final class NBTInputStream implements Closeable
      * 
      * @param depth The depth of this tag.
      * @return The tag that was read.
-     * @throws IOException if an I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      */
     private Tag readTag(int depth) throws IOException
     {
@@ -138,7 +138,7 @@ public final class NBTInputStream implements Closeable
      * @param name The name.
      * @param depth The depth.
      * @return The tag.
-     * @throws IOException if an I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      */
     private Tag readTagPayload(int type, String name, int depth) throws IOException
     {

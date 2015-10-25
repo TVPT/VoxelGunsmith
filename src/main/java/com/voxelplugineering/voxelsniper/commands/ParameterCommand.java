@@ -36,8 +36,6 @@ import com.voxelplugineering.voxelsniper.util.StringUtilities;
 
 import java.util.Optional;
 
-
-
 /**
  * Standard brush command to select a brush and provide the necessary arguments to said brush.
  */

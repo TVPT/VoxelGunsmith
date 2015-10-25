@@ -49,42 +49,42 @@ public interface Location
     /**
      * The x-axis position within the world.
      * 
-     * @return the X position.
+     * @return The X position.
      */
     double getX();
 
     /**
      * The y-axis position within the world.
      * 
-     * @return the Y position.
+     * @return The Y position.
      */
     double getY();
 
     /**
      * The z-axis position within the world.
      * 
-     * @return the Z position.
+     * @return The Z position.
      */
     double getZ();
 
     /**
      * Returns the x-axis position of this location rounded down to the nearest integer increment.
      * 
-     * @return the integer position
+     * @return The integer position
      */
     int getFlooredX();
 
     /**
      * Returns the y-axis position of this location rounded down to the nearest integer increment.
      * 
-     * @return the integer position
+     * @return The integer position
      */
     int getFlooredY();
 
     /**
      * Returns the z-axis position of this location rounded down to the nearest integer increment.
      * 
-     * @return the integer position
+     * @return The integer position
      */
     int getFlooredZ();
 
@@ -116,17 +116,17 @@ public interface Location
      * Returns a new {@link CommonLocation} which represents this position offset by the given
      * amounts.
      * 
-     * @param x the X offset
-     * @param y the Y offset
-     * @param z the Z offset
-     * @return the new {@link CommonLocation}
+     * @param x The X offset
+     * @param y The Y offset
+     * @param z The Z offset
+     * @return The new {@link CommonLocation}
      */
     Location add(double x, double y, double z);
 
     /**
      * Returns a new {@link CommonLocation} representing the same location.
      * 
-     * @return a newly created CommonLocation
+     * @return A newly created CommonLocation
      */
     Location clone();
 

@@ -37,5 +37,5 @@ public interface GlobalAliasHandler extends AliasHandler, Service
      * @return The alias save task
      */
     AliasSaveTask getAliasSaveTask();
-    
+
 }

@@ -47,9 +47,9 @@ public final class StringUtilities
      * 
      * @param string String to check
      * @param prefix Prefix of string to compare
-     * @return true if provided string starts with, ignoring case, the prefix provided
-     * @throws NullPointerException if prefix is null
-     * @throws IllegalArgumentException if string is null
+     * @return True if provided string starts with, ignoring case, the prefix provided
+     * @throws NullPointerException If prefix is null
+     * @throws IllegalArgumentException If string is null
      */
     public static boolean startsWithIgnoreCase(final String string, final String prefix)
     {
@@ -64,11 +64,11 @@ public final class StringUtilities
      * @param originals An iterable collection of strings to filter.
      * @param collection The collection to add matches to
      * @param <T> the collection to use
-     * @return the collection provided that would have the elements copied into
-     * @throws UnsupportedOperationException if the collection is immutable and originals contains a
+     * @return The collection provided that would have the elements copied into
+     * @throws UnsupportedOperationException If the collection is immutable and originals contains a
      *             string which starts with the specified search string.
-     * @throws IllegalArgumentException if any parameter is is null
-     * @throws IllegalArgumentException if originals contains a null element. <b>Note: the
+     * @throws IllegalArgumentException If any parameter is is null
+     * @throws IllegalArgumentException If originals contains a null element. <b>Note: the
      *             collection may be modified before this is thrown</b>
      */
     public static <T extends Collection<? super String>> T copyPartialMatches(final String token, final Iterable<String> originals,
@@ -92,9 +92,9 @@ public final class StringUtilities
     /**
      * Finds all matching strings in the given list of candidates.
      * 
-     * @param partial the partial to look for
-     * @param candidates the candidates to parse
-     * @return a new list of partial matches
+     * @param partial The partial to look for
+     * @param candidates The candidates to parse
+     * @return A new list of partial matches
      */
     public static List<String> findMatches(String partial, List<String> candidates)
     {
@@ -112,10 +112,10 @@ public final class StringUtilities
      * Returns the array positions between start and end (both inclusive) concatenated as a space
      * separated string.
      * 
-     * @param array the array
-     * @param start the start point (inclusive)
-     * @param end the end point (inclusive)
-     * @return the concatenated section
+     * @param array The array
+     * @param start The start point (inclusive)
+     * @param end The end point (inclusive)
+     * @return The concatenated section
      */
     public static String getSection(String[] array, int start, int end)
     {
@@ -141,11 +141,11 @@ public final class StringUtilities
      * Returns an array which is equivalent to source[o:start-1] + insert[o:length] +
      * source[end+1:length].
      * 
-     * @param source the source array
-     * @param insert the array to insert
-     * @param start the start point (inclusive)
-     * @param end the end point (inclusive)
-     * @return the result array
+     * @param source The source array
+     * @param insert The array to insert
+     * @param start The start point (inclusive)
+     * @param end The end point (inclusive)
+     * @return The result array
      */
     public static String[] replaceSection(String[] source, String[] insert, int start, int end)
     {

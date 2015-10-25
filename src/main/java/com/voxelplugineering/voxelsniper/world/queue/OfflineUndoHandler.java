@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.world.queue;
 
-
 import com.voxelplugineering.voxelsniper.service.Service;
 
 import java.util.Optional;

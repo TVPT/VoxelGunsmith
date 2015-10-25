@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.service.registry;
 
-
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.Service;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;

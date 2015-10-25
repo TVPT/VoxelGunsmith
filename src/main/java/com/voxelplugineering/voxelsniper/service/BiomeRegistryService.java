@@ -102,10 +102,7 @@ public class BiomeRegistryService<T> extends AbstractService implements BiomeReg
     {
         check("getBiomes");
         List<Biome> biomes = Lists.newArrayList();
-        for (Map.Entry<T, Biome> e : this.registry.getRegisteredValues())
-        {
-            biomes.add(e.getValue());
-        }
+        this.registry.values().forEach(biomes::add);
         return biomes;
     }
 

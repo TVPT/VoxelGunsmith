@@ -98,12 +98,7 @@ public class PlayerRegistryService<T> extends AbstractService implements PlayerR
     public Iterable<Player> getPlayers()
     {
         check("getPlayers");
-        List<Player> players = Lists.newArrayList();
-        for (Map.Entry<T, Player> e : this.registry.getRegisteredValues())
-        {
-            players.add(e.getValue());
-        }
-        return players;
+        return Lists.newArrayList(this.registry.values());
     }
 
     @Override

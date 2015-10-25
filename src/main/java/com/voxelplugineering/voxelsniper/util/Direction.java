@@ -114,7 +114,7 @@ public enum Direction
     /**
      * Returns the x axis value of this direction.
      * 
-     * @return the x axis value
+     * @return The x axis value
      */
     public int getModX()
     {
@@ -124,7 +124,7 @@ public enum Direction
     /**
      * Returns the y axis value of this direction.
      * 
-     * @return the y axis value
+     * @return The y axis value
      */
     public int getModY()
     {
@@ -134,7 +134,7 @@ public enum Direction
     /**
      * Returns the z axis value of this direction.
      * 
-     * @return the z axis value
+     * @return The z axis value
      */
     public int getModZ()
     {
@@ -144,11 +144,11 @@ public enum Direction
     /**
      * Returns the inverse direction to this direction.
      * 
-     * @return the inverse
+     * @return The inverse direction
      */
     public Direction getOpposite()
     {
-        for (Direction d : Direction.values())
+        for (Direction d : values())
         {
             if (d.getModX() == -getModX() && d.getModY() == -getModY() && d.getModZ() == -getModZ())
             {

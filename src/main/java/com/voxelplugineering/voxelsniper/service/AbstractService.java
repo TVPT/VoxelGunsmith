@@ -23,11 +23,12 @@
  */
 package com.voxelplugineering.voxelsniper.service;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.util.Context;
+
+import com.google.common.collect.Lists;
+
+import java.util.List;
 
 /**
  * An abstract {@link Service} handling state and priority.

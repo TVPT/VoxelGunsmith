@@ -30,11 +30,12 @@ import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.service.permission.PermissionProxy;
 import com.voxelplugineering.voxelsniper.util.Context;
+import com.voxelplugineering.voxelsniper.util.Nameable;
 
 /**
  * A abstract representation of a command.
  */
-public abstract class Command
+public abstract class Command implements Nameable
 {
 
     private final PermissionProxy permsProxy;
@@ -47,17 +48,19 @@ public abstract class Command
     /**
      * Constructs a new command with the given name and help.
      * 
-     * @param name the name of this command
-     * @param help the help string for this command
+     * @param name The name of this command
+     * @param help The help string for this command
      */
     protected Command(final String name, final String help, Context context)
     {
         checkNotNull(name, "Cannot have a null name!");
         checkArgument(!name.isEmpty(), "Cannot have an empty name!");
         this.name = name;
-        if(help == null || help.isEmpty()) {
+        if (help == null || help.isEmpty())
+        {
             this.helpMsg = VoxelSniperConfiguration.defaultHelpMessage;
-        } else {
+        } else
+        {
             this.helpMsg = help;
         }
         this.permsProxy = context.getRequired(PermissionProxy.class);
@@ -77,16 +80,16 @@ public abstract class Command
     /**
      * Extracts and validates the arguments for the command and passes it to the specific executor.
      * 
-     * @param sender the command source
-     * @param args the raw command arguments
-     * @return a success flag
+     * @param sender The command source
+     * @param args The raw command arguments
+     * @return A success flag
      */
     public abstract boolean execute(CommandSender sender, String[] args);
 
     /**
      * Returns the aliases for this command (not including the primary alias).
      * 
-     * @return the aliases
+     * @return The aliases
      */
     public String[] getAllAliases()
     {
@@ -96,7 +99,7 @@ public abstract class Command
     /**
      * Sets the aliases for this command.
      * 
-     * @param aliases the new aliases
+     * @param aliases The new aliases
      */
     protected void setAliases(String... aliases)
     {
@@ -106,7 +109,7 @@ public abstract class Command
     /**
      * Returns the help message.
      * 
-     * @return the help message
+     * @return The help message
      */
     public String getHelpMsg()
     {
@@ -116,8 +119,9 @@ public abstract class Command
     /**
      * Returns the name or primary alias of the command.
      * 
-     * @return the name
+     * @return The name
      */
+    @Override
     public String getName()
     {
         return this.name;
@@ -126,7 +130,7 @@ public abstract class Command
     /**
      * Returns whether the command is player only.
      * 
-     * @return is player only
+     * @return Is player only
      */
     public boolean isPlayerOnly()
     {
@@ -136,7 +140,7 @@ public abstract class Command
     /**
      * Sets whether the command is player only.
      * 
-     * @param playerOnly is player only
+     * @param playerOnly Is player only
      */
     protected void setPlayerOnly(boolean playerOnly)
     {
@@ -146,7 +150,7 @@ public abstract class Command
     /**
      * Sets the valid permissions for this command.
      * 
-     * @param perms the permissions, cannot be null
+     * @param perms The permissions, cannot be null
      */
     public void setPermissions(String... perms)
     {
@@ -158,7 +162,7 @@ public abstract class Command
      * Returns the permission nodes for this command. A sniper is required to have at least one of
      * these in order to execute the command.
      * 
-     * @return the permissions
+     * @return The permissions
      */
     public String[] getPermissions()
     {

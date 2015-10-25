@@ -33,6 +33,7 @@ import com.voxelplugineering.voxelsniper.brush.GlobalBrushManager;
 import com.voxelplugineering.voxelsniper.util.Context;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -94,7 +95,7 @@ public class BrushManagerService extends AbstractService implements GlobalBrushM
     }
 
     @Override
-    public Iterable<BrushWrapper> getBrushes()
+    public Collection<BrushWrapper> getBrushes()
     {
         return this.wrapped.getBrushes();
     }

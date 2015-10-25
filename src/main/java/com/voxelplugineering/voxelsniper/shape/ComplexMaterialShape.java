@@ -52,8 +52,8 @@ public class ComplexMaterialShape implements MaterialShape
     /**
      * Creates a new {@link MaterialShape}.
      * 
-     * @param shape the shape
-     * @param defaultMaterial the default material for the shape
+     * @param shape The shape
+     * @param defaultMaterial The default material for the shape
      */
     public ComplexMaterialShape(Shape shape, MaterialState defaultMaterial)
     {
@@ -77,7 +77,7 @@ public class ComplexMaterialShape implements MaterialShape
     /**
      * Returns the wrapped shape.
      * 
-     * @return the shape
+     * @return The shape
      */
     @Override
     public Shape getShape()
@@ -94,11 +94,11 @@ public class ComplexMaterialShape implements MaterialShape
     /**
      * Gets the material at the given location.
      * 
-     * @param x the x position to get
-     * @param y the y position to get
-     * @param z the z position to get
-     * @param relative whether to offset the given position to the origin
-     * @return the material, or {@link Optional#empty()} if the point in the shape is not set
+     * @param x The x position to get
+     * @param y The y position to get
+     * @param z The z position to get
+     * @param relative Whether to offset the given position to the origin
+     * @return The material, or {@link Optional#empty()} if the point in the shape is not set
      */
     @Override
     public Optional<MaterialState> getMaterial(int x, int y, int z, boolean relative)
@@ -143,11 +143,11 @@ public class ComplexMaterialShape implements MaterialShape
     /**
      * Sets the given point in the shape and applies the given material to that point.
      * 
-     * @param x the x position
-     * @param y the y position
-     * @param z the z position
-     * @param relative whether to offset the given position to the origin
-     * @param material the material to set the given point to
+     * @param x The x position
+     * @param y The y position
+     * @param z The z position
+     * @param relative Whether to offset the given position to the origin
+     * @param material The material to set the given point to
      */
     @Override
     public void setMaterial(int x, int y, int z, boolean relative, MaterialState material)
@@ -175,10 +175,10 @@ public class ComplexMaterialShape implements MaterialShape
     /**
      * Unsets the given location in the shape and clears any material data for that point.
      * 
-     * @param x the x position
-     * @param y the y position
-     * @param z the z position
-     * @param relative whether to offset the given position to the origin
+     * @param x The x position
+     * @param y The y position
+     * @param z The z position
+     * @param relative Whether to offset the given position to the origin
      */
     public void unsetMaterial(int x, int y, int z, boolean relative)
     {
@@ -203,7 +203,7 @@ public class ComplexMaterialShape implements MaterialShape
     /**
      * Sets every point of the shape which is set to the given material.
      * 
-     * @param material the material
+     * @param material The material
      */
     @Override
     public void flood(MaterialState material)
@@ -255,8 +255,8 @@ public class ComplexMaterialShape implements MaterialShape
      * Returns the id for the given material within this {@link MaterialShape}'s dictionary. If the
      * material is not found in the dictionary then the next id is allocated to it.
      * 
-     * @param material the material to fetch
-     * @return the id for the material
+     * @param material The material to fetch
+     * @return The id for the material
      */
     private short getOrRegisterMaterial(MaterialState material)
     {
@@ -273,7 +273,7 @@ public class ComplexMaterialShape implements MaterialShape
      * Returns the width of the underlying shape (x-axis size). Note that this is not the width of
      * the region set, but rather the width of the total possible volume.
      * 
-     * @return the width
+     * @return The width
      */
     @Override
     public int getWidth()
@@ -285,7 +285,7 @@ public class ComplexMaterialShape implements MaterialShape
      * Returns the height of this shape (y-axis size). Note that this is not the height of the
      * region set, but rather the height of the total possible volume.
      * 
-     * @return the height
+     * @return The height
      */
     @Override
     public int getHeight()
@@ -297,7 +297,7 @@ public class ComplexMaterialShape implements MaterialShape
      * Returns the length of this shape (z-axis size). Note that this is not the length of the
      * region set, but rather the length of the total possible volume.
      * 
-     * @return the length
+     * @return The length
      */
     @Override
     public int getLength()
@@ -308,7 +308,7 @@ public class ComplexMaterialShape implements MaterialShape
     /**
      * Returns the origin of this shape.
      * 
-     * @return the origin
+     * @return The origin
      */
     @Override
     public Vector3i getOrigin()
@@ -459,7 +459,7 @@ public class ComplexMaterialShape implements MaterialShape
     @Override
     public void fillFrom(Shape shape)
     {
-        throw new UnsupportedOperationException(); //TODO
+        throw new UnsupportedOperationException(); // TODO
     }
 
 }

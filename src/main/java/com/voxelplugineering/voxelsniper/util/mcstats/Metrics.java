@@ -182,7 +182,7 @@ public abstract class Metrics
      * Gets the File object of the config file that should be used to store data such as the GUID
      * and opt-out status.
      * 
-     * @return the File object for the config file
+     * @return The File object for the config file
      */
     public abstract File getConfigFile();
 
@@ -329,7 +329,7 @@ public abstract class Metrics
     /**
      * Has the server owner denied plugin metrics?
      * 
-     * @return true if metrics should be opted out of it
+     * @return True if metrics should be opted out of it
      */
     public boolean isOptOut()
     {
@@ -623,7 +623,7 @@ public abstract class Metrics
     /**
      * Check if mineshafter is present. If it is, we need to bypass it to send POST requests
      * 
-     * @return true if mineshafter is installed on the server
+     * @return True if mineshafter is installed on the server
      */
     private static boolean isMineshafterPresent()
     {
@@ -732,8 +732,8 @@ public abstract class Metrics
     /**
      * Encode text as UTF-8.
      * 
-     * @param text the text to encode
-     * @return the encoded text, as UTF-8
+     * @param text The text to encode
+     * @return The encoded text, as UTF-8
      */
     private static String urlEncode(final String text) throws UnsupportedEncodingException
     {
@@ -765,7 +765,7 @@ public abstract class Metrics
         /**
          * Gets the graph's name.
          * 
-         * @return the Graph's name
+         * @return The Graph's name
          */
         public String getName()
         {
@@ -775,7 +775,7 @@ public abstract class Metrics
         /**
          * Add a plotter to the graph, which will be used to plot entries.
          * 
-         * @param plotter the plotter to add to the graph
+         * @param plotter The plotter to add to the graph
          */
         public void addPlotter(final Plotter plotter)
         {
@@ -785,7 +785,7 @@ public abstract class Metrics
         /**
          * Remove a plotter from the graph.
          * 
-         * @param plotter the plotter to remove from the graph
+         * @param plotter The plotter to remove from the graph
          */
         public void removePlotter(final Plotter plotter)
         {
@@ -795,7 +795,7 @@ public abstract class Metrics
         /**
          * Gets an <b>unmodifiable</b> set of the plotter objects in the graph.
          * 
-         * @return an unmodifiable {@link java.util.Set} of the plotter objects
+         * @return An unmodifiable {@link java.util.Set} of the plotter objects
          */
         public Set<Plotter> getPlotters()
         {
@@ -851,7 +851,7 @@ public abstract class Metrics
         /**
          * Construct a plotter with a specific plot name.
          * 
-         * @param name the name of the plotter to use, which will show up on the website
+         * @param name The name of the plotter to use, which will show up on the website
          */
         public Plotter(final String name)
         {
@@ -864,14 +864,14 @@ public abstract class Metrics
          * friendly or safe. This function can be called from any thread so care should be taken
          * when accessing resources that need to be synchronized.
          * 
-         * @return the current value for the point to be plotted.
+         * @return The current value for the point to be plotted.
          */
         public abstract int getValue();
 
         /**
          * Get the column name for the plotted point.
          * 
-         * @return the plotted point's column name
+         * @return The plotted point's column name
          */
         public String getColumnName()
         {

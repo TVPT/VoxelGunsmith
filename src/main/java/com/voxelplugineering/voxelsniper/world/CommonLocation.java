@@ -44,10 +44,10 @@ public final class CommonLocation implements Cloneable, Location
     /**
      * Creates a new {@link CommonLocation}.
      * 
-     * @param world the world, cannot be null
-     * @param x the x coordinate
-     * @param y the y coordinate
-     * @param z the z coordinate
+     * @param world The world, cannot be null
+     * @param x The x coordinate
+     * @param y The y coordinate
+     * @param z The z coordinate
      */
     public CommonLocation(World world, double x, double y, double z)
     {

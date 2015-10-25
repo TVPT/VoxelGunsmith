@@ -23,7 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.world.queue;
 
-
 import com.voxelplugineering.voxelsniper.service.command.MessageReceiver;
 
 import java.util.Optional;
@@ -37,7 +36,7 @@ public interface ChangeQueueOwner extends MessageReceiver
     /**
      * Undoes the last n changes to the world.
      * 
-     * @param n the number of past changes to undo, cannot be negative
+     * @param n The number of past changes to undo, cannot be negative
      */
     void undoHistory(int n);
 
@@ -51,21 +50,21 @@ public interface ChangeQueueOwner extends MessageReceiver
     /**
      * Returns whether this sniper has pending change queues which have not yet been handled.
      * 
-     * @return has pending changes
+     * @return Has pending changes
      */
     boolean hasPendingChanges();
 
     /**
      * Returns the next pending {@link ChangeQueue}.
      * 
-     * @return the next change queue
+     * @return The next change queue
      */
     Optional<ChangeQueue> getNextPendingChange();
 
     /**
      * Adds the given change queue to the pending changes queue.
      * 
-     * @param blockChangeQueue the new {@link ChangeQueue}, cannot be null
+     * @param blockChangeQueue The new {@link ChangeQueue}, cannot be null
      */
     void addPending(ChangeQueue blockChangeQueue);
 

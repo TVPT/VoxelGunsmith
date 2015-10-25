@@ -105,7 +105,7 @@ public class AnnotationScannerService extends AbstractService implements Annotat
     /**
      * Creates a new {@link AnnotationScannerService}.
      * 
-     * @param context the context
+     * @param context The context
      */
     public AnnotationScannerService(Context context)
     {
@@ -294,11 +294,11 @@ public class AnnotationScannerService extends AbstractService implements Annotat
             for (AnnotationNode node : (List<AnnotationNode>) classNode.visibleAnnotations)
             {
                 GunsmithLogger.getLogger().debug("\tFound annotation: " + node.desc);
-                for (String desc : this.consumers.keySet())
+                for (Map.Entry<String, List<AnnotationConsumer>> desc : this.consumers.entrySet())
                 {
-                    if (node.desc.equals(desc))
+                    if (node.desc.equals(desc.getKey()))
                     {
-                        allConsumers.addAll(this.consumers.get(desc));
+                        allConsumers.addAll(desc.getValue());
                         break;
                     }
                 }

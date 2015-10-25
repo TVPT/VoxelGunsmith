@@ -30,8 +30,6 @@ import com.voxelplugineering.voxelsniper.world.Block;
 
 import java.util.Optional;
 
-
-
 /**
  * A utility for getting common values from the {@link BrushVars}.
  */

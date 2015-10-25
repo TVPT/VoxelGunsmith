@@ -23,8 +23,6 @@
  */
 package com.voxelplugineering.voxelsniper.service.alias;
 
-
-
 import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -35,7 +33,7 @@ import java.util.Set;
  */
 public interface AliasRegistry
 {
-    
+
     /**
      * Gets the name of this registry.
      * 
@@ -46,24 +44,24 @@ public interface AliasRegistry
     /**
      * Recursively expands all aliases found within the given string.
      * 
-     * @param string the string to expand
-     * @return the result expansion
+     * @param string The string to expand
+     * @return The result expansion
      */
     String expand(String string);
 
     /**
      * Gets the alias value for the given alias key.
      * 
-     * @param alias the key
-     * @return the value
+     * @param alias The key
+     * @return The value
      */
     Optional<String> getAlias(String alias);
 
     /**
      * Registers a new alias with this registry.
      * 
-     * @param alias the new alias, cannot be null or empty
-     * @param value the new value for this alias, cannot be null or empty
+     * @param alias The new alias, cannot be null or empty
+     * @param value The new value for this alias, cannot be null or empty
      */
     void register(String alias, String value);
 
@@ -79,8 +77,8 @@ public interface AliasRegistry
      * Gets all keys of this collection. Including, if the deep flag is set, all keys of its parent
      * registries as well.
      * 
-     * @param deep whether to include keys from parent registries as well
-     * @return the keys
+     * @param deep Whether to include keys from parent registries as well
+     * @return The keys
      */
     Collection<? extends String> getKeys(boolean deep);
 
@@ -88,7 +86,7 @@ public interface AliasRegistry
      * Gets a Set of all entries in this registry. Intended for use in serialization only, nor for
      * fetching aliases, use {@link #getAlias(String)} instead.
      * 
-     * @return the set of entries
+     * @return The set of entries
      */
     Set<Entry<String, String>> getEntries();
 
@@ -100,7 +98,7 @@ public interface AliasRegistry
     /**
      * Gets the parent registry.
      * 
-     * @return the parent, may be null
+     * @return The parent, may be null
      */
     AliasRegistry getParent();
 

@@ -90,31 +90,36 @@ public class CoreServiceProvider
 
     }
 
-    @Builder(target = AnnotationScanner.class, priority = ServicePriorities.ANNOTATION_SCANNER_PRIORITY)
+    @Builder(target = AnnotationScanner.class,
+            priority = ServicePriorities.ANNOTATION_SCANNER_PRIORITY)
     public final AnnotationScanner buildAnnotationScanner(Context context)
     {
         return new AnnotationScannerService(context);
     }
 
-    @Builder(target = Configuration.class, priority = ServicePriorities.CONFIGURATION_PRIORITY)
+    @Builder(target = Configuration.class,
+            priority = ServicePriorities.CONFIGURATION_PRIORITY)
     public final Configuration buildConfig(Context context)
     {
         return new ConfigurationService(context);
     }
 
-    @Builder(target = TextFormatParser.class, priority = ServicePriorities.TEXT_FORMAT_PRIORITY)
+    @Builder(target = TextFormatParser.class,
+            priority = ServicePriorities.TEXT_FORMAT_PRIORITY)
     public final TextFormatParser buildFormatProxy(Context context)
     {
         return new TextFormatParser.TrivialTextFormatParser(context);
     }
 
-    @Builder(target = EventBus.class, priority = ServicePriorities.EVENT_BUS_PRIORITY)
+    @Builder(target = EventBus.class,
+            priority = ServicePriorities.EVENT_BUS_PRIORITY)
     public final EventBus buildEventBus(Context context)
     {
         return new AsyncEventBus(context);
     }
 
-    @Builder(target = GlobalAliasHandler.class, priority = ServicePriorities.GLOBAL_ALIAS_HANDLER_PRIORITY)
+    @Builder(target = GlobalAliasHandler.class,
+            priority = ServicePriorities.GLOBAL_ALIAS_HANDLER_PRIORITY)
     public final GlobalAliasHandler buildAliasRegistry(Context context)
     {
         PlatformProxy platform = context.getRequired(PlatformProxy.class);
@@ -148,7 +153,8 @@ public class CoreServiceProvider
         }
     }
 
-    @Builder(target = GlobalBrushManager.class, priority = ServicePriorities.GLOBAL_BRUSH_MANAGER_PRIORITY)
+    @Builder(target = GlobalBrushManager.class,
+            priority = ServicePriorities.GLOBAL_BRUSH_MANAGER_PRIORITY)
     public final GlobalBrushManager getGlobalBrushManager(Context context)
     {
         return new BrushManagerService(context, new CommonBrushManager(context));
@@ -160,7 +166,8 @@ public class CoreServiceProvider
         context.getRequired(AnnotationScanner.class).register(BrushInfo.class, gbm);
     }
 
-    @Builder(target = CommandHandler.class, priority = ServicePriorities.COMMAND_HANDLER_PRIORITY)
+    @Builder(target = CommandHandler.class,
+            priority = ServicePriorities.COMMAND_HANDLER_PRIORITY)
     public final CommandHandler getCommandHandler(Context context)
     {
         return new CommandHandlerService(context);
@@ -181,19 +188,22 @@ public class CoreServiceProvider
         cmd.registerCommand(new ParameterCommand(context));
     }
 
-    @Builder(target = OfflineUndoHandler.class, priority = ServicePriorities.UNDO_HANDLER_PRIORITY)
+    @Builder(target = OfflineUndoHandler.class,
+            priority = ServicePriorities.UNDO_HANDLER_PRIORITY)
     public final OfflineUndoHandler getOfflineUndo(Context context)
     {
         return new OfflineUndoHandlerService(context);
     }
 
-    @Builder(target = PlatformProxy.class, priority = ServicePriorities.PLATFORM_PROXY_PRIORITY)
+    @Builder(target = PlatformProxy.class,
+            priority = ServicePriorities.PLATFORM_PROXY_PRIORITY)
     public final PlatformProxy getTrivialPlatform(Context context)
     {
         return new TrivialPlatformProxy(context);
     }
 
-    @Builder(target = PermissionProxy.class, priority = ServicePriorities.PERMISSION_PROXY_PRIORITY)
+    @Builder(target = PermissionProxy.class,
+            priority = ServicePriorities.PERMISSION_PROXY_PRIORITY)
     public final PermissionProxy getPermissionsProxy(Context context)
     {
         return new TrivialPermissionProxy(context);

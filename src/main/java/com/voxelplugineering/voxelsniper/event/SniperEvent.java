@@ -54,7 +54,7 @@ public abstract class SniperEvent extends Event
     /**
      * Returns the sniper.
      * 
-     * @return the sniper
+     * @return The sniper
      */
     public Player getSniper()
     {

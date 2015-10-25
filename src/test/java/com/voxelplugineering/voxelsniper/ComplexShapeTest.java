@@ -25,13 +25,13 @@ package com.voxelplugineering.voxelsniper;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import com.voxelplugineering.voxelsniper.shape.ComplexShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.shape.csg.CuboidShape;
 import com.voxelplugineering.voxelsniper.shape.csg.EllipsoidShape;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
+
+import org.junit.Test;
 
 /**
  * A set of tests for the {@link ComplexShape}.

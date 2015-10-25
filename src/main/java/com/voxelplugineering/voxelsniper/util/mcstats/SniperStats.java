@@ -23,12 +23,13 @@
  */
 package com.voxelplugineering.voxelsniper.util.mcstats;
 
+import com.voxelplugineering.voxelsniper.service.platform.PlatformProxy;
+
+import com.google.common.collect.Maps;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-
-import com.google.common.collect.Maps;
-import com.voxelplugineering.voxelsniper.service.platform.PlatformProxy;
 
 /**
  * Implementation of Sniper Stats.

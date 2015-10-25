@@ -46,7 +46,10 @@ import java.util.Optional;
 /**
  * An effect brush which drains all liquids from the current shape.
  */
-@BrushInfo(name = "drain", type = BrushPartType.EFFECT, help = "An effect brush which removes all liquids from within your shape", permission = "voxelsniper.brush.drain")
+@BrushInfo(name = "drain",
+        type = BrushPartType.EFFECT,
+        help = "An effect brush which removes all liquids from within your shape",
+        permission = "voxelsniper.brush.drain")
 public class DrainBrush extends Brush
 {
 

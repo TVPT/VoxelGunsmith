@@ -71,11 +71,8 @@ public class Context
                     return Optional.of((T) this.data.get(key));
                 }
             }
-            if (obj == null)
-            {
-                // Failed to match any class
-                return Optional.empty();
-            }
+            // Failed to match any class
+            return Optional.empty();
         }
         return Optional.ofNullable((T) obj);
     }

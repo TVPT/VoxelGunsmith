@@ -26,8 +26,6 @@ package com.voxelplugineering.voxelsniper;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import org.junit.Test;
-
 import com.voxelplugineering.voxelsniper.service.config.ConfigurationService;
 import com.voxelplugineering.voxelsniper.service.event.DeadEvent;
 import com.voxelplugineering.voxelsniper.service.event.Event;
@@ -38,6 +36,8 @@ import com.voxelplugineering.voxelsniper.service.eventbus.EventPriority;
 import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy;
 import com.voxelplugineering.voxelsniper.service.eventbus.EventThreadingPolicy.Policy;
 import com.voxelplugineering.voxelsniper.util.ContextTestUtil;
+
+import org.junit.Test;
 
 /**
  * Tests for the {@link AsyncEventBus} implementation.
@@ -110,7 +110,7 @@ public class EventBusTest
     }
 
     /**
-     * @throws InterruptedException if error
+     * @throws InterruptedException If error
      */
     @Test
     public void testDeadEvent() throws InterruptedException

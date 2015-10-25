@@ -29,7 +29,8 @@ import com.voxelplugineering.voxelsniper.service.config.ConfigurationContainer;
 /**
  * Default base configuration values.
  */
-@ConfigurationContainer(name = "additional", createByDefault = false)
+@ConfigurationContainer(name = "additional",
+        createByDefault = false)
 @SuppressWarnings("javadoc")
 public class BaseConfiguration
 {

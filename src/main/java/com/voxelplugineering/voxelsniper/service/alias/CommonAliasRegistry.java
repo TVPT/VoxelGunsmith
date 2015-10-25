@@ -34,7 +34,6 @@ import com.google.common.collect.Maps;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -70,24 +69,18 @@ public class CommonAliasRegistry implements AliasRegistry
      * Creates a new {@link AliasRegistry} with the given registry as its parent.
      * 
      * @param name The registry name
-     * @param parent the parent registry
+     * @param parent The parent registry
      */
     public CommonAliasRegistry(String name, AliasRegistry parent)
     {
         checkNotNull(name);
-        this.aliases = Maps.newTreeMap(new Comparator<String>()
-        {
-
-            @Override
-            public int compare(String o1, String o2)
+        this.aliases = Maps.newTreeMap((String o1, String o2) -> {
+            int l = o1.length() - o2.length();
+            if (l == 0)
             {
-                int l = o1.length() - o2.length();
-                if (l == 0)
-                {
-                    return o1.compareTo(o2);
-                }
-                return l;
+                return o1.compareTo(o2);
             }
+            return l;
         });
         this.parent = parent;
         this.registryName = name;

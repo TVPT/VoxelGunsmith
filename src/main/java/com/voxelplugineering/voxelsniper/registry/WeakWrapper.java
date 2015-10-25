@@ -43,7 +43,7 @@ public abstract class WeakWrapper<T>
     /**
      * Creates a new {@link WeakWrapper}.
      * 
-     * @param value the reference to wrap
+     * @param value The reference to wrap
      */
     public WeakWrapper(T value)
     {
@@ -54,7 +54,7 @@ public abstract class WeakWrapper<T>
     /**
      * Returns the wrapped value, or null if it has been garbage collected.
      * 
-     * @return the wrapped object, may be null
+     * @return The wrapped object, may be null
      */
     public T getThis()
     {

@@ -32,7 +32,7 @@ public interface MessageReceiver
     /**
      * Sends a message to the user.
      * 
-     * @param msg the message to send, cannot be null or empty
+     * @param msg The message to send, cannot be null or empty
      */
     void sendMessage(String msg);
 
@@ -40,8 +40,8 @@ public interface MessageReceiver
      * Sends a message to the user. Created by the same specification of
      * {@link String#format(String, Object...)}.
      * 
-     * @param format the format string
-     * @param args the format arguments
+     * @param format The format string
+     * @param args The format arguments
      */
     void sendMessage(String format, Object... args);
 
