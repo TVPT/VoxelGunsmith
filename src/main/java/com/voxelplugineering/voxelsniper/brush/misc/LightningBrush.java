@@ -31,6 +31,7 @@ import com.voxelplugineering.voxelsniper.brush.ExecutionResult;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.util.brush.BrushVarsHelper;
 import com.voxelplugineering.voxelsniper.world.Block;
+import com.voxelplugineering.voxelsniper.world.queue.LightningChangeQueue;
 
 /**
  * A brush which spawns a bolt of lightning at the targeted location.
@@ -46,7 +47,7 @@ public class LightningBrush extends Brush
     public ExecutionResult run(Player player, BrushVars args)
     {
         Block l = BrushVarsHelper.getTargetBlock(args).get();
-        player.getWorld().spawnLightning(l.getPosition());
+        new LightningChangeQueue(player, player.getWorld(), l.getPosition()).flush();
         return ExecutionResult.continueExecution();
     }
 
