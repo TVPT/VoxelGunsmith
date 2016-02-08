@@ -134,7 +134,6 @@ public class ServiceManager implements Contextable
             {
                 // Build service
                 Contextable obj = (Contextable) m.method.invoke(m.object, this.context);
-                GunsmithLogger.getLogger().debug("Built " + m.target.getSimpleName());
                 this.context.put(obj);
                 if (obj instanceof Service)
                 {
@@ -156,7 +155,6 @@ public class ServiceManager implements Contextable
                     for (TargettedMethod tm : inits)
                     {
                         tm.method.invoke(tm.object, this.context, this.context.get(tm.target).get());
-                        GunsmithLogger.getLogger().debug("Called init hook " + tm.method.toGenericString());
                     }
                 }
             } catch (Exception e)
@@ -190,7 +188,6 @@ public class ServiceManager implements Contextable
             try
             {
                 m.method.invoke(m.object, this.context, this.context.get(m.target).get());
-                GunsmithLogger.getLogger().debug("Called init hook " + m.method.toGenericString());
             } catch (Exception e)
             {
                 GunsmithLogger.getLogger().error(e, "Error calling init hook");
@@ -203,7 +200,6 @@ public class ServiceManager implements Contextable
             try
             {
                 m.method.invoke(m.object, this.context);
-                GunsmithLogger.getLogger().debug("Called post init hook " + m.method.toGenericString());
             } catch (Exception e)
             {
                 GunsmithLogger.getLogger().error(e, "Error calling post init hook");
@@ -224,7 +220,6 @@ public class ServiceManager implements Contextable
             try
             {
                 m.method.invoke(m.object, this.context);
-                GunsmithLogger.getLogger().debug("Called pre stop hook " + m.method.toGenericString());
             } catch (Exception e)
             {
                 GunsmithLogger.getLogger().error(e, "Error calling pre stop hook");
@@ -252,7 +247,6 @@ public class ServiceManager implements Contextable
         {
             throw new IllegalStateException("Attempted to register service providers while manager was running.");
         }
-        GunsmithLogger.getLogger().debug("Registered service provider: " + serviceProvider.getClass().getName());
         detectBuilders(serviceProvider);
         detectInitHooks(serviceProvider);
         detectPostInit(serviceProvider);

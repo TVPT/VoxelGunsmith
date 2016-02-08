@@ -111,7 +111,7 @@ public class CommandHandlerService extends AbstractService implements CommandHan
     }
 
     @Override
-    public synchronized void onCommand(CommandSender sender, String command, String[] args)
+    public synchronized void onCommand(CommandSender sender, String command, String... args)
     {
         check("onCommand");
         checkNotNull(sender, "Cannot have a null sniper!");

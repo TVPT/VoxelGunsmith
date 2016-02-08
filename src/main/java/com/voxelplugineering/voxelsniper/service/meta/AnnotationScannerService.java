@@ -146,31 +146,23 @@ public class AnnotationScannerService extends AbstractService implements Annotat
     @Override
     public void register(Class<? extends Annotation> target, AnnotationConsumer consumer)
     {
-        GunsmithLogger.getLogger().debug("Registered AnnotationConsumer: " + consumer.getClass().getName() + " for " + target.getName());
         getOrCreateConsumers(target).add(consumer);
     }
 
     @Override
     public void scanClassPath(URLClassLoader loader)
     {
-        GunsmithLogger.getLogger().debug("Scanning classloader for annotations");
-        for (String ex : this.scannerExclusions)
-        {
-            GunsmithLogger.getLogger().debug("\tExcluding: " + ex);
-        }
         Set<URI> sources = Sets.newHashSet();
 
         for (URL url : loader.getURLs())
         {
             if (!url.getProtocol().equals("file"))
             {
-                GunsmithLogger.getLogger().warn("Skipping unsupported classpath source: " + url);
                 continue;
             }
 
             if (url.getPath().startsWith(JAVA_HOME))
             {
-                GunsmithLogger.getLogger().debug("Skipping JRE classpath entry: " + url);
                 continue;
             }
 
@@ -180,7 +172,6 @@ public class AnnotationScannerService extends AbstractService implements Annotat
                 source = url.toURI();
             } catch (URISyntaxException e)
             {
-                GunsmithLogger.getLogger().error("Failed to search for classpath plugins in " + url);
                 continue;
             }
 
@@ -191,7 +182,6 @@ public class AnnotationScannerService extends AbstractService implements Annotat
                     scanFile(new File(source));
                 } catch (IOException e)
                 {
-                    GunsmithLogger.getLogger().error(e, "Failed to scan file " + source.getPath());
                 }
             }
         }
@@ -220,13 +210,9 @@ public class AnnotationScannerService extends AbstractService implements Annotat
                 scanDirectory(file);
             } else
             {
-                InputStream in = new FileInputStream(file);
-                try
+                try (InputStream in = new FileInputStream(file))
                 {
                     findAnnotations(in);
-                } finally
-                {
-                    in.close();
                 }
             }
         }
@@ -234,7 +220,6 @@ public class AnnotationScannerService extends AbstractService implements Annotat
 
     private void scanZip(File file)
     {
-        GunsmithLogger.getLogger().debug("Scanning file: " + file.getAbsolutePath());
         if (!ARCHIVE.accept(null, file.getName()))
         {
             return;
@@ -242,35 +227,25 @@ public class AnnotationScannerService extends AbstractService implements Annotat
 
         try
         {
-            ZipFile zip = new ZipFile(file);
-            try
+            try (ZipFile zip = new ZipFile(file))
             {
                 Enumeration<? extends ZipEntry> entries = zip.entries();
                 while (entries.hasMoreElements())
                 {
                     ZipEntry entry = entries.nextElement();
-                    GunsmithLogger.getLogger().debug("Checking entry: " + entry.getName());
                     if (entry.isDirectory() || !entry.getName().endsWith(CLASS_EXTENSION))
                     {
                         continue;
                     }
 
-                    InputStream in = zip.getInputStream(entry);
-                    try
+                    try (InputStream in = zip.getInputStream(entry))
                     {
                         findAnnotations(in);
-                    } finally
-                    {
-                        in.close();
                     }
                 }
-            } finally
-            {
-                zip.close();
             }
         } catch (IOException e)
         {
-            GunsmithLogger.getLogger().error(e, "Failed to scan JAR: " + file.getAbsolutePath());
         }
     }
 
@@ -287,13 +262,11 @@ public class AnnotationScannerService extends AbstractService implements Annotat
                 return;
             }
         }
-        GunsmithLogger.getLogger().debug("Checking class: " + classNode.name);
         if (classNode.visibleAnnotations != null)
         {
             List<AnnotationConsumer> allConsumers = Lists.newArrayList();
             for (AnnotationNode node : (List<AnnotationNode>) classNode.visibleAnnotations)
             {
-                GunsmithLogger.getLogger().debug("\tFound annotation: " + node.desc);
                 for (Map.Entry<String, List<AnnotationConsumer>> desc : this.consumers.entrySet())
                 {
                     if (node.desc.equals(desc.getKey()))
@@ -305,22 +278,18 @@ public class AnnotationScannerService extends AbstractService implements Annotat
             }
             if (!allConsumers.isEmpty())
             {
-                GunsmithLogger.getLogger().debug("Found targetted annotation on class " + classNode.name);
                 try
                 {
                     Class<?> cls = Class.forName(classNode.name.replaceAll("/", "."));
                     for (AnnotationConsumer consumer : allConsumers)
                     {
-                        GunsmithLogger.getLogger().debug("\tPassing to " + consumer.getClass().getName());
                         consumer.consume(cls);
                     }
                 } catch (ClassNotFoundException ignored)
                 {
                     ignored.printStackTrace();
                 }
-
             }
         }
     }
-
 }

@@ -81,7 +81,6 @@ public class ConfigurationService extends AbstractService implements Configurati
     public void register(Class<?> cls)
     {
         checkArgument(cls.isAnnotationPresent(ConfigurationContainer.class));
-        GunsmithLogger.getLogger().debug("Registered configuration container: " + cls.getName());
         ConfigurationContainer container = cls.getAnnotation(ConfigurationContainer.class);
         if (this.containers.containsKey(container.name()))
         {
@@ -221,7 +220,6 @@ public class ConfigurationService extends AbstractService implements Configurati
 
         public void save(File confFile, boolean includeHidden) throws IOException
         {
-            GunsmithLogger.getLogger().debug("Saving " + this.container.name() + " to " + confFile.getAbsolutePath());
             HoconConfigurationLoader loader = HoconConfigurationLoader.builder().setFile(confFile).build();
             ConfigurationNode node = loader.load();
 
@@ -242,7 +240,6 @@ public class ConfigurationService extends AbstractService implements Configurati
 
         public void load(File confFile) throws IOException
         {
-            GunsmithLogger.getLogger().debug("Loading " + this.container.name() + " from " + confFile.getAbsolutePath());
             HoconConfigurationLoader loader = HoconConfigurationLoader.builder().setFile(confFile).build();
             ConfigurationNode node = loader.load();
 
@@ -301,7 +298,6 @@ public class ConfigurationService extends AbstractService implements Configurati
                 this.name = name;
                 this.path = new String[0];
             }
-            GunsmithLogger.getLogger().debug("Created config entry: " + getFullName());
         }
 
         public Class<?> getType()

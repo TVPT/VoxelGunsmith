@@ -37,7 +37,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -145,14 +144,9 @@ public class CommonAliasHandler implements AliasHandler
         {
             dataFile.delete();
         }
-        Writer writer = null;
-        try
+        dataFile.createNewFile();
+        try (FileWriter writer = new FileWriter(dataFile))
         {
-
-            dataFile.createNewFile();
-
-            writer = new FileWriter(dataFile);
-
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             JsonObject json = new JsonObject();
             for (Map.Entry<String, AliasRegistry> target : this.aliasTargets.entrySet())
@@ -165,12 +159,6 @@ public class CommonAliasHandler implements AliasHandler
                 json.add(target.getKey(), array);
             }
             gson.toJson(json, writer);
-        } finally
-        {
-            if (writer != null)
-            {
-                writer.close();
-            }
         }
     }
 
@@ -183,12 +171,8 @@ public class CommonAliasHandler implements AliasHandler
             return;
         }
 
-        JsonReader reader = null;
-
-        try
+        try (JsonReader reader = new JsonReader(new FileReader(dataFile)))
         {
-            reader = new JsonReader(new FileReader(dataFile));
-
             reader.beginObject();
 
             while (reader.hasNext())
@@ -207,12 +191,6 @@ public class CommonAliasHandler implements AliasHandler
             }
 
             reader.endObject();
-        } finally
-        {
-            if (reader != null)
-            {
-                reader.close();
-            }
         }
     }
 

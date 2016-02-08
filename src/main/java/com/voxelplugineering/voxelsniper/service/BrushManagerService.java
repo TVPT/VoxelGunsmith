@@ -112,7 +112,6 @@ public class BrushManagerService extends AbstractService implements GlobalBrushM
         {
             Brush brush = (Brush) cls.newInstance();
             BrushInfo info = cls.getAnnotation(BrushInfo.class);
-            GunsmithLogger.getLogger().debug("Loaded brush " + info.name() + " from " + cls.getName());
             loadBrush(info.name(), brush);
             // Inject instance fields
             BrushWrapper bw = getBrush(info.name()).get();

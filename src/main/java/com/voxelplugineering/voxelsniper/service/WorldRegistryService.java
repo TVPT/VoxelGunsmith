@@ -23,16 +23,13 @@
  */
 package com.voxelplugineering.voxelsniper.service;
 
+import com.google.common.collect.Lists;
 import com.voxelplugineering.voxelsniper.registry.ProvidedWeakRegistry;
 import com.voxelplugineering.voxelsniper.service.registry.RegistryProvider;
 import com.voxelplugineering.voxelsniper.service.registry.WorldRegistry;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.world.World;
 
-import com.google.common.collect.Lists;
-
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**

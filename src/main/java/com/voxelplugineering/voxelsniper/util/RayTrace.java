@@ -315,11 +315,6 @@ public class RayTrace
      */
     public void trace(Function<Block, Boolean> callback)
     {
-        GunsmithLogger.getLogger().debug("Traversing: ");
-        for (Material m : this.traversalBlocks)
-        {
-            GunsmithLogger.getLogger().debug("\t" + m.getName() + " " + m.toString());
-        }
         init();
         checkOutOfWorld();
         if (this.length <= this.range)
@@ -364,19 +359,15 @@ public class RayTrace
             this.targetY = this.lastY;
             this.targetZ = this.lastZ;
             this.targetDirection = this.lastDirection;
-            GunsmithLogger.getLogger().debug("Next block not available, breaking");
             return;
         }
         if (callback != null && !callback.apply(next.get()))
         {
-            GunsmithLogger.getLogger().debug("Callback failed, breaking");
             return;
         }
         if (!this.traversalBlocks.isEmpty() && !this.traversalBlocks.contains(next.get().getMaterial().getType()))
         {
             // Abort - found non-traversal block
-            GunsmithLogger.getLogger().debug("Found non-traversal block: " + next.get().getMaterial().getType().getName() + " breaking. "
-                    + next.get().getMaterial().getType().toString());
             return;
         }
 
@@ -388,7 +379,6 @@ public class RayTrace
             this.targetZ = this.lastZ;
             this.targetDirection = this.lastDirection;
             this.length = this.range;
-            GunsmithLogger.getLogger().debug("reached end or oob, breaking");
         } else
         {
             // continue
