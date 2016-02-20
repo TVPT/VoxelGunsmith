@@ -38,14 +38,18 @@ import com.voxelplugineering.voxelsniper.shape.csg.CylinderShape;
 import com.voxelplugineering.voxelsniper.util.Direction;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 
+import java.util.Optional;
+
 /**
  * A shape brush which defines a 2D disc.
  */
 @BrushInfo(name = "disc",
         type = BrushPartType.SHAPE,
-        help = "Creates a flat disc shape",
+        help = "Creates a disc shape of a specified height",
         params = { @BrushParam(name = BrushKeys.USE_FACE,
-                desc = "Whether to align shape to selected block face, (true/false)") },
+                desc = "Whether to align shape to selected block face, (true/false)"),
+                @BrushParam(name = BrushKeys.HEIGHT,
+                           desc = "The disc height (number)")  },
         permission = "voxelsniper.brush.disc")
 public class DiscBrush extends Brush
 {
@@ -54,6 +58,12 @@ public class DiscBrush extends Brush
     public ExecutionResult run(Player player, BrushVars args)
     {
         double size = args.get(BrushKeys.BRUSH_SIZE, Double.class).get();
+        Optional<Double> oheight = args.get(BrushKeys.HEIGHT, Double.class);
+        if (!oheight.isPresent())
+        {
+            oheight = Optional.of(1D);
+        }
+        int height = (int) Math.floor(oheight.get());
         boolean face = args.get(BrushKeys.USE_FACE, Boolean.class).orElse(VoxelSniperConfiguration.discDefaultFace);
         Shape s = null;
         if (face)
@@ -63,19 +73,19 @@ public class DiscBrush extends Brush
             {
             case NORTH:
             case SOUTH:
-                s = new CylinderShape(size, 1, size, new Vector3i(size, size, 0), Direction.SOUTH);
+                s = new CylinderShape(size, height, size, new Vector3i(size, size, 0), Direction.SOUTH);
                 break;
             case EAST:
             case WEST:
-                s = new CylinderShape(size, 1, size, new Vector3i(0, size, size), Direction.EAST);
+                s = new CylinderShape(size, height, size, new Vector3i(0, size, size), Direction.EAST);
                 break;
             default:
-                s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size));
+                s = new CylinderShape(size, height, size, new Vector3i(size, 0, size));
                 break;
             }
         } else
         {
-            s = new CylinderShape(size, 1, size, new Vector3i(size, 0, size));
+            s = new CylinderShape(size, height, size, new Vector3i(size, 0, size));
         }
         args.set(BrushContext.RUNTIME, BrushKeys.SHAPE, s);
         return ExecutionResult.continueExecution();

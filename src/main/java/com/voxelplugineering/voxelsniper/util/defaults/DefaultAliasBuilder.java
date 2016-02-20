@@ -55,6 +55,7 @@ public final class DefaultAliasBuilder
 
             alias.register("b", "ball");
             alias.register("d", "disc");
+            alias.register("cyl", "disc");
             alias.register("m", "material");
             alias.register("mm", "materialmask material");
             alias.register("s", "snipe");
