@@ -51,5 +51,9 @@ public interface Player extends CommandSender, Living, BrushHolder, ChangeQueueO
      * @return The targeted block
      */
     Optional<Block> getTargetBlock();
+    
+    boolean isProcessing();
+    
+    void setProcessing(boolean state);
 
 }

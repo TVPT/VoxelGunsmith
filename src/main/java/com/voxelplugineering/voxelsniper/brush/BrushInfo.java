@@ -62,7 +62,7 @@ public @interface BrushInfo
      * 
      * @return The parameters
      */
-    BrushParam[]params() default {};
+    BrushParam[] params() default {};
 
     /**
      * Gets the permission key for this brush.

@@ -37,6 +37,7 @@ import com.voxelplugineering.voxelsniper.event.SniperEvent.SniperDestroyEvent;
 import com.voxelplugineering.voxelsniper.service.eventbus.EventHandler;
 import com.voxelplugineering.voxelsniper.service.permission.PermissionProxy;
 import com.voxelplugineering.voxelsniper.service.registry.PlayerRegistry;
+import com.voxelplugineering.voxelsniper.service.text.TextFormat;
 import com.voxelplugineering.voxelsniper.util.Context;
 import com.voxelplugineering.voxelsniper.util.RayTrace;
 import com.voxelplugineering.voxelsniper.util.math.Vector3d;
@@ -162,6 +163,7 @@ public class CommonEventHandler
             vars.set(BrushContext.RUNTIME, BrushKeys.LENGTH, ray.getLength());
 //            Gunsmith.getLogger().info("Snipe at " + ray.getTargetBlock().getLocation().toString());
             sniper.getCurrentBrush().run(sniper, vars);
+            sniper.setProcessing(false);
         } catch (Throwable e)
         {
             if (!attemptedNullAction)

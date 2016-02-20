@@ -60,7 +60,7 @@ import java.util.Queue;
  * 
  * @param <T> The underlying player type
  */
-public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Player
+public abstract class AbstractPlayer<T> extends AbstractEntity<T> implements Player
 {
 
     private File dataDir;
@@ -70,6 +70,7 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
     private Queue<ChangeQueue> pending;
     private AliasHandler personalAliasHandler;
     private UndoQueue history;
+    private boolean processing = false;
 
     /**
      * Creates a new {@link AbstractPlayer} with a weak reference to the player.
@@ -253,6 +254,12 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
     }
 
     @Override
+    public int getPendingChangeCount()
+    {
+        return this.pending.size();
+    }
+
+    @Override
     public Optional<ChangeQueue> getNextPendingChange()
     {
         return Optional.ofNullable(this.pending.peek());
@@ -298,6 +305,18 @@ public abstract class AbstractPlayer<T> extends AbstractEntity<T>implements Play
         RayTrace ray = new RayTrace(getLocation(), getYaw(), getPitch(), range, minY, maxY, step, eyeOffs);
         ray.trace();
         return Optional.ofNullable(ray.getTargetBlock());
+    }
+    
+    @Override
+    public boolean isProcessing()
+    {
+        return this.processing;
+    }
+
+    @Override
+    public void setProcessing(boolean state)
+    {
+        this.processing = state;
     }
 
 }

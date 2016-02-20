@@ -55,6 +55,13 @@ public interface ChangeQueueOwner extends MessageReceiver
     boolean hasPendingChanges();
 
     /**
+     * Gets the number of pending changes awaiting to be handled.
+     * 
+     * @return The pending chance count
+     */
+    int getPendingChangeCount();
+
+    /**
      * Returns the next pending {@link ChangeQueue}.
      * 
      * @return The next change queue

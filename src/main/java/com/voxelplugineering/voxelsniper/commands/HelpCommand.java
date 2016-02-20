@@ -45,7 +45,7 @@ public class HelpCommand extends Command
      */
     public HelpCommand(Context context)
     {
-        super("voxelhelp", "Provides help information for brush parts: /help <brushName>", context);
+        super("voxelhelp", "Provides help information for brush parts: /vhelp <brushName>", context);
         setAliases("vhelp", "man");
         setPermissions("voxelsniper.command.help");
         this.brushes = context.getRequired(GlobalBrushManager.class);
