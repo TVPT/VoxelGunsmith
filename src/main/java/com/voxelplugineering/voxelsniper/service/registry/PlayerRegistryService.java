@@ -21,91 +21,94 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.service;
+package com.voxelplugineering.voxelsniper.service.registry;
 
 import com.google.common.collect.Lists;
-import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
-import com.voxelplugineering.voxelsniper.registry.WeakRegistry;
-import com.voxelplugineering.voxelsniper.service.registry.MaterialRegistry;
+import com.voxelplugineering.voxelsniper.entity.Player;
+import com.voxelplugineering.voxelsniper.registry.ProvidedWeakRegistry;
+import com.voxelplugineering.voxelsniper.service.AbstractService;
+import com.voxelplugineering.voxelsniper.service.command.CommandSender;
 import com.voxelplugineering.voxelsniper.util.Context;
-import com.voxelplugineering.voxelsniper.world.material.Material;
 
-import java.util.Collection;
 import java.util.Optional;
 
 /**
- * A standard material registry for materials.
+ * A standard player registry for players.
  * 
- * @param <T> The underlying material type
+ * @param <T> The underlying player type
  */
-public class MaterialRegistryService<T> extends AbstractService implements MaterialRegistry<T>
+public class PlayerRegistryService<T> extends AbstractService implements PlayerRegistry<T>
 {
 
-    private WeakRegistry<T, Material> registry;
-    private Material air;
-    private String defaultMaterialName;
+    private ProvidedWeakRegistry<T, Player> registry;
+    private final CommandSender console;
+    private final RegistryProvider<T, Player> provider;
 
     /**
-     * Creates a new {@link MaterialRegistryService}.
+     * Creates a new {@link PlayerRegistryService}.
      * 
      * @param context The context
+     * @param provider The provider for getting new players
+     * @param console The console sender proxy
      */
-    public MaterialRegistryService(Context context)
+    public PlayerRegistryService(Context context, RegistryProvider<T, Player> provider, CommandSender console)
     {
         super(context);
+        this.console = console;
+        this.provider = provider;
     }
 
     @Override
     protected void _init()
     {
-        this.registry = new WeakRegistry<T, Material>();
-        this.registry.setCaseSensitiveKeys(false);
-        this.defaultMaterialName = BaseConfiguration.defaultMaterialName;
+        this.registry = new ProvidedWeakRegistry<T, Player>(this.provider);
     }
 
     @Override
     protected void _shutdown()
     {
         this.registry = null;
-        this.defaultMaterialName = null;
     }
 
     @Override
-    public Material getAirMaterial()
+    public CommandSender getConsoleSniperProxy()
     {
-        return this.air;
+        return this.console;
     }
 
     @Override
-    public Optional<Material> getMaterial(String name)
+    public Optional<Player> getPlayer(String name)
     {
-        check("getMaterial");
+        check("getPlayer");
         return this.registry.get(name);
     }
 
     @Override
-    public Optional<Material> getMaterial(T material)
+    public Optional<Player> getPlayer(T player)
     {
-        check("getMaterial");
-        return this.registry.get(material);
+        check("getPlayer");
+        return this.registry.get(player);
     }
 
     @Override
-    public void registerMaterial(String name, T object, Material material)
+    public Iterable<Player> getPlayers()
     {
-        check("registerMaterial");
-        this.registry.register(name, object, material);
-        if (name.equalsIgnoreCase(this.defaultMaterialName))
-        {
-            this.air = material;
-        }
-    }
-
-    @Override
-    public Collection<Material> getMaterials()
-    {
-        check("getMaterials");
+        check("getPlayers");
         return Lists.newArrayList(this.registry.values());
+    }
+
+    @Override
+    public void invalidate(String name)
+    {
+        check("invalidate");
+        this.registry.remove(name);
+    }
+
+    @Override
+    public void invalidate(T player)
+    {
+        check("invalidate");
+        this.registry.remove(player);
     }
 
 }

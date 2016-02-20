@@ -21,85 +21,94 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.service;
+package com.voxelplugineering.voxelsniper.service.registry;
 
 import com.google.common.collect.Lists;
-import com.voxelplugineering.voxelsniper.registry.ProvidedWeakRegistry;
-import com.voxelplugineering.voxelsniper.service.registry.RegistryProvider;
-import com.voxelplugineering.voxelsniper.service.registry.WorldRegistry;
+import com.voxelplugineering.voxelsniper.config.BaseConfiguration;
+import com.voxelplugineering.voxelsniper.registry.WeakRegistry;
+import com.voxelplugineering.voxelsniper.service.AbstractService;
 import com.voxelplugineering.voxelsniper.util.Context;
-import com.voxelplugineering.voxelsniper.world.World;
+import com.voxelplugineering.voxelsniper.world.biome.Biome;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
- * A standard world registry.
+ * A common biome registry for biomes.
  * 
- * @param <T> The underlying world type
+ * @param <T> The biome type
  */
-public class WorldRegistryService<T> extends AbstractService implements WorldRegistry<T>
+public class BiomeRegistryService<T> extends AbstractService implements BiomeRegistry<T>
 {
 
-    private ProvidedWeakRegistry<T, World> registry;
-    private final RegistryProvider<T, World> provider;
+    private WeakRegistry<T, Biome> registry;
+    private Biome defaultBiome;
+    private String defaultBiomeName;
 
     /**
-     * Creates a new {@link WorldRegistryService}.
+     * Creates a new {@link BiomeRegistryService}.
      * 
      * @param context The context
-     * @param provider The provider for new worlds
      */
-    public WorldRegistryService(Context context, RegistryProvider<T, World> provider)
+    public BiomeRegistryService(Context context)
     {
         super(context);
-        this.provider = provider;
     }
 
     @Override
     protected void _init()
     {
-        this.registry = new ProvidedWeakRegistry<T, World>(this.provider);
+        this.registry = new WeakRegistry<T, Biome>();
+        this.registry.setCaseSensitiveKeys(false);
+        this.defaultBiomeName = BaseConfiguration.defaultBiomeName;
     }
 
     @Override
     protected void _shutdown()
     {
         this.registry = null;
+        this.defaultBiomeName = null;
     }
 
     @Override
-    public Optional<World> getWorld(String name)
+    public Optional<Biome> getBiome(String name)
     {
-        check("getWorld");
+        check("getBiome");
         return this.registry.get(name);
     }
 
     @Override
-    public Optional<World> getWorld(T world)
+    public Optional<Biome> getBiome(T biome)
     {
-        check("getWorld");
-        return this.registry.get(world);
+        check("getBiome");
+        return this.registry.get(biome);
     }
 
     @Override
-    public Iterable<World> getLoadedWorlds()
+    public void registerBiome(String name, T object, Biome biome)
     {
-        check("getLoadedWorlds");
-        return Lists.newArrayList(this.registry.values());
+        check("registerBiome");
+        this.registry.register(name, object, biome);
+        if (name.equalsIgnoreCase(this.defaultBiomeName))
+        {
+            this.defaultBiome = biome;
+        }
     }
 
     @Override
-    public void invalidate(String name)
+    public Iterable<Biome> getBiomes()
     {
-        check("invalidate");
-        this.registry.remove(name);
+        check("getBiomes");
+        List<Biome> biomes = Lists.newArrayList();
+        this.registry.values().forEach(biomes::add);
+        return biomes;
     }
 
     @Override
-    public void invalidate(T world)
+    public Biome getDefaultBiome()
     {
-        check("invalidate");
-        this.registry.remove(world);
+        check("getDefaultBiome");
+        return this.defaultBiome;
     }
 
 }

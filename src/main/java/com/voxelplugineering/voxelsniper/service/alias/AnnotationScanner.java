@@ -21,8 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.service;
+package com.voxelplugineering.voxelsniper.service.alias;
 
+import com.voxelplugineering.voxelsniper.service.Service;
 import com.voxelplugineering.voxelsniper.service.meta.AnnotationConsumer;
 
 import java.lang.annotation.Annotation;

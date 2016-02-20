@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.voxelplugineering.voxelsniper.service;
+package com.voxelplugineering.voxelsniper.service.command;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -29,9 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.voxelplugineering.voxelsniper.commands.Command;
 import com.voxelplugineering.voxelsniper.config.VoxelSniperConfiguration;
 import com.voxelplugineering.voxelsniper.entity.Player;
-import com.voxelplugineering.voxelsniper.service.command.CommandHandler;
-import com.voxelplugineering.voxelsniper.service.command.CommandRegistrar;
-import com.voxelplugineering.voxelsniper.service.command.CommandSender;
+import com.voxelplugineering.voxelsniper.service.AbstractService;
 import com.voxelplugineering.voxelsniper.service.permission.PermissionProxy;
 import com.voxelplugineering.voxelsniper.util.Context;
 

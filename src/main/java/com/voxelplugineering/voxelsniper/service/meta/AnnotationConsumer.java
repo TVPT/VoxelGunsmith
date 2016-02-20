@@ -23,7 +23,7 @@
  */
 package com.voxelplugineering.voxelsniper.service.meta;
 
-import com.voxelplugineering.voxelsniper.service.AnnotationScanner;
+import com.voxelplugineering.voxelsniper.service.alias.AnnotationScanner;
 
 /**
  * A consumer which may be registered into an {@link AnnotationScanner} and will be passed all

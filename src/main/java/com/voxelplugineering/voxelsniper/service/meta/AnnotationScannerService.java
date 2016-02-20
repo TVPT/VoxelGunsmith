@@ -25,7 +25,7 @@ package com.voxelplugineering.voxelsniper.service.meta;
 
 import com.voxelplugineering.voxelsniper.GunsmithLogger;
 import com.voxelplugineering.voxelsniper.service.AbstractService;
-import com.voxelplugineering.voxelsniper.service.AnnotationScanner;
+import com.voxelplugineering.voxelsniper.service.alias.AnnotationScanner;
 import com.voxelplugineering.voxelsniper.util.Context;
 
 import com.google.common.base.StandardSystemProperty;
