@@ -23,7 +23,9 @@
  */
 package com.voxelplugineering.voxelsniper.util;
 
+import com.voxelplugineering.voxelsniper.entity.EntityType;
 import com.voxelplugineering.voxelsniper.service.registry.BiomeRegistry;
+import com.voxelplugineering.voxelsniper.service.registry.EntityRegistry;
 import com.voxelplugineering.voxelsniper.world.biome.Biome;
 
 import com.google.common.base.Function;
@@ -41,6 +43,8 @@ public class DataTranslator
 
     private static BiomeRegistry<?> BIOME_REGISTRY;
 
+    private static EntityRegistry<?> ENTITY_REGISTRY;
+
     private static Map<Class<?>, Map<Class<?>, Function<Object, Object>>> TRANSLATORS;
 
     /**
@@ -51,83 +55,24 @@ public class DataTranslator
     public static void initialize(Context context)
     {
         BIOME_REGISTRY = context.get(BiomeRegistry.class).orElse(null);
+        ENTITY_REGISTRY = context.get(EntityRegistry.class).orElse(null);
 
         TRANSLATORS = Maps.newHashMap();
         Map<Class<?>, Function<Object, Object>> string = Maps.newHashMap();
-        string.put(Byte.class, new Function<Object, Object>()
-        {
-
-            @Override
-            public Object apply(Object s)
-            {
-                return Byte.valueOf((String) s);
-            }
-        });
-        string.put(Short.class, new Function<Object, Object>()
-        {
-
-            @Override
-            public Object apply(Object s)
-            {
-                return Short.valueOf((String) s);
-            }
-        });
-        string.put(Integer.class, new Function<Object, Object>()
-        {
-
-            @Override
-            public Object apply(Object s)
-            {
-                return Integer.valueOf((String) s);
-            }
-        });
-        string.put(Long.class, new Function<Object, Object>()
-        {
-
-            @Override
-            public Object apply(Object s)
-            {
-                return Long.valueOf((String) s);
-            }
-        });
-        string.put(Float.class, new Function<Object, Object>()
-        {
-
-            @Override
-            public Object apply(Object s)
-            {
-                return Float.valueOf((String) s);
-            }
-        });
-        string.put(Double.class, new Function<Object, Object>()
-        {
-
-            @Override
-            public Object apply(Object s)
-            {
-                return Double.valueOf((String) s);
-            }
-        });
-        string.put(Boolean.class, new Function<Object, Object>()
-        {
-
-            @Override
-            public Object apply(Object s)
-            {
-                return Boolean.valueOf((String) s);
-            }
-        });
+        string.put(Byte.class, s -> Byte.valueOf((String) s));
+        string.put(Short.class, s -> Short.valueOf((String) s));
+        string.put(Integer.class, s -> Integer.valueOf((String) s));
+        string.put(Long.class, s -> Long.valueOf((String) s));
+        string.put(Float.class, s -> Float.valueOf((String) s));
+        string.put(Double.class, s -> Double.valueOf((String) s));
+        string.put(Boolean.class, s -> Boolean.valueOf((String) s));
         if (BIOME_REGISTRY != null)
         {
-            string.put(Biome.class, new Function<Object, Object>()
-            {
-
-                @Override
-                public Object apply(Object s)
-                {
-                    return BIOME_REGISTRY.getBiome((String) s).orElse(null);
-                }
-            });
+            string.put(Biome.class, s -> BIOME_REGISTRY.getBiome((String) s).orElse(null));
+        }
+        if (ENTITY_REGISTRY != null)
+        {
+            string.put(EntityType.class, object -> ENTITY_REGISTRY.getEntityType((String) object).orElse(null));
         }
         TRANSLATORS.put(String.class, string);
 
@@ -161,7 +106,7 @@ public class DataTranslator
         Function<Object, Object> translator = inner.get(to);
         try
         {
-            return Optional.of(to.cast(translator.apply(obj)));
+            return Optional.ofNullable(to.cast(translator.apply(obj)));
         } catch (NumberFormatException e)
         {
             return Optional.empty();

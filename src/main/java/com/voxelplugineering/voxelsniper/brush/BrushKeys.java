@@ -77,6 +77,8 @@ public final class BrushKeys
     public static final String USE_FACE = "face";
     public static final String WIDTH = "width";
     public static final String YAW = "yaw";
+    public static final String ENTITY_TYPE = "type";
+    public static final String ENTITY_COUNT = "count";
 
     // Flags
     public static final String POINT_A = "$pointA";
