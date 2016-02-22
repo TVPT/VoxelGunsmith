@@ -60,6 +60,8 @@ public final class ServicePriorities
     public static final int BIOME_REGISTRY_PRIORITY = 12000;
     /** OfflineUndoHandler service builder priority. */
     public static final int UNDO_HANDLER_PRIORITY = 13000;
+    /** EntityRegistry builder priority*/
+    public static final int ENTITY_REGISTRY_PRIORITY = 13000;
 
     /**
      * No instance for you.

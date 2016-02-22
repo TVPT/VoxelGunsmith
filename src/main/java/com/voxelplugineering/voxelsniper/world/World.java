@@ -24,11 +24,13 @@
 package com.voxelplugineering.voxelsniper.world;
 
 import com.voxelplugineering.voxelsniper.entity.Entity;
+import com.voxelplugineering.voxelsniper.entity.EntityType;
 import com.voxelplugineering.voxelsniper.entity.Player;
 import com.voxelplugineering.voxelsniper.service.registry.MaterialRegistry;
 import com.voxelplugineering.voxelsniper.shape.MaterialShape;
 import com.voxelplugineering.voxelsniper.shape.Shape;
 import com.voxelplugineering.voxelsniper.util.Nameable;
+import com.voxelplugineering.voxelsniper.util.math.Vector3d;
 import com.voxelplugineering.voxelsniper.util.math.Vector3i;
 import com.voxelplugineering.voxelsniper.world.biome.Biome;
 
@@ -155,5 +157,7 @@ public interface World extends BlockVolume, Nameable
      * @param position The position
      */
     void spawnLightning(Vector3i position, Player source);
+
+    void spawnEntity(EntityType entityType, Vector3d position, Player source);
 
 }

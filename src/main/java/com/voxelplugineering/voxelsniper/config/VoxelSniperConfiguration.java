@@ -139,6 +139,9 @@ public class VoxelSniperConfiguration
     @ConfigValue(section = "messages.brush")
     public static String brushPermissionMessage = TextFormat.DARK_RED + "You do not have permission for the %s brush";
 
+    @ConfigValue(section = "messages.brush")
+    public static String missingEntity = TextFormat.RED + "You must declare a type of entity!";
+
     @ConfigValue(section = "messages.brush.set")
     public static String setFirstPoint = TextFormat.GREEN + "Set first point to (%d, %d, %d).";
     @ConfigValue(section = "messages.brush.set")
